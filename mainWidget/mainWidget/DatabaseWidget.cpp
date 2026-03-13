@@ -54,117 +54,38 @@ DatabaseWidget::DatabaseWidget(QWidget* parent)
 	treeWidget->clear();
 
 	QTreeWidgetItem* material = new QTreeWidgetItem(treeWidget);
-	material->setText(0, "材料数据库");
+	material->setText(0, "物性数据库");
 	material->setIcon(0, QIcon(":/src/data_metals.svg"));
 
-	QTreeWidgetItem* metals = new QTreeWidgetItem();
-	metals->setText(0, "壳体材料");
-	metals->setIcon(0, QIcon(":/src/data_metals.svg"));
+	QTreeWidgetItem* shell = new QTreeWidgetItem();
+	shell->setText(0, "壳体物性");
+	shell->setIcon(0, QIcon(":/src/data_metals.svg"));
+	QTreeWidgetItem* medicine = new QTreeWidgetItem();
+	medicine->setText(0, "药液物性");
+	medicine->setIcon(0, QIcon(":/src/data_propellants.svg"));
+	QTreeWidgetItem* gelatin = new QTreeWidgetItem();
+	gelatin->setText(0, "明胶物性");
+	gelatin->setIcon(0, QIcon(":/src/data_outheat.svg"));
 
-	QTreeWidgetItem* metal = new QTreeWidgetItem();
-	metal->setText(0, "金属材料");
-	metal->setIcon(0, QIcon(":/src/data_metals.svg"));
-	QTreeWidgetItem* nonmetallic = new QTreeWidgetItem();
-	nonmetallic->setText(0, "非金属材料");
-	nonmetallic->setIcon(0, QIcon(":/src/data_metals.svg"));
-	metals->addChild(metal);
-	metals->addChild(nonmetallic);
-
+	material->addChild(shell);
+	material->addChild(medicine);
+	material->addChild(gelatin);
 
 	
-
-	QTreeWidgetItem* propellants = new QTreeWidgetItem();
-	propellants->setText(0, "含能材料");
-	propellants->setIcon(0, QIcon(":/src/data_propellants.svg"));
-	QTreeWidgetItem* outheat = new QTreeWidgetItem();
-	outheat->setText(0, "外防热材料");
-	outheat->setIcon(0, QIcon(":/src/data_outheat.svg"));
-	QTreeWidgetItem* insulatingheat = new QTreeWidgetItem();
-	insulatingheat->setText(0, "绝热层材料");
-	insulatingheat->setIcon(0, QIcon(":/src/data_insulatingheat.svg"));
-	
-
-
-	material->addChild(metals);
-	material->addChild(propellants);
-	material->addChild(outheat);
-	material->addChild(insulatingheat);
-
-	QTreeWidgetItem* judgment = new QTreeWidgetItem(treeWidget);
-	judgment->setText(0, "标准数据库");
-	judgment->setIcon(0, QIcon(":/src/data_judgment.svg"));
-	//QTreeWidgetItem* standard = new QTreeWidgetItem();
-	//standard->setText(0, "国军标数据库");
-	//QTreeWidgetItem* sea = new QTreeWidgetItem();
-	//sea->setText(0, "海军标数据库");
-	//national->addChild(standard);
-	//national->addChild(sea);
 
 	QTreeWidgetItem* calculation = new QTreeWidgetItem(treeWidget);
 	calculation->setText(0, "计算模型数据库");
 	calculation->setIcon(0, QIcon(":/src/data_calculation.svg"));
+	QTreeWidgetItem* preheating = new QTreeWidgetItem();
+	preheating->setText(0, "预热工艺模型");
+	preheating->setIcon(0, QIcon(":/src/data_calculation.svg"));
+	QTreeWidgetItem* intravenousInjection = new QTreeWidgetItem();
+	intravenousInjection->setText(0, "注药工艺模型");
+	intravenousInjection->setIcon(0, QIcon(":/src/data_calculation.svg"));
 
-	QTreeWidgetItem* fallAnalysisData = new QTreeWidgetItem();
-	fallAnalysisData->setText(0, "1.跌落模型");
-	fallAnalysisData->setIcon(0, QIcon(":/src/data_calculation.svg"));
-
-	QTreeWidgetItem* zero = new QTreeWidgetItem();
-	zero->setText(0, "0°");
-	zero->setIcon(0, QIcon(":/src/data_calculation.svg"));
-	QTreeWidgetItem* fortyFive = new QTreeWidgetItem();
-	fortyFive->setText(0, "45°");
-	fortyFive->setIcon(0, QIcon(":/src/data_calculation.svg"));
-	QTreeWidgetItem* ninty = new QTreeWidgetItem();
-	ninty->setText(0, "90°");
-	ninty->setIcon(0, QIcon(":/src/data_calculation.svg"));
-	fallAnalysisData->addChild(zero);
-	fallAnalysisData->addChild(fortyFive);
-	fallAnalysisData->addChild(ninty);
-
-
-
-	QTreeWidgetItem* fastCombustionAnalysisData = new QTreeWidgetItem();
-	fastCombustionAnalysisData->setText(0, "2.快速烤燃模型");
-	fastCombustionAnalysisData->setIcon(0, QIcon(":/src/data_calculation.svg"));
-
-	QTreeWidgetItem* slowCombustionAnalysisData = new QTreeWidgetItem();
-	slowCombustionAnalysisData->setText(0, "3.慢速烤燃模型");
-	slowCombustionAnalysisData->setIcon(0, QIcon(":/src/data_calculation.svg"));
-
-	QTreeWidgetItem* shootAnalysisData = new QTreeWidgetItem();
-	shootAnalysisData->setText(0, "4.枪击模型");
-	shootAnalysisData->setIcon(0, QIcon(":/src/data_calculation.svg"));
-
-	QTreeWidgetItem* jetImpactAnalysisData = new QTreeWidgetItem();
-	jetImpactAnalysisData->setText(0, "5.射流冲击模型");
-	jetImpactAnalysisData->setIcon(0, QIcon(":/src/data_calculation.svg"));
-
-	QTreeWidgetItem* fragmentationImpactAnalysisData = new QTreeWidgetItem();
-	fragmentationImpactAnalysisData->setText(0, "6.破片撞击模型");
-	fragmentationImpactAnalysisData->setIcon(0, QIcon(":/src/data_calculation.svg"));
-
-	QTreeWidgetItem* explosiveBlastAnalysisData = new QTreeWidgetItem();
-	explosiveBlastAnalysisData->setText(0, "7.爆炸冲击波模型");
-	explosiveBlastAnalysisData->setIcon(0, QIcon(":/src/data_calculation.svg"));
-
-	QTreeWidgetItem* sacrificeExplosionAnalysisData = new QTreeWidgetItem();
-	sacrificeExplosionAnalysisData->setText(0, "8.殉爆模型");
-	sacrificeExplosionAnalysisData->setIcon(0, QIcon(":/src/data_calculation.svg"));
-
-	calculation->addChild(fallAnalysisData);
-	calculation->addChild(fastCombustionAnalysisData);
-	calculation->addChild(slowCombustionAnalysisData);
-	calculation->addChild(shootAnalysisData);
-	calculation->addChild(jetImpactAnalysisData);
-	calculation->addChild(fragmentationImpactAnalysisData);
-	calculation->addChild(explosiveBlastAnalysisData);
-	calculation->addChild(sacrificeExplosionAnalysisData);
-
-
-
-	QTreeWidgetItem* user = new QTreeWidgetItem(treeWidget);
-	user->setText(0, "用户数据库");
-	user->setIcon(0, QIcon(":/src/data_user.svg"));
+	calculation->addChild(preheating);
+	calculation->addChild(intravenousInjection);
+	
 
 	QPushButton* addBtn = ui.addBtn;
 	addBtn->setIcon(QIcon(":/src/data_add.svg"));
@@ -357,106 +278,33 @@ DatabaseWidget::DatabaseWidget(QWidget* parent)
 		QString sheetName = nullptr;
 		QDir dir;
 
-		if (currentDataaseType == "壳体材料" || currentDataaseType == "材料数据库" || currentDataaseType == "金属材料")
+		if (currentDataaseType == "物性数据库" || currentDataaseType == "壳体物性")
 		{
-			filepath = dir.absoluteFilePath(m_privateDirPath + "/壳体金属材料.xlsx");
-			sheetName = "壳体金属材料";
+			filepath = dir.absoluteFilePath(m_privateDirPath + "/壳体物性材料.xlsx");
+			sheetName = "壳体物性材料";
 		}
-		else if (currentDataaseType == "非金属材料")
+		else if (currentDataaseType == "药液物性")
 		{
-			filepath = dir.absoluteFilePath(m_privateDirPath + "/壳体非金属材料.xlsx");
-			sheetName = "壳体非金属材料";
+			filepath = dir.absoluteFilePath(m_privateDirPath + "/药液物性材料.xlsx");
+			sheetName = "药液物性材料";
 		}
-		else if (currentDataaseType == "含能材料")
+		else if (currentDataaseType == "明胶物性")
 		{
-			filepath = dir.absoluteFilePath(m_privateDirPath + "/推进剂材料.xlsx");
-			sheetName = "推进剂材料";
+			filepath = dir.absoluteFilePath(m_privateDirPath + "/明胶物性材料.xlsx");
+			sheetName = "明胶物性材料";
 		}
-		else if (currentDataaseType == "绝热层材料")
+		
+		else if (currentDataaseType == "预热工艺模型" || currentDataaseType == "计算模型数据库")
 		{
-			filepath = dir.absoluteFilePath(m_privateDirPath + "/绝热层材料.xlsx");
-			sheetName = "绝热层材料";
+			filepath = dir.absoluteFilePath(m_privateDirPath + "/计算模型-预热工艺模型.xlsx");
+			sheetName = "预热工艺模型";
 		}
-		else if (currentDataaseType == "外防热材料")
+		else if (currentDataaseType == "注药工艺模型")
 		{
-			filepath = dir.absoluteFilePath(m_privateDirPath + "/外防热材料.xlsx");
-			sheetName = "外防热材料";
+			filepath = dir.absoluteFilePath(m_privateDirPath + "/计算模型-注药工艺模型.xlsx");
+			sheetName = "注药工艺模型";
 		}
-		else if (currentDataaseType == "碳纤维壳体材料")
-		{
-			filepath = dir.absoluteFilePath(m_privateDirPath + "/碳纤维壳体材料.xlsx");
-			sheetName = "碳纤维壳体材料";
-		}
-		else if (currentDataaseType == "用户数据库")
-		{
-			filepath = dir.absoluteFilePath("src/database/账号密码.xlsx");
-			sheetName = "用户数据库";
-		}
-		else if (currentDataaseType == "1.跌落模型" || currentDataaseType == "计算模型数据库")
-		{
-			filepath = dir.absoluteFilePath(m_privateDirPath + "/计算模型-跌落试验-0.xlsx");
-			sheetName = "跌落试验-0";
-		}
-		else if (currentDataaseType == "0°")
-		{
-			filepath = dir.absoluteFilePath(m_privateDirPath + "/计算模型-跌落试验-0.xlsx");
-			sheetName = "跌落试验-0";
-		}
-		else if (currentDataaseType == "45°")
-		{
-			filepath = dir.absoluteFilePath(m_privateDirPath + "/计算模型-跌落试验-45.xlsx");
-			sheetName = "跌落试验-45";
-		}
-		else if (currentDataaseType == "90°")
-		{
-			filepath = dir.absoluteFilePath(m_privateDirPath + "/计算模型-跌落试验-90.xlsx");
-			sheetName = "跌落试验-90";
-		}
-		else if (currentDataaseType == "2.快速烤燃模型")
-		{
-			filepath = dir.absoluteFilePath(m_privateDirPath + "/计算模型-快速烤燃试验.xlsx");
-			sheetName = "快速烤燃试验";
-		}
-		else if (currentDataaseType == "3.慢速烤燃模型")
-		{
-			filepath = dir.absoluteFilePath(m_privateDirPath + "/计算模型-慢速烤燃试验.xlsx");
-			sheetName = "慢速烤燃试验";
-		}
-		else if (currentDataaseType == "4.枪击模型")
-		{
-			filepath = dir.absoluteFilePath(m_privateDirPath + "/计算模型-枪击试验.xlsx");
-			sheetName = "枪击试验";
-		}
-		else if (currentDataaseType == "5.射流冲击模型")
-		{
-			filepath = dir.absoluteFilePath(m_privateDirPath + "/计算模型-射流冲击试验.xlsx");
-			sheetName = "射流冲击试验";
-		}
-		else if (currentDataaseType == "6.破片撞击模型")
-		{
-			filepath = dir.absoluteFilePath(m_privateDirPath + "/计算模型-破片撞击试验.xlsx");
-			sheetName = "破片撞击试验";
-		}
-		else if (currentDataaseType == "7.爆炸冲击波模型")
-		{
-			filepath = dir.absoluteFilePath(m_privateDirPath + "/计算模型-爆炸冲击波试验.xlsx");
-			sheetName = "爆炸冲击波试验";
-		}
-		else if (currentDataaseType == "8.殉爆模型")
-		{
-			filepath = dir.absoluteFilePath(m_privateDirPath + "/计算模型-殉爆试验.xlsx");
-			sheetName = "殉爆试验";
-		}
-		else if (currentDataaseType == "标准数据库")
-		{
-			filepath = dir.absoluteFilePath(m_privateDirPath + "/标准数据库.xlsx");
-			sheetName = "标准数据库";
-		}
-		else
-		{
-			filepath = dir.absoluteFilePath(m_privateDirPath + "/计算模型.xlsx");
-			sheetName = "计算模型";
-		}
+		
 		
 		int rowCount = tableWidget->rowCount();
 		int colCount = tableWidget->columnCount();
@@ -469,34 +317,19 @@ DatabaseWidget::DatabaseWidget(QWidget* parent)
 		QXlsx::Document xlsx;
 		// 设置工作表名称
 		xlsx.renameSheet("Sheet1", sheetName);
-		if (currentDataaseType == "用户数据库")
-		{
-			for (int row = 0; row < rowCount; ++row) {
+		// 导出表格数据
+		int xlsxRow = 0;
+		for (int row = 0; row < rowCount; ++row) {
+			if (row == 0 || row >= m_publicRowCount)
+			{
 				for (int col = 0; col < colCount; ++col) {
 					QTableWidgetItem* item = tableWidget->item(row, col);
 					if (item) {
-						xlsx.write(row + 1, col + 1, item->text());
+						xlsx.write(xlsxRow + 1, col + 1, item->text());
 
 					}
 				}
-			}
-		}
-		else
-		{
-			// 导出表格数据
-			int xlsxRow = 0;
-			for (int row = 0; row < rowCount; ++row) {
-				if (row == 0 || row >= m_publicRowCount)
-				{
-					for (int col = 0; col < colCount; ++col) {
-						QTableWidgetItem* item = tableWidget->item(row, col);
-						if (item) {
-							xlsx.write(xlsxRow + 1, col + 1, item->text());
-
-						}
-					}
-					xlsxRow++;
-				}
+				xlsxRow++;
 			}
 		}
 		// 保存文件
@@ -535,107 +368,34 @@ void DatabaseWidget::onTreeItemClicked(QTreeWidgetItem* item) {
 	QString filepath = nullptr;
 	QDir dir;
 	currentDataaseType = item->text(0);
-	//QMessageBox::information(nullptr, "信息", currentDataaseType);
-	if (currentDataaseType == "壳体材料" || currentDataaseType == "材料数据库" || currentDataaseType == "金属材料")
+	if (currentDataaseType == "物性数据库" || currentDataaseType == "壳体物性")
 	{
-		filepath = dir.absoluteFilePath("src/database/壳体金属材料.xlsx");
+		filepath = dir.absoluteFilePath("src/database/壳体物性材料.xlsx");
+		ui.queryTitle->setText("材料名称");
+	}
+	else if (currentDataaseType == "药液物性")
+	{
+		filepath = dir.absoluteFilePath("src/database/药液物性材料.xlsx");
+		ui.queryTitle->setText("推进剂名称");
+	}
+	else if (currentDataaseType == "明胶物性")
+	{
+		filepath = dir.absoluteFilePath("src/database/明胶物性材料.xlsx");
+		ui.queryTitle->setText("明胶牌号");
+	}
+	
+	else if (currentDataaseType == "预热工艺模型" || currentDataaseType == "计算模型数据库")
+	{
+		filepath = dir.absoluteFilePath("src/database/计算模型-预热工艺模型.xlsx");
 		ui.queryTitle->setText("材料牌号");
 	}
-	else if (currentDataaseType == "非金属材料")
+
+	else if (currentDataaseType == "注药工艺模型")
 	{
-		filepath = dir.absoluteFilePath("src/database/壳体非金属材料.xlsx");
+		filepath = dir.absoluteFilePath("src/database/计算模型-注药工艺模型.xlsx");
 		ui.queryTitle->setText("材料牌号");
 	}
-	else if (currentDataaseType == "含能材料")
-	{
-		filepath = dir.absoluteFilePath("src/database/推进剂材料.xlsx");
-		ui.queryTitle->setText("材料牌号");
-	}
-	else if (currentDataaseType == "外防热材料")
-	{
-		filepath = dir.absoluteFilePath("src/database/外防热材料.xlsx");
-		ui.queryTitle->setText("材料牌号");
-	}
-	else if (currentDataaseType == "绝热层材料")
-	{
-		filepath = dir.absoluteFilePath("src/database/绝热层材料.xlsx");
-		ui.queryTitle->setText("材料牌号");
-	}
-	else if (currentDataaseType == "碳纤维壳体材料")
-	{
-		filepath = dir.absoluteFilePath("src/database/碳纤维壳体材料.xlsx");
-		ui.queryTitle->setText("材料牌号");
-	}
-	else if (currentDataaseType == "用户数据库")
-	{
-		filepath = dir.absoluteFilePath("src/database/账号密码.xlsx");
-		ui.queryTitle->setText("账号");
-	}
-	else if (currentDataaseType == "1.跌落模型" || currentDataaseType == "计算模型数据库")
-	{
-		filepath = dir.absoluteFilePath("src/database/计算模型-跌落试验-0.xlsx");
-		ui.queryTitle->setText("材料牌号");
-	}
-	else if (currentDataaseType == "0°")
-	{
-		filepath = dir.absoluteFilePath("src/database/计算模型-跌落试验-0.xlsx");
-		ui.queryTitle->setText("材料牌号");
-	}
-	else if (currentDataaseType == "45°")
-	{
-		filepath = dir.absoluteFilePath("src/database/计算模型-跌落试验-45.xlsx");
-		ui.queryTitle->setText("材料牌号");
-	}
-	else if (currentDataaseType == "90°")
-	{
-		filepath = dir.absoluteFilePath("src/database/计算模型-跌落试验-90.xlsx");
-		ui.queryTitle->setText("材料牌号");
-	}
-	else if (currentDataaseType == "2.快速烤燃模型")
-	{
-		filepath = dir.absoluteFilePath("src/database/计算模型-快速烤燃试验.xlsx");
-		ui.queryTitle->setText("材料牌号");
-	}
-	else if (currentDataaseType == "3.慢速烤燃模型")
-	{
-		filepath = dir.absoluteFilePath("src/database/计算模型-慢速烤燃试验.xlsx");
-		ui.queryTitle->setText("材料牌号");
-	}
-	else if (currentDataaseType == "4.枪击模型")
-	{
-		filepath = dir.absoluteFilePath("src/database/计算模型-枪击试验.xlsx");
-		ui.queryTitle->setText("材料牌号");
-	}
-	else if (currentDataaseType == "5.射流冲击模型")
-	{
-		filepath = dir.absoluteFilePath("src/database/计算模型-射流冲击试验.xlsx");
-		ui.queryTitle->setText("材料牌号");
-	}
-	else if (currentDataaseType == "6.破片撞击模型")
-	{
-		filepath = dir.absoluteFilePath("src/database/计算模型-破片撞击试验.xlsx");
-		ui.queryTitle->setText("材料牌号");
-	}
-	else if (currentDataaseType == "7.爆炸冲击波模型")
-	{
-		filepath = dir.absoluteFilePath("src/database/计算模型-爆炸冲击波试验.xlsx");
-		ui.queryTitle->setText("材料牌号");
-	}
-	else if (currentDataaseType == "8.殉爆模型")
-	{
-		filepath = dir.absoluteFilePath("src/database/计算模型-殉爆试验.xlsx");
-		ui.queryTitle->setText("材料牌号");
-	}
-	else if (currentDataaseType == "标准数据库")
-	{
-		filepath = dir.absoluteFilePath("src/database/标准数据库.xlsx");
-		ui.queryTitle->setText("材料牌号");
-	}
-	else
-	{
-		filepath = dir.absoluteFilePath("src/database/计算模型.xlsx");
-		ui.queryTitle->setText("材料牌号");
-	}
+	
 
 	if (!filepath.isEmpty()) {
 		QXlsx::Document xlsx(filepath);
@@ -651,150 +411,86 @@ void DatabaseWidget::onTreeItemClicked(QTreeWidgetItem* item) {
 
 		for (int row = 1; row <= rowcount; ++row) {
 			for (int col = 1; col <= colcount; ++col) {
-				if (currentDataaseType != "用户数据库")
+				std::shared_ptr<QXlsx::Cell> cell = xlsx.cellAt(row, col);
+
+				QTableWidgetItem* item = new QTableWidgetItem(xlsx.read(row, col).toString());
+				item->setFlags(item->flags() & ~Qt::ItemIsEditable); // 不可编辑
+				item->setTextAlignment(Qt::AlignLeft | Qt::AlignVCenter);
+				if (row == 1)
 				{
-					std::shared_ptr<QXlsx::Cell> cell = xlsx.cellAt(row, col);
-					
-					QTableWidgetItem* item = new QTableWidgetItem(xlsx.read(row, col).toString());
-					item->setFlags(item->flags() & ~Qt::ItemIsEditable); // 不可编辑
-					item->setTextAlignment(Qt::AlignLeft | Qt::AlignVCenter);
-					if (row == 1)
-					{
-						item->setBackground(QBrush(QColor(0, 237, 252)));
-					}
-					else
-					{
-						item->setBackground(QBrush(QColor(230, 230, 230)));
-					}
-					tableWidge->setItem(row - 1, col - 1, item);
+					item->setBackground(QBrush(QColor(0, 237, 252)));
+				}
+				else
+				{
+					item->setBackground(QBrush(QColor(230, 230, 230)));
+				}
+				tableWidge->setItem(row - 1, col - 1, item);
+				
+			}
+		}
+	}
+	// 私有库
+	auto ins = ModelDataManager::GetInstance();
+	UserInfo info = ins->GetUserInfo();
+	m_privateDirPath = "src/database/" + info.username;
+	QDir privateDir(m_privateDirPath);
+	if (!privateDir.exists()) {
+		privateDir.setPath("src/database/");
+		if (!privateDir.mkpath(info.username)) {
+			QMessageBox::warning(this, "操作失败", "读取用户私有库失败");
+			return;
+		}
+	}
+	QString privateFilePath = "";
+
+	if (currentDataaseType == "物性数据库" || currentDataaseType == "壳体物性")
+	{
+		privateFilePath = dir.absoluteFilePath(m_privateDirPath + "/壳体物性材料.xlsx");
+	}
+	else if (currentDataaseType == "药液物性")
+	{
+		privateFilePath = dir.absoluteFilePath(m_privateDirPath + "/药液物性材料.xlsx");
+	}
+	else if (currentDataaseType == "明胶物性")
+	{
+		privateFilePath = dir.absoluteFilePath(m_privateDirPath + "/明胶物性.xlsx");
+	}
+	else if (currentDataaseType == "预热工艺模型" || currentDataaseType == "计算模型数据库")
+	{
+		privateFilePath = dir.absoluteFilePath(m_privateDirPath + "/计算模型-预热工艺模型.xlsx");
+	}
+	
+	else if (currentDataaseType == "注药工艺模型")
+	{
+		privateFilePath = dir.absoluteFilePath(m_privateDirPath + "/计算模型-注药工艺模型.xlsx");
+	}
+	
+
+	QFile file(privateFilePath);
+
+	if (!privateFilePath.isEmpty() && file.exists()) {
+		QXlsx::Document xlsx(privateFilePath);
+		int rowcount = xlsx.dimension().lastRow(); // 获取总行数
+		int colcount = xlsx.dimension().lastColumn(); // 获取总列数
+
+		tableWidge->setRowCount(m_rowCount + rowcount - 1);
+
+		int xlsxrow = m_rowCount;
+		for (int row = 2; row <= rowcount; ++row) {
+			for (int col = 1; col <= colcount; ++col) {
+				if (col == 1)
+				{
+					QTableWidgetItem* item = new QTableWidgetItem(QString::number(xlsxrow));
+					tableWidge->setItem(xlsxrow, col - 1, item);
 				}
 				else
 				{
 					QTableWidgetItem* item = new QTableWidgetItem(xlsx.read(row, col).toString());
-					if (row == 1 || row == 2 || col == 1 || col == 2)
-					{
-						item->setFlags(item->flags() & ~Qt::ItemIsEditable); // 不可编辑
-						if (row == 1)
-						{
-							item->setBackground(QBrush(QColor(0, 237, 252)));
-						}
-					}
-					tableWidge->setItem(row - 1, col - 1, item);
+					tableWidge->setItem(xlsxrow, col - 1, item);
 				}
+
 			}
-		}
-	}
-	if (currentDataaseType != "用户数据库" || currentDataaseType != "标准数据库")
-	{
-		// 私有库
-		auto ins = ModelDataManager::GetInstance();
-		UserInfo info = ins->GetUserInfo();
-		m_privateDirPath = "src/database/" + info.username;
-		QDir privateDir(m_privateDirPath);
-		if (!privateDir.exists()) {
-			privateDir.setPath("src/database/");
-			if (!privateDir.mkpath(info.username)) {
-				QMessageBox::warning(this, "操作失败", "读取用户私有库失败");
-				return;
-			}
-		}
-		QString privateFilePath = "";
-
-		if (currentDataaseType == "壳体材料" || currentDataaseType == "材料数据库" || currentDataaseType == "金属材料")
-		{
-			privateFilePath = dir.absoluteFilePath(m_privateDirPath + "/壳体金属材料.xlsx");
-		}
-		else if (currentDataaseType == "非金属材料")
-		{
-			privateFilePath = dir.absoluteFilePath(m_privateDirPath + "/壳体非金属材料.xlsx");
-		}
-		else if (currentDataaseType == "含能材料")
-		{
-			privateFilePath = dir.absoluteFilePath(m_privateDirPath + "/推进剂材料.xlsx");
-		}
-		else if (currentDataaseType == "外防热材料")
-		{
-			privateFilePath = dir.absoluteFilePath(m_privateDirPath + "/外防热材料.xlsx");
-		}
-		else if (currentDataaseType == "绝热层材料")
-		{
-			privateFilePath = dir.absoluteFilePath(m_privateDirPath + "/绝热层材料.xlsx");
-		}
-		else if (currentDataaseType == "碳纤维壳体材料")
-		{
-			privateFilePath = dir.absoluteFilePath(m_privateDirPath + "/碳纤维壳体材料.xlsx");
-		}
-		else if (currentDataaseType == "1.跌落模型" || currentDataaseType == "计算模型数据库")
-		{
-			privateFilePath = dir.absoluteFilePath(m_privateDirPath + "/计算模型-跌落试验-0.xlsx");
-		}
-		else if (currentDataaseType == "0°")
-		{
-			privateFilePath = dir.absoluteFilePath(m_privateDirPath + "/计算模型-跌落试验-0.xlsx");
-		}
-		else if (currentDataaseType == "45°")
-		{
-			privateFilePath = dir.absoluteFilePath(m_privateDirPath + "/计算模型-跌落试验-45.xlsx");
-		}
-		else if (currentDataaseType == "90°")
-		{
-			privateFilePath = dir.absoluteFilePath(m_privateDirPath + "/计算模型-跌落试验-90.xlsx");
-		}
-		else if (currentDataaseType == "2.快速烤燃模型")
-		{
-			privateFilePath = dir.absoluteFilePath(m_privateDirPath + "/计算模型-快速烤燃试验.xlsx");
-		}
-		else if (currentDataaseType == "3.慢速烤燃模型")
-		{
-			privateFilePath = dir.absoluteFilePath(m_privateDirPath + "/计算模型-慢速烤燃试验.xlsx");
-		}
-		else if (currentDataaseType == "4.枪击模型")
-		{
-			privateFilePath = dir.absoluteFilePath(m_privateDirPath + "/计算模型-枪击试验.xlsx");
-		}
-		else if (currentDataaseType == "5.射流冲击模型")
-		{
-			privateFilePath = dir.absoluteFilePath(m_privateDirPath + "/计算模型-射流冲击试验.xlsx");
-		}
-		else if (currentDataaseType == "6.破片撞击模型")
-		{
-			privateFilePath = dir.absoluteFilePath(m_privateDirPath + "/计算模型-破片撞击试验.xlsx");
-		}
-		else if (currentDataaseType == "7.爆炸冲击波模型")
-		{
-			privateFilePath = dir.absoluteFilePath(m_privateDirPath + "/计算模型-爆炸冲击波试验.xlsx");
-		}
-		else if (currentDataaseType == "8.殉爆模型")
-		{
-			privateFilePath = dir.absoluteFilePath(m_privateDirPath + "/计算模型-殉爆试验.xlsx");
-		}
-
-		QFile file(privateFilePath);
-
-		if (!privateFilePath.isEmpty() && file.exists()) {
-			QXlsx::Document xlsx(privateFilePath);
-			int rowcount = xlsx.dimension().lastRow(); // 获取总行数
-			int colcount = xlsx.dimension().lastColumn(); // 获取总列数
-
-			tableWidge->setRowCount(m_rowCount + rowcount - 1);
-
-			int xlsxrow = m_rowCount;
-			for (int row = 2; row <= rowcount; ++row) {
-				for (int col = 1; col <= colcount; ++col) {
-					if (col == 1)
-					{
-						QTableWidgetItem* item = new QTableWidgetItem(QString::number(xlsxrow));
-						tableWidge->setItem(xlsxrow, col - 1, item);
-					}
-					else
-					{
-						QTableWidgetItem* item = new QTableWidgetItem(xlsx.read(row, col).toString());
-						tableWidge->setItem(xlsxrow, col - 1, item);
-					}
-					
-				}
-				xlsxrow++;
-			}
+			xlsxrow++;
 		}
 	}
 

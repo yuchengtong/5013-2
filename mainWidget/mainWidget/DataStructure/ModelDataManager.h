@@ -12,7 +12,7 @@
 
 
 struct UserInfo {
-	QString username = "";
+	QString username = "admin";
 	QString password = "";
 };
 
