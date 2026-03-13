@@ -83,59 +83,36 @@
 #include "CalculateWorker.h"
 
 
-// 仅处理 double 类型的 clamp 函数
-double my_clamp(double value, double low, double high) {
-	if (value < low) return low;
-	if (value > high) return high;
-	return value;
-}
-
-double getAverage(std::vector<double> data) {
-	return std::accumulate(data.begin(), data.end(), 0.0) / data.size();
-}
-
-double getStd(std::vector<double> data) {
-	double mean = getAverage(data);
-	double accum = 0.0;
-	std::for_each(std::begin(data), std::end(data), [&](const double d) {
-		accum += (d - mean) * (d - mean);
-	});
-	return sqrt(accum / data.size()); //除以n-1是无偏估计方差, 除以n是概率分布方差, 都行
-}
-
 GFTreeModelWidget::GFTreeModelWidget(QWidget*parent)
 	:QWidget(parent)
 {
-	wordExporter = new WordExporter(this);
+	m_WordExporter = new WordExporter(this);
 
 	qRegisterMetaType<ModelGeometryInfo>("ModelGeometryInfo");
 	qRegisterMetaType<ModelMeshInfo>("ModelMeshInfo");
 
+	init();
+	bindConnect();
+}
 
+GFTreeModelWidget::~GFTreeModelWidget()
+{
+}
+
+void GFTreeModelWidget::init()
+{
 	QIcon error_icon(":/src/Error.svg");
 	QIcon checked_icon(":/src/Checked.svg");
 
-	treeWidget = new GFTreeWidget(this);
-	//treeWidget->setStyleSheet(R"(
-	// QTreeWidget::branch:has-children:!has-siblings:closed,
-	// QTreeWidget::branch:closed:has-children:has-siblings {
-	//         border-image: none;
-	//         image: url(:/src/treeclose.svg);
-	// }
-	//
-	// QTreeWidget::branch:open:has-children:!has-siblings,
-	// QTreeWidget::branch:open:has-children:has-siblings  {
-	//         border-image: none;
-	//         image: url(:/src/treeopen.svg);
-	// }
-	//)");
-
-	treeWidget->setColumnCount(1);
-	treeWidget->setHeaderLabels({ "项目结构" });
-	treeWidget->setHeaderHidden(true);
+	m_TreeWidget = new GFTreeWidget(this);
+	{
+		m_TreeWidget->setColumnCount(1);
+		m_TreeWidget->setHeaderLabels({ "项目结构" });
+		m_TreeWidget->setHeaderHidden(true);
+	}
 
 	// 创建根节点
-	QTreeWidgetItem*rootItem = new QTreeWidgetItem(treeWidget);
+	QTreeWidgetItem* rootItem = new QTreeWidgetItem(m_TreeWidget);
 	rootItem->setText(0, "工程文件");
 	rootItem->setData(0, Qt::UserRole, "Project");
 	rootItem->setExpanded(true);
@@ -143,334 +120,138 @@ GFTreeModelWidget::GFTreeModelWidget(QWidget*parent)
 
 	// 几何模型节点
 	QTreeWidgetItem* geometryNode = new QTreeWidgetItem(rootItem);
-	geometryNode->setText(0, "固体发动机三维模型导入");
+	geometryNode->setText(0, "几何模型");
 	geometryNode->setData(0, Qt::UserRole, "Geometry");
 	geometryNode->setIcon(0, error_icon);
 
-	// 材料节点
-	QTreeWidgetItem* databaseNode = new QTreeWidgetItem(rootItem);
-	databaseNode->setText(0, "数据库");
-	databaseNode->setData(0, Qt::UserRole, "Database");
-	databaseNode->setIcon(0, error_icon);
-	databaseNode->setExpanded(true);
+	// 数据库
+	QTreeWidgetItem* dataBase = new QTreeWidgetItem(rootItem);
+	{
+		dataBase->setText(0, "数据库");
+		dataBase->setData(0, Qt::UserRole, "DataBase");
+		dataBase->setIcon(0, error_icon);
+		dataBase->setExpanded(true);
+	}
 
-	QTreeWidgetItem* materialNode = new QTreeWidgetItem();
-	materialNode->setText(0, "材料数据库");
-	materialNode->setData(0, Qt::UserRole, "Material");
-	materialNode->setIcon(0, error_icon);
-	materialNode->setExpanded(true);
-
-	databaseNode->addChild(materialNode);
-
+	QTreeWidgetItem* phyProperty = new QTreeWidgetItem();
+	{
+		phyProperty->setText(0, "物性数据库");
+		phyProperty->setData(0, Qt::UserRole, "PhysicalProperty");
+		phyProperty->setIcon(0, error_icon);
+		phyProperty->setExpanded(true);
+	}
+	dataBase->addChild(phyProperty);
 
 	QTreeWidgetItem* steel = new QTreeWidgetItem();
-	steel->setText(0, "壳体材料");
-	steel->setData(0, Qt::UserRole, "Steel");
-	steel->setIcon(0, error_icon);
-
+	{
+		steel->setText(0, "壳体材料");
+		steel->setData(0, Qt::UserRole, "Steel");
+		steel->setIcon(0, error_icon);
+	}
 	QTreeWidgetItem* propellant = new QTreeWidgetItem();
-	propellant->setText(0, "含能材料");
-	propellant->setData(0, Qt::UserRole, "Propellant");
-	propellant->setIcon(0, error_icon);
+	{
+		propellant->setText(0, "含能材料");
+		propellant->setData(0, Qt::UserRole, "Propellant");
+		propellant->setIcon(0, error_icon);
+	}
+	QTreeWidgetItem* gelatin = new QTreeWidgetItem();
+	{
+		gelatin->setText(0, "明胶物性");
+		gelatin->setData(0, Qt::UserRole, "Gelatin");
+		gelatin->setIcon(0, error_icon);
+	}
+	phyProperty->addChild(steel);
+	phyProperty->addChild(propellant);
+	phyProperty->addChild(gelatin);
 
-	QTreeWidgetItem* outheat = new QTreeWidgetItem();
-	outheat->setText(0, "外防热材料");
-	outheat->setData(0, Qt::UserRole, "Outheat");
-	outheat->setIcon(0, error_icon);
+	QTreeWidgetItem* computationalModel = new QTreeWidgetItem();
+	{
+		computationalModel->setText(0, "计算模型数据库");
+		computationalModel->setData(0, Qt::UserRole, "ComputationalModel");
+		computationalModel->setIcon(0, error_icon);
+	}
+	dataBase->addChild(computationalModel);
 
-	QTreeWidgetItem* insulatingheat = new QTreeWidgetItem();
-	insulatingheat->setText(0, "绝热层材料");
-	insulatingheat->setData(0, Qt::UserRole, "Insulatingheat");
-	insulatingheat->setIcon(0, error_icon);
-
-	materialNode->addChild(steel);
-	materialNode->addChild(propellant);
-	materialNode->addChild(outheat);
-	materialNode->addChild(insulatingheat);
-
-	QTreeWidgetItem* judgment = new QTreeWidgetItem();
-	judgment->setText(0, "标准数据库");
-	judgment->setData(0, Qt::UserRole, "Judgment");
-	judgment->setIcon(0, error_icon);
-
-	QTreeWidgetItem* calculation = new QTreeWidgetItem();
-	calculation->setText(0, "计算模型数据库");
-	calculation->setData(0, Qt::UserRole, "Calculation");
-	calculation->setIcon(0, checked_icon);
-
-	
-	databaseNode->addChild(judgment);
-	databaseNode->addChild(calculation);
+	QTreeWidgetItem* preheatingProcess = new QTreeWidgetItem();
+	{
+		preheatingProcess->setText(0, "预热工艺模型");
+		preheatingProcess->setData(0, Qt::UserRole, "PreheatingProcess");
+		preheatingProcess->setIcon(0, checked_icon);
+	}
+	QTreeWidgetItem* InjectionProcess = new QTreeWidgetItem();
+	{
+		InjectionProcess->setText(0, "注药工艺模型");
+		InjectionProcess->setData(0, Qt::UserRole, "InjectionProcess");
+		InjectionProcess->setIcon(0, checked_icon);
+	}
+	computationalModel->addChild(preheatingProcess);
+	computationalModel->addChild(InjectionProcess);
 
 	//网格节点
 	QTreeWidgetItem* meshItem = new QTreeWidgetItem(rootItem);
-	meshItem->setText(0, "网格");
-	meshItem->setData(0, Qt::UserRole, "Mesh");
-	meshItem->setIcon(0, error_icon);
+	{
+		meshItem->setText(0, "网格");
+		meshItem->setData(0, Qt::UserRole, "Mesh");
+		meshItem->setIcon(0, error_icon);
+	}
 
-	// 分析设置节点
-	QTreeWidgetItem* analysisNode = new QTreeWidgetItem(rootItem);
-	analysisNode->setText(0, "安全特性参数分析");
-	analysisNode->setData(0, Qt::UserRole, "Analysis");
-	analysisNode->setIcon(0, error_icon);
-	analysisNode->setExpanded(true);
+	// 预热工艺工程计算
+	QTreeWidgetItem* preheatingProcessCal = new QTreeWidgetItem(rootItem);
+	{
+		preheatingProcessCal->setText(0, "预热工艺工程计算");
+		preheatingProcessCal->setData(0, Qt::UserRole, "PreheatingProcessCal");
+		preheatingProcessCal->setIcon(0, error_icon);
+		preheatingProcessCal->setExpanded(true);
+	}
 
-	QTreeWidgetItem* fallAnalysis = new QTreeWidgetItem();
-	fallAnalysis->setText(0, "1.跌落安全性分析");
-	fallAnalysis->setData(0, Qt::UserRole, "FallAnalysis");
-	//fallAnalysis->setCheckState(0, Qt::Unchecked);
-	fallAnalysis->setIcon(0, error_icon);
+	QTreeWidgetItem* preForwardDesign = new QTreeWidgetItem();
+	{
+		preForwardDesign->setText(0, "正向设计");
+		preForwardDesign->setData(0, Qt::UserRole, "PreForwardDesign");
+		preForwardDesign->setIcon(0, error_icon);
+	}
+	QTreeWidgetItem* preReverseOptimization = new QTreeWidgetItem();
+	{
+		preReverseOptimization->setText(0, "逆向寻优");
+		preReverseOptimization->setData(0, Qt::UserRole, "PreReverseOptimization");
+		preReverseOptimization->setIcon(0, error_icon);
+	}
+	preheatingProcessCal->addChild(preForwardDesign);
+	preheatingProcessCal->addChild(preReverseOptimization);
 
+	// 注药工艺工程计算
+	QTreeWidgetItem* injectionProcessCal = new QTreeWidgetItem(rootItem);
+	{
+		injectionProcessCal->setText(0, "注药工艺工程计算");
+		injectionProcessCal->setData(0, Qt::UserRole, "InjectionProcessCal");
+		injectionProcessCal->setIcon(0, error_icon);
+		injectionProcessCal->setExpanded(true);
+	}
 
-	QTreeWidgetItem* stressResult = new QTreeWidgetItem();
-	stressResult->setText(0, "应力分析");
-	stressResult->setData(0, Qt::UserRole, "StressResult");
-	stressResult->setIcon(0, error_icon);
+	QTreeWidgetItem* inForwardDesign = new QTreeWidgetItem();
+	{
+		inForwardDesign->setText(0, "正向设计");
+		inForwardDesign->setData(0, Qt::UserRole, "InForwardDesign");
+		inForwardDesign->setIcon(0, error_icon);
+	}
+	QTreeWidgetItem* inReverseOptimization = new QTreeWidgetItem();
+	{
+		inReverseOptimization->setText(0, "逆向寻优");
+		inReverseOptimization->setData(0, Qt::UserRole, "InReverseOptimization");
+		inReverseOptimization->setIcon(0, error_icon);
+	}
+	injectionProcessCal->addChild(inForwardDesign);
+	injectionProcessCal->addChild(inReverseOptimization);
 
-	QTreeWidgetItem* strainResult = new QTreeWidgetItem();
-	strainResult->setText(0, "应变分析");
-	strainResult->setData(0, Qt::UserRole, "StrainResult");
-	strainResult->setIcon(0, error_icon);
-
-	QTreeWidgetItem* temperatureResult = new QTreeWidgetItem();
-	temperatureResult->setText(0, "温度分析");
-	temperatureResult->setData(0, Qt::UserRole, "TemperatureResult");
-	temperatureResult->setIcon(0, error_icon);
-
-	QTreeWidgetItem* overpressureResult = new QTreeWidgetItem();
-	overpressureResult->setText(0, "超压分析");
-	overpressureResult->setData(0, Qt::UserRole, "OverpressureResult");
-	overpressureResult->setIcon(0, error_icon);
-
-	fallAnalysis->addChild(stressResult);
-	fallAnalysis->addChild(strainResult);
-	fallAnalysis->addChild(temperatureResult);
-	fallAnalysis->addChild(overpressureResult);
-
-	QTreeWidgetItem* fastCombustionAnalysis = new QTreeWidgetItem();
-	fastCombustionAnalysis->setText(0, "2.快速烤燃安全性分析");
-	fastCombustionAnalysis->setData(0, Qt::UserRole, "FastCombustionAnalysis");
-	//fastCombustionAnalysis->setCheckState(0, Qt::Unchecked);
-	fastCombustionAnalysis->setIcon(0, error_icon);
-
-	QTreeWidgetItem* fastCombustionTemperatureResult = new QTreeWidgetItem();
-	fastCombustionTemperatureResult->setText(0, "温度分析");
-	fastCombustionTemperatureResult->setData(0, Qt::UserRole, "FastCombustionTemperatureResult");
-	fastCombustionTemperatureResult->setIcon(0, error_icon);
-
-	fastCombustionAnalysis->addChild(fastCombustionTemperatureResult);
-
-
-	QTreeWidgetItem* slowCombustionAnalysis = new QTreeWidgetItem();
-	slowCombustionAnalysis->setText(0, "3.慢速烤燃安全性分析");
-	slowCombustionAnalysis->setData(0, Qt::UserRole, "SlowCombustionAnalysis");
-	//slowCombustionAnalysis->setCheckState(0, Qt::Unchecked);
-	slowCombustionAnalysis->setIcon(0, error_icon);
-
-	QTreeWidgetItem* slowCombustionTemperatureResult = new QTreeWidgetItem();
-	slowCombustionTemperatureResult->setText(0, "温度分析");
-	slowCombustionTemperatureResult->setData(0, Qt::UserRole, "SlowCombustionTemperatureResult");
-	slowCombustionTemperatureResult->setIcon(0, error_icon);
-
-	slowCombustionAnalysis->addChild(slowCombustionTemperatureResult);
-
-	
-	QTreeWidgetItem* shootAnalysis = new QTreeWidgetItem();
-	shootAnalysis->setText(0, "4.枪击安全性分析");
-	shootAnalysis->setData(0, Qt::UserRole, "ShootAnalysis");
-	//shootAnalysis->setCheckState(0, Qt::Unchecked);
-	shootAnalysis->setIcon(0, error_icon);
-
-	QTreeWidgetItem* shootStressResult = new QTreeWidgetItem();
-	shootStressResult->setText(0, "应力分析");
-	shootStressResult->setData(0, Qt::UserRole, "ShootStressResult");
-	shootStressResult->setIcon(0, error_icon);
-
-	QTreeWidgetItem* shootStrainResult = new QTreeWidgetItem();
-	shootStrainResult->setText(0, "应变分析");
-	shootStrainResult->setData(0, Qt::UserRole, "ShootStrainResult");
-	shootStrainResult->setIcon(0, error_icon);
-
-	QTreeWidgetItem* shootTemperatureResult = new QTreeWidgetItem();
-	shootTemperatureResult->setText(0, "温度分析");
-	shootTemperatureResult->setData(0, Qt::UserRole, "ShootTemperatureResult");
-	shootTemperatureResult->setIcon(0, error_icon);
-
-	QTreeWidgetItem* shootOverpressureResult = new QTreeWidgetItem();
-	shootOverpressureResult->setText(0, "超压分析");
-	shootOverpressureResult->setData(0, Qt::UserRole, "ShootOverpressureResult");
-	shootOverpressureResult->setIcon(0, error_icon);
-
-	shootAnalysis->addChild(shootStressResult);
-	shootAnalysis->addChild(shootStrainResult);
-	shootAnalysis->addChild(shootTemperatureResult);
-	shootAnalysis->addChild(shootOverpressureResult);
-
-
-	QTreeWidgetItem* jetImpactAnalysis = new QTreeWidgetItem();
-	jetImpactAnalysis->setText(0, "5.射流冲击安全性分析");
-	jetImpactAnalysis->setData(0, Qt::UserRole, "JetImpactAnalysis");
-	//jetImpactAnalysis->setCheckState(0, Qt::Unchecked);
-	jetImpactAnalysis->setIcon(0, error_icon);
-
-	QTreeWidgetItem* jetImpactStressResult = new QTreeWidgetItem();
-	jetImpactStressResult->setText(0, "应力分析");
-	jetImpactStressResult->setData(0, Qt::UserRole, "JetImpactStressResult");
-	jetImpactStressResult->setIcon(0, error_icon);
-
-	QTreeWidgetItem* jetStrainResult = new QTreeWidgetItem();
-	jetStrainResult->setText(0, "应变分析");
-	jetStrainResult->setData(0, Qt::UserRole, "JetImpactStrainResult");
-	jetStrainResult->setIcon(0, error_icon);
-
-	QTreeWidgetItem* jetImpactTemperatureResult = new QTreeWidgetItem();
-	jetImpactTemperatureResult->setText(0, "温度分析");
-	jetImpactTemperatureResult->setData(0, Qt::UserRole, "JetImpactTemperatureResult");
-	jetImpactTemperatureResult->setIcon(0, error_icon);
-
-	QTreeWidgetItem* jetImpactOverpressureResult = new QTreeWidgetItem();
-	jetImpactOverpressureResult->setText(0, "超压分析");
-	jetImpactOverpressureResult->setData(0, Qt::UserRole, "JetImpactOverpressureResult");
-	jetImpactOverpressureResult->setIcon(0, error_icon);
-
-	jetImpactAnalysis->addChild(jetImpactStressResult);
-	jetImpactAnalysis->addChild(jetStrainResult);
-	jetImpactAnalysis->addChild(jetImpactTemperatureResult);
-	jetImpactAnalysis->addChild(jetImpactOverpressureResult);
-
-
-	QTreeWidgetItem* fragmentationImpactAnalysis = new QTreeWidgetItem();
-	fragmentationImpactAnalysis->setText(0, "6.破片撞击安全性分析");
-	fragmentationImpactAnalysis->setData(0, Qt::UserRole, "FragmentationImpactAnalysis");
-	//fragmentationImpactAnalysis->setCheckState(0, Qt::Unchecked);
-	fragmentationImpactAnalysis->setIcon(0, error_icon);
-
-	QTreeWidgetItem* fragmentationImpactStressResult = new QTreeWidgetItem();
-	fragmentationImpactStressResult->setText(0, "应力分析");
-	fragmentationImpactStressResult->setData(0, Qt::UserRole, "FragmentationImpactStressResult");
-	fragmentationImpactStressResult->setIcon(0, error_icon);
-
-	QTreeWidgetItem* fragmentationStrainResult = new QTreeWidgetItem();
-	fragmentationStrainResult->setText(0, "应变分析");
-	fragmentationStrainResult->setData(0, Qt::UserRole, "FragmentationImpactStrainResult");
-	fragmentationStrainResult->setIcon(0, error_icon);
-
-	QTreeWidgetItem* fragmentationImpactTemperatureResult = new QTreeWidgetItem();
-	fragmentationImpactTemperatureResult->setText(0, "温度分析");
-	fragmentationImpactTemperatureResult->setData(0, Qt::UserRole, "FragmentationImpactTemperatureResult");
-	fragmentationImpactTemperatureResult->setIcon(0, error_icon);
-
-	QTreeWidgetItem* fragmentationImpactOverpressureResult = new QTreeWidgetItem();
-	fragmentationImpactOverpressureResult->setText(0, "超压分析");
-	fragmentationImpactOverpressureResult->setData(0, Qt::UserRole, "FragmentationImpactOverpressureResult");
-	fragmentationImpactOverpressureResult->setIcon(0, error_icon);
-
-	fragmentationImpactAnalysis->addChild(fragmentationImpactStressResult);
-	fragmentationImpactAnalysis->addChild(fragmentationStrainResult);
-	fragmentationImpactAnalysis->addChild(fragmentationImpactTemperatureResult);
-	fragmentationImpactAnalysis->addChild(fragmentationImpactOverpressureResult);
-
-
-	QTreeWidgetItem* explosiveBlastAnalysis = new QTreeWidgetItem();
-	explosiveBlastAnalysis->setText(0, "7.爆炸冲击波安全性分析");
-	explosiveBlastAnalysis->setData(0, Qt::UserRole, "ExplosiveBlastAnalysis");
-	//explosiveBlastAnalysis->setCheckState(0, Qt::Unchecked);
-	explosiveBlastAnalysis->setIcon(0, error_icon);
-
-	QTreeWidgetItem* explosiveBlastStressResult = new QTreeWidgetItem();
-	explosiveBlastStressResult->setText(0, "应力分析");
-	explosiveBlastStressResult->setData(0, Qt::UserRole, "ExplosiveBlastStressResult");
-	explosiveBlastStressResult->setIcon(0, error_icon);
-
-	QTreeWidgetItem* explosiveBlastStrainResult = new QTreeWidgetItem();
-	explosiveBlastStrainResult->setText(0, "应变分析");
-	explosiveBlastStrainResult->setData(0, Qt::UserRole, "ExplosiveBlastStrainResult");
-	explosiveBlastStrainResult->setIcon(0, error_icon);
-
-	QTreeWidgetItem* explosiveBlastTemperatureResult = new QTreeWidgetItem();
-	explosiveBlastTemperatureResult->setText(0, "温度分析");
-	explosiveBlastTemperatureResult->setData(0, Qt::UserRole, "ExplosiveBlastTemperatureResult");
-	explosiveBlastTemperatureResult->setIcon(0, error_icon);
-
-	QTreeWidgetItem* explosiveBlastOverpressureResult = new QTreeWidgetItem();
-	explosiveBlastOverpressureResult->setText(0, "超压分析");
-	explosiveBlastOverpressureResult->setData(0, Qt::UserRole, "ExplosiveBlastOverpressureResult");
-	explosiveBlastOverpressureResult->setIcon(0, error_icon);
-
-	explosiveBlastAnalysis->addChild(explosiveBlastStressResult);
-	explosiveBlastAnalysis->addChild(explosiveBlastStrainResult);
-	explosiveBlastAnalysis->addChild(explosiveBlastTemperatureResult);
-	explosiveBlastAnalysis->addChild(explosiveBlastOverpressureResult);
-
-
-	QTreeWidgetItem* sacrificeExplosionAnalysis = new QTreeWidgetItem();
-	sacrificeExplosionAnalysis->setText(0, "8.殉爆安全性分析");
-	sacrificeExplosionAnalysis->setData(0, Qt::UserRole, "SacrificeExplosionAnalysis");
-	//sacrificeExplosionAnalysis->setCheckState(0, Qt::Unchecked);
-	sacrificeExplosionAnalysis->setIcon(0, error_icon);
-	
-	QTreeWidgetItem* sacrificeExplosionStressResult = new QTreeWidgetItem();
-	sacrificeExplosionStressResult->setText(0, "应力分析");
-	sacrificeExplosionStressResult->setData(0, Qt::UserRole, "SacrificeExplosioStressResult");
-	sacrificeExplosionStressResult->setIcon(0, error_icon);
-
-	QTreeWidgetItem* sacrificeExplosionStrainResult = new QTreeWidgetItem();
-	sacrificeExplosionStrainResult->setText(0, "应变分析");
-	sacrificeExplosionStrainResult->setData(0, Qt::UserRole, "SacrificeExplosioStrainResult");
-	sacrificeExplosionStrainResult->setIcon(0, error_icon);
-
-	QTreeWidgetItem* sacrificeExplosionTemperatureResult = new QTreeWidgetItem();
-	sacrificeExplosionTemperatureResult->setText(0, "温度分析");
-	sacrificeExplosionTemperatureResult->setData(0, Qt::UserRole, "SacrificeExplosioTemperatureResult");
-	sacrificeExplosionTemperatureResult->setIcon(0, error_icon);
-
-	QTreeWidgetItem* sacrificeExplosionOverpressureResult = new QTreeWidgetItem();
-	sacrificeExplosionOverpressureResult->setText(0, "超压分析");
-	sacrificeExplosionOverpressureResult->setData(0, Qt::UserRole, "SacrificeExplosioOverpressureResult");
-	sacrificeExplosionOverpressureResult->setIcon(0, error_icon);
-
-	sacrificeExplosionAnalysis->addChild(sacrificeExplosionStressResult);
-	sacrificeExplosionAnalysis->addChild(sacrificeExplosionStrainResult);
-	sacrificeExplosionAnalysis->addChild(sacrificeExplosionTemperatureResult);
-	sacrificeExplosionAnalysis->addChild(sacrificeExplosionOverpressureResult);
-
-
-	analysisNode->addChild(fallAnalysis);
-	analysisNode->addChild(fastCombustionAnalysis);
-	analysisNode->addChild(slowCombustionAnalysis);
-	
-	analysisNode->addChild(shootAnalysis);
-	analysisNode->addChild(jetImpactAnalysis);
-	analysisNode->addChild(fragmentationImpactAnalysis);
-	analysisNode->addChild(explosiveBlastAnalysis);
-	analysisNode->addChild(sacrificeExplosionAnalysis);
-	
-	
-	//// 安全特性分析
-	//QTreeWidgetItem* paramAnalyNode = new QTreeWidgetItem(rootItem);
-	//paramAnalyNode->setText(0, "安全特性分析");
-	//paramAnalyNode->setData(0, Qt::UserRole, "Results");
-	//paramAnalyNode->setIcon(0, error_icon);
-
-	//QTreeWidgetItem* paramAnalyResult = new QTreeWidgetItem();
-	//paramAnalyResult->setText(0, "分析报告");
-	//paramAnalyResult->setData(0, Qt::UserRole, "paramAnalyResult");
-	//paramAnalyResult->setIcon(0, error_icon);
-
-	//paramAnalyNode->addChild(paramAnalyResult);
-
-	QVBoxLayout*layout = new QVBoxLayout();
-	layout->addWidget(treeWidget);
+	QVBoxLayout* layout = new QVBoxLayout();
+	layout->addWidget(m_TreeWidget);
 	layout->setContentsMargins(0, 0, 0, 0);
 	this->setLayout(layout);
-
-
-	// 连接信号槽
-	connect(treeWidget, &QTreeWidget::itemClicked, this, &GFTreeModelWidget::onTreeItemClicked);
 }
 
-GFTreeModelWidget::~GFTreeModelWidget()
+void GFTreeModelWidget::bindConnect()
 {
+	connect(m_TreeWidget, &QTreeWidget::itemClicked, this, &GFTreeModelWidget::onTreeItemClicked);
 }
 
 void GFTreeModelWidget::onTreeItemClicked(QTreeWidgetItem* item, int column)
@@ -481,7 +262,8 @@ void GFTreeModelWidget::onTreeItemClicked(QTreeWidgetItem* item, int column)
 	if (itemData.contains("StressResult")|| itemData.contains("StrainResult") || itemData.contains("TemperatureResult") || itemData.contains("OverpressureResult") )
 	{
 		QWidget* parent = parentWidget();
-		while (parent) {
+		while (parent) 
+		{
 			GFImportModelWidget* gfParent = dynamic_cast<GFImportModelWidget*>(parent);
 			if (gfParent)
 			{
@@ -600,7 +382,7 @@ void GFTreeModelWidget::onTreeItemClicked(QTreeWidgetItem* item, int column)
 				}
 				
 				QDir privateDir(m_privateDirPath);
-				wordExporter->captureWidgetToFile(gfParent->GetOccView(), m_privateDirPath);
+				m_WordExporter->captureWidgetToFile(gfParent->GetOccView(), m_privateDirPath);
 				break;
 			}
 			else
@@ -627,11 +409,11 @@ void GFTreeModelWidget::updataIcon()
 	auto insulatingheatPropertyInfo = ins->GetInsulatingheatPropertyInfo();
 	auto outheatPropertyInfo = ins->GetOutheatPropertyInfo();
 
-	int size = treeWidget->topLevelItemCount();
+	int size = m_TreeWidget->topLevelItemCount();
 	QTreeWidgetItem *child;
 	for (int i = 0; i < size; i++)
 	{
-		child = treeWidget->topLevelItem(i);
+		child = m_TreeWidget->topLevelItem(i);
 		int childCount = child->childCount();
 		for (int j = 0; j < childCount; ++j)
 		{
@@ -804,7 +586,7 @@ void GFTreeModelWidget::updataIcon()
 
 void GFTreeModelWidget::contextMenuEvent(QContextMenuEvent *event)
 {
-	QTreeWidgetItem *item = treeWidget->itemAt(event->pos());
+	QTreeWidgetItem *item = m_TreeWidget->itemAt(event->pos());
 	if (!item) {
 		return;
 	}
@@ -812,7 +594,7 @@ void GFTreeModelWidget::contextMenuEvent(QContextMenuEvent *event)
 	QString text = item->text(0);
 	if (text == "安全特性参数分析")
 	{
-		contextMenu = new QMenu(this);
+		m_ContextMenu = new QMenu(this);
 		QAction* calAction = new QAction("计算", this);
 		QAction* exportAction = new QAction("导出报告", this);
 
@@ -1124,7 +906,6 @@ void GFTreeModelWidget::contextMenuEvent(QContextMenuEvent *event)
 										}
 										else if (processedName == "射流冲击安全性分析")
 										{
-
 											std::vector<double> resultValue;
 											resultValue.reserve(8);
 											bool success = APICalculateHepler::CalculateJetImpactingAnalysisResult(occView, resultValue);
@@ -1460,13 +1241,13 @@ void GFTreeModelWidget::contextMenuEvent(QContextMenuEvent *event)
 				exportWord(directory, item); // 直接在Lambda中传递参数
 			}
 		});
-		contextMenu->addAction(calAction); // 将动作添加到菜单中
-		contextMenu->addAction(exportAction);
-		contextMenu->exec(event->globalPos()); // 在鼠标位置显示菜单
+		m_ContextMenu->addAction(calAction); // 将动作添加到菜单中
+		m_ContextMenu->addAction(exportAction);
+		m_ContextMenu->exec(event->globalPos()); // 在鼠标位置显示菜单
 	}
 	else if (text == "固体发动机三维模型导入")
 	{
-		contextMenu = new QMenu(this); // 创建菜单对象
+		m_ContextMenu = new QMenu(this); // 创建菜单对象
 		QAction *customAction = new QAction("导入", this); // 创建动作对象并添加到菜单中
 		connect(customAction, &QAction::triggered, this, [item, this]() {
 			QWidget* parent = parentWidget();
@@ -1562,7 +1343,7 @@ void GFTreeModelWidget::contextMenuEvent(QContextMenuEvent *event)
 							// 截图计算模型
 							QString m_privateDirPath = "src/template/main.png";
 							QDir privateDir(m_privateDirPath);
-							wordExporter->captureWidgetToFile(gfParent->GetOccView(), m_privateDirPath);
+							m_WordExporter->captureWidgetToFile(gfParent->GetOccView(), m_privateDirPath);
 						});
 
 					// 启动线程
@@ -1575,12 +1356,12 @@ void GFTreeModelWidget::contextMenuEvent(QContextMenuEvent *event)
 				}
 			}
 		});
-		contextMenu->addAction(customAction); // 将动作添加到菜单中
-		contextMenu->exec(event->globalPos()); // 在鼠标位置显示菜单
+		m_ContextMenu->addAction(customAction); // 将动作添加到菜单中
+		m_ContextMenu->exec(event->globalPos()); // 在鼠标位置显示菜单
 	}
 	else if (text == "网格")
 	{
-		contextMenu = new QMenu(this);
+		m_ContextMenu = new QMenu(this);
 		QAction *meshAction = new QAction("网格划分", this);
 		connect(meshAction, &QAction::triggered, this, [item, this]() {
 			QWidget* parent = parentWidget();
@@ -1700,8 +1481,8 @@ void GFTreeModelWidget::contextMenuEvent(QContextMenuEvent *event)
 				}
 			}
 		});
-		contextMenu->addAction(meshAction);
-		contextMenu->exec(event->globalPos());
+		m_ContextMenu->addAction(meshAction);
+		m_ContextMenu->exec(event->globalPos());
 	}
 }
 
