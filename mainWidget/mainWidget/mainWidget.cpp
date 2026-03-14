@@ -55,7 +55,7 @@ mainWidget::mainWidget(QWidget *parent)
 		"}");
 
     ui->setupUi(this);
-	setWindowTitle("预热与注药工艺软件");
+	setWindowTitle("注装工艺参数设计软件V1.0");
 	//showMaximized();
 	//setMinimumSize(1050, 800);
 
@@ -348,7 +348,7 @@ mainWidget::mainWidget(QWidget *parent)
 
 
 	QObject::connect(m_HelpAct, &QAction::triggered, [=]() {
-		QString aboutText = "**[软件名称] - 预热与注药工艺软件**\n\n"
+		QString aboutText = "**[软件名称] - 注装工艺参数设计软件V1.0**\n\n"
 			"**版本信息**:\n"
 			"- **软件版本**: [v1.0.0]\n"
 			"**版权信息**:\n"
@@ -361,7 +361,7 @@ mainWidget::mainWidget(QWidget *parent)
 			"如果您对本软件有任何问题、建议或反馈，请随时联系我们:\n"
 			"- **电子邮件**: [联系邮箱]\n"
 			"- **网站**: [官方网站]";
-		QMessageBox::about(nullptr, "预热与注药工艺软件", aboutText);
+		QMessageBox::about(nullptr, "注装工艺参数设计软件V1.0", aboutText);
 	});
 	
 

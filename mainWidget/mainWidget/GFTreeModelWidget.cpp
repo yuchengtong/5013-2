@@ -162,30 +162,7 @@ void GFTreeModelWidget::init()
 	}
 	phyProperty->addChild(steel);
 	phyProperty->addChild(propellant);
-	phyProperty->addChild(gelatin);
-
-	QTreeWidgetItem* computationalModel = new QTreeWidgetItem();
-	{
-		computationalModel->setText(0, "计算模型数据库");
-		computationalModel->setData(0, Qt::UserRole, "ComputationalModel");
-		computationalModel->setIcon(0, error_icon);
-	}
-	dataBase->addChild(computationalModel);
-
-	QTreeWidgetItem* preheatingProcess = new QTreeWidgetItem();
-	{
-		preheatingProcess->setText(0, "预热工艺模型");
-		preheatingProcess->setData(0, Qt::UserRole, "PreheatingProcess");
-		preheatingProcess->setIcon(0, checked_icon);
-	}
-	QTreeWidgetItem* InjectionProcess = new QTreeWidgetItem();
-	{
-		InjectionProcess->setText(0, "注药工艺模型");
-		InjectionProcess->setData(0, Qt::UserRole, "InjectionProcess");
-		InjectionProcess->setIcon(0, checked_icon);
-	}
-	computationalModel->addChild(preheatingProcess);
-	computationalModel->addChild(InjectionProcess);
+	phyProperty->addChild(gelatin);	
 
 	//网格节点
 	QTreeWidgetItem* meshItem = new QTreeWidgetItem(rootItem);
