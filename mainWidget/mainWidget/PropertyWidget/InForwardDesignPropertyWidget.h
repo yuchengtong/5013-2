@@ -16,4 +16,14 @@ private slots:
 
 private:
 	QTableWidget* m_tableWidget = nullptr;
+
+
+	QString m_insulationTemperatureValue = "50"; // 弹体保温温度
+	QString m_pouringTemperatureValue = "102"; // 药液浇注温度
+	QString m_pouringSpeedValue = "15"; // 药液浇注速度
+	QString m_vacuumDegreeValue = "0.1"; // 真空度
+	QString m_relativeDensityValue = ""; // 相对密度
+	QString m_injectionTimeValue = ""; // 弹体注药时间
+
+
 };

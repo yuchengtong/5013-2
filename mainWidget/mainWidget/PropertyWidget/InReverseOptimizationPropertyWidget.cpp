@@ -31,7 +31,7 @@ void InReverseOptimizationPropertyWidget::initWidget()
 	m_tableWidget = new QTableWidget(this);
 
 	m_tableWidget->setRowCount(10);
-	m_tableWidget->setColumnCount(4);
+	m_tableWidget->setColumnCount(5);
 	// 隐藏表头（如果不需要显示表头文字，可根据需求决定是否隐藏）
 	m_tableWidget->horizontalHeader()->setVisible(false);
 	m_tableWidget->verticalHeader()->setVisible(false);
@@ -66,15 +66,136 @@ void InReverseOptimizationPropertyWidget::initWidget()
 		labelItem->setFlags(labelItem->flags() & ~Qt::ItemIsEditable); // 不可编辑
 		m_tableWidget->setItem(row, 1, labelItem);
 
-		if (row != 0)
-		{
-			QTableWidgetItem* valueItem = new QTableWidgetItem("");
-			valueItem->setTextAlignment(Qt::AlignCenter); // 文本居中
-			valueItem->setFlags(valueItem->flags() & ~Qt::ItemIsEditable); // 不可编辑
-			m_tableWidget->setItem(row, 2, valueItem);
-		}
+		
 
 	}
+
+	QTableWidgetItem* insulationTemperatureValueItem = new QTableWidgetItem(m_insulationTemperatureValue);
+	insulationTemperatureValueItem->setTextAlignment(Qt::AlignCenter); // 文本居中
+
+	QTableWidgetItem* pouringTemperatureValueItem = new QTableWidgetItem(m_pouringTemperatureValue);
+	pouringTemperatureValueItem->setTextAlignment(Qt::AlignCenter); // 文本居中
+
+	QTableWidgetItem* pouringSpeedValueItem = new QTableWidgetItem(m_pouringSpeedValue);
+	pouringSpeedValueItem->setTextAlignment(Qt::AlignCenter); // 文本居中
+
+	QTableWidgetItem* vacuumDegreeValueItem = new QTableWidgetItem(m_vacuumDegreeValue);
+	vacuumDegreeValueItem->setTextAlignment(Qt::AlignCenter); // 文本居中
+
+	QTableWidgetItem* relativeDensityValueItem = new QTableWidgetItem(m_relativeDensityValue);
+	relativeDensityValueItem->setTextAlignment(Qt::AlignCenter); // 文本居中
+
+	QTableWidgetItem* injectionTimeValueItem = new QTableWidgetItem(m_injectionTimeValue);
+	injectionTimeValueItem->setTextAlignment(Qt::AlignCenter); // 文本居中
+
+
+	m_tableWidget->setItem(2, 2, insulationTemperatureValueItem);
+	m_tableWidget->setItem(3, 2, pouringTemperatureValueItem);
+	m_tableWidget->setItem(4, 2, pouringSpeedValueItem);
+	m_tableWidget->setItem(5, 2, vacuumDegreeValueItem);
+	m_tableWidget->setItem(7, 2, relativeDensityValueItem);
+	m_tableWidget->setItem(8, 2, injectionTimeValueItem);
+
+
+	// 显示按钮
+	QWidget* viewWidget = new QWidget();
+	QPushButton* viewButton = new QPushButton("显示");
+	viewButton->setFixedSize(100, 50);
+	viewButton->setMinimumHeight(30);
+	viewButton->setFlat(false);
+	viewButton->setStyleSheet("QPushButton {"
+		"background-color:  rgba(0, 0, 0, 0);"
+		"border: 2px solid #C1B1B1; "
+		"border-radius: 10px; "
+		"color: black; "
+		"font-weight: bold; "
+		"padding: 5px;"
+		"outline: none;"
+		"}"
+		"QPushButton:hover {"
+		"background-color: rgba(230, 230, 230, 100);"
+		"}");
+	QVBoxLayout* viewLayout = new QVBoxLayout(viewWidget);
+	viewLayout->addWidget(viewButton);
+	viewLayout->setAlignment(Qt::AlignCenter); // 按钮居中显示
+	viewLayout->setMargin(0);
+	viewWidget->setLayout(viewLayout);
+	m_tableWidget->setCellWidget(9, 2, viewWidget);
+
+
+
+	m_inRadioButtonGroup = new QButtonGroup(this);
+	m_inRadioButtonGroup->setExclusive(true); // 显式设置互斥（默认已开启）
+
+	QRadioButton* oneRadio = new QRadioButton("");
+	m_inRadioButtonGroup->addButton(oneRadio, 0);
+	QWidget* oneCellWidget = new QWidget();
+	QHBoxLayout* oneLayout = new QHBoxLayout(oneCellWidget);
+	oneLayout->addWidget(oneRadio);
+	oneLayout->setAlignment(Qt::AlignCenter); // 居中对齐
+	oneLayout->setContentsMargins(0, 0, 0, 0); // 去掉布局边距
+	
+	QRadioButton* twoRadio = new QRadioButton("");
+	m_inRadioButtonGroup->addButton(twoRadio, 1);
+	QWidget* twoCellWidget = new QWidget();
+	QHBoxLayout* twoLayout = new QHBoxLayout(twoCellWidget);
+	twoLayout->addWidget(twoRadio);
+	twoLayout->setAlignment(Qt::AlignCenter); // 居中对齐
+	twoLayout->setContentsMargins(0, 0, 0, 0); // 去掉布局边距
+
+	QRadioButton* threeRadio = new QRadioButton("");
+	m_inRadioButtonGroup->addButton(threeRadio, 2);
+	QWidget* threeCellWidget = new QWidget();
+	QHBoxLayout* threeLayout = new QHBoxLayout(threeCellWidget);
+	threeLayout->addWidget(threeRadio);
+	threeLayout->setAlignment(Qt::AlignCenter); // 居中对齐
+	threeLayout->setContentsMargins(0, 0, 0, 0); // 去掉布局边距
+
+	QRadioButton* fourRadio = new QRadioButton("");
+	m_inRadioButtonGroup->addButton(fourRadio, 3);
+	QWidget* fourCellWidget = new QWidget();
+	QHBoxLayout* fourLayout = new QHBoxLayout(fourCellWidget);
+	fourLayout->addWidget(fourRadio);
+	fourLayout->setAlignment(Qt::AlignCenter); // 居中对齐
+	fourLayout->setContentsMargins(0, 0, 0, 0); // 去掉布局边距
+
+	m_tableWidget->setCellWidget(2, 4, oneCellWidget);
+	m_tableWidget->setCellWidget(3, 4, twoCellWidget);
+	m_tableWidget->setCellWidget(4, 4, threeCellWidget);
+	m_tableWidget->setCellWidget(5, 4, fourCellWidget);
+
+
+
+	m_outRadioButtonGroup = new QButtonGroup(this);
+	m_inRadioButtonGroup->setExclusive(true); // 显式设置互斥（默认已开启）
+
+	QRadioButton* fiveRadio = new QRadioButton("");
+	m_outRadioButtonGroup->addButton(fiveRadio, 0);
+	QWidget* fiveCellWidget = new QWidget();
+	QHBoxLayout* fiveLayout = new QHBoxLayout(fiveCellWidget);
+	fiveLayout->addWidget(fiveRadio);
+	fiveLayout->setAlignment(Qt::AlignCenter); // 居中对齐
+	fiveLayout->setContentsMargins(0, 0, 0, 0); // 去掉布局边距
+
+	QRadioButton* sixRadio = new QRadioButton("");
+	m_outRadioButtonGroup->addButton(sixRadio, 1);
+	QWidget* sixCellWidget = new QWidget();
+	QHBoxLayout* sixLayout = new QHBoxLayout(sixCellWidget);
+	sixLayout->addWidget(sixRadio);
+	sixLayout->setAlignment(Qt::AlignCenter); // 居中对齐
+	sixLayout->setContentsMargins(0, 0, 0, 0); // 去掉布局边距
+
+	m_tableWidget->setCellWidget(7, 4, fiveCellWidget);
+	m_tableWidget->setCellWidget(8, 4, sixCellWidget);
+	
+
+	// 绑定单选按钮选中信号
+	connect(m_inRadioButtonGroup, SIGNAL(buttonClicked(int)),
+		this, SLOT(onRadioSelected(int)));
+	connect(m_outRadioButtonGroup, SIGNAL(buttonClicked(int)),
+		this, SLOT(onRadioSelected(int)));
+
+
 
 	// 设置列宽度
 	QTableWidgetItem* colimnItem = m_tableWidget->item(9, 1);
@@ -306,4 +427,21 @@ void InReverseOptimizationPropertyWidget::showTableDialog() {
 	dialog->setLayout(layout);
 	dialog->setAttribute(Qt::WA_DeleteOnClose); // 关闭时自动删除
 	dialog->exec();
+}
+
+// 单选按钮选中事件处理
+void InReverseOptimizationPropertyWidget::inOnRadioSelected(int btnId)
+{
+	QRadioButton* selectedBtn = qobject_cast<QRadioButton*>(m_inRadioButtonGroup->button(btnId));
+	if (selectedBtn) {
+		// btnId 行号
+	}
+}
+
+void InReverseOptimizationPropertyWidget::outOnRadioSelected(int btnId)
+{
+	QRadioButton* selectedBtn = qobject_cast<QRadioButton*>(m_outRadioButtonGroup->button(btnId));
+	if (selectedBtn) {
+		// btnId 行号
+	}
 }

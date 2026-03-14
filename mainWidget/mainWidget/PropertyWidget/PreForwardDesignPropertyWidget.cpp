@@ -67,15 +67,75 @@ void PreForwardDesignPropertyWidget::initWidget()
 		labelItem->setFlags(labelItem->flags() & ~Qt::ItemIsEditable); // 不可编辑
 		m_tableWidget->setItem(row, 1, labelItem);
 
-		if (row != 0)
-		{
-			QTableWidgetItem* valueItem = new QTableWidgetItem("");
-			valueItem->setTextAlignment(Qt::AlignCenter); // 文本居中
-			valueItem->setFlags(valueItem->flags() & ~Qt::ItemIsEditable); // 不可编辑
-			m_tableWidget->setItem(row, 2, valueItem);
-		}
+		
 
 	}
+
+
+	QTableWidgetItem* targetTemperatureValueItem = new QTableWidgetItem(m_targetTemperatureValue);
+	targetTemperatureValueItem->setTextAlignment(Qt::AlignCenter); // 文本居中
+
+	QTableWidgetItem* environmentalTemperatureValueItem = new QTableWidgetItem(m_environmentalTemperatureValue);
+	environmentalTemperatureValueItem->setTextAlignment(Qt::AlignCenter); // 文本居中
+	environmentalTemperatureValueItem->setFlags(environmentalTemperatureValueItem->flags() & ~Qt::ItemIsEditable); // 不可编辑
+
+	QTableWidgetItem* initialTemperatureValueItem = new QTableWidgetItem(m_initialTemperatureValue);
+	initialTemperatureValueItem->setTextAlignment(Qt::AlignCenter); // 文本居中
+	initialTemperatureValueItem->setFlags(initialTemperatureValueItem->flags() & ~Qt::ItemIsEditable); // 不可编辑
+
+	QTableWidgetItem* heatTransferCoefficientValueItem = new QTableWidgetItem(m_heatTransferCoefficientValue);
+	heatTransferCoefficientValueItem->setTextAlignment(Qt::AlignCenter); // 文本居中
+
+	QTableWidgetItem* absorptionCoefficientValueItem = new QTableWidgetItem(m_absorptionCoefficientValue);
+	absorptionCoefficientValueItem->setTextAlignment(Qt::AlignCenter); // 文本居中
+
+	QTableWidgetItem* environmentalEmissivityValueItem = new QTableWidgetItem(m_environmentalEmissivityValue);
+	environmentalEmissivityValueItem->setTextAlignment(Qt::AlignCenter); // 文本居中
+
+	QTableWidgetItem* preheatingTimeValueItem = new QTableWidgetItem(m_preheatingTimeValue);
+	preheatingTimeValueItem->setTextAlignment(Qt::AlignCenter); // 文本居中
+
+	QTableWidgetItem* curveItem = new QTableWidgetItem(m_preheatingTimeValue);
+	preheatingTimeValueItem->setTextAlignment(Qt::AlignCenter); // 文本居中
+
+
+
+	m_tableWidget->setItem(2, 2, targetTemperatureValueItem);
+	m_tableWidget->setItem(3, 2, environmentalTemperatureValueItem);
+	m_tableWidget->setItem(4, 2, initialTemperatureValueItem);
+	m_tableWidget->setItem(5, 2, heatTransferCoefficientValueItem);
+	m_tableWidget->setItem(6, 2, absorptionCoefficientValueItem);
+	m_tableWidget->setItem(7, 2, environmentalEmissivityValueItem);
+
+
+		// 显示按钮
+	QWidget* viewWidget = new QWidget();
+	QPushButton* viewButton = new QPushButton("显示");
+	viewButton->setFixedSize(100, 50);
+	viewButton->setMinimumHeight(30);
+	viewButton->setFlat(false);
+	viewButton->setStyleSheet("QPushButton {"
+		"background-color:  rgba(0, 0, 0, 0);"
+		"border: 2px solid #C1B1B1; "
+		"border-radius: 10px; "
+		"color: black; "
+		"font-weight: bold; "
+		"padding: 5px;"
+		"outline: none;"
+		"}"
+		"QPushButton:hover {"
+		"background-color: rgba(230, 230, 230, 100);"
+		"}");
+	QVBoxLayout* viewLayout = new QVBoxLayout(viewWidget);
+	viewLayout->addWidget(viewButton);
+	viewLayout->setAlignment(Qt::AlignCenter); // 按钮居中显示
+	viewLayout->setMargin(0);
+	viewWidget->setLayout(viewLayout);
+	m_tableWidget->setCellWidget(10, 2, viewWidget);
+
+
+
+
 
 	// 设置列宽度
 	QTableWidgetItem* colimnItem = m_tableWidget->item(10, 1);
@@ -168,6 +228,26 @@ void PreForwardDesignPropertyWidget::initWidget()
 			unitItem->setBackground(QBrush(QColor(230, 230, 230)));
 		}
 	}
+
+	connect(m_tableWidget, &QTableWidget::itemChanged, this, [this, targetTemperatureValueItem](QTableWidgetItem* item) {
+
+		if (item == targetTemperatureValueItem)
+		{
+			auto text = item->text();
+			auto value = text.toDouble();
+			if (value >=50 && value <= 85)
+			{
+				m_targetTemperatureValue = text;
+			}
+			else
+			{
+				m_tableWidget->blockSignals(true);
+				item->setText(m_targetTemperatureValue);
+				m_tableWidget->blockSignals(false);
+			}
+
+		}
+	});
 
 }
 
@@ -308,3 +388,6 @@ void PreForwardDesignPropertyWidget::showTableDialog() {
 	dialog->setAttribute(Qt::WA_DeleteOnClose); // 关闭时自动删除
 	dialog->exec();
 }
+
+
+

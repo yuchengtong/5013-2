@@ -68,15 +68,67 @@ void InForwardDesignPropertyWidget::initWidget()
 		labelItem->setFlags(labelItem->flags() & ~Qt::ItemIsEditable); // 不可编辑
 		m_tableWidget->setItem(row, 1, labelItem);
 
-		if (row != 0)
-		{
-			QTableWidgetItem* valueItem = new QTableWidgetItem("");
-			valueItem->setTextAlignment(Qt::AlignCenter); // 文本居中
-			valueItem->setFlags(valueItem->flags() & ~Qt::ItemIsEditable); // 不可编辑
-			m_tableWidget->setItem(row, 2, valueItem);
-		}
-
+		
 	}
+
+
+	QTableWidgetItem* insulationTemperatureValueItem = new QTableWidgetItem(m_insulationTemperatureValue);
+	insulationTemperatureValueItem->setTextAlignment(Qt::AlignCenter); // 文本居中
+
+	QTableWidgetItem* pouringTemperatureValueItem = new QTableWidgetItem(m_pouringTemperatureValue);
+	pouringTemperatureValueItem->setTextAlignment(Qt::AlignCenter); // 文本居中
+	pouringTemperatureValueItem->setFlags(pouringTemperatureValueItem->flags() & ~Qt::ItemIsEditable); // 不可编辑
+
+	QTableWidgetItem* pouringSpeedValueItem = new QTableWidgetItem(m_pouringSpeedValue);
+	pouringSpeedValueItem->setTextAlignment(Qt::AlignCenter); // 文本居中
+
+	QTableWidgetItem* vacuumDegreeValueItem = new QTableWidgetItem(m_vacuumDegreeValue);
+	vacuumDegreeValueItem->setTextAlignment(Qt::AlignCenter); // 文本居中
+
+	QTableWidgetItem* relativeDensityValueItem = new QTableWidgetItem(m_relativeDensityValue);
+	relativeDensityValueItem->setTextAlignment(Qt::AlignCenter); // 文本居中
+
+	QTableWidgetItem* injectionTimeValueItem = new QTableWidgetItem(m_injectionTimeValue);
+	injectionTimeValueItem->setTextAlignment(Qt::AlignCenter); // 文本居中
+
+
+
+
+
+	m_tableWidget->setItem(2, 2, insulationTemperatureValueItem);
+	m_tableWidget->setItem(3, 2, pouringTemperatureValueItem);
+	m_tableWidget->setItem(4, 2, pouringSpeedValueItem);
+	m_tableWidget->setItem(5, 2, vacuumDegreeValueItem);
+	m_tableWidget->setItem(7, 2, relativeDensityValueItem);
+	m_tableWidget->setItem(8, 2, injectionTimeValueItem);
+
+
+	// 显示按钮
+	QWidget* viewWidget = new QWidget();
+	QPushButton* viewButton = new QPushButton("显示");
+	viewButton->setFixedSize(100, 50);
+	viewButton->setMinimumHeight(30);
+	viewButton->setFlat(false);
+	viewButton->setStyleSheet("QPushButton {"
+		"background-color:  rgba(0, 0, 0, 0);"
+		"border: 2px solid #C1B1B1; "
+		"border-radius: 10px; "
+		"color: black; "
+		"font-weight: bold; "
+		"padding: 5px;"
+		"outline: none;"
+		"}"
+		"QPushButton:hover {"
+		"background-color: rgba(230, 230, 230, 100);"
+		"}");
+	QVBoxLayout* viewLayout = new QVBoxLayout(viewWidget);
+	viewLayout->addWidget(viewButton);
+	viewLayout->setAlignment(Qt::AlignCenter); // 按钮居中显示
+	viewLayout->setMargin(0);
+	viewWidget->setLayout(viewLayout);
+	m_tableWidget->setCellWidget(9, 2, viewWidget);
+
+
 
 	// 设置列宽度
 	QTableWidgetItem* colimnItem = m_tableWidget->item(9, 1);
@@ -169,6 +221,77 @@ void InForwardDesignPropertyWidget::initWidget()
 			unitItem->setBackground(QBrush(QColor(230, 230, 230)));
 		}
 	}
+
+	m_tableWidget->setItem(2, 2, injectionTimeValueItem);
+	m_tableWidget->setItem(3, 2, pouringTemperatureValueItem);
+	m_tableWidget->setItem(4, 2, pouringSpeedValueItem);
+	m_tableWidget->setItem(5, 2, vacuumDegreeValueItem);
+	connect(m_tableWidget, &QTableWidget::itemChanged, this, [this, insulationTemperatureValueItem, pouringTemperatureValueItem, pouringSpeedValueItem, vacuumDegreeValueItem](QTableWidgetItem* item) {
+
+		if (item == insulationTemperatureValueItem)
+		{
+			auto text = item->text();
+			auto value = text.toDouble();
+			if (value >= 50 && value <= 70)
+			{
+				m_injectionTimeValue = text;
+			}
+			else
+			{
+				m_tableWidget->blockSignals(true);
+				item->setText(m_injectionTimeValue);
+				m_tableWidget->blockSignals(false);
+			}
+		}
+
+		if (item == pouringTemperatureValueItem)
+		{
+			auto text = item->text();
+			auto value = text.toDouble();
+			if (value >= 50 && value <= 85)
+			{
+				m_pouringTemperatureValue = text;
+			}
+			else
+			{
+				m_tableWidget->blockSignals(true);
+				item->setText(m_pouringTemperatureValue);
+				m_tableWidget->blockSignals(false);
+			}
+		}
+
+		if (item == pouringSpeedValueItem)
+		{
+			auto text = item->text();
+			auto value = text.toDouble();
+			if (value >= 0 && value <= 30)
+			{
+				m_pouringSpeedValue = text;
+			}
+			else
+			{
+				m_tableWidget->blockSignals(true);
+				item->setText(m_pouringSpeedValue);
+				m_tableWidget->blockSignals(false);
+			}
+		}
+
+		if (item == vacuumDegreeValueItem)
+		{
+			auto text = item->text();
+			auto value = text.toDouble();
+			if (value >= 0.08 && value <= 0.1)
+			{
+				m_vacuumDegreeValue = text;
+			}
+			else
+			{
+				m_tableWidget->blockSignals(true);
+				item->setText(m_vacuumDegreeValue);
+				m_tableWidget->blockSignals(false);
+			}
+		}
+	});
 
 }
 
