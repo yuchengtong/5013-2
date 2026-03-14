@@ -75,11 +75,9 @@ void PreReverseOptimizationPropertyWidget::initWidget()
 
 	QTableWidgetItem* environmentalTemperatureValueItem = new QTableWidgetItem(m_environmentalTemperatureValue);
 	environmentalTemperatureValueItem->setTextAlignment(Qt::AlignCenter); // 文本居中
-	environmentalTemperatureValueItem->setFlags(environmentalTemperatureValueItem->flags() & ~Qt::ItemIsEditable); // 不可编辑
 
 	QTableWidgetItem* initialTemperatureValueItem = new QTableWidgetItem(m_initialTemperatureValue);
 	initialTemperatureValueItem->setTextAlignment(Qt::AlignCenter); // 文本居中
-	initialTemperatureValueItem->setFlags(initialTemperatureValueItem->flags() & ~Qt::ItemIsEditable); // 不可编辑
 
 	QTableWidgetItem* heatTransferCoefficientValueItem = new QTableWidgetItem(m_heatTransferCoefficientValue);
 	heatTransferCoefficientValueItem->setTextAlignment(Qt::AlignCenter); // 文本居中
@@ -130,32 +128,54 @@ void PreReverseOptimizationPropertyWidget::initWidget()
 	viewLayout->setMargin(0);
 	viewWidget->setLayout(viewLayout);
 	m_tableWidget->setCellWidget(10, 2, viewWidget);
+	m_tableWidget->setSpan(10, 2, 1, 2);
 
 
 
-	m_radioButtonGroup = new QButtonGroup(this);
-	m_radioButtonGroup->setExclusive(true); // 显式设置互斥（默认已开启）
+	m_inRadioButtonGroup = new QButtonGroup(this);
+	m_inRadioButtonGroup->setExclusive(true); // 显式设置互斥（默认已开启）
 
 	QRadioButton* oneRadio = new QRadioButton("");
-	m_radioButtonGroup->addButton(oneRadio, 0);
+	m_inRadioButtonGroup->addButton(oneRadio, 0);
 	QWidget* oneCellWidget = new QWidget();
 	QHBoxLayout* oneLayout = new QHBoxLayout(oneCellWidget);
 	oneLayout->addWidget(oneRadio);
 	oneLayout->setAlignment(Qt::AlignCenter); // 居中对齐
 	oneLayout->setContentsMargins(0, 0, 0, 0); // 去掉布局边距
-	m_tableWidget->setCellWidget(2, 4, oneCellWidget);
+	oneRadio->setChecked(true);
 
 	QRadioButton* twoRadio = new QRadioButton("");
-	m_radioButtonGroup->addButton(twoRadio, 1);
+	m_inRadioButtonGroup->addButton(twoRadio, 1);
 	QWidget* twoCellWidget = new QWidget();
 	QHBoxLayout* twoLayout = new QHBoxLayout(twoCellWidget);
 	twoLayout->addWidget(twoRadio);
 	twoLayout->setAlignment(Qt::AlignCenter); // 居中对齐
 	twoLayout->setContentsMargins(0, 0, 0, 0); // 去掉布局边距
+
+	m_tableWidget->setCellWidget(2, 4, oneCellWidget);
 	m_tableWidget->setCellWidget(3, 4, twoCellWidget);
 
+
+	m_outRadioButtonGroup = new QButtonGroup(this);
+	m_inRadioButtonGroup->setExclusive(true); // 显式设置互斥（默认已开启）
+
+	QRadioButton* fiveRadio = new QRadioButton("");
+	m_outRadioButtonGroup->addButton(fiveRadio, 0);
+	QWidget* fiveCellWidget = new QWidget();
+	QHBoxLayout* fiveLayout = new QHBoxLayout(fiveCellWidget);
+	fiveLayout->addWidget(fiveRadio);
+	fiveLayout->setAlignment(Qt::AlignCenter); // 居中对齐
+	fiveLayout->setContentsMargins(0, 0, 0, 0); // 去掉布局边距
+	fiveRadio->setChecked(true);
+
+	
+	m_tableWidget->setCellWidget(9, 4, fiveCellWidget);
+
+
 	// 绑定单选按钮选中信号
-	connect(m_radioButtonGroup, SIGNAL(buttonClicked(int)),
+	connect(m_inRadioButtonGroup, SIGNAL(buttonClicked(int)),
+		this, SLOT(onRadioSelected(int)));
+	connect(m_outRadioButtonGroup, SIGNAL(buttonClicked(int)),
 		this, SLOT(onRadioSelected(int)));
 
 	// 设置列宽度
@@ -393,9 +413,17 @@ void PreReverseOptimizationPropertyWidget::showTableDialog() {
 
 
 // 单选按钮选中事件处理
-void PreReverseOptimizationPropertyWidget::onRadioSelected(int btnId)
+void PreReverseOptimizationPropertyWidget::inOnRadioSelected(int btnId)
 {
-	QRadioButton* selectedBtn = qobject_cast<QRadioButton*>(m_radioButtonGroup->button(btnId));
+	QRadioButton* selectedBtn = qobject_cast<QRadioButton*>(m_inRadioButtonGroup->button(btnId));
+	if (selectedBtn) {
+		// btnId 行号
+	}
+}
+
+void PreReverseOptimizationPropertyWidget::outOnRadioSelected(int btnId)
+{
+	QRadioButton* selectedBtn = qobject_cast<QRadioButton*>(m_outRadioButtonGroup->button(btnId));
 	if (selectedBtn) {
 		// btnId 行号
 	}

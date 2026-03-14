@@ -19,7 +19,8 @@ private slots:
 	void showTableDialog();
 
 	// 单选按钮选中事件处理槽函数
-	void onRadioSelected(int btnId);
+	void inOnRadioSelected(int btnId);
+	void outOnRadioSelected(int btnId);
 
 private:
 	QTableWidget* m_tableWidget = nullptr;
@@ -32,5 +33,6 @@ private:
 	QString m_environmentalEmissivityValue = "0.5"; // 环境发射率
 	QString m_preheatingTimeValue = ""; // 弹体预热时间
 
-	QButtonGroup* m_radioButtonGroup = nullptr; // 单选按钮组
+	QButtonGroup* m_inRadioButtonGroup = nullptr; // 单选按钮组
+	QButtonGroup* m_outRadioButtonGroup = nullptr; // 单选按钮组
 };

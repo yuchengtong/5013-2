@@ -121,6 +121,7 @@ void InReverseOptimizationPropertyWidget::initWidget()
 	viewLayout->setMargin(0);
 	viewWidget->setLayout(viewLayout);
 	m_tableWidget->setCellWidget(9, 2, viewWidget);
+	m_tableWidget->setSpan(9, 2, 1, 2);
 
 
 
@@ -134,6 +135,7 @@ void InReverseOptimizationPropertyWidget::initWidget()
 	oneLayout->addWidget(oneRadio);
 	oneLayout->setAlignment(Qt::AlignCenter); // 居中对齐
 	oneLayout->setContentsMargins(0, 0, 0, 0); // 去掉布局边距
+	oneRadio->setChecked(true);
 	
 	QRadioButton* twoRadio = new QRadioButton("");
 	m_inRadioButtonGroup->addButton(twoRadio, 1);
@@ -176,6 +178,7 @@ void InReverseOptimizationPropertyWidget::initWidget()
 	fiveLayout->addWidget(fiveRadio);
 	fiveLayout->setAlignment(Qt::AlignCenter); // 居中对齐
 	fiveLayout->setContentsMargins(0, 0, 0, 0); // 去掉布局边距
+	fiveRadio->setChecked(true);
 
 	QRadioButton* sixRadio = new QRadioButton("");
 	m_outRadioButtonGroup->addButton(sixRadio, 1);

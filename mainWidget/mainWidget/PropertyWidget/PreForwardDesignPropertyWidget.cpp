@@ -77,11 +77,9 @@ void PreForwardDesignPropertyWidget::initWidget()
 
 	QTableWidgetItem* environmentalTemperatureValueItem = new QTableWidgetItem(m_environmentalTemperatureValue);
 	environmentalTemperatureValueItem->setTextAlignment(Qt::AlignCenter); // 文本居中
-	environmentalTemperatureValueItem->setFlags(environmentalTemperatureValueItem->flags() & ~Qt::ItemIsEditable); // 不可编辑
 
 	QTableWidgetItem* initialTemperatureValueItem = new QTableWidgetItem(m_initialTemperatureValue);
 	initialTemperatureValueItem->setTextAlignment(Qt::AlignCenter); // 文本居中
-	initialTemperatureValueItem->setFlags(initialTemperatureValueItem->flags() & ~Qt::ItemIsEditable); // 不可编辑
 
 	QTableWidgetItem* heatTransferCoefficientValueItem = new QTableWidgetItem(m_heatTransferCoefficientValue);
 	heatTransferCoefficientValueItem->setTextAlignment(Qt::AlignCenter); // 文本居中
@@ -132,6 +130,7 @@ void PreForwardDesignPropertyWidget::initWidget()
 	viewLayout->setMargin(0);
 	viewWidget->setLayout(viewLayout);
 	m_tableWidget->setCellWidget(10, 2, viewWidget);
+	m_tableWidget->setSpan(10, 2, 1, 2);
 
 
 

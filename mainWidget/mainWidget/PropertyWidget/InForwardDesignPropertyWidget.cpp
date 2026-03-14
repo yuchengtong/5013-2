@@ -77,7 +77,6 @@ void InForwardDesignPropertyWidget::initWidget()
 
 	QTableWidgetItem* pouringTemperatureValueItem = new QTableWidgetItem(m_pouringTemperatureValue);
 	pouringTemperatureValueItem->setTextAlignment(Qt::AlignCenter); // 文本居中
-	pouringTemperatureValueItem->setFlags(pouringTemperatureValueItem->flags() & ~Qt::ItemIsEditable); // 不可编辑
 
 	QTableWidgetItem* pouringSpeedValueItem = new QTableWidgetItem(m_pouringSpeedValue);
 	pouringSpeedValueItem->setTextAlignment(Qt::AlignCenter); // 文本居中
@@ -127,6 +126,7 @@ void InForwardDesignPropertyWidget::initWidget()
 	viewLayout->setMargin(0);
 	viewWidget->setLayout(viewLayout);
 	m_tableWidget->setCellWidget(9, 2, viewWidget);
+	m_tableWidget->setSpan(9, 2, 1, 2);
 
 
 
