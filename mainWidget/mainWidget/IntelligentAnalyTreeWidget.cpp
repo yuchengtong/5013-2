@@ -347,12 +347,12 @@ void IntelligentAnalyTreeWidget::contextMenuEvent(QContextMenuEvent* event)
 									{
 										auto A = 1;
 										auto B = steelInfo.density;
-										auto C = steelInfo.modulus / 1000;
+										auto C = 1 / 1000;
 										auto D = steelInfo.thermalConductivity;
 										auto E = steelInfo.specificHeatCapacity;
 
 										auto F = propellantInfo.density;
-										auto G = propellantInfo.modulus / 1000;
+										auto G = 1.0 / 1000;
 										auto H = propellantInfo.thermalConductivity;
 										auto I = propellantInfo.specificHeatCapacity;
 										auto J = fallInfo.high * 1000;//µøÂä¸ß¶È
@@ -534,12 +534,12 @@ void IntelligentAnalyTreeWidget::contextMenuEvent(QContextMenuEvent* event)
 
 										auto A = 1;
 										auto B = steelInfo.density;
-										auto C = steelInfo.modulus / 1000;
+										auto C = 1 / 1000;
 										auto D = steelInfo.thermalConductivity;
 										auto E = steelInfo.specificHeatCapacity;
 
 										auto F = propellantInfo.density;
-										auto G = propellantInfo.modulus / 1000;
+										auto G = 1.0 / 1000;
 										auto H = propellantInfo.thermalConductivity;
 										auto I = propellantInfo.specificHeatCapacity;
 
@@ -590,12 +590,12 @@ void IntelligentAnalyTreeWidget::contextMenuEvent(QContextMenuEvent* event)
 
 										auto A = 1;
 										auto B = steelInfo.density;
-										auto C = steelInfo.modulus / 1000;
+										auto C = 1 / 1000;
 										auto D = steelInfo.thermalConductivity;
 										auto E = steelInfo.specificHeatCapacity;
 
 										auto F = propellantInfo.density;
-										auto G = propellantInfo.modulus / 1000;
+										auto G = 1.0 / 1000;
 										auto H = propellantInfo.thermalConductivity;
 										auto I = propellantInfo.specificHeatCapacity;
 
@@ -648,12 +648,12 @@ void IntelligentAnalyTreeWidget::contextMenuEvent(QContextMenuEvent* event)
 
 										auto A = 1;
 										auto B = steelInfo.density;
-										auto C = steelInfo.modulus / 1000;
+										auto C = 1 / 1000;
 										auto D = steelInfo.thermalConductivity;
 										auto E = steelInfo.specificHeatCapacity;
 
 										auto F = propellantInfo.density;
-										auto G = propellantInfo.modulus / 1000;
+										auto G = 1.0 / 1000;
 										auto H = propellantInfo.thermalConductivity;
 										auto I = propellantInfo.specificHeatCapacity;
 
@@ -734,12 +734,12 @@ void IntelligentAnalyTreeWidget::contextMenuEvent(QContextMenuEvent* event)
 
 										auto A = 1;
 										auto B = steelInfo.density;
-										auto C = steelInfo.modulus / 1000;
+										auto C = 1 / 1000;
 										auto D = steelInfo.thermalConductivity;
 										auto E = steelInfo.specificHeatCapacity;
 
 										auto F = propellantInfo.density;
-										auto G = propellantInfo.modulus / 1000;
+										auto G = 1.0 / 1000;
 										auto H = propellantInfo.thermalConductivity;
 										auto I = propellantInfo.specificHeatCapacity;
 
@@ -817,12 +817,12 @@ void IntelligentAnalyTreeWidget::contextMenuEvent(QContextMenuEvent* event)
 
 										auto A = 1;
 										auto B = steelInfo.density;
-										auto C = steelInfo.modulus / 1000;
+										auto C = 1 / 1000;
 										auto D = steelInfo.thermalConductivity;
 										auto E = steelInfo.specificHeatCapacity;
 
 										auto F = propellantInfo.density;
-										auto G = propellantInfo.modulus / 1000;
+										auto G = 1.0 / 1000;
 										auto H = propellantInfo.thermalConductivity;
 										auto I = propellantInfo.specificHeatCapacity;
 
@@ -904,12 +904,12 @@ void IntelligentAnalyTreeWidget::contextMenuEvent(QContextMenuEvent* event)
 
 										auto A = 1;
 										auto B = steelInfo.density;
-										auto C = steelInfo.modulus / 1000;
+										auto C = 1 / 1000;
 										auto D = steelInfo.thermalConductivity;
 										auto E = steelInfo.specificHeatCapacity;
 
 										auto F = propellantInfo.density;
-										auto G = propellantInfo.modulus / 1000;
+										auto G = 1.0 / 1000;
 										auto H = propellantInfo.thermalConductivity;
 										auto I = propellantInfo.specificHeatCapacity;
 
@@ -973,12 +973,12 @@ void IntelligentAnalyTreeWidget::contextMenuEvent(QContextMenuEvent* event)
 
 										auto A = 1;
 										auto B = steelInfo.density;
-										auto C = steelInfo.modulus / 1000;
+										auto C = 1 / 1000;
 										auto D = steelInfo.thermalConductivity;
 										auto E = steelInfo.specificHeatCapacity;
 
 										auto F = propellantInfo.density;
-										auto G = propellantInfo.modulus / 1000;
+										auto G = 1.0 / 1000;
 										auto H = propellantInfo.thermalConductivity;
 										auto I = propellantInfo.specificHeatCapacity;
 

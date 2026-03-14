@@ -10,9 +10,6 @@
 #include "MeshPropertyWidget.h"
 #include "SettingPropertyWidget.h"
 #include "ResultsPropertyWidget.h"
-#include "FallPropertyWidget.h"
-#include "FastCombustionPropertyWidget.h"
-#include "SlowCombustionPropertyWidget.h"
 #include "StressResultWidget.h"
 #include "TemperatureResultWidget.h"
 #include "OverpressureResultWidget.h"
@@ -22,14 +19,13 @@
 #include "CalculationPropertyWidget.h"
 #include "JudgmentPropertyWidget.h"
 #include "InsulatingheatPropertyWidget.h"
-#include "OutheatPropertyWidget.h"
 #include "StrainResultWidget.h"
-#include "ShootPropertyWidget.h"
-#include "JetImpactPropertyWidget.h"
-#include "FragmentationImpactPropertyWidget.h"
-#include "ExplosiveBlastPropertyWidget.h"
-#include "SacrificeExplosionPropertyWidget.h"
 #include "DatabasePropertyWidget.h"
+
+#include "PreForwardDesignPropertyWidget.h"
+#include "PreReverseOptimizationPropertyWidget.h"
+#include "InForwardDesignPropertyWidget.h"
+#include "InReverseOptimizationPropertyWidget.h"
 
 class GFImportModelWidget :public QWidget
 {
@@ -55,14 +51,11 @@ public:
 	MaterialPropertyWidget* GetMaterialPropertyWidget() { return m_materialPropertyWidget; }
 	DatabasePropertyWidget* GetDatabasePropertyWidget() { return m_databasePropertyWidget; }
 
-	FallPropertyWidget* GetFallPropertyWidget() { return m_fallPropertyWidget; }
-	FastCombustionPropertyWidget* GetFastCombustionPropertyWidget() { return m_fastCombustionPropertyWidget; };
-	SlowCombustionPropertyWidget* GetSlowCombustionPropertyWidget() { return m_slowCombustionPropertyWidget; };
-	ShootPropertyWidget* GetShootPropertyWidget() { return m_shootPropertyWidget; }
-	JetImpactPropertyWidget* GetJetImpactPropertyWidget() { return m_jetImpactPropertyWidget; }
-	FragmentationImpactPropertyWidget* GetFragmentationImpactPropertyWidget() { return m_fragmentationImpactPropertyWidget; }
-	ExplosiveBlastPropertyWidget* GetExplosiveBlastPropertyWidget() { return m_explosiveBlastPropertyWidget; }
-	SacrificeExplosionPropertyWidget* GetSacrificeExplosionPropertyWidget() { return m_sacrificeExplosionPropertyWidget; }
+	
+	PreForwardDesignPropertyWidget* GetPreForwardDesignPropertyWidget() { return m_preForwardDesignPropertyWidget; }
+	PreReverseOptimizationPropertyWidget* GetPreReverseOptimizationPropertyWidget() { return m_preReverseOptimizationPropertyWidget; }
+	InForwardDesignPropertyWidget* GetInForwardDesignPropertyWidget() { return m_inForwardDesignPropertyWidget; }
+	InReverseOptimizationPropertyWidget* GetInReverseOptimizationPropertyWidget() { return m_inReverseOptimizationPropertyWidget; }
 
 	StressResultWidget* GetShootStressResultWidget() { return m_shootStressResultWidget; }
 	StrainResultWidget* GetShootStrainResultWidget() { return m_shootStrainResultWidget; }
@@ -109,22 +102,17 @@ private:
 	MeshPropertyWidget* m_meshPropertyWidget = nullptr;
 	SettingPropertyWidget* m_settingPropertyWidget = nullptr;
 	ResultsPropertyWidget* m_resultsPropertyWidget = nullptr;
-	FallPropertyWidget* m_fallPropertyWidget = nullptr;
-	FastCombustionPropertyWidget* m_fastCombustionPropertyWidget = nullptr;
-	SlowCombustionPropertyWidget* m_slowCombustionPropertyWidget = nullptr;
 	SteelPropertyWidget* m_steelPropertyWidgett = nullptr;
 	PropellantPropertyWidget* m_propellantPropertyWidget = nullptr;
 	ProjectPropertyWidge* m_projectPropertyWidge = nullptr;
 	CalculationPropertyWidget* m_calculationPropertyWidget = nullptr;
 	JudgmentPropertyWidget* m_judgmentPropertyWidget = nullptr;
 	InsulatingheatPropertyWidget* m_insulatingheatPropertyWidget = nullptr;
-	OutheatPropertyWidget* m_outheatPropertyWidget = nullptr;
-	ShootPropertyWidget* m_shootPropertyWidget = nullptr;
-	JetImpactPropertyWidget* m_jetImpactPropertyWidget = nullptr;
-	FragmentationImpactPropertyWidget* m_fragmentationImpactPropertyWidget = nullptr;
-	ExplosiveBlastPropertyWidget* m_explosiveBlastPropertyWidget = nullptr;
-	SacrificeExplosionPropertyWidget* m_sacrificeExplosionPropertyWidget = nullptr;
 	DatabasePropertyWidget* m_databasePropertyWidget = nullptr;
+	PreForwardDesignPropertyWidget* m_preForwardDesignPropertyWidget = nullptr;
+	PreReverseOptimizationPropertyWidget* m_preReverseOptimizationPropertyWidget = nullptr;
+	InForwardDesignPropertyWidget* m_inForwardDesignPropertyWidget = nullptr;
+	InReverseOptimizationPropertyWidget* m_inReverseOptimizationPropertyWidget = nullptr;
 
 	// µøÂä½á¹û
 	StressResultWidget* m_stressResultWidget = nullptr;

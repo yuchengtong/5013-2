@@ -144,13 +144,13 @@ void GFTreeModelWidget::init()
 
 	QTreeWidgetItem* steel = new QTreeWidgetItem();
 	{
-		steel->setText(0, "壳体材料");
+		steel->setText(0, "壳体物性");
 		steel->setData(0, Qt::UserRole, "Steel");
 		steel->setIcon(0, error_icon);
 	}
 	QTreeWidgetItem* propellant = new QTreeWidgetItem();
 	{
-		propellant->setText(0, "含能材料");
+		propellant->setText(0, "药液物性");
 		propellant->setData(0, Qt::UserRole, "Propellant");
 		propellant->setIcon(0, error_icon);
 	}
@@ -653,9 +653,9 @@ void GFTreeModelWidget::contextMenuEvent(QContextMenuEvent *event)
 							textEdit->appendPlainText(finishTimeStr + "[" + (success ? "信息" : "错误") + "]>" + msg);
 							if (success)
 							{
-								auto tensileStrength = ModelDataManager::GetInstance()->GetSteelPropertyInfo().tensileStrength;	// 壳体抗拉强度
-								auto ignitionTemperature = ModelDataManager::GetInstance()->GetPropellantPropertyInfo().ignitionTemperature; // 推进剂发火温度
-								auto fireOverpressure = ModelDataManager::GetInstance()->GetPropellantPropertyInfo().fireOverpressure; // 推进剂发火超压
+								auto tensileStrength = 1;	// 壳体抗拉强度
+								auto ignitionTemperature = 1.0; // 推进剂发火温度
+								auto fireOverpressure = 1.0; // 推进剂发火超压
 								for (int i = 0; i < item->childCount(); ++i) {
 									QTreeWidgetItem* childItem = item->child(i);
 									auto originalName = childItem->text(0);
@@ -719,33 +719,6 @@ void GFTreeModelWidget::contextMenuEvent(QContextMenuEvent *event)
 													fallOverpressureResult.outheatMaxOverpressure, fallOverpressureResult.outheatMinOverpressure, fallOverpressureResult.outheatAvgOverpressure, fallOverpressureResult.outheatStandardOverpressure,
 													fallOverpressureResult.insulatingheatMaxOverpressure, fallOverpressureResult.insulatingheatMinOverpressure, fallOverpressureResult.insulatingheatAvgOverpressure, fallOverpressureResult.insulatingheatStandardOverpressure);
 
-												// 更新判断结果
-												auto tableWidget = gfParent->GetFallPropertyWidget()->GetQTableWidget();
-												if (resultValue[0]> tensileStrength)
-												{
-													tableWidget->item(8, 2)->setText("应力超过壳体最大抗拉强度，有燃爆风险");
-												}
-												else
-												{
-													tableWidget->item(8, 2)->setText("应力未超过壳体最大抗拉强度");
-												}
-												if (fallTemperatureResult.metalsMaxTemperature > ignitionTemperature)
-												{
-													tableWidget->item(9, 2)->setText("温度超过推进剂最大发火温度，有燃爆风险");
-												}
-												else
-												{
-													tableWidget->item(9, 2)->setText("温度超过推进剂最大发火温度");
-												}
-												if (fallOverpressureResult.metalsMaxOverpressure > fireOverpressure)
-												{
-													tableWidget->item(10, 2)->setText("超压超过推进剂最大发火超压，有燃爆风险");
-												}
-												else
-												{
-													tableWidget->item(10, 2)->setText("超压超过推进剂最大发火超压");
-												}
-
 											}
 											else
 											{
@@ -772,16 +745,7 @@ void GFTreeModelWidget::contextMenuEvent(QContextMenuEvent *event)
 													temperatureResult.outheatMaxTemperature, temperatureResult.outheatMinTemperature, temperatureResult.outheatAvgTemperature, temperatureResult.outheatStandardTemperature,
 													temperatureResult.insulatingheatMaxTemperature, temperatureResult.insulatingheatMinTemperature, temperatureResult.insulatingheatAvgTemperature, temperatureResult.insulatingheatStandardTemperature);
 
-												// 更新判断结果
-												auto tableWidget = gfParent->GetFastCombustionPropertyWidget()->GetQTableWidget();
-												if (temperatureResult.metalsMaxTemperature > ignitionTemperature)
-												{
-													tableWidget->item(10, 2)->setText("温度超过推进剂最大发火温度，有燃爆风险");
-												}
-												else
-												{
-													tableWidget->item(10, 2)->setText("温度超过推进剂最大发火温度");
-												}
+												
 											}
 											else
 											{
@@ -809,16 +773,7 @@ void GFTreeModelWidget::contextMenuEvent(QContextMenuEvent *event)
 													temperatureResult.outheatMaxTemperature, temperatureResult.outheatMinTemperature, temperatureResult.outheatAvgTemperature, temperatureResult.outheatStandardTemperature,
 													temperatureResult.insulatingheatMaxTemperature, temperatureResult.insulatingheatMinTemperature, temperatureResult.insulatingheatAvgTemperature, temperatureResult.insulatingheatStandardTemperature);
 
-												// 更新判断结果
-												auto tableWidget = gfParent->GetSlowCombustionPropertyWidget()->GetQTableWidget();
-												if (temperatureResult.metalsMaxTemperature > ignitionTemperature)
-												{
-													tableWidget->item(10, 2)->setText("温度超过推进剂最大发火温度，有燃爆风险");
-												}
-												else
-												{
-													tableWidget->item(10, 2)->setText("温度超过推进剂最大发火温度");
-												}
+												
 											}
 											else
 											{
@@ -871,32 +826,7 @@ void GFTreeModelWidget::contextMenuEvent(QContextMenuEvent *event)
 													overpressureResult.outheatMaxOverpressure, overpressureResult.outheatMinOverpressure, overpressureResult.outheatAvgOverpressure, overpressureResult.outheatStandardOverpressure,
 													overpressureResult.insulatingheatMaxOverpressure, overpressureResult.insulatingheatMinOverpressure, overpressureResult.insulatingheatAvgOverpressure, overpressureResult.insulatingheatStandardOverpressure);
 
-												// 更新判断结果
-												auto tableWidget = gfParent->GetShootPropertyWidget()->GetQTableWidget();
-												if (resultValue[0] > tensileStrength)
-												{
-													tableWidget->item(10, 2)->setText("应力超过壳体最大抗拉强度，有燃爆风险");
-												}
-												else
-												{
-													tableWidget->item(10, 2)->setText("应力未超过壳体最大抗拉强度");
-												}
-												if (temperatureResult.metalsMaxTemperature > ignitionTemperature)
-												{
-													tableWidget->item(11, 2)->setText("温度超过推进剂最大发火温度，有燃爆风险");
-												}
-												else
-												{
-													tableWidget->item(11, 2)->setText("温度超过推进剂最大发火温度");
-												}
-												if (overpressureResult.metalsMaxOverpressure > fireOverpressure)
-												{
-													tableWidget->item(12, 2)->setText("超压超过推进剂最大发火超压，有燃爆风险");
-												}
-												else
-												{
-													tableWidget->item(12, 2)->setText("超压超过推进剂最大发火超压");
-												}
+												
 }
 											else
 											{
@@ -944,32 +874,7 @@ void GFTreeModelWidget::contextMenuEvent(QContextMenuEvent *event)
 													overpressureResult.outheatMaxOverpressure, overpressureResult.outheatMinOverpressure, overpressureResult.outheatAvgOverpressure, overpressureResult.outheatStandardOverpressure,
 													overpressureResult.insulatingheatMaxOverpressure, overpressureResult.insulatingheatMinOverpressure, overpressureResult.insulatingheatAvgOverpressure, overpressureResult.insulatingheatStandardOverpressure);
 
-												// 更新判断结果
-												auto tableWidget = gfParent->GetJetImpactPropertyWidget()->GetQTableWidget();
-												if (stressResult.metalsMaxStress > tensileStrength)
-												{
-													tableWidget->item(8, 2)->setText("应力超过壳体最大抗拉强度，有燃爆风险");
-												}
-												else
-												{
-													tableWidget->item(8, 2)->setText("应力未超过壳体最大抗拉强度");
-												}
-												if (temperatureResult.metalsMaxTemperature > ignitionTemperature)
-												{
-													tableWidget->item(9, 2)->setText("温度超过推进剂最大发火温度，有燃爆风险");
-												}
-												else
-												{
-													tableWidget->item(9, 2)->setText("温度超过推进剂最大发火温度");
-												}
-												if (overpressureResult.metalsMaxOverpressure > fireOverpressure)
-												{
-													tableWidget->item(10, 2)->setText("超压超过推进剂最大发火超压，有燃爆风险");
-												}
-												else
-												{
-													tableWidget->item(10, 2)->setText("超压超过推进剂最大发火超压");
-												}
+												
 											}
 											else
 											{
@@ -1021,32 +926,7 @@ void GFTreeModelWidget::contextMenuEvent(QContextMenuEvent *event)
 													overpressureResult.outheatMaxOverpressure, overpressureResult.outheatMinOverpressure, overpressureResult.outheatAvgOverpressure, overpressureResult.outheatStandardOverpressure,
 													overpressureResult.insulatingheatMaxOverpressure, overpressureResult.insulatingheatMinOverpressure, overpressureResult.insulatingheatAvgOverpressure, overpressureResult.insulatingheatStandardOverpressure);
 
-												// 更新判断结果
-												auto tableWidget = gfParent->GetFragmentationImpactPropertyWidget()->GetQTableWidget();
-												if (resultValue[0] > tensileStrength)
-												{
-													tableWidget->item(11, 2)->setText("应力超过壳体最大抗拉强度，有燃爆风险");
-												}
-												else
-												{
-													tableWidget->item(11, 2)->setText("应力未超过壳体最大抗拉强度");
-												}
-												if (temperatureResult.metalsMaxTemperature > ignitionTemperature)
-												{
-													tableWidget->item(12, 2)->setText("温度超过推进剂最大发火温度，有燃爆风险");
-												}
-												else
-												{
-													tableWidget->item(12, 2)->setText("温度超过推进剂最大发火温度");
-												}
-												if (overpressureResult.metalsMaxOverpressure > fireOverpressure)
-												{
-													tableWidget->item(13, 2)->setText("超压超过推进剂最大发火超压，有燃爆风险");
-												}
-												else
-												{
-													tableWidget->item(13, 2)->setText("超压超过推进剂最大发火超压");
-												}
+												
 											}
 											else
 											{
@@ -1095,32 +975,7 @@ void GFTreeModelWidget::contextMenuEvent(QContextMenuEvent *event)
 													overpressureResult.outheatMaxOverpressure, overpressureResult.outheatMinOverpressure, overpressureResult.outheatAvgOverpressure, overpressureResult.outheatStandardOverpressure,
 													overpressureResult.insulatingheatMaxOverpressure, overpressureResult.insulatingheatMinOverpressure, overpressureResult.insulatingheatAvgOverpressure, overpressureResult.insulatingheatStandardOverpressure);
 
-												// 更新判断结果
-												auto tableWidget = gfParent->GetExplosiveBlastPropertyWidget()->GetQTableWidget();
-												if (stressResult.metalsMaxStress > tensileStrength)
-												{
-													tableWidget->item(7, 2)->setText("应力超过壳体最大抗拉强度，有燃爆风险");
-												}
-												else
-												{
-													tableWidget->item(7, 2)->setText("应力未超过壳体最大抗拉强度");
-												}
-												if (temperatureResult.metalsMaxTemperature > ignitionTemperature)
-												{
-													tableWidget->item(8, 2)->setText("温度超过推进剂最大发火温度，有燃爆风险");
-												}
-												else
-												{
-													tableWidget->item(8, 2)->setText("温度超过推进剂最大发火温度");
-												}
-												if (overpressureResult.metalsMaxOverpressure > fireOverpressure)
-												{
-													tableWidget->item(9, 2)->setText("超压超过推进剂最大发火超压，有燃爆风险");
-												}
-												else
-												{
-													tableWidget->item(9, 2)->setText("超压超过推进剂最大发火超压");
-												}
+												
 											}
 											else
 											{
@@ -1169,32 +1024,7 @@ void GFTreeModelWidget::contextMenuEvent(QContextMenuEvent *event)
 													overpressureResult.outheatMaxOverpressure, overpressureResult.outheatMinOverpressure, overpressureResult.outheatAvgOverpressure, overpressureResult.outheatStandardOverpressure,
 													overpressureResult.insulatingheatMaxOverpressure, overpressureResult.insulatingheatMinOverpressure, overpressureResult.insulatingheatAvgOverpressure, overpressureResult.insulatingheatStandardOverpressure);
 
-												// 更新判断结果
-												auto tableWidget = gfParent->GetSacrificeExplosionPropertyWidget()->GetQTableWidget();
-												if (stressResult.metalsMaxStress > tensileStrength)
-												{
-													tableWidget->item(8, 2)->setText("应力超过壳体最大抗拉强度，有燃爆风险");
-												}
-												else
-												{
-													tableWidget->item(8, 2)->setText("应力未超过壳体最大抗拉强度");
-												}
-												if (temperatureResult.metalsMaxTemperature > ignitionTemperature)
-												{
-													tableWidget->item(9, 2)->setText("温度超过推进剂最大发火温度，有燃爆风险");
-												}
-												else
-												{
-													tableWidget->item(9, 2)->setText("温度超过推进剂最大发火温度");
-												}
-												if (overpressureResult.metalsMaxOverpressure > fireOverpressure)
-												{
-													tableWidget->item(10, 2)->setText("超压超过推进剂最大发火超压，有燃爆风险");
-												}
-												else
-												{
-													tableWidget->item(10, 2)->setText("超压超过推进剂最大发火超压");
-												}
+												
 											}
 											else
 											{
@@ -1488,883 +1318,883 @@ void GFTreeModelWidget::contextMenuEvent(QContextMenuEvent *event)
 
 void GFTreeModelWidget::exportWord(const QString& directory, QTreeWidgetItem* item)
 {
-	QWidget* parent = parentWidget();
-	while (parent) {
-		GFImportModelWidget* gfParent = dynamic_cast<GFImportModelWidget*>(parent);
-		if (gfParent)
-		{
-			auto logWidget = gfParent->GetLogWidget();
-			auto textEdit = logWidget->GetTextEdit();
-
-			ProjectPropertyWidge* m_projectPropertyWidge = gfParent->GetProjectPropertyWidget();
-			QTableWidget* m_projectTableWid = m_projectPropertyWidge->GetQTableWidget();
-
-			GeomPropertyWidget* m_geomPropertyWidget = gfParent->GetGeomPropertyWidget();
-			QTableWidget* m_geomTableWid = m_geomPropertyWidget->GetQTableWidget();
-
-			MaterialPropertyWidget* m_materialPropertyWidget = gfParent->GetMaterialPropertyWidget();
-			QTableWidget* m_materialTableWid = m_materialPropertyWidget->GetQTableWidget();
-
-			DatabasePropertyWidget* m_databasePropertyWidget = gfParent->GetDatabasePropertyWidget();
-			QTableWidget* m_databaseTableWid = m_databasePropertyWidget->GetQTableWidget();
-
-			for (int i = 0; i < item->childCount(); ++i) {
-				QTreeWidgetItem* childItem = item->child(i);
-				auto originalName = childItem->text(0);
-				int dotIndex = originalName.indexOf('.');
-				QString processedName;
-				if (dotIndex != -1)
-				{
-					processedName = originalName.mid(dotIndex + 1).trimmed();
-				}
-				else {
-					processedName = originalName;
-				}
-
-				bool isChecked = (childItem->checkState(0) == Qt::Checked);
-				if (isChecked)
-				{
-					if (processedName == "跌落安全性分析")
-					{
-						{
-							QDateTime currentTime = QDateTime::currentDateTime();
-							QString timeStr = currentTime.toString("yyyy-MM-dd hh:mm:ss");
-							QString text = timeStr + "[信息]>开始导出跌落安全性分析报告";
-							textEdit->appendPlainText(text);
-							logWidget->update();
-							// 关键：强制刷新UI，确保日志立即显示
-							QApplication::processEvents();
-						}
-
-						FallPropertyWidget* m_fallPropertyWidget = gfParent->GetFallPropertyWidget();
-						QTableWidget* m_fallTableWid = m_fallPropertyWidget->GetQTableWidget();
-
-						StressResultWidget* m_stressResultWidget = gfParent->GetStressResultWidget();
-						QTableWidget* m_stressTableWid = m_stressResultWidget->GetQTableWidget();
-
-						StrainResultWidget* m_strainResultWidget = gfParent->GetStrainResultWidget();
-						QTableWidget* m_strainTableWid = m_strainResultWidget->GetQTableWidget();
-
-						TemperatureResultWidget* m_temperatureResultWidget = gfParent->GetTemperatureResultWidget();
-						QTableWidget* m_temperatureTableWid = m_temperatureResultWidget->GetQTableWidget();
-
-						OverpressureResultWidget* m_overpressureResultWidge = gfParent->GetOverpressureResultWidget();
-						QTableWidget* m_overpressureTableWid = m_overpressureResultWidge->GetQTableWidget();
-
-						QMap<QString, QVariant> data = convertTextData(m_projectPropertyWidge,
-							m_geomPropertyWidget,
-							m_materialPropertyWidget,
-							m_databasePropertyWidget,
-							m_stressResultWidget,
-							m_strainResultWidget,
-							m_temperatureResultWidget,
-							m_overpressureResultWidge);
-						
-						// 跌落输入数据
-						data.insert("测试项目", m_fallTableWid->item(1, 2)->text());
-						data.insert("跌落高度", m_fallTableWid->item(2, 2)->text());
-						QComboBox* comboBox = qobject_cast<QComboBox*>(m_fallTableWid->cellWidget(3, 2));
-						if (comboBox)
-						{
-							QString selectedText = comboBox->currentText();
-							data.insert("跌落姿态", selectedText);
-						}
-						else
-						{
-							data.insert("跌落姿态", "");
-						}
-						data.insert("跌落钢板硬度", m_fallTableWid->item(4, 2)->text());
-						data.insert("温度传感器数量", m_fallTableWid->item(5, 2)->text());
-						if (m_fallTableWid->item(6, 2))
-						{
-							data.insert("冲击波超压传感器数量", m_fallTableWid->item(6, 2)->text());
-						}
-						else
-						{
-							data.insert("冲击波超压传感器数量", "");
-						}
-						data.insert("风速", m_fallTableWid->item(7, 2)->text());
-
-						
-
-						QMap<QString, QString> imagePaths;
-						imagePaths.insert("计算模型", QDir("src/template/main.png").absolutePath());
-						imagePaths.insert("应力云图", QDir("src/template/fall/Stress.png").absolutePath());
-						imagePaths.insert("应变云图", QDir("src/template/fall/Strain.png").absolutePath());
-						imagePaths.insert("温度云图", QDir("src/template/fall/Temperature.png").absolutePath());
-						imagePaths.insert("超压云图", QDir("src/template/fall/Overpressure.png").absolutePath());
-						QMap<QString, QVector<QVector<QVariant>>> tableData;
-
-						// 创建进度对话框
-						ProgressDialog* progressDialog = new ProgressDialog("导出跌落仿真报告进度", gfParent);
-						progressDialog->show();
-
-						// 创建工作线程和工作对象
-						WordExporterWorker* wordExporterWorker = new WordExporterWorker(QDir("src/template/跌落仿真计算数据表.docx").absolutePath(), directory + "/跌落仿真计算数据表.docx", data, imagePaths, tableData);
-						QThread* wordExporterThread = new QThread();
-						wordExporterWorker->moveToThread(wordExporterThread);
-
-						// 连接信号槽
-						connect(wordExporterThread, &QThread::started, wordExporterWorker, &WordExporterWorker::DoWork);
-						connect(wordExporterWorker, &WordExporterWorker::ProgressUpdated, progressDialog, &ProgressDialog::SetProgress);
-						connect(wordExporterWorker, &WordExporterWorker::StatusUpdated, progressDialog, &ProgressDialog::SetStatusText);
-						connect(progressDialog, &ProgressDialog::Canceled, wordExporterWorker, &WordExporterWorker::RequestInterruption, Qt::DirectConnection);
-
-						// 处理导入结果
-						connect(wordExporterWorker, &WordExporterWorker::WorkFinished, this,
-							[=](bool success, const QString& msg)
-							{
-								if (success)
-								{
-									// 更新日志
-									{
-										QDateTime currentTime = QDateTime::currentDateTime();
-										QString timeStr = currentTime.toString("yyyy-MM-dd hh:mm:ss");
-										QString text = timeStr + "[信息]>成功导出跌落安全性分析报告";
-										text = text + "\n" + timeStr + "[信息]>跌落安全性分析报告：" + directory + "/跌落仿真计算数据表.docx";
-										textEdit->appendPlainText(text);
-										logWidget->update();
-
-										// 关键：强制刷新UI，确保日志立即显示
-										QApplication::processEvents();
-									}
-
-								}
-								else if (!success)
-								{
-									QMessageBox::warning(this, "导出失败", msg);
-								}
-								// 清理资源
-								progressDialog->close();
-								wordExporterThread->quit();
-								wordExporterThread->wait();
-								wordExporterWorker->deleteLater();
-								wordExporterThread->deleteLater();
-								progressDialog->deleteLater();
-							});
-						// 启动线程
-						wordExporterThread->start();
-
-					}
-					else if (processedName == "快速烤燃安全性分析")
-					{
-						{
-							QDateTime currentTime = QDateTime::currentDateTime();
-							QString timeStr = currentTime.toString("yyyy-MM-dd hh:mm:ss");
-							QString text = timeStr + "[信息]>开始导出快速烤燃安全性分析报告";
-							textEdit->appendPlainText(text);
-							logWidget->update();
-							// 关键：强制刷新UI，确保日志立即显示
-							QApplication::processEvents();
-						}
-
-						FastCombustionPropertyWidget* m_fastCombustionPropertyWidget = gfParent->GetFastCombustionPropertyWidget();
-						QTableWidget* m_fastCombustionTableWid = m_fastCombustionPropertyWidget->GetQTableWidget();
-
-						TemperatureResultWidget* m_temperatureResultWidget = gfParent->GetFastCombustionTemperatureResultWidget();
-						QTableWidget* m_temperatureTableWid = m_temperatureResultWidget->GetQTableWidget();
-
-						QMap<QString, QVariant> data = convertTextData(m_projectPropertyWidge,
-							m_geomPropertyWidget,
-							m_materialPropertyWidget,
-							m_databasePropertyWidget,
-							nullptr,
-							nullptr,
-							m_temperatureResultWidget,
-							nullptr);
-
-						// 跌落输入数据
-						data.insert("测试项目", m_fastCombustionTableWid->item(1, 2)->text());
-						data.insert("燃油类型", m_fastCombustionTableWid->item(2, 2)->text());
-						data.insert("弹药位置", m_fastCombustionTableWid->item(3, 2)->text());
-						data.insert("温度传感器数量", m_fastCombustionTableWid->item(4, 2)->text());
-						data.insert("冲击波超压传感器数量", m_fastCombustionTableWid->item(5, 2)->text());
-						data.insert("风速", m_fastCombustionTableWid->item(6, 2)->text());
-						data.insert("火焰温度达到时间", m_fastCombustionTableWid->item(7, 2)->text());
-						data.insert("结束时间", m_fastCombustionTableWid->item(8, 2)->text());
-						data.insert("平均温度", m_fastCombustionTableWid->item(9, 2)->text());
-
-
-						QMap<QString, QString> imagePaths;
-						imagePaths.insert("计算模型", QDir("src/template/main.png").absolutePath());
-						imagePaths.insert("温度云图", QDir("src/template/fastCombustion/Temperature.png").absolutePath());
-						QMap<QString, QVector<QVector<QVariant>>> tableData;
-
-						// 创建进度对话框
-						ProgressDialog* progressDialog = new ProgressDialog("导出快速烤燃仿真计算报告进度", gfParent);
-						progressDialog->show();
-
-						// 创建工作线程和工作对象
-						WordExporterWorker* wordExporterWorker = new WordExporterWorker(QDir("src/template/快速烤燃仿真计算数据表.docx").absolutePath(), directory + "/快速烤燃仿真计算数据表.docx", data, imagePaths, tableData);
-						QThread* wordExporterThread = new QThread();
-						wordExporterWorker->moveToThread(wordExporterThread);
-
-						// 连接信号槽
-						connect(wordExporterThread, &QThread::started, wordExporterWorker, &WordExporterWorker::DoWork);
-						connect(wordExporterWorker, &WordExporterWorker::ProgressUpdated, progressDialog, &ProgressDialog::SetProgress);
-						connect(wordExporterWorker, &WordExporterWorker::StatusUpdated, progressDialog, &ProgressDialog::SetStatusText);
-						connect(progressDialog, &ProgressDialog::Canceled, wordExporterWorker, &WordExporterWorker::RequestInterruption, Qt::DirectConnection);
-
-						// 处理导入结果
-						connect(wordExporterWorker, &WordExporterWorker::WorkFinished, this,
-							[=](bool success, const QString& msg)
-							{
-								if (success)
-								{
-									// 更新日志
-									{
-										QDateTime currentTime = QDateTime::currentDateTime();
-										QString timeStr = currentTime.toString("yyyy-MM-dd hh:mm:ss");
-										QString text = timeStr + "[信息]>成功导出快速烤燃试安全性分析报告";
-										text = text + "\n" + timeStr + "[信息]>快速烤燃安全性分析报告：" + directory + "/快速烤燃仿真计算数据表.docx";
-										textEdit->appendPlainText(text);
-										logWidget->update();
-
-										// 关键：强制刷新UI，确保日志立即显示
-										QApplication::processEvents();
-									}
-
-								}
-								else if (!success)
-								{
-									QMessageBox::warning(this, "导出失败", msg);
-								}
-								// 清理资源
-								progressDialog->close();
-								wordExporterThread->quit();
-								wordExporterThread->wait();
-								wordExporterWorker->deleteLater();
-								wordExporterThread->deleteLater();
-								progressDialog->deleteLater();
-							});
-						// 启动线程
-						wordExporterThread->start();
-					}
-					else if (processedName == "慢速烤燃安全性分析")
-					{
-						{
-							QDateTime currentTime = QDateTime::currentDateTime();
-							QString timeStr = currentTime.toString("yyyy-MM-dd hh:mm:ss");
-							QString text = timeStr + "[信息]>开始导出慢速烤燃安全性分析报告";
-							textEdit->appendPlainText(text);
-							logWidget->update();
-							// 关键：强制刷新UI，确保日志立即显示
-							QApplication::processEvents();
-						}
-
-						SlowCombustionPropertyWidget* m_slowCombustionPropertyWidget = gfParent->GetSlowCombustionPropertyWidget();
-						QTableWidget* m_slowCombustionTableWid = m_slowCombustionPropertyWidget->GetQTableWidget();
-
-						TemperatureResultWidget* m_temperatureResultWidget = gfParent->GetSlowCombustionTemperatureResultWidget();
-						QTableWidget* m_temperatureTableWid = m_temperatureResultWidget->GetQTableWidget();
-
-						QMap<QString, QVariant> data = convertTextData(m_projectPropertyWidge,
-							m_geomPropertyWidget,
-							m_materialPropertyWidget,
-							m_databasePropertyWidget,
-							nullptr,
-							nullptr,
-							m_temperatureResultWidget,
-							nullptr);
-
-						// 跌落输入数据
-						data.insert("测试项目", m_slowCombustionTableWid->item(1, 2)->text());
-						data.insert("加热类型", m_slowCombustionTableWid->item(2, 2)->text());
-						data.insert("弹药位置", m_slowCombustionTableWid->item(3, 2)->text());
-						data.insert("温度传感器数量", m_slowCombustionTableWid->item(4, 2)->text());
-						data.insert("冲击波超压传感器数量", m_slowCombustionTableWid->item(5, 2)->text());
-						data.insert("风速", m_slowCombustionTableWid->item(6, 2)->text());
-						data.insert("平衡时刻", m_slowCombustionTableWid->item(7, 2)->text());
-						data.insert("烘箱升温速率", m_slowCombustionTableWid->item(8, 2)->text());
-						data.insert("烘箱终止温度}", m_slowCombustionTableWid->item(9, 2)->text());
-
-
-						QMap<QString, QString> imagePaths;
-						imagePaths.insert("计算模型", QDir("src/template/main.png").absolutePath());
-						imagePaths.insert("温度云图", QDir("src/template/slowCombustion/Temperature.png").absolutePath());
-						QMap<QString, QVector<QVector<QVariant>>> tableData;
-
-						// 创建进度对话框
-						ProgressDialog* progressDialog = new ProgressDialog("导出慢速烤燃仿真计算报告进度", gfParent);
-						progressDialog->show();
-
-						// 创建工作线程和工作对象
-						WordExporterWorker* wordExporterWorker = new WordExporterWorker(QDir("src/template/慢速烤燃仿真计算数据表.docx").absolutePath(), directory + "/慢速烤燃仿真计算数据表.docx", data, imagePaths, tableData);
-						QThread* wordExporterThread = new QThread();
-						wordExporterWorker->moveToThread(wordExporterThread);
-
-						// 连接信号槽
-						connect(wordExporterThread, &QThread::started, wordExporterWorker, &WordExporterWorker::DoWork);
-						connect(wordExporterWorker, &WordExporterWorker::ProgressUpdated, progressDialog, &ProgressDialog::SetProgress);
-						connect(wordExporterWorker, &WordExporterWorker::StatusUpdated, progressDialog, &ProgressDialog::SetStatusText);
-						connect(progressDialog, &ProgressDialog::Canceled, wordExporterWorker, &WordExporterWorker::RequestInterruption, Qt::DirectConnection);
-
-						// 处理导入结果
-						connect(wordExporterWorker, &WordExporterWorker::WorkFinished, this,
-							[=](bool success, const QString& msg)
-							{
-								if (success)
-								{
-									// 更新日志
-									{
-										QDateTime currentTime = QDateTime::currentDateTime();
-										QString timeStr = currentTime.toString("yyyy-MM-dd hh:mm:ss");
-										QString text = timeStr + "[信息]>成功导出慢速烤燃安全性分析报告";
-										text = text + "\n" + timeStr + "[信息]>慢速烤燃安全性分析报告：" + directory + "/慢速烤燃仿真计算数据表.docx";
-										textEdit->appendPlainText(text);
-										logWidget->update();
-
-										// 关键：强制刷新UI，确保日志立即显示
-										QApplication::processEvents();
-									}
-
-								}
-								else if (!success)
-								{
-									QMessageBox::warning(this, "导出失败", msg);
-								}
-								// 清理资源
-								progressDialog->close();
-								wordExporterThread->quit();
-								wordExporterThread->wait();
-								wordExporterWorker->deleteLater();
-								wordExporterThread->deleteLater();
-								progressDialog->deleteLater();
-							});
-						// 启动线程
-						wordExporterThread->start();
-					}
-					else if (processedName == "枪击安全性分析")
-					{
-						{
-							QDateTime currentTime = QDateTime::currentDateTime();
-							QString timeStr = currentTime.toString("yyyy-MM-dd hh:mm:ss");
-							QString text = timeStr + "[信息]>开始导出枪击安全性分析报告";
-							textEdit->appendPlainText(text);
-							logWidget->update();
-							// 关键：强制刷新UI，确保日志立即显示
-							QApplication::processEvents();
-						}
-
-						ShootPropertyWidget* m_shootPropertyWidget = gfParent->GetShootPropertyWidget();
-						QTableWidget* m_shootTableWid = m_shootPropertyWidget->GetQTableWidget();
-
-						StressResultWidget* m_stressResultWidget = gfParent->GetShootStressResultWidget();
-						QTableWidget* m_stressTableWid = m_stressResultWidget->GetQTableWidget();
-
-						StrainResultWidget* m_strainResultWidget = gfParent->GetShootStrainResultWidget();
-						QTableWidget* m_strainTableWid = m_strainResultWidget->GetQTableWidget();
-
-						TemperatureResultWidget* m_temperatureResultWidget = gfParent->GetShootTemperatureResultWidget();
-						QTableWidget* m_temperatureTableWid = m_temperatureResultWidget->GetQTableWidget();
-
-						OverpressureResultWidget* m_overpressureResultWidge = gfParent->GetShootOverpressureResultWidget();
-						QTableWidget* m_overpressureTableWid = m_overpressureResultWidge->GetQTableWidget();
-
-						QMap<QString, QVariant> data = convertTextData(m_projectPropertyWidge,
-							m_geomPropertyWidget,
-							m_materialPropertyWidget,
-							m_databasePropertyWidget,
-							m_stressResultWidget,
-							m_strainResultWidget,
-							m_temperatureResultWidget,
-							m_overpressureResultWidge);
-
-						// 跌落输入数据
-						data.insert("测试项目", m_shootTableWid->item(1, 2)->text());
-						data.insert("撞击速度", m_shootTableWid->item(2, 2)->text());
-						data.insert("撞击角度", m_shootTableWid->item(3, 2)->text());
-						data.insert("子弹型式", m_shootTableWid->item(4, 2)->text());
-						data.insert("子弹直径", m_shootTableWid->item(5, 2)->text());
-						data.insert("子弹硬度", m_shootTableWid->item(6, 2)->text());
-						data.insert("温度传感器数量", m_shootTableWid->item(7, 2)->text());
-						data.insert("超压传感器数量", m_shootTableWid->item(8, 2)->text());
-						data.insert("风速", m_shootTableWid->item(9, 2)->text());
-
-
-						QMap<QString, QString> imagePaths;
-						imagePaths.insert("计算模型", QDir("src/template/main.png").absolutePath());
-						imagePaths.insert("应力云图", QDir("src/template/shoot/Stress.png").absolutePath());
-						imagePaths.insert("应变云图", QDir("src/template/shoot/Strain.png").absolutePath());
-						imagePaths.insert("温度云图", QDir("src/template/shoot/Temperature.png").absolutePath());
-						imagePaths.insert("超压云图", QDir("src/template/shoot/Overpressure.png").absolutePath());
-						QMap<QString, QVector<QVector<QVariant>>> tableData;
-
-						// 创建进度对话框
-						ProgressDialog* progressDialog = new ProgressDialog("导出枪击仿真计算报告进度", gfParent);
-						progressDialog->show();
-
-						// 创建工作线程和工作对象
-						WordExporterWorker* wordExporterWorker = new WordExporterWorker(QDir("src/template/枪击仿真计算数据表.docx").absolutePath(), directory + "/枪击仿真计算数据表.docx", data, imagePaths, tableData);
-						QThread* wordExporterThread = new QThread();
-						wordExporterWorker->moveToThread(wordExporterThread);
-
-						// 连接信号槽
-						connect(wordExporterThread, &QThread::started, wordExporterWorker, &WordExporterWorker::DoWork);
-						connect(wordExporterWorker, &WordExporterWorker::ProgressUpdated, progressDialog, &ProgressDialog::SetProgress);
-						connect(wordExporterWorker, &WordExporterWorker::StatusUpdated, progressDialog, &ProgressDialog::SetStatusText);
-						connect(progressDialog, &ProgressDialog::Canceled, wordExporterWorker, &WordExporterWorker::RequestInterruption, Qt::DirectConnection);
-
-						// 处理导入结果
-						connect(wordExporterWorker, &WordExporterWorker::WorkFinished, this,
-							[=](bool success, const QString& msg)
-							{
-								if (success)
-								{
-									// 更新日志
-									{
-										QDateTime currentTime = QDateTime::currentDateTime();
-										QString timeStr = currentTime.toString("yyyy-MM-dd hh:mm:ss");
-										QString text = timeStr + "[信息]>成功导出枪击安全性分析报告";
-										text = text + "\n" + timeStr + "[信息]>枪击安全性分析报告：" + directory + "/枪击仿真计算数据表.docx";
-										textEdit->appendPlainText(text);
-										logWidget->update();
-
-										// 关键：强制刷新UI，确保日志立即显示
-										QApplication::processEvents();
-									}
-
-								}
-								else if (!success)
-								{
-									QMessageBox::warning(this, "导出失败", msg);
-								}
-								// 清理资源
-								progressDialog->close();
-								wordExporterThread->quit();
-								wordExporterThread->wait();
-								wordExporterWorker->deleteLater();
-								wordExporterThread->deleteLater();
-								progressDialog->deleteLater();
-							});
-						// 启动线程
-						wordExporterThread->start();
-					}
-					else if (processedName == "射流冲击安全性分析")
-					{
-						{
-							QDateTime currentTime = QDateTime::currentDateTime();
-							QString timeStr = currentTime.toString("yyyy-MM-dd hh:mm:ss");
-							QString text = timeStr + "[信息]>开始导出射流冲击安全性分析报告";
-							textEdit->appendPlainText(text);
-							logWidget->update();
-							// 关键：强制刷新UI，确保日志立即显示
-							QApplication::processEvents();
-						}
-
-						JetImpactPropertyWidget* m_jetImpactPropertyWidget = gfParent->GetJetImpactPropertyWidget();
-						QTableWidget* m_jetImpactTableWid = m_jetImpactPropertyWidget->GetQTableWidget();
-
-						StressResultWidget* m_stressResultWidget = gfParent->GetJetImpactStressResultWidget();
-						QTableWidget* m_stressTableWid = m_stressResultWidget->GetQTableWidget();
-
-						StrainResultWidget* m_strainResultWidget = gfParent->GetJetImpactStrainResultWidget();
-						QTableWidget* m_strainTableWid = m_strainResultWidget->GetQTableWidget();
-
-						TemperatureResultWidget* m_temperatureResultWidget = gfParent->GetJetImpactTemperatureResultWidget();
-						QTableWidget* m_temperatureTableWid = m_temperatureResultWidget->GetQTableWidget();
-
-						OverpressureResultWidget* m_overpressureResultWidge = gfParent->GetJetImpactOverpressureResultWidget();
-						QTableWidget* m_overpressureTableWid = m_overpressureResultWidge->GetQTableWidget();
-
-						QMap<QString, QVariant> data = convertTextData(m_projectPropertyWidge,
-							m_geomPropertyWidget,
-							m_materialPropertyWidget,
-							m_databasePropertyWidget,
-							m_stressResultWidget,
-							m_strainResultWidget,
-							m_temperatureResultWidget,
-							m_overpressureResultWidge);
-
-						// 跌落输入数据
-						data.insert("测试项目", m_jetImpactTableWid->item(1, 2)->text());
-						data.insert("聚能装药口径", m_jetImpactTableWid->item(2, 2)->text());
-						data.insert("炸高", m_jetImpactTableWid->item(3, 2)->text());
-						data.insert("冲击点角度", m_jetImpactTableWid->item(4, 2)->text());
-						data.insert("温度传感器数量", m_jetImpactTableWid->item(5, 2)->text());
-						data.insert("超压传感器数量", m_jetImpactTableWid->item(6, 2)->text());
-						data.insert("风速", m_jetImpactTableWid->item(7, 2)->text());
-						
-
-
-						QMap<QString, QString> imagePaths;
-						imagePaths.insert("计算模型", QDir("src/template/main.png").absolutePath());
-						imagePaths.insert("应力云图", QDir("src/template/jetImpact/Stress.png").absolutePath());
-						imagePaths.insert("应变云图", QDir("src/template/jetImpact/Strain.png").absolutePath());
-						imagePaths.insert("温度云图", QDir("src/template/jetImpact/Temperature.png").absolutePath());
-						imagePaths.insert("超压云图", QDir("src/template/jetImpact/Overpressure.png").absolutePath());
-						QMap<QString, QVector<QVector<QVariant>>> tableData;
-
-						// 创建进度对话框
-						ProgressDialog* progressDialog = new ProgressDialog("导出射流冲击仿真计算报告进度", gfParent);
-						progressDialog->show();
-
-						// 创建工作线程和工作对象
-						WordExporterWorker* wordExporterWorker = new WordExporterWorker(QDir("src/template/射流冲击仿真计算数据表.docx").absolutePath(), directory + "/射流冲击仿真计算数据表.docx", data, imagePaths, tableData);
-						QThread* wordExporterThread = new QThread();
-						wordExporterWorker->moveToThread(wordExporterThread);
-
-						// 连接信号槽
-						connect(wordExporterThread, &QThread::started, wordExporterWorker, &WordExporterWorker::DoWork);
-						connect(wordExporterWorker, &WordExporterWorker::ProgressUpdated, progressDialog, &ProgressDialog::SetProgress);
-						connect(wordExporterWorker, &WordExporterWorker::StatusUpdated, progressDialog, &ProgressDialog::SetStatusText);
-						connect(progressDialog, &ProgressDialog::Canceled, wordExporterWorker, &WordExporterWorker::RequestInterruption, Qt::DirectConnection);
-
-						// 处理导入结果
-						connect(wordExporterWorker, &WordExporterWorker::WorkFinished, this,
-							[=](bool success, const QString& msg)
-							{
-								if (success)
-								{
-									// 更新日志
-									{
-										QDateTime currentTime = QDateTime::currentDateTime();
-										QString timeStr = currentTime.toString("yyyy-MM-dd hh:mm:ss");
-										QString text = timeStr + "[信息]>成功导出射流冲击安全性分析报告";
-										text = text + "\n" + timeStr + "[信息]>射流冲击安全性分析报告：" + directory + "/射流冲击仿真计算数据表.docx";
-										textEdit->appendPlainText(text);
-										logWidget->update();
-
-										// 关键：强制刷新UI，确保日志立即显示
-										QApplication::processEvents();
-									}
-
-								}
-								else if (!success)
-								{
-									QMessageBox::warning(this, "导出失败", msg);
-								}
-								// 清理资源
-								progressDialog->close();
-								wordExporterThread->quit();
-								wordExporterThread->wait();
-								wordExporterWorker->deleteLater();
-								wordExporterThread->deleteLater();
-								progressDialog->deleteLater();
-							});
-						// 启动线程
-						wordExporterThread->start();
-					}
-					else if (processedName == "破片撞击安全性分析")
-					{
-						{
-							QDateTime currentTime = QDateTime::currentDateTime();
-							QString timeStr = currentTime.toString("yyyy-MM-dd hh:mm:ss");
-							QString text = timeStr + "[信息]>开始导出破片撞击安全性分析报告";
-							textEdit->appendPlainText(text);
-							logWidget->update();
-							// 关键：强制刷新UI，确保日志立即显示
-							QApplication::processEvents();
-						}
-
-						FragmentationImpactPropertyWidget* m_fragmentationImpactPropertyWidget = gfParent->GetFragmentationImpactPropertyWidget();
-						QTableWidget* m_fragmentationImpactTableWid = m_fragmentationImpactPropertyWidget->GetQTableWidget();
-
-						StressResultWidget* m_stressResultWidget = gfParent->GetFragmentationImpactStressResultWidget();
-
-						StrainResultWidget* m_strainResultWidget = gfParent->GetFragmentationImpactStrainResultWidget();
-
-						TemperatureResultWidget* m_temperatureResultWidget = gfParent->GetFragmentationImpactTemperatureResultWidget();
-
-						OverpressureResultWidget* m_overpressureResultWidge = gfParent->GetFragmentationImpactOverpressureResultWidget();
-
-						QMap<QString, QVariant> data = convertTextData(m_projectPropertyWidge,
-							m_geomPropertyWidget,
-							m_materialPropertyWidget,
-							m_databasePropertyWidget,
-							m_stressResultWidget,
-							m_strainResultWidget,
-							m_temperatureResultWidget,
-							m_overpressureResultWidge);
-
-						// 跌落输入数据
-						data.insert("测试项目", m_fragmentationImpactTableWid->item(1, 2)->text());
-						data.insert("撞击速度", m_fragmentationImpactTableWid->item(2, 2)->text());
-						data.insert("撞击角度", m_fragmentationImpactTableWid->item(3, 2)->text());
-						data.insert("破片形状", m_fragmentationImpactTableWid->item(4, 2)->text());
-						data.insert("破片直径", m_fragmentationImpactTableWid->item(5, 2)->text());
-						data.insert("破片质量", m_fragmentationImpactTableWid->item(6, 2)->text());
-						data.insert("破片硬度", m_fragmentationImpactTableWid->item(7, 2)->text());
-						data.insert("温度传感器数量", m_fragmentationImpactTableWid->item(8, 2)->text());
-						data.insert("超压传感器数量", m_fragmentationImpactTableWid->item(9, 2)->text());
-						data.insert("风速", m_fragmentationImpactTableWid->item(10, 2)->text());
-
-
-						QMap<QString, QString> imagePaths;
-						imagePaths.insert("计算模型", QDir("src/template/main.png").absolutePath());
-						imagePaths.insert("应力云图", QDir("src/template/fragmentationImpact/Stress.png").absolutePath());
-						imagePaths.insert("应变云图", QDir("src/template/fragmentationImpact/Strain.png").absolutePath());
-						imagePaths.insert("温度云图", QDir("src/template/fragmentationImpact/Temperature.png").absolutePath());
-						imagePaths.insert("超压云图", QDir("src/template/fragmentationImpact/Overpressure.png").absolutePath());
-						QMap<QString, QVector<QVector<QVariant>>> tableData;
-
-						// 创建进度对话框
-						ProgressDialog* progressDialog = new ProgressDialog("导出破片撞击仿真计算报告进度", gfParent);
-						progressDialog->show();
-
-						// 创建工作线程和工作对象
-						WordExporterWorker* wordExporterWorker = new WordExporterWorker(QDir("src/template/破片撞击仿真计算数据表.docx").absolutePath(), directory + "/破片撞击仿真计算数据表.docx", data, imagePaths, tableData);
-						QThread* wordExporterThread = new QThread();
-						wordExporterWorker->moveToThread(wordExporterThread);
-
-						// 连接信号槽
-						connect(wordExporterThread, &QThread::started, wordExporterWorker, &WordExporterWorker::DoWork);
-						connect(wordExporterWorker, &WordExporterWorker::ProgressUpdated, progressDialog, &ProgressDialog::SetProgress);
-						connect(wordExporterWorker, &WordExporterWorker::StatusUpdated, progressDialog, &ProgressDialog::SetStatusText);
-						connect(progressDialog, &ProgressDialog::Canceled, wordExporterWorker, &WordExporterWorker::RequestInterruption, Qt::DirectConnection);
-
-						// 处理导入结果
-						connect(wordExporterWorker, &WordExporterWorker::WorkFinished, this,
-							[=](bool success, const QString& msg)
-							{
-								if (success)
-								{
-									// 更新日志
-									{
-										QDateTime currentTime = QDateTime::currentDateTime();
-										QString timeStr = currentTime.toString("yyyy-MM-dd hh:mm:ss");
-										QString text = timeStr + "[信息]>成功导出破片撞击安全性分析报告";
-										text = text + "\n" + timeStr + "[信息]>破片撞击安全性分析报告：" + directory + "/破片撞击仿真计算数据表.docx";
-										textEdit->appendPlainText(text);
-										logWidget->update();
-
-										// 关键：强制刷新UI，确保日志立即显示
-										QApplication::processEvents();
-									}
-
-								}
-								else if (!success)
-								{
-									QMessageBox::warning(this, "导出失败", msg);
-								}
-								// 清理资源
-								progressDialog->close();
-								wordExporterThread->quit();
-								wordExporterThread->wait();
-								wordExporterWorker->deleteLater();
-								wordExporterThread->deleteLater();
-								progressDialog->deleteLater();
-							});
-						// 启动线程
-						wordExporterThread->start();
-					}
-					else if (processedName == "爆炸冲击波安全性分析")
-					{
-						{
-							QDateTime currentTime = QDateTime::currentDateTime();
-							QString timeStr = currentTime.toString("yyyy-MM-dd hh:mm:ss");
-							QString text = timeStr + "[信息]>开始导出爆炸冲击波安全性分析报告";
-							textEdit->appendPlainText(text);
-							logWidget->update();
-							// 关键：强制刷新UI，确保日志立即显示
-							QApplication::processEvents();
-						}
-
-						ExplosiveBlastPropertyWidget* m_explosiveBlastPropertyWidget = gfParent->GetExplosiveBlastPropertyWidget();
-						QTableWidget* m_explosiveBlastTableWid = m_explosiveBlastPropertyWidget->GetQTableWidget();
-
-						StressResultWidget* m_stressResultWidget = gfParent->GetExplosiveBlastStressResultWidget();
-						QTableWidget* m_stressTableWid = m_stressResultWidget->GetQTableWidget();
-
-						StrainResultWidget* m_strainResultWidget = gfParent->GetExplosiveBlastStrainResultWidget();
-						QTableWidget* m_strainTableWid = m_strainResultWidget->GetQTableWidget();
-
-						TemperatureResultWidget* m_temperatureResultWidget = gfParent->GetExplosiveBlastTemperatureResultWidget();
-						QTableWidget* m_temperatureTableWid = m_temperatureResultWidget->GetQTableWidget();
-
-						OverpressureResultWidget* m_overpressureResultWidge = gfParent->GetExplosiveBlastOverpressureResultWidget();
-						QTableWidget* m_overpressureTableWid = m_overpressureResultWidge->GetQTableWidget();
-
-						QMap<QString, QVariant> data = convertTextData(m_projectPropertyWidge,
-							m_geomPropertyWidget,
-							m_materialPropertyWidget,
-							m_databasePropertyWidget,
-							m_stressResultWidget,
-							m_strainResultWidget,
-							m_temperatureResultWidget,
-							m_overpressureResultWidge);
-
-						// 跌落输入数据
-						data.insert("测试项目", m_explosiveBlastTableWid->item(1, 2)->text());
-						data.insert("TNT当量", m_explosiveBlastTableWid->item(2, 2)->text());
-						data.insert("入射角度", m_explosiveBlastTableWid->item(3, 2)->text());
-						data.insert("温度传感器数量", m_explosiveBlastTableWid->item(4, 2)->text());
-						data.insert("超压传感器数量", m_explosiveBlastTableWid->item(5, 2)->text());
-						data.insert("风速", m_explosiveBlastTableWid->item(6, 2)->text());
-						
-
-
-						QMap<QString, QString> imagePaths;
-						imagePaths.insert("计算模型", QDir("src/template/main.png").absolutePath());
-						imagePaths.insert("应力云图", QDir("src/template/explosiveBlast/Stress.png").absolutePath());
-						imagePaths.insert("应变云图", QDir("src/template/explosiveBlast/Strain.png").absolutePath());
-						imagePaths.insert("温度云图", QDir("src/template/explosiveBlast/Temperature.png").absolutePath());
-						imagePaths.insert("超压云图", QDir("src/template/explosiveBlast/Overpressure.png").absolutePath());
-						QMap<QString, QVector<QVector<QVariant>>> tableData;
-
-						// 创建进度对话框
-						ProgressDialog* progressDialog = new ProgressDialog("导出射流冲击仿真计算报告进度", gfParent);
-						progressDialog->show();
-
-						// 创建工作线程和工作对象
-						WordExporterWorker* wordExporterWorker = new WordExporterWorker(QDir("src/template/爆炸冲击波仿真计算数据表.docx").absolutePath(), directory + "/爆炸冲击波仿真计算数据表.docx", data, imagePaths, tableData);
-						QThread* wordExporterThread = new QThread();
-						wordExporterWorker->moveToThread(wordExporterThread);
-
-						// 连接信号槽
-						connect(wordExporterThread, &QThread::started, wordExporterWorker, &WordExporterWorker::DoWork);
-						connect(wordExporterWorker, &WordExporterWorker::ProgressUpdated, progressDialog, &ProgressDialog::SetProgress);
-						connect(wordExporterWorker, &WordExporterWorker::StatusUpdated, progressDialog, &ProgressDialog::SetStatusText);
-						connect(progressDialog, &ProgressDialog::Canceled, wordExporterWorker, &WordExporterWorker::RequestInterruption, Qt::DirectConnection);
-
-						// 处理导入结果
-						connect(wordExporterWorker, &WordExporterWorker::WorkFinished, this,
-							[=](bool success, const QString& msg)
-							{
-								if (success)
-								{
-									// 更新日志
-									{
-										QDateTime currentTime = QDateTime::currentDateTime();
-										QString timeStr = currentTime.toString("yyyy-MM-dd hh:mm:ss");
-										QString text = timeStr + "[信息]>成功导出爆炸冲击波安全性分析报告";
-										text = text + "\n" + timeStr + "[信息]>爆炸冲击波安全性分析报告：" + directory + "/爆炸冲击波仿真计算数据表.docx";
-										textEdit->appendPlainText(text);
-										logWidget->update();
-
-										// 关键：强制刷新UI，确保日志立即显示
-										QApplication::processEvents();
-									}
-
-								}
-								else if (!success)
-								{
-									QMessageBox::warning(this, "导出失败", msg);
-								}
-								// 清理资源
-								progressDialog->close();
-								wordExporterThread->quit();
-								wordExporterThread->wait();
-								wordExporterWorker->deleteLater();
-								wordExporterThread->deleteLater();
-								progressDialog->deleteLater();
-							});
-						// 启动线程
-						wordExporterThread->start();
-					}
-					else if (processedName == "殉爆安全性分析")
-					{
-						{
-							QDateTime currentTime = QDateTime::currentDateTime();
-							QString timeStr = currentTime.toString("yyyy-MM-dd hh:mm:ss");
-							QString text = timeStr + "[信息]>开始导出殉爆安全性分析报告";
-							textEdit->appendPlainText(text);
-							logWidget->update();
-							// 关键：强制刷新UI，确保日志立即显示
-							QApplication::processEvents();
-						}
-
-						SacrificeExplosionPropertyWidget* m_sacrificeExplosionPropertyWidget = gfParent->GetSacrificeExplosionPropertyWidget();
-						QTableWidget* m_sacrificeExplosionTableWid = m_sacrificeExplosionPropertyWidget->GetQTableWidget();
-
-						StressResultWidget* m_stressResultWidget = gfParent->GetSacrificeExplosionStressResultWidget();
-						QTableWidget* m_stressTableWid = m_stressResultWidget->GetQTableWidget();
-
-						StrainResultWidget* m_strainResultWidget = gfParent->GetSacrificeExplosionStrainResultWidget();
-						QTableWidget* m_strainTableWid = m_strainResultWidget->GetQTableWidget();
-
-						TemperatureResultWidget* m_temperatureResultWidget = gfParent->GetSacrificeExplosionTemperatureResultWidget();
-						QTableWidget* m_temperatureTableWid = m_temperatureResultWidget->GetQTableWidget();
-
-						OverpressureResultWidget* m_overpressureResultWidge = gfParent->GetSacrificeExplosionOverpressureResultWidget();
-						QTableWidget* m_overpressureTableWid = m_overpressureResultWidge->GetQTableWidget();
-
-						QMap<QString, QVariant> data = convertTextData(m_projectPropertyWidge,
-							m_geomPropertyWidget,
-							m_materialPropertyWidget,
-							m_databasePropertyWidget,
-							m_stressResultWidget,
-							m_strainResultWidget,
-							m_temperatureResultWidget,
-							m_overpressureResultWidge);
-
-						// 跌落输入数据
-						data.insert("测试项目", m_sacrificeExplosionTableWid->item(1, 2)->text());
-						data.insert("殉爆距离", m_sacrificeExplosionTableWid->item(2, 2)->text());
-						data.insert("模拟弹药数量", m_sacrificeExplosionTableWid->item(3, 2)->text());
-						data.insert("被发弹数量", m_sacrificeExplosionTableWid->item(4, 2)->text());
-						data.insert("温度传感器数量", m_sacrificeExplosionTableWid->item(5, 2)->text());
-						data.insert("超压传感器数量", m_sacrificeExplosionTableWid->item(6, 2)->text());
-						data.insert("风速", m_sacrificeExplosionTableWid->item(7, 2)->text());
-
-
-						QMap<QString, QString> imagePaths;
-						imagePaths.insert("计算模型", QDir("src/template/main.png").absolutePath());
-						imagePaths.insert("应力云图", QDir("src/template/sacrificeExplosio/Stress.png").absolutePath());
-						imagePaths.insert("应变云图", QDir("src/template/sacrificeExplosio/Strain.png").absolutePath());
-						imagePaths.insert("温度云图", QDir("src/template/sacrificeExplosio/Temperature.png").absolutePath());
-						imagePaths.insert("超压云图", QDir("src/template/sacrificeExplosio/Overpressure.png").absolutePath());
-						QMap<QString, QVector<QVector<QVariant>>> tableData;
-
-						// 创建进度对话框
-						ProgressDialog* progressDialog = new ProgressDialog("导出殉爆仿真计算报告进度", gfParent);
-						progressDialog->show();
-
-						// 创建工作线程和工作对象
-						WordExporterWorker* wordExporterWorker = new WordExporterWorker(QDir("src/template/殉爆仿真计算数据表.docx").absolutePath(), directory + "/殉爆仿真计算数据表.docx", data, imagePaths, tableData);
-						QThread* wordExporterThread = new QThread();
-						wordExporterWorker->moveToThread(wordExporterThread);
-
-						// 连接信号槽
-						connect(wordExporterThread, &QThread::started, wordExporterWorker, &WordExporterWorker::DoWork);
-						connect(wordExporterWorker, &WordExporterWorker::ProgressUpdated, progressDialog, &ProgressDialog::SetProgress);
-						connect(wordExporterWorker, &WordExporterWorker::StatusUpdated, progressDialog, &ProgressDialog::SetStatusText);
-						connect(progressDialog, &ProgressDialog::Canceled, wordExporterWorker, &WordExporterWorker::RequestInterruption, Qt::DirectConnection);
-
-						// 处理导入结果
-						connect(wordExporterWorker, &WordExporterWorker::WorkFinished, this,
-							[=](bool success, const QString& msg)
-							{
-								if (success)
-								{
-									// 更新日志
-									{
-										QDateTime currentTime = QDateTime::currentDateTime();
-										QString timeStr = currentTime.toString("yyyy-MM-dd hh:mm:ss");
-										QString text = timeStr + "[信息]>成功导出殉爆安全性分析报告";
-										text = text + "\n" + timeStr + "[信息]>殉爆安全性分析报告：" + directory + "/殉爆仿真计算数据表.docx";
-										textEdit->appendPlainText(text);
-										logWidget->update();
-
-										// 关键：强制刷新UI，确保日志立即显示
-										QApplication::processEvents();
-									}
-
-								}
-								else if (!success)
-								{
-									QMessageBox::warning(this, "导出失败", msg);
-								}
-								// 清理资源
-								progressDialog->close();
-								wordExporterThread->quit();
-								wordExporterThread->wait();
-								wordExporterWorker->deleteLater();
-								wordExporterThread->deleteLater();
-								progressDialog->deleteLater();
-							});
-						// 启动线程
-						wordExporterThread->start();
-					}
-				}
-			}
-			break;
-		}
-		else
-		{
-			parent = parent->parentWidget();
-		}
-	}
+	//QWidget* parent = parentWidget();
+	//while (parent) {
+	//	GFImportModelWidget* gfParent = dynamic_cast<GFImportModelWidget*>(parent);
+	//	if (gfParent)
+	//	{
+	//		auto logWidget = gfParent->GetLogWidget();
+	//		auto textEdit = logWidget->GetTextEdit();
+
+	//		ProjectPropertyWidge* m_projectPropertyWidge = gfParent->GetProjectPropertyWidget();
+	//		QTableWidget* m_projectTableWid = m_projectPropertyWidge->GetQTableWidget();
+
+	//		GeomPropertyWidget* m_geomPropertyWidget = gfParent->GetGeomPropertyWidget();
+	//		QTableWidget* m_geomTableWid = m_geomPropertyWidget->GetQTableWidget();
+
+	//		MaterialPropertyWidget* m_materialPropertyWidget = gfParent->GetMaterialPropertyWidget();
+	//		QTableWidget* m_materialTableWid = m_materialPropertyWidget->GetQTableWidget();
+
+	//		DatabasePropertyWidget* m_databasePropertyWidget = gfParent->GetDatabasePropertyWidget();
+	//		QTableWidget* m_databaseTableWid = m_databasePropertyWidget->GetQTableWidget();
+
+	//		for (int i = 0; i < item->childCount(); ++i) {
+	//			QTreeWidgetItem* childItem = item->child(i);
+	//			auto originalName = childItem->text(0);
+	//			int dotIndex = originalName.indexOf('.');
+	//			QString processedName;
+	//			if (dotIndex != -1)
+	//			{
+	//				processedName = originalName.mid(dotIndex + 1).trimmed();
+	//			}
+	//			else {
+	//				processedName = originalName;
+	//			}
+
+	//			bool isChecked = (childItem->checkState(0) == Qt::Checked);
+	//			if (isChecked)
+	//			{
+	//				if (processedName == "跌落安全性分析")
+	//				{
+	//					{
+	//						QDateTime currentTime = QDateTime::currentDateTime();
+	//						QString timeStr = currentTime.toString("yyyy-MM-dd hh:mm:ss");
+	//						QString text = timeStr + "[信息]>开始导出跌落安全性分析报告";
+	//						textEdit->appendPlainText(text);
+	//						logWidget->update();
+	//						// 关键：强制刷新UI，确保日志立即显示
+	//						QApplication::processEvents();
+	//					}
+
+	//					FallPropertyWidget* m_fallPropertyWidget = gfParent->GetFallPropertyWidget();
+	//					QTableWidget* m_fallTableWid = m_fallPropertyWidget->GetQTableWidget();
+
+	//					StressResultWidget* m_stressResultWidget = gfParent->GetStressResultWidget();
+	//					QTableWidget* m_stressTableWid = m_stressResultWidget->GetQTableWidget();
+
+	//					StrainResultWidget* m_strainResultWidget = gfParent->GetStrainResultWidget();
+	//					QTableWidget* m_strainTableWid = m_strainResultWidget->GetQTableWidget();
+
+	//					TemperatureResultWidget* m_temperatureResultWidget = gfParent->GetTemperatureResultWidget();
+	//					QTableWidget* m_temperatureTableWid = m_temperatureResultWidget->GetQTableWidget();
+
+	//					OverpressureResultWidget* m_overpressureResultWidge = gfParent->GetOverpressureResultWidget();
+	//					QTableWidget* m_overpressureTableWid = m_overpressureResultWidge->GetQTableWidget();
+
+	//					QMap<QString, QVariant> data = convertTextData(m_projectPropertyWidge,
+	//						m_geomPropertyWidget,
+	//						m_materialPropertyWidget,
+	//						m_databasePropertyWidget,
+	//						m_stressResultWidget,
+	//						m_strainResultWidget,
+	//						m_temperatureResultWidget,
+	//						m_overpressureResultWidge);
+	//					
+	//					// 跌落输入数据
+	//					data.insert("测试项目", m_fallTableWid->item(1, 2)->text());
+	//					data.insert("跌落高度", m_fallTableWid->item(2, 2)->text());
+	//					QComboBox* comboBox = qobject_cast<QComboBox*>(m_fallTableWid->cellWidget(3, 2));
+	//					if (comboBox)
+	//					{
+	//						QString selectedText = comboBox->currentText();
+	//						data.insert("跌落姿态", selectedText);
+	//					}
+	//					else
+	//					{
+	//						data.insert("跌落姿态", "");
+	//					}
+	//					data.insert("跌落钢板硬度", m_fallTableWid->item(4, 2)->text());
+	//					data.insert("温度传感器数量", m_fallTableWid->item(5, 2)->text());
+	//					if (m_fallTableWid->item(6, 2))
+	//					{
+	//						data.insert("冲击波超压传感器数量", m_fallTableWid->item(6, 2)->text());
+	//					}
+	//					else
+	//					{
+	//						data.insert("冲击波超压传感器数量", "");
+	//					}
+	//					data.insert("风速", m_fallTableWid->item(7, 2)->text());
+
+	//					
+
+	//					QMap<QString, QString> imagePaths;
+	//					imagePaths.insert("计算模型", QDir("src/template/main.png").absolutePath());
+	//					imagePaths.insert("应力云图", QDir("src/template/fall/Stress.png").absolutePath());
+	//					imagePaths.insert("应变云图", QDir("src/template/fall/Strain.png").absolutePath());
+	//					imagePaths.insert("温度云图", QDir("src/template/fall/Temperature.png").absolutePath());
+	//					imagePaths.insert("超压云图", QDir("src/template/fall/Overpressure.png").absolutePath());
+	//					QMap<QString, QVector<QVector<QVariant>>> tableData;
+
+	//					// 创建进度对话框
+	//					ProgressDialog* progressDialog = new ProgressDialog("导出跌落仿真报告进度", gfParent);
+	//					progressDialog->show();
+
+	//					// 创建工作线程和工作对象
+	//					WordExporterWorker* wordExporterWorker = new WordExporterWorker(QDir("src/template/跌落仿真计算数据表.docx").absolutePath(), directory + "/跌落仿真计算数据表.docx", data, imagePaths, tableData);
+	//					QThread* wordExporterThread = new QThread();
+	//					wordExporterWorker->moveToThread(wordExporterThread);
+
+	//					// 连接信号槽
+	//					connect(wordExporterThread, &QThread::started, wordExporterWorker, &WordExporterWorker::DoWork);
+	//					connect(wordExporterWorker, &WordExporterWorker::ProgressUpdated, progressDialog, &ProgressDialog::SetProgress);
+	//					connect(wordExporterWorker, &WordExporterWorker::StatusUpdated, progressDialog, &ProgressDialog::SetStatusText);
+	//					connect(progressDialog, &ProgressDialog::Canceled, wordExporterWorker, &WordExporterWorker::RequestInterruption, Qt::DirectConnection);
+
+	//					// 处理导入结果
+	//					connect(wordExporterWorker, &WordExporterWorker::WorkFinished, this,
+	//						[=](bool success, const QString& msg)
+	//						{
+	//							if (success)
+	//							{
+	//								// 更新日志
+	//								{
+	//									QDateTime currentTime = QDateTime::currentDateTime();
+	//									QString timeStr = currentTime.toString("yyyy-MM-dd hh:mm:ss");
+	//									QString text = timeStr + "[信息]>成功导出跌落安全性分析报告";
+	//									text = text + "\n" + timeStr + "[信息]>跌落安全性分析报告：" + directory + "/跌落仿真计算数据表.docx";
+	//									textEdit->appendPlainText(text);
+	//									logWidget->update();
+
+	//									// 关键：强制刷新UI，确保日志立即显示
+	//									QApplication::processEvents();
+	//								}
+
+	//							}
+	//							else if (!success)
+	//							{
+	//								QMessageBox::warning(this, "导出失败", msg);
+	//							}
+	//							// 清理资源
+	//							progressDialog->close();
+	//							wordExporterThread->quit();
+	//							wordExporterThread->wait();
+	//							wordExporterWorker->deleteLater();
+	//							wordExporterThread->deleteLater();
+	//							progressDialog->deleteLater();
+	//						});
+	//					// 启动线程
+	//					wordExporterThread->start();
+
+	//				}
+	//				else if (processedName == "快速烤燃安全性分析")
+	//				{
+	//					{
+	//						QDateTime currentTime = QDateTime::currentDateTime();
+	//						QString timeStr = currentTime.toString("yyyy-MM-dd hh:mm:ss");
+	//						QString text = timeStr + "[信息]>开始导出快速烤燃安全性分析报告";
+	//						textEdit->appendPlainText(text);
+	//						logWidget->update();
+	//						// 关键：强制刷新UI，确保日志立即显示
+	//						QApplication::processEvents();
+	//					}
+
+	//					FastCombustionPropertyWidget* m_fastCombustionPropertyWidget = gfParent->GetFastCombustionPropertyWidget();
+	//					QTableWidget* m_fastCombustionTableWid = m_fastCombustionPropertyWidget->GetQTableWidget();
+
+	//					TemperatureResultWidget* m_temperatureResultWidget = gfParent->GetFastCombustionTemperatureResultWidget();
+	//					QTableWidget* m_temperatureTableWid = m_temperatureResultWidget->GetQTableWidget();
+
+	//					QMap<QString, QVariant> data = convertTextData(m_projectPropertyWidge,
+	//						m_geomPropertyWidget,
+	//						m_materialPropertyWidget,
+	//						m_databasePropertyWidget,
+	//						nullptr,
+	//						nullptr,
+	//						m_temperatureResultWidget,
+	//						nullptr);
+
+	//					// 跌落输入数据
+	//					data.insert("测试项目", m_fastCombustionTableWid->item(1, 2)->text());
+	//					data.insert("燃油类型", m_fastCombustionTableWid->item(2, 2)->text());
+	//					data.insert("弹药位置", m_fastCombustionTableWid->item(3, 2)->text());
+	//					data.insert("温度传感器数量", m_fastCombustionTableWid->item(4, 2)->text());
+	//					data.insert("冲击波超压传感器数量", m_fastCombustionTableWid->item(5, 2)->text());
+	//					data.insert("风速", m_fastCombustionTableWid->item(6, 2)->text());
+	//					data.insert("火焰温度达到时间", m_fastCombustionTableWid->item(7, 2)->text());
+	//					data.insert("结束时间", m_fastCombustionTableWid->item(8, 2)->text());
+	//					data.insert("平均温度", m_fastCombustionTableWid->item(9, 2)->text());
+
+
+	//					QMap<QString, QString> imagePaths;
+	//					imagePaths.insert("计算模型", QDir("src/template/main.png").absolutePath());
+	//					imagePaths.insert("温度云图", QDir("src/template/fastCombustion/Temperature.png").absolutePath());
+	//					QMap<QString, QVector<QVector<QVariant>>> tableData;
+
+	//					// 创建进度对话框
+	//					ProgressDialog* progressDialog = new ProgressDialog("导出快速烤燃仿真计算报告进度", gfParent);
+	//					progressDialog->show();
+
+	//					// 创建工作线程和工作对象
+	//					WordExporterWorker* wordExporterWorker = new WordExporterWorker(QDir("src/template/快速烤燃仿真计算数据表.docx").absolutePath(), directory + "/快速烤燃仿真计算数据表.docx", data, imagePaths, tableData);
+	//					QThread* wordExporterThread = new QThread();
+	//					wordExporterWorker->moveToThread(wordExporterThread);
+
+	//					// 连接信号槽
+	//					connect(wordExporterThread, &QThread::started, wordExporterWorker, &WordExporterWorker::DoWork);
+	//					connect(wordExporterWorker, &WordExporterWorker::ProgressUpdated, progressDialog, &ProgressDialog::SetProgress);
+	//					connect(wordExporterWorker, &WordExporterWorker::StatusUpdated, progressDialog, &ProgressDialog::SetStatusText);
+	//					connect(progressDialog, &ProgressDialog::Canceled, wordExporterWorker, &WordExporterWorker::RequestInterruption, Qt::DirectConnection);
+
+	//					// 处理导入结果
+	//					connect(wordExporterWorker, &WordExporterWorker::WorkFinished, this,
+	//						[=](bool success, const QString& msg)
+	//						{
+	//							if (success)
+	//							{
+	//								// 更新日志
+	//								{
+	//									QDateTime currentTime = QDateTime::currentDateTime();
+	//									QString timeStr = currentTime.toString("yyyy-MM-dd hh:mm:ss");
+	//									QString text = timeStr + "[信息]>成功导出快速烤燃试安全性分析报告";
+	//									text = text + "\n" + timeStr + "[信息]>快速烤燃安全性分析报告：" + directory + "/快速烤燃仿真计算数据表.docx";
+	//									textEdit->appendPlainText(text);
+	//									logWidget->update();
+
+	//									// 关键：强制刷新UI，确保日志立即显示
+	//									QApplication::processEvents();
+	//								}
+
+	//							}
+	//							else if (!success)
+	//							{
+	//								QMessageBox::warning(this, "导出失败", msg);
+	//							}
+	//							// 清理资源
+	//							progressDialog->close();
+	//							wordExporterThread->quit();
+	//							wordExporterThread->wait();
+	//							wordExporterWorker->deleteLater();
+	//							wordExporterThread->deleteLater();
+	//							progressDialog->deleteLater();
+	//						});
+	//					// 启动线程
+	//					wordExporterThread->start();
+	//				}
+	//				else if (processedName == "慢速烤燃安全性分析")
+	//				{
+	//					{
+	//						QDateTime currentTime = QDateTime::currentDateTime();
+	//						QString timeStr = currentTime.toString("yyyy-MM-dd hh:mm:ss");
+	//						QString text = timeStr + "[信息]>开始导出慢速烤燃安全性分析报告";
+	//						textEdit->appendPlainText(text);
+	//						logWidget->update();
+	//						// 关键：强制刷新UI，确保日志立即显示
+	//						QApplication::processEvents();
+	//					}
+
+	//					SlowCombustionPropertyWidget* m_slowCombustionPropertyWidget = gfParent->GetSlowCombustionPropertyWidget();
+	//					QTableWidget* m_slowCombustionTableWid = m_slowCombustionPropertyWidget->GetQTableWidget();
+
+	//					TemperatureResultWidget* m_temperatureResultWidget = gfParent->GetSlowCombustionTemperatureResultWidget();
+	//					QTableWidget* m_temperatureTableWid = m_temperatureResultWidget->GetQTableWidget();
+
+	//					QMap<QString, QVariant> data = convertTextData(m_projectPropertyWidge,
+	//						m_geomPropertyWidget,
+	//						m_materialPropertyWidget,
+	//						m_databasePropertyWidget,
+	//						nullptr,
+	//						nullptr,
+	//						m_temperatureResultWidget,
+	//						nullptr);
+
+	//					// 跌落输入数据
+	//					data.insert("测试项目", m_slowCombustionTableWid->item(1, 2)->text());
+	//					data.insert("加热类型", m_slowCombustionTableWid->item(2, 2)->text());
+	//					data.insert("弹药位置", m_slowCombustionTableWid->item(3, 2)->text());
+	//					data.insert("温度传感器数量", m_slowCombustionTableWid->item(4, 2)->text());
+	//					data.insert("冲击波超压传感器数量", m_slowCombustionTableWid->item(5, 2)->text());
+	//					data.insert("风速", m_slowCombustionTableWid->item(6, 2)->text());
+	//					data.insert("平衡时刻", m_slowCombustionTableWid->item(7, 2)->text());
+	//					data.insert("烘箱升温速率", m_slowCombustionTableWid->item(8, 2)->text());
+	//					data.insert("烘箱终止温度}", m_slowCombustionTableWid->item(9, 2)->text());
+
+
+	//					QMap<QString, QString> imagePaths;
+	//					imagePaths.insert("计算模型", QDir("src/template/main.png").absolutePath());
+	//					imagePaths.insert("温度云图", QDir("src/template/slowCombustion/Temperature.png").absolutePath());
+	//					QMap<QString, QVector<QVector<QVariant>>> tableData;
+
+	//					// 创建进度对话框
+	//					ProgressDialog* progressDialog = new ProgressDialog("导出慢速烤燃仿真计算报告进度", gfParent);
+	//					progressDialog->show();
+
+	//					// 创建工作线程和工作对象
+	//					WordExporterWorker* wordExporterWorker = new WordExporterWorker(QDir("src/template/慢速烤燃仿真计算数据表.docx").absolutePath(), directory + "/慢速烤燃仿真计算数据表.docx", data, imagePaths, tableData);
+	//					QThread* wordExporterThread = new QThread();
+	//					wordExporterWorker->moveToThread(wordExporterThread);
+
+	//					// 连接信号槽
+	//					connect(wordExporterThread, &QThread::started, wordExporterWorker, &WordExporterWorker::DoWork);
+	//					connect(wordExporterWorker, &WordExporterWorker::ProgressUpdated, progressDialog, &ProgressDialog::SetProgress);
+	//					connect(wordExporterWorker, &WordExporterWorker::StatusUpdated, progressDialog, &ProgressDialog::SetStatusText);
+	//					connect(progressDialog, &ProgressDialog::Canceled, wordExporterWorker, &WordExporterWorker::RequestInterruption, Qt::DirectConnection);
+
+	//					// 处理导入结果
+	//					connect(wordExporterWorker, &WordExporterWorker::WorkFinished, this,
+	//						[=](bool success, const QString& msg)
+	//						{
+	//							if (success)
+	//							{
+	//								// 更新日志
+	//								{
+	//									QDateTime currentTime = QDateTime::currentDateTime();
+	//									QString timeStr = currentTime.toString("yyyy-MM-dd hh:mm:ss");
+	//									QString text = timeStr + "[信息]>成功导出慢速烤燃安全性分析报告";
+	//									text = text + "\n" + timeStr + "[信息]>慢速烤燃安全性分析报告：" + directory + "/慢速烤燃仿真计算数据表.docx";
+	//									textEdit->appendPlainText(text);
+	//									logWidget->update();
+
+	//									// 关键：强制刷新UI，确保日志立即显示
+	//									QApplication::processEvents();
+	//								}
+
+	//							}
+	//							else if (!success)
+	//							{
+	//								QMessageBox::warning(this, "导出失败", msg);
+	//							}
+	//							// 清理资源
+	//							progressDialog->close();
+	//							wordExporterThread->quit();
+	//							wordExporterThread->wait();
+	//							wordExporterWorker->deleteLater();
+	//							wordExporterThread->deleteLater();
+	//							progressDialog->deleteLater();
+	//						});
+	//					// 启动线程
+	//					wordExporterThread->start();
+	//				}
+	//				else if (processedName == "枪击安全性分析")
+	//				{
+	//					{
+	//						QDateTime currentTime = QDateTime::currentDateTime();
+	//						QString timeStr = currentTime.toString("yyyy-MM-dd hh:mm:ss");
+	//						QString text = timeStr + "[信息]>开始导出枪击安全性分析报告";
+	//						textEdit->appendPlainText(text);
+	//						logWidget->update();
+	//						// 关键：强制刷新UI，确保日志立即显示
+	//						QApplication::processEvents();
+	//					}
+
+	//					ShootPropertyWidget* m_shootPropertyWidget = gfParent->GetShootPropertyWidget();
+	//					QTableWidget* m_shootTableWid = m_shootPropertyWidget->GetQTableWidget();
+
+	//					StressResultWidget* m_stressResultWidget = gfParent->GetShootStressResultWidget();
+	//					QTableWidget* m_stressTableWid = m_stressResultWidget->GetQTableWidget();
+
+	//					StrainResultWidget* m_strainResultWidget = gfParent->GetShootStrainResultWidget();
+	//					QTableWidget* m_strainTableWid = m_strainResultWidget->GetQTableWidget();
+
+	//					TemperatureResultWidget* m_temperatureResultWidget = gfParent->GetShootTemperatureResultWidget();
+	//					QTableWidget* m_temperatureTableWid = m_temperatureResultWidget->GetQTableWidget();
+
+	//					OverpressureResultWidget* m_overpressureResultWidge = gfParent->GetShootOverpressureResultWidget();
+	//					QTableWidget* m_overpressureTableWid = m_overpressureResultWidge->GetQTableWidget();
+
+	//					QMap<QString, QVariant> data = convertTextData(m_projectPropertyWidge,
+	//						m_geomPropertyWidget,
+	//						m_materialPropertyWidget,
+	//						m_databasePropertyWidget,
+	//						m_stressResultWidget,
+	//						m_strainResultWidget,
+	//						m_temperatureResultWidget,
+	//						m_overpressureResultWidge);
+
+	//					// 跌落输入数据
+	//					data.insert("测试项目", m_shootTableWid->item(1, 2)->text());
+	//					data.insert("撞击速度", m_shootTableWid->item(2, 2)->text());
+	//					data.insert("撞击角度", m_shootTableWid->item(3, 2)->text());
+	//					data.insert("子弹型式", m_shootTableWid->item(4, 2)->text());
+	//					data.insert("子弹直径", m_shootTableWid->item(5, 2)->text());
+	//					data.insert("子弹硬度", m_shootTableWid->item(6, 2)->text());
+	//					data.insert("温度传感器数量", m_shootTableWid->item(7, 2)->text());
+	//					data.insert("超压传感器数量", m_shootTableWid->item(8, 2)->text());
+	//					data.insert("风速", m_shootTableWid->item(9, 2)->text());
+
+
+	//					QMap<QString, QString> imagePaths;
+	//					imagePaths.insert("计算模型", QDir("src/template/main.png").absolutePath());
+	//					imagePaths.insert("应力云图", QDir("src/template/shoot/Stress.png").absolutePath());
+	//					imagePaths.insert("应变云图", QDir("src/template/shoot/Strain.png").absolutePath());
+	//					imagePaths.insert("温度云图", QDir("src/template/shoot/Temperature.png").absolutePath());
+	//					imagePaths.insert("超压云图", QDir("src/template/shoot/Overpressure.png").absolutePath());
+	//					QMap<QString, QVector<QVector<QVariant>>> tableData;
+
+	//					// 创建进度对话框
+	//					ProgressDialog* progressDialog = new ProgressDialog("导出枪击仿真计算报告进度", gfParent);
+	//					progressDialog->show();
+
+	//					// 创建工作线程和工作对象
+	//					WordExporterWorker* wordExporterWorker = new WordExporterWorker(QDir("src/template/枪击仿真计算数据表.docx").absolutePath(), directory + "/枪击仿真计算数据表.docx", data, imagePaths, tableData);
+	//					QThread* wordExporterThread = new QThread();
+	//					wordExporterWorker->moveToThread(wordExporterThread);
+
+	//					// 连接信号槽
+	//					connect(wordExporterThread, &QThread::started, wordExporterWorker, &WordExporterWorker::DoWork);
+	//					connect(wordExporterWorker, &WordExporterWorker::ProgressUpdated, progressDialog, &ProgressDialog::SetProgress);
+	//					connect(wordExporterWorker, &WordExporterWorker::StatusUpdated, progressDialog, &ProgressDialog::SetStatusText);
+	//					connect(progressDialog, &ProgressDialog::Canceled, wordExporterWorker, &WordExporterWorker::RequestInterruption, Qt::DirectConnection);
+
+	//					// 处理导入结果
+	//					connect(wordExporterWorker, &WordExporterWorker::WorkFinished, this,
+	//						[=](bool success, const QString& msg)
+	//						{
+	//							if (success)
+	//							{
+	//								// 更新日志
+	//								{
+	//									QDateTime currentTime = QDateTime::currentDateTime();
+	//									QString timeStr = currentTime.toString("yyyy-MM-dd hh:mm:ss");
+	//									QString text = timeStr + "[信息]>成功导出枪击安全性分析报告";
+	//									text = text + "\n" + timeStr + "[信息]>枪击安全性分析报告：" + directory + "/枪击仿真计算数据表.docx";
+	//									textEdit->appendPlainText(text);
+	//									logWidget->update();
+
+	//									// 关键：强制刷新UI，确保日志立即显示
+	//									QApplication::processEvents();
+	//								}
+
+	//							}
+	//							else if (!success)
+	//							{
+	//								QMessageBox::warning(this, "导出失败", msg);
+	//							}
+	//							// 清理资源
+	//							progressDialog->close();
+	//							wordExporterThread->quit();
+	//							wordExporterThread->wait();
+	//							wordExporterWorker->deleteLater();
+	//							wordExporterThread->deleteLater();
+	//							progressDialog->deleteLater();
+	//						});
+	//					// 启动线程
+	//					wordExporterThread->start();
+	//				}
+	//				else if (processedName == "射流冲击安全性分析")
+	//				{
+	//					{
+	//						QDateTime currentTime = QDateTime::currentDateTime();
+	//						QString timeStr = currentTime.toString("yyyy-MM-dd hh:mm:ss");
+	//						QString text = timeStr + "[信息]>开始导出射流冲击安全性分析报告";
+	//						textEdit->appendPlainText(text);
+	//						logWidget->update();
+	//						// 关键：强制刷新UI，确保日志立即显示
+	//						QApplication::processEvents();
+	//					}
+
+	//					JetImpactPropertyWidget* m_jetImpactPropertyWidget = gfParent->GetJetImpactPropertyWidget();
+	//					QTableWidget* m_jetImpactTableWid = m_jetImpactPropertyWidget->GetQTableWidget();
+
+	//					StressResultWidget* m_stressResultWidget = gfParent->GetJetImpactStressResultWidget();
+	//					QTableWidget* m_stressTableWid = m_stressResultWidget->GetQTableWidget();
+
+	//					StrainResultWidget* m_strainResultWidget = gfParent->GetJetImpactStrainResultWidget();
+	//					QTableWidget* m_strainTableWid = m_strainResultWidget->GetQTableWidget();
+
+	//					TemperatureResultWidget* m_temperatureResultWidget = gfParent->GetJetImpactTemperatureResultWidget();
+	//					QTableWidget* m_temperatureTableWid = m_temperatureResultWidget->GetQTableWidget();
+
+	//					OverpressureResultWidget* m_overpressureResultWidge = gfParent->GetJetImpactOverpressureResultWidget();
+	//					QTableWidget* m_overpressureTableWid = m_overpressureResultWidge->GetQTableWidget();
+
+	//					QMap<QString, QVariant> data = convertTextData(m_projectPropertyWidge,
+	//						m_geomPropertyWidget,
+	//						m_materialPropertyWidget,
+	//						m_databasePropertyWidget,
+	//						m_stressResultWidget,
+	//						m_strainResultWidget,
+	//						m_temperatureResultWidget,
+	//						m_overpressureResultWidge);
+
+	//					// 跌落输入数据
+	//					data.insert("测试项目", m_jetImpactTableWid->item(1, 2)->text());
+	//					data.insert("聚能装药口径", m_jetImpactTableWid->item(2, 2)->text());
+	//					data.insert("炸高", m_jetImpactTableWid->item(3, 2)->text());
+	//					data.insert("冲击点角度", m_jetImpactTableWid->item(4, 2)->text());
+	//					data.insert("温度传感器数量", m_jetImpactTableWid->item(5, 2)->text());
+	//					data.insert("超压传感器数量", m_jetImpactTableWid->item(6, 2)->text());
+	//					data.insert("风速", m_jetImpactTableWid->item(7, 2)->text());
+	//					
+
+
+	//					QMap<QString, QString> imagePaths;
+	//					imagePaths.insert("计算模型", QDir("src/template/main.png").absolutePath());
+	//					imagePaths.insert("应力云图", QDir("src/template/jetImpact/Stress.png").absolutePath());
+	//					imagePaths.insert("应变云图", QDir("src/template/jetImpact/Strain.png").absolutePath());
+	//					imagePaths.insert("温度云图", QDir("src/template/jetImpact/Temperature.png").absolutePath());
+	//					imagePaths.insert("超压云图", QDir("src/template/jetImpact/Overpressure.png").absolutePath());
+	//					QMap<QString, QVector<QVector<QVariant>>> tableData;
+
+	//					// 创建进度对话框
+	//					ProgressDialog* progressDialog = new ProgressDialog("导出射流冲击仿真计算报告进度", gfParent);
+	//					progressDialog->show();
+
+	//					// 创建工作线程和工作对象
+	//					WordExporterWorker* wordExporterWorker = new WordExporterWorker(QDir("src/template/射流冲击仿真计算数据表.docx").absolutePath(), directory + "/射流冲击仿真计算数据表.docx", data, imagePaths, tableData);
+	//					QThread* wordExporterThread = new QThread();
+	//					wordExporterWorker->moveToThread(wordExporterThread);
+
+	//					// 连接信号槽
+	//					connect(wordExporterThread, &QThread::started, wordExporterWorker, &WordExporterWorker::DoWork);
+	//					connect(wordExporterWorker, &WordExporterWorker::ProgressUpdated, progressDialog, &ProgressDialog::SetProgress);
+	//					connect(wordExporterWorker, &WordExporterWorker::StatusUpdated, progressDialog, &ProgressDialog::SetStatusText);
+	//					connect(progressDialog, &ProgressDialog::Canceled, wordExporterWorker, &WordExporterWorker::RequestInterruption, Qt::DirectConnection);
+
+	//					// 处理导入结果
+	//					connect(wordExporterWorker, &WordExporterWorker::WorkFinished, this,
+	//						[=](bool success, const QString& msg)
+	//						{
+	//							if (success)
+	//							{
+	//								// 更新日志
+	//								{
+	//									QDateTime currentTime = QDateTime::currentDateTime();
+	//									QString timeStr = currentTime.toString("yyyy-MM-dd hh:mm:ss");
+	//									QString text = timeStr + "[信息]>成功导出射流冲击安全性分析报告";
+	//									text = text + "\n" + timeStr + "[信息]>射流冲击安全性分析报告：" + directory + "/射流冲击仿真计算数据表.docx";
+	//									textEdit->appendPlainText(text);
+	//									logWidget->update();
+
+	//									// 关键：强制刷新UI，确保日志立即显示
+	//									QApplication::processEvents();
+	//								}
+
+	//							}
+	//							else if (!success)
+	//							{
+	//								QMessageBox::warning(this, "导出失败", msg);
+	//							}
+	//							// 清理资源
+	//							progressDialog->close();
+	//							wordExporterThread->quit();
+	//							wordExporterThread->wait();
+	//							wordExporterWorker->deleteLater();
+	//							wordExporterThread->deleteLater();
+	//							progressDialog->deleteLater();
+	//						});
+	//					// 启动线程
+	//					wordExporterThread->start();
+	//				}
+	//				else if (processedName == "破片撞击安全性分析")
+	//				{
+	//					{
+	//						QDateTime currentTime = QDateTime::currentDateTime();
+	//						QString timeStr = currentTime.toString("yyyy-MM-dd hh:mm:ss");
+	//						QString text = timeStr + "[信息]>开始导出破片撞击安全性分析报告";
+	//						textEdit->appendPlainText(text);
+	//						logWidget->update();
+	//						// 关键：强制刷新UI，确保日志立即显示
+	//						QApplication::processEvents();
+	//					}
+
+	//					FragmentationImpactPropertyWidget* m_fragmentationImpactPropertyWidget = gfParent->GetFragmentationImpactPropertyWidget();
+	//					QTableWidget* m_fragmentationImpactTableWid = m_fragmentationImpactPropertyWidget->GetQTableWidget();
+
+	//					StressResultWidget* m_stressResultWidget = gfParent->GetFragmentationImpactStressResultWidget();
+
+	//					StrainResultWidget* m_strainResultWidget = gfParent->GetFragmentationImpactStrainResultWidget();
+
+	//					TemperatureResultWidget* m_temperatureResultWidget = gfParent->GetFragmentationImpactTemperatureResultWidget();
+
+	//					OverpressureResultWidget* m_overpressureResultWidge = gfParent->GetFragmentationImpactOverpressureResultWidget();
+
+	//					QMap<QString, QVariant> data = convertTextData(m_projectPropertyWidge,
+	//						m_geomPropertyWidget,
+	//						m_materialPropertyWidget,
+	//						m_databasePropertyWidget,
+	//						m_stressResultWidget,
+	//						m_strainResultWidget,
+	//						m_temperatureResultWidget,
+	//						m_overpressureResultWidge);
+
+	//					// 跌落输入数据
+	//					data.insert("测试项目", m_fragmentationImpactTableWid->item(1, 2)->text());
+	//					data.insert("撞击速度", m_fragmentationImpactTableWid->item(2, 2)->text());
+	//					data.insert("撞击角度", m_fragmentationImpactTableWid->item(3, 2)->text());
+	//					data.insert("破片形状", m_fragmentationImpactTableWid->item(4, 2)->text());
+	//					data.insert("破片直径", m_fragmentationImpactTableWid->item(5, 2)->text());
+	//					data.insert("破片质量", m_fragmentationImpactTableWid->item(6, 2)->text());
+	//					data.insert("破片硬度", m_fragmentationImpactTableWid->item(7, 2)->text());
+	//					data.insert("温度传感器数量", m_fragmentationImpactTableWid->item(8, 2)->text());
+	//					data.insert("超压传感器数量", m_fragmentationImpactTableWid->item(9, 2)->text());
+	//					data.insert("风速", m_fragmentationImpactTableWid->item(10, 2)->text());
+
+
+	//					QMap<QString, QString> imagePaths;
+	//					imagePaths.insert("计算模型", QDir("src/template/main.png").absolutePath());
+	//					imagePaths.insert("应力云图", QDir("src/template/fragmentationImpact/Stress.png").absolutePath());
+	//					imagePaths.insert("应变云图", QDir("src/template/fragmentationImpact/Strain.png").absolutePath());
+	//					imagePaths.insert("温度云图", QDir("src/template/fragmentationImpact/Temperature.png").absolutePath());
+	//					imagePaths.insert("超压云图", QDir("src/template/fragmentationImpact/Overpressure.png").absolutePath());
+	//					QMap<QString, QVector<QVector<QVariant>>> tableData;
+
+	//					// 创建进度对话框
+	//					ProgressDialog* progressDialog = new ProgressDialog("导出破片撞击仿真计算报告进度", gfParent);
+	//					progressDialog->show();
+
+	//					// 创建工作线程和工作对象
+	//					WordExporterWorker* wordExporterWorker = new WordExporterWorker(QDir("src/template/破片撞击仿真计算数据表.docx").absolutePath(), directory + "/破片撞击仿真计算数据表.docx", data, imagePaths, tableData);
+	//					QThread* wordExporterThread = new QThread();
+	//					wordExporterWorker->moveToThread(wordExporterThread);
+
+	//					// 连接信号槽
+	//					connect(wordExporterThread, &QThread::started, wordExporterWorker, &WordExporterWorker::DoWork);
+	//					connect(wordExporterWorker, &WordExporterWorker::ProgressUpdated, progressDialog, &ProgressDialog::SetProgress);
+	//					connect(wordExporterWorker, &WordExporterWorker::StatusUpdated, progressDialog, &ProgressDialog::SetStatusText);
+	//					connect(progressDialog, &ProgressDialog::Canceled, wordExporterWorker, &WordExporterWorker::RequestInterruption, Qt::DirectConnection);
+
+	//					// 处理导入结果
+	//					connect(wordExporterWorker, &WordExporterWorker::WorkFinished, this,
+	//						[=](bool success, const QString& msg)
+	//						{
+	//							if (success)
+	//							{
+	//								// 更新日志
+	//								{
+	//									QDateTime currentTime = QDateTime::currentDateTime();
+	//									QString timeStr = currentTime.toString("yyyy-MM-dd hh:mm:ss");
+	//									QString text = timeStr + "[信息]>成功导出破片撞击安全性分析报告";
+	//									text = text + "\n" + timeStr + "[信息]>破片撞击安全性分析报告：" + directory + "/破片撞击仿真计算数据表.docx";
+	//									textEdit->appendPlainText(text);
+	//									logWidget->update();
+
+	//									// 关键：强制刷新UI，确保日志立即显示
+	//									QApplication::processEvents();
+	//								}
+
+	//							}
+	//							else if (!success)
+	//							{
+	//								QMessageBox::warning(this, "导出失败", msg);
+	//							}
+	//							// 清理资源
+	//							progressDialog->close();
+	//							wordExporterThread->quit();
+	//							wordExporterThread->wait();
+	//							wordExporterWorker->deleteLater();
+	//							wordExporterThread->deleteLater();
+	//							progressDialog->deleteLater();
+	//						});
+	//					// 启动线程
+	//					wordExporterThread->start();
+	//				}
+	//				else if (processedName == "爆炸冲击波安全性分析")
+	//				{
+	//					{
+	//						QDateTime currentTime = QDateTime::currentDateTime();
+	//						QString timeStr = currentTime.toString("yyyy-MM-dd hh:mm:ss");
+	//						QString text = timeStr + "[信息]>开始导出爆炸冲击波安全性分析报告";
+	//						textEdit->appendPlainText(text);
+	//						logWidget->update();
+	//						// 关键：强制刷新UI，确保日志立即显示
+	//						QApplication::processEvents();
+	//					}
+
+	//					ExplosiveBlastPropertyWidget* m_explosiveBlastPropertyWidget = gfParent->GetExplosiveBlastPropertyWidget();
+	//					QTableWidget* m_explosiveBlastTableWid = m_explosiveBlastPropertyWidget->GetQTableWidget();
+
+	//					StressResultWidget* m_stressResultWidget = gfParent->GetExplosiveBlastStressResultWidget();
+	//					QTableWidget* m_stressTableWid = m_stressResultWidget->GetQTableWidget();
+
+	//					StrainResultWidget* m_strainResultWidget = gfParent->GetExplosiveBlastStrainResultWidget();
+	//					QTableWidget* m_strainTableWid = m_strainResultWidget->GetQTableWidget();
+
+	//					TemperatureResultWidget* m_temperatureResultWidget = gfParent->GetExplosiveBlastTemperatureResultWidget();
+	//					QTableWidget* m_temperatureTableWid = m_temperatureResultWidget->GetQTableWidget();
+
+	//					OverpressureResultWidget* m_overpressureResultWidge = gfParent->GetExplosiveBlastOverpressureResultWidget();
+	//					QTableWidget* m_overpressureTableWid = m_overpressureResultWidge->GetQTableWidget();
+
+	//					QMap<QString, QVariant> data = convertTextData(m_projectPropertyWidge,
+	//						m_geomPropertyWidget,
+	//						m_materialPropertyWidget,
+	//						m_databasePropertyWidget,
+	//						m_stressResultWidget,
+	//						m_strainResultWidget,
+	//						m_temperatureResultWidget,
+	//						m_overpressureResultWidge);
+
+	//					// 跌落输入数据
+	//					data.insert("测试项目", m_explosiveBlastTableWid->item(1, 2)->text());
+	//					data.insert("TNT当量", m_explosiveBlastTableWid->item(2, 2)->text());
+	//					data.insert("入射角度", m_explosiveBlastTableWid->item(3, 2)->text());
+	//					data.insert("温度传感器数量", m_explosiveBlastTableWid->item(4, 2)->text());
+	//					data.insert("超压传感器数量", m_explosiveBlastTableWid->item(5, 2)->text());
+	//					data.insert("风速", m_explosiveBlastTableWid->item(6, 2)->text());
+	//					
+
+
+	//					QMap<QString, QString> imagePaths;
+	//					imagePaths.insert("计算模型", QDir("src/template/main.png").absolutePath());
+	//					imagePaths.insert("应力云图", QDir("src/template/explosiveBlast/Stress.png").absolutePath());
+	//					imagePaths.insert("应变云图", QDir("src/template/explosiveBlast/Strain.png").absolutePath());
+	//					imagePaths.insert("温度云图", QDir("src/template/explosiveBlast/Temperature.png").absolutePath());
+	//					imagePaths.insert("超压云图", QDir("src/template/explosiveBlast/Overpressure.png").absolutePath());
+	//					QMap<QString, QVector<QVector<QVariant>>> tableData;
+
+	//					// 创建进度对话框
+	//					ProgressDialog* progressDialog = new ProgressDialog("导出射流冲击仿真计算报告进度", gfParent);
+	//					progressDialog->show();
+
+	//					// 创建工作线程和工作对象
+	//					WordExporterWorker* wordExporterWorker = new WordExporterWorker(QDir("src/template/爆炸冲击波仿真计算数据表.docx").absolutePath(), directory + "/爆炸冲击波仿真计算数据表.docx", data, imagePaths, tableData);
+	//					QThread* wordExporterThread = new QThread();
+	//					wordExporterWorker->moveToThread(wordExporterThread);
+
+	//					// 连接信号槽
+	//					connect(wordExporterThread, &QThread::started, wordExporterWorker, &WordExporterWorker::DoWork);
+	//					connect(wordExporterWorker, &WordExporterWorker::ProgressUpdated, progressDialog, &ProgressDialog::SetProgress);
+	//					connect(wordExporterWorker, &WordExporterWorker::StatusUpdated, progressDialog, &ProgressDialog::SetStatusText);
+	//					connect(progressDialog, &ProgressDialog::Canceled, wordExporterWorker, &WordExporterWorker::RequestInterruption, Qt::DirectConnection);
+
+	//					// 处理导入结果
+	//					connect(wordExporterWorker, &WordExporterWorker::WorkFinished, this,
+	//						[=](bool success, const QString& msg)
+	//						{
+	//							if (success)
+	//							{
+	//								// 更新日志
+	//								{
+	//									QDateTime currentTime = QDateTime::currentDateTime();
+	//									QString timeStr = currentTime.toString("yyyy-MM-dd hh:mm:ss");
+	//									QString text = timeStr + "[信息]>成功导出爆炸冲击波安全性分析报告";
+	//									text = text + "\n" + timeStr + "[信息]>爆炸冲击波安全性分析报告：" + directory + "/爆炸冲击波仿真计算数据表.docx";
+	//									textEdit->appendPlainText(text);
+	//									logWidget->update();
+
+	//									// 关键：强制刷新UI，确保日志立即显示
+	//									QApplication::processEvents();
+	//								}
+
+	//							}
+	//							else if (!success)
+	//							{
+	//								QMessageBox::warning(this, "导出失败", msg);
+	//							}
+	//							// 清理资源
+	//							progressDialog->close();
+	//							wordExporterThread->quit();
+	//							wordExporterThread->wait();
+	//							wordExporterWorker->deleteLater();
+	//							wordExporterThread->deleteLater();
+	//							progressDialog->deleteLater();
+	//						});
+	//					// 启动线程
+	//					wordExporterThread->start();
+	//				}
+	//				else if (processedName == "殉爆安全性分析")
+	//				{
+	//					{
+	//						QDateTime currentTime = QDateTime::currentDateTime();
+	//						QString timeStr = currentTime.toString("yyyy-MM-dd hh:mm:ss");
+	//						QString text = timeStr + "[信息]>开始导出殉爆安全性分析报告";
+	//						textEdit->appendPlainText(text);
+	//						logWidget->update();
+	//						// 关键：强制刷新UI，确保日志立即显示
+	//						QApplication::processEvents();
+	//					}
+
+	//					SacrificeExplosionPropertyWidget* m_sacrificeExplosionPropertyWidget = gfParent->GetSacrificeExplosionPropertyWidget();
+	//					QTableWidget* m_sacrificeExplosionTableWid = m_sacrificeExplosionPropertyWidget->GetQTableWidget();
+
+	//					StressResultWidget* m_stressResultWidget = gfParent->GetSacrificeExplosionStressResultWidget();
+	//					QTableWidget* m_stressTableWid = m_stressResultWidget->GetQTableWidget();
+
+	//					StrainResultWidget* m_strainResultWidget = gfParent->GetSacrificeExplosionStrainResultWidget();
+	//					QTableWidget* m_strainTableWid = m_strainResultWidget->GetQTableWidget();
+
+	//					TemperatureResultWidget* m_temperatureResultWidget = gfParent->GetSacrificeExplosionTemperatureResultWidget();
+	//					QTableWidget* m_temperatureTableWid = m_temperatureResultWidget->GetQTableWidget();
+
+	//					OverpressureResultWidget* m_overpressureResultWidge = gfParent->GetSacrificeExplosionOverpressureResultWidget();
+	//					QTableWidget* m_overpressureTableWid = m_overpressureResultWidge->GetQTableWidget();
+
+	//					QMap<QString, QVariant> data = convertTextData(m_projectPropertyWidge,
+	//						m_geomPropertyWidget,
+	//						m_materialPropertyWidget,
+	//						m_databasePropertyWidget,
+	//						m_stressResultWidget,
+	//						m_strainResultWidget,
+	//						m_temperatureResultWidget,
+	//						m_overpressureResultWidge);
+
+	//					// 跌落输入数据
+	//					data.insert("测试项目", m_sacrificeExplosionTableWid->item(1, 2)->text());
+	//					data.insert("殉爆距离", m_sacrificeExplosionTableWid->item(2, 2)->text());
+	//					data.insert("模拟弹药数量", m_sacrificeExplosionTableWid->item(3, 2)->text());
+	//					data.insert("被发弹数量", m_sacrificeExplosionTableWid->item(4, 2)->text());
+	//					data.insert("温度传感器数量", m_sacrificeExplosionTableWid->item(5, 2)->text());
+	//					data.insert("超压传感器数量", m_sacrificeExplosionTableWid->item(6, 2)->text());
+	//					data.insert("风速", m_sacrificeExplosionTableWid->item(7, 2)->text());
+
+
+	//					QMap<QString, QString> imagePaths;
+	//					imagePaths.insert("计算模型", QDir("src/template/main.png").absolutePath());
+	//					imagePaths.insert("应力云图", QDir("src/template/sacrificeExplosio/Stress.png").absolutePath());
+	//					imagePaths.insert("应变云图", QDir("src/template/sacrificeExplosio/Strain.png").absolutePath());
+	//					imagePaths.insert("温度云图", QDir("src/template/sacrificeExplosio/Temperature.png").absolutePath());
+	//					imagePaths.insert("超压云图", QDir("src/template/sacrificeExplosio/Overpressure.png").absolutePath());
+	//					QMap<QString, QVector<QVector<QVariant>>> tableData;
+
+	//					// 创建进度对话框
+	//					ProgressDialog* progressDialog = new ProgressDialog("导出殉爆仿真计算报告进度", gfParent);
+	//					progressDialog->show();
+
+	//					// 创建工作线程和工作对象
+	//					WordExporterWorker* wordExporterWorker = new WordExporterWorker(QDir("src/template/殉爆仿真计算数据表.docx").absolutePath(), directory + "/殉爆仿真计算数据表.docx", data, imagePaths, tableData);
+	//					QThread* wordExporterThread = new QThread();
+	//					wordExporterWorker->moveToThread(wordExporterThread);
+
+	//					// 连接信号槽
+	//					connect(wordExporterThread, &QThread::started, wordExporterWorker, &WordExporterWorker::DoWork);
+	//					connect(wordExporterWorker, &WordExporterWorker::ProgressUpdated, progressDialog, &ProgressDialog::SetProgress);
+	//					connect(wordExporterWorker, &WordExporterWorker::StatusUpdated, progressDialog, &ProgressDialog::SetStatusText);
+	//					connect(progressDialog, &ProgressDialog::Canceled, wordExporterWorker, &WordExporterWorker::RequestInterruption, Qt::DirectConnection);
+
+	//					// 处理导入结果
+	//					connect(wordExporterWorker, &WordExporterWorker::WorkFinished, this,
+	//						[=](bool success, const QString& msg)
+	//						{
+	//							if (success)
+	//							{
+	//								// 更新日志
+	//								{
+	//									QDateTime currentTime = QDateTime::currentDateTime();
+	//									QString timeStr = currentTime.toString("yyyy-MM-dd hh:mm:ss");
+	//									QString text = timeStr + "[信息]>成功导出殉爆安全性分析报告";
+	//									text = text + "\n" + timeStr + "[信息]>殉爆安全性分析报告：" + directory + "/殉爆仿真计算数据表.docx";
+	//									textEdit->appendPlainText(text);
+	//									logWidget->update();
+
+	//									// 关键：强制刷新UI，确保日志立即显示
+	//									QApplication::processEvents();
+	//								}
+
+	//							}
+	//							else if (!success)
+	//							{
+	//								QMessageBox::warning(this, "导出失败", msg);
+	//							}
+	//							// 清理资源
+	//							progressDialog->close();
+	//							wordExporterThread->quit();
+	//							wordExporterThread->wait();
+	//							wordExporterWorker->deleteLater();
+	//							wordExporterThread->deleteLater();
+	//							progressDialog->deleteLater();
+	//						});
+	//					// 启动线程
+	//					wordExporterThread->start();
+	//				}
+	//			}
+	//		}
+	//		break;
+	//	}
+	//	else
+	//	{
+	//		parent = parent->parentWidget();
+	//	}
+	//}
 }
 
 

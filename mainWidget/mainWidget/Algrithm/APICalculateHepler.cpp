@@ -151,12 +151,12 @@ bool APICalculateHepler::CalculateFallAnalysisResult(OccView* occView, std::vect
 
 	auto A = 1;
 	auto B = steelInfo.density;
-	auto C = steelInfo.modulus / 1000; 
+	auto C = 1 / 1000; 
 	auto D = steelInfo.thermalConductivity;
 	auto E = steelInfo.specificHeatCapacity;
 
 	auto F = propellantInfo.density;
-	auto G = propellantInfo.modulus / 1000;
+	auto G = 1.0 / 1000;
 	auto H = propellantInfo.thermalConductivity;
 	auto I = propellantInfo.specificHeatCapacity;
 	auto J = fallInfo.high * 1000;//跌落高度
@@ -245,22 +245,22 @@ bool APICalculateHepler::CalculateFallAnalysisResult(OccView* occView, std::vect
 
 	// 应变分析结果
 	StrainResult fallStrainResult;
-	fallStrainResult.metalsMaxStrain = fallStressResult.metalsMaxStress / steelInfo.modulus ;
-	fallStrainResult.metalsMinStrain = fallStressResult.metalsMinStress / steelInfo.modulus ;
-	fallStrainResult.metalsAvgStrain = fallStressResult.metalsAvgStress / steelInfo.modulus ;
-	fallStrainResult.metalsStandardStrain = fallStressResult.metalsStandardStress / steelInfo.modulus ;
-	fallStrainResult.propellantsMaxStrain = fallStressResult.propellantsMaxStress / propellantInfo.modulus ;
-	fallStrainResult.propellantsMinStrain = fallStressResult.propellantsMaxStress / propellantInfo.modulus ;
-	fallStrainResult.mpropellantsAvgStrain = fallStressResult.propellantsAvgStress / propellantInfo.modulus ;
-	fallStrainResult.propellantsStandardStrain = fallStressResult.propellantsStandardStress / propellantInfo.modulus ;
-	fallStrainResult.outheatMaxStrain = fallStressResult.outheatMaxStress / steelInfo.modulus ;
-	fallStrainResult.outheatMinStrain = fallStressResult.outheatMinStress / steelInfo.modulus ;
-	fallStrainResult.outheatAvgStrain = fallStressResult.outheatAvgStress / steelInfo.modulus ;
-	fallStrainResult.outheatStandardStrain = fallStressResult.outheatStandardStress / steelInfo.modulus ;
-	fallStrainResult.insulatingheatMaxStrain = fallStressResult.insulatingheatMaxStress / steelInfo.modulus ;
-	fallStrainResult.insulatingheatMinStrain = fallStressResult.insulatingheatMinStress / steelInfo.modulus ;
-	fallStrainResult.insulatingheatAvgStrain = fallStressResult.insulatingheatAvgStress / steelInfo.modulus ;
-	fallStrainResult.insulatingheatStandardStrain = fallStressResult.insulatingheatStandardStress / steelInfo.modulus;
+	fallStrainResult.metalsMaxStrain = fallStressResult.metalsMaxStress / 1 ;
+	fallStrainResult.metalsMinStrain = fallStressResult.metalsMinStress / 1 ;
+	fallStrainResult.metalsAvgStrain = fallStressResult.metalsAvgStress / 1 ;
+	fallStrainResult.metalsStandardStrain = fallStressResult.metalsStandardStress / 1 ;
+	fallStrainResult.propellantsMaxStrain = fallStressResult.propellantsMaxStress / 1.0 ;
+	fallStrainResult.propellantsMinStrain = fallStressResult.propellantsMaxStress / 1.0 ;
+	fallStrainResult.mpropellantsAvgStrain = fallStressResult.propellantsAvgStress / 1.0 ;
+	fallStrainResult.propellantsStandardStrain = fallStressResult.propellantsStandardStress / 1.0 ;
+	fallStrainResult.outheatMaxStrain = fallStressResult.outheatMaxStress / 1 ;
+	fallStrainResult.outheatMinStrain = fallStressResult.outheatMinStress / 1 ;
+	fallStrainResult.outheatAvgStrain = fallStressResult.outheatAvgStress / 1 ;
+	fallStrainResult.outheatStandardStrain = fallStressResult.outheatStandardStress / 1 ;
+	fallStrainResult.insulatingheatMaxStrain = fallStressResult.insulatingheatMaxStress / 1 ;
+	fallStrainResult.insulatingheatMinStrain = fallStressResult.insulatingheatMinStress / 1 ;
+	fallStrainResult.insulatingheatAvgStrain = fallStressResult.insulatingheatAvgStress / 1 ;
+	fallStrainResult.insulatingheatStandardStrain = fallStressResult.insulatingheatStandardStress / 1;
 	ModelDataManager::GetInstance()->SetFallStrainResult(fallStrainResult);
     
 
@@ -442,12 +442,12 @@ bool APICalculateHepler::CalculateFastCombustionAnalysisResult(OccView* occView,
 
 	auto A = 1;
 	auto B = steelInfo.density;
-	auto C = steelInfo.modulus / 1000;
+	auto C = 1 / 1000;
 	auto D = steelInfo.thermalConductivity;
 	auto E = steelInfo.specificHeatCapacity;
 
 	auto F = propellantInfo.density;
-	auto G = propellantInfo.modulus / 1000;
+	auto G = 1.0 / 1000;
 	auto H = propellantInfo.thermalConductivity;
 	auto I = propellantInfo.specificHeatCapacity;
 
@@ -576,12 +576,12 @@ bool APICalculateHepler::CalculateSlowCombustionAnalysisResult(OccView* occView,
 
 	auto A = 1;
 	auto B = steelInfo.density;
-	auto C = steelInfo.modulus / 1000;
+	auto C = 1 / 1000;
 	auto D = steelInfo.thermalConductivity;
 	auto E = steelInfo.specificHeatCapacity;
 
 	auto F = propellantInfo.density;
-	auto G = propellantInfo.modulus / 1000;
+	auto G = 1.0 / 1000;
 	auto H = propellantInfo.thermalConductivity;
 	auto I = propellantInfo.specificHeatCapacity;
 
@@ -700,12 +700,12 @@ bool APICalculateHepler::CalculateShootingAnalysisResult(OccView* occView, std::
 
 	auto A = 1;
 	auto B = steelInfo.density;
-	auto C = steelInfo.modulus / 1000;
+	auto C = 1 / 1000;
 	auto D = steelInfo.thermalConductivity;
 	auto E = steelInfo.specificHeatCapacity;
 
 	auto F = propellantInfo.density;
-	auto G = propellantInfo.modulus / 1000;
+	auto G = 1.0 / 1000;
 	auto H = propellantInfo.thermalConductivity;
 	auto I = propellantInfo.specificHeatCapacity;
 
@@ -789,22 +789,22 @@ bool APICalculateHepler::CalculateShootingAnalysisResult(OccView* occView, std::
 
 	// 应变分析结果
 	StrainResult strainResult;
-	strainResult.metalsMaxStrain = stressResult.metalsMaxStress / steelInfo.modulus ;
-	strainResult.metalsMinStrain = stressResult.metalsMinStress / steelInfo.modulus ;
-	strainResult.metalsAvgStrain = stressResult.metalsAvgStress / steelInfo.modulus ;
-	strainResult.metalsStandardStrain = stressResult.metalsStandardStress / steelInfo.modulus ;
-	strainResult.propellantsMaxStrain = stressResult.propellantsMaxStress / propellantInfo.modulus ;
-	strainResult.propellantsMinStrain = stressResult.propellantsMaxStress / propellantInfo.modulus ;
-	strainResult.mpropellantsAvgStrain = stressResult.propellantsAvgStress / propellantInfo.modulus ;
-	strainResult.propellantsStandardStrain = stressResult.propellantsStandardStress / propellantInfo.modulus ;
-	strainResult.outheatMaxStrain = stressResult.outheatMaxStress / steelInfo.modulus ;
-	strainResult.outheatMinStrain = stressResult.outheatMinStress / steelInfo.modulus ;
-	strainResult.outheatAvgStrain = stressResult.outheatAvgStress / steelInfo.modulus ;
-	strainResult.outheatStandardStrain = stressResult.outheatStandardStress / steelInfo.modulus ;
-	strainResult.insulatingheatMaxStrain = stressResult.insulatingheatMaxStress / steelInfo.modulus ;
-	strainResult.insulatingheatMinStrain = stressResult.insulatingheatMinStress / steelInfo.modulus ;
-	strainResult.insulatingheatAvgStrain = stressResult.insulatingheatAvgStress / steelInfo.modulus ;
-	strainResult.insulatingheatStandardStrain = stressResult.insulatingheatStandardStress / steelInfo.modulus ;
+	strainResult.metalsMaxStrain = stressResult.metalsMaxStress / 1 ;
+	strainResult.metalsMinStrain = stressResult.metalsMinStress / 1 ;
+	strainResult.metalsAvgStrain = stressResult.metalsAvgStress / 1 ;
+	strainResult.metalsStandardStrain = stressResult.metalsStandardStress / 1 ;
+	strainResult.propellantsMaxStrain = stressResult.propellantsMaxStress / 1.0 ;
+	strainResult.propellantsMinStrain = stressResult.propellantsMaxStress / 1.0 ;
+	strainResult.mpropellantsAvgStrain = stressResult.propellantsAvgStress / 1.0 ;
+	strainResult.propellantsStandardStrain = stressResult.propellantsStandardStress / 1.0 ;
+	strainResult.outheatMaxStrain = stressResult.outheatMaxStress / 1 ;
+	strainResult.outheatMinStrain = stressResult.outheatMinStress / 1 ;
+	strainResult.outheatAvgStrain = stressResult.outheatAvgStress / 1 ;
+	strainResult.outheatStandardStrain = stressResult.outheatStandardStress / 1 ;
+	strainResult.insulatingheatMaxStrain = stressResult.insulatingheatMaxStress / 1 ;
+	strainResult.insulatingheatMinStrain = stressResult.insulatingheatMinStress / 1 ;
+	strainResult.insulatingheatAvgStrain = stressResult.insulatingheatAvgStress / 1 ;
+	strainResult.insulatingheatStandardStrain = stressResult.insulatingheatStandardStress / 1 ;
 	ModelDataManager::GetInstance()->SetShootStrainResult(strainResult);
 
 
@@ -976,12 +976,12 @@ bool APICalculateHepler::CalculateJetImpactingAnalysisResult(OccView* occView, s
 
 	auto A = 1;
 	auto B = steelInfo.density;
-	auto C = steelInfo.modulus / 1000;
+	auto C = 1 / 1000;
 	auto D = steelInfo.thermalConductivity;
 	auto E = steelInfo.specificHeatCapacity;
 
 	auto F = propellantInfo.density;
-	auto G = propellantInfo.modulus / 1000;
+	auto G = 1.0 / 1000;
 	auto H = propellantInfo.thermalConductivity;
 	auto I = propellantInfo.specificHeatCapacity;
 
@@ -1065,22 +1065,22 @@ bool APICalculateHepler::CalculateJetImpactingAnalysisResult(OccView* occView, s
 
 	// 应变分析结果
 	StrainResult strainResult;
-	strainResult.metalsMaxStrain = stressResult.metalsMaxStress / steelInfo.modulus ;
-	strainResult.metalsMinStrain = stressResult.metalsMinStress / steelInfo.modulus ;
-	strainResult.metalsAvgStrain = stressResult.metalsAvgStress / steelInfo.modulus ;
-	strainResult.metalsStandardStrain = stressResult.metalsStandardStress / steelInfo.modulus ;
-	strainResult.propellantsMaxStrain = stressResult.propellantsMaxStress / propellantInfo.modulus ;
-	strainResult.propellantsMinStrain = stressResult.propellantsMaxStress / propellantInfo.modulus ;
-	strainResult.mpropellantsAvgStrain = stressResult.propellantsAvgStress / propellantInfo.modulus ;
-	strainResult.propellantsStandardStrain = stressResult.propellantsStandardStress / propellantInfo.modulus ;
-	strainResult.outheatMaxStrain = stressResult.outheatMaxStress / steelInfo.modulus ;
-	strainResult.outheatMinStrain = stressResult.outheatMinStress / steelInfo.modulus ;
-	strainResult.outheatAvgStrain = stressResult.outheatAvgStress / steelInfo.modulus ;
-	strainResult.outheatStandardStrain = stressResult.outheatStandardStress / steelInfo.modulus ;
-	strainResult.insulatingheatMaxStrain = stressResult.insulatingheatMaxStress / steelInfo.modulus ;
-	strainResult.insulatingheatMinStrain = stressResult.insulatingheatMinStress / steelInfo.modulus ;
-	strainResult.insulatingheatAvgStrain = stressResult.insulatingheatAvgStress / steelInfo.modulus ;
-	strainResult.insulatingheatStandardStrain = stressResult.insulatingheatStandardStress / steelInfo.modulus ;
+	strainResult.metalsMaxStrain = stressResult.metalsMaxStress / 1 ;
+	strainResult.metalsMinStrain = stressResult.metalsMinStress / 1 ;
+	strainResult.metalsAvgStrain = stressResult.metalsAvgStress / 1 ;
+	strainResult.metalsStandardStrain = stressResult.metalsStandardStress / 1 ;
+	strainResult.propellantsMaxStrain = stressResult.propellantsMaxStress / 1.0 ;
+	strainResult.propellantsMinStrain = stressResult.propellantsMaxStress / 1.0 ;
+	strainResult.mpropellantsAvgStrain = stressResult.propellantsAvgStress / 1.0 ;
+	strainResult.propellantsStandardStrain = stressResult.propellantsStandardStress / 1.0 ;
+	strainResult.outheatMaxStrain = stressResult.outheatMaxStress / 1 ;
+	strainResult.outheatMinStrain = stressResult.outheatMinStress / 1 ;
+	strainResult.outheatAvgStrain = stressResult.outheatAvgStress / 1 ;
+	strainResult.outheatStandardStrain = stressResult.outheatStandardStress / 1 ;
+	strainResult.insulatingheatMaxStrain = stressResult.insulatingheatMaxStress / 1 ;
+	strainResult.insulatingheatMinStrain = stressResult.insulatingheatMinStress / 1 ;
+	strainResult.insulatingheatAvgStrain = stressResult.insulatingheatAvgStress / 1 ;
+	strainResult.insulatingheatStandardStrain = stressResult.insulatingheatStandardStress / 1 ;
 	ModelDataManager::GetInstance()->SetJetImpactStrainResult(strainResult);
 
 
@@ -1251,12 +1251,12 @@ bool APICalculateHepler::CalculateFragmentationAnalysisResult(OccView* occView, 
 
 	auto A = 1;
 	auto B = steelInfo.density;
-	auto C = steelInfo.modulus / 1000;
+	auto C = 1 / 1000;
 	auto D = steelInfo.thermalConductivity;
 	auto E = steelInfo.specificHeatCapacity;
 
 	auto F = propellantInfo.density;
-	auto G = propellantInfo.modulus / 1000;
+	auto G = 1.0 / 1000;
 	auto H = propellantInfo.thermalConductivity;
 	auto I = propellantInfo.specificHeatCapacity;
 
@@ -1340,22 +1340,22 @@ bool APICalculateHepler::CalculateFragmentationAnalysisResult(OccView* occView, 
 
 	// 应变分析结果
 	StrainResult strainResult;
-	strainResult.metalsMaxStrain = stressResult.metalsMaxStress / steelInfo.modulus ;
-	strainResult.metalsMinStrain = stressResult.metalsMinStress / steelInfo.modulus ;
-	strainResult.metalsAvgStrain = stressResult.metalsAvgStress / steelInfo.modulus ;
-	strainResult.metalsStandardStrain = stressResult.metalsStandardStress / steelInfo.modulus ;
-	strainResult.propellantsMaxStrain = stressResult.propellantsMaxStress / propellantInfo.modulus ;
-	strainResult.propellantsMinStrain = stressResult.propellantsMaxStress / propellantInfo.modulus ;
-	strainResult.mpropellantsAvgStrain = stressResult.propellantsAvgStress / propellantInfo.modulus ;
-	strainResult.propellantsStandardStrain = stressResult.propellantsStandardStress / propellantInfo.modulus ;
-	strainResult.outheatMaxStrain = stressResult.outheatMaxStress / steelInfo.modulus ;
-	strainResult.outheatMinStrain = stressResult.outheatMinStress / steelInfo.modulus ;
-	strainResult.outheatAvgStrain = stressResult.outheatAvgStress / steelInfo.modulus ;
-	strainResult.outheatStandardStrain = stressResult.outheatStandardStress / steelInfo.modulus ;
-	strainResult.insulatingheatMaxStrain = stressResult.insulatingheatMaxStress / steelInfo.modulus ;
-	strainResult.insulatingheatMinStrain = stressResult.insulatingheatMinStress / steelInfo.modulus ;
-	strainResult.insulatingheatAvgStrain = stressResult.insulatingheatAvgStress / steelInfo.modulus ;
-	strainResult.insulatingheatStandardStrain = stressResult.insulatingheatStandardStress / steelInfo.modulus ;
+	strainResult.metalsMaxStrain = stressResult.metalsMaxStress / 1 ;
+	strainResult.metalsMinStrain = stressResult.metalsMinStress / 1 ;
+	strainResult.metalsAvgStrain = stressResult.metalsAvgStress / 1 ;
+	strainResult.metalsStandardStrain = stressResult.metalsStandardStress / 1 ;
+	strainResult.propellantsMaxStrain = stressResult.propellantsMaxStress / 1.0 ;
+	strainResult.propellantsMinStrain = stressResult.propellantsMaxStress / 1.0 ;
+	strainResult.mpropellantsAvgStrain = stressResult.propellantsAvgStress / 1.0 ;
+	strainResult.propellantsStandardStrain = stressResult.propellantsStandardStress / 1.0 ;
+	strainResult.outheatMaxStrain = stressResult.outheatMaxStress / 1 ;
+	strainResult.outheatMinStrain = stressResult.outheatMinStress / 1 ;
+	strainResult.outheatAvgStrain = stressResult.outheatAvgStress / 1 ;
+	strainResult.outheatStandardStrain = stressResult.outheatStandardStress / 1 ;
+	strainResult.insulatingheatMaxStrain = stressResult.insulatingheatMaxStress / 1 ;
+	strainResult.insulatingheatMinStrain = stressResult.insulatingheatMinStress / 1 ;
+	strainResult.insulatingheatAvgStrain = stressResult.insulatingheatAvgStress / 1 ;
+	strainResult.insulatingheatStandardStrain = stressResult.insulatingheatStandardStress / 1 ;
 	ModelDataManager::GetInstance()->SetFragmentationImpactStrainResult(strainResult);
 
 
@@ -1524,12 +1524,12 @@ bool APICalculateHepler::CalculateExplosiveBlastAnalysisResult(OccView* occView,
 
 	auto A = 1;
 	auto B = steelInfo.density;
-	auto C = steelInfo.modulus / 1000;
+	auto C = 1 / 1000;
 	auto D = steelInfo.thermalConductivity;
 	auto E = steelInfo.specificHeatCapacity;
 
 	auto F = propellantInfo.density;
-	auto G = propellantInfo.modulus / 1000;
+	auto G = 1.0 / 1000;
 	auto H = propellantInfo.thermalConductivity;
 	auto I = propellantInfo.specificHeatCapacity;
 
@@ -1618,22 +1618,22 @@ bool APICalculateHepler::CalculateExplosiveBlastAnalysisResult(OccView* occView,
 
 	// 应变分析结果
 	StrainResult strainResult;
-	strainResult.metalsMaxStrain = stressResult.metalsMaxStress / steelInfo.modulus ;
-	strainResult.metalsMinStrain = stressResult.metalsMinStress / steelInfo.modulus ;
-	strainResult.metalsAvgStrain = stressResult.metalsAvgStress / steelInfo.modulus ;
-	strainResult.metalsStandardStrain = stressResult.metalsStandardStress / steelInfo.modulus ;
-	strainResult.propellantsMaxStrain = stressResult.propellantsMaxStress / propellantInfo.modulus ;
-	strainResult.propellantsMinStrain = stressResult.propellantsMaxStress / propellantInfo.modulus ;
-	strainResult.mpropellantsAvgStrain = stressResult.propellantsAvgStress / propellantInfo.modulus ;
-	strainResult.propellantsStandardStrain = stressResult.propellantsStandardStress / propellantInfo.modulus ;
-	strainResult.outheatMaxStrain = stressResult.outheatMaxStress / steelInfo.modulus ;
-	strainResult.outheatMinStrain = stressResult.outheatMinStress / steelInfo.modulus ;
-	strainResult.outheatAvgStrain = stressResult.outheatAvgStress / steelInfo.modulus ;
-	strainResult.outheatStandardStrain = stressResult.outheatStandardStress / steelInfo.modulus ;
-	strainResult.insulatingheatMaxStrain = stressResult.insulatingheatMaxStress / steelInfo.modulus ;
-	strainResult.insulatingheatMinStrain = stressResult.insulatingheatMinStress / steelInfo.modulus ;
-	strainResult.insulatingheatAvgStrain = stressResult.insulatingheatAvgStress / steelInfo.modulus ;
-	strainResult.insulatingheatStandardStrain = stressResult.insulatingheatStandardStress / steelInfo.modulus ;
+	strainResult.metalsMaxStrain = stressResult.metalsMaxStress / 1 ;
+	strainResult.metalsMinStrain = stressResult.metalsMinStress / 1 ;
+	strainResult.metalsAvgStrain = stressResult.metalsAvgStress / 1 ;
+	strainResult.metalsStandardStrain = stressResult.metalsStandardStress / 1 ;
+	strainResult.propellantsMaxStrain = stressResult.propellantsMaxStress / 1.0 ;
+	strainResult.propellantsMinStrain = stressResult.propellantsMaxStress / 1.0 ;
+	strainResult.mpropellantsAvgStrain = stressResult.propellantsAvgStress / 1.0 ;
+	strainResult.propellantsStandardStrain = stressResult.propellantsStandardStress / 1.0 ;
+	strainResult.outheatMaxStrain = stressResult.outheatMaxStress / 1 ;
+	strainResult.outheatMinStrain = stressResult.outheatMinStress / 1 ;
+	strainResult.outheatAvgStrain = stressResult.outheatAvgStress / 1 ;
+	strainResult.outheatStandardStrain = stressResult.outheatStandardStress / 1 ;
+	strainResult.insulatingheatMaxStrain = stressResult.insulatingheatMaxStress / 1 ;
+	strainResult.insulatingheatMinStrain = stressResult.insulatingheatMinStress / 1 ;
+	strainResult.insulatingheatAvgStrain = stressResult.insulatingheatAvgStress / 1 ;
+	strainResult.insulatingheatStandardStrain = stressResult.insulatingheatStandardStress / 1 ;
 	ModelDataManager::GetInstance()->SetExplosiveBlastStrainResult(strainResult);
 
 	// 温度分析结果
@@ -1756,12 +1756,12 @@ bool APICalculateHepler::CalculateSacrificeExplosionAnalysisResult(OccView* occV
 
 	auto A = 1;
 	auto B = steelInfo.density;
-	auto C = steelInfo.modulus/1000;
+	auto C = 1/1000;
 	auto D = steelInfo.thermalConductivity;
 	auto E = steelInfo.specificHeatCapacity;
 
 	auto F = propellantInfo.density;
-	auto G = propellantInfo.modulus / 1000;
+	auto G = 1.0 / 1000;
 	auto H = propellantInfo.thermalConductivity;
 	auto I = propellantInfo.specificHeatCapacity;
 	
@@ -1845,22 +1845,22 @@ bool APICalculateHepler::CalculateSacrificeExplosionAnalysisResult(OccView* occV
 
 	// 应变分析结果
 	StrainResult strainResult;
-	strainResult.metalsMaxStrain = stressResult.metalsMaxStress / steelInfo.modulus ;
-	strainResult.metalsMinStrain = stressResult.metalsMinStress / steelInfo.modulus ;
-	strainResult.metalsAvgStrain = stressResult.metalsAvgStress / steelInfo.modulus ;
-	strainResult.metalsStandardStrain = stressResult.metalsStandardStress / steelInfo.modulus ;
-	strainResult.propellantsMaxStrain = stressResult.propellantsMaxStress / propellantInfo.modulus ;
-	strainResult.propellantsMinStrain = stressResult.propellantsMaxStress / propellantInfo.modulus ;
-	strainResult.mpropellantsAvgStrain = stressResult.propellantsAvgStress / propellantInfo.modulus ;
-	strainResult.propellantsStandardStrain = stressResult.propellantsStandardStress / propellantInfo.modulus ;
-	strainResult.outheatMaxStrain = stressResult.outheatMaxStress / steelInfo.modulus ;
-	strainResult.outheatMinStrain = stressResult.outheatMinStress / steelInfo.modulus ;
-	strainResult.outheatAvgStrain = stressResult.outheatAvgStress / steelInfo.modulus ;
-	strainResult.outheatStandardStrain = stressResult.outheatStandardStress / steelInfo.modulus ;
-	strainResult.insulatingheatMaxStrain = stressResult.insulatingheatMaxStress / steelInfo.modulus ;
-	strainResult.insulatingheatMinStrain = stressResult.insulatingheatMinStress / steelInfo.modulus ;
-	strainResult.insulatingheatAvgStrain = stressResult.insulatingheatAvgStress / steelInfo.modulus ;
-	strainResult.insulatingheatStandardStrain = stressResult.insulatingheatStandardStress / steelInfo.modulus ;
+	strainResult.metalsMaxStrain = stressResult.metalsMaxStress / 1 ;
+	strainResult.metalsMinStrain = stressResult.metalsMinStress / 1 ;
+	strainResult.metalsAvgStrain = stressResult.metalsAvgStress / 1 ;
+	strainResult.metalsStandardStrain = stressResult.metalsStandardStress / 1 ;
+	strainResult.propellantsMaxStrain = stressResult.propellantsMaxStress / 1.0 ;
+	strainResult.propellantsMinStrain = stressResult.propellantsMaxStress / 1.0 ;
+	strainResult.mpropellantsAvgStrain = stressResult.propellantsAvgStress / 1.0 ;
+	strainResult.propellantsStandardStrain = stressResult.propellantsStandardStress / 1.0 ;
+	strainResult.outheatMaxStrain = stressResult.outheatMaxStress / 1 ;
+	strainResult.outheatMinStrain = stressResult.outheatMinStress / 1 ;
+	strainResult.outheatAvgStrain = stressResult.outheatAvgStress / 1 ;
+	strainResult.outheatStandardStrain = stressResult.outheatStandardStress / 1 ;
+	strainResult.insulatingheatMaxStrain = stressResult.insulatingheatMaxStress / 1 ;
+	strainResult.insulatingheatMinStrain = stressResult.insulatingheatMinStress / 1 ;
+	strainResult.insulatingheatAvgStrain = stressResult.insulatingheatAvgStress / 1 ;
+	strainResult.insulatingheatStandardStrain = stressResult.insulatingheatStandardStress / 1 ;
 	ModelDataManager::GetInstance()->SetSacrificeExplosionStrainResult(strainResult);
 
 	// 温度分析结果

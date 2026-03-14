@@ -3,6 +3,7 @@
 #include "GeomPropertyWidget.h"
 #include <QTableWidget>
 #include <QHeaderView>
+#include <QComboBox>
 
 GeomPropertyWidget::GeomPropertyWidget(QWidget* parent)
 	:BasePropertyWidget(parent)
@@ -14,22 +15,22 @@ void GeomPropertyWidget::UpdataPropertyInfo()
 {
 	auto modelInfo = ModelDataManager::GetInstance()->GetModelGeometryInfo();
 	QTableWidgetItem* path_item = m_tableWidget->item(2, 2);
-	QTableWidgetItem* length_item = m_tableWidget->item(3, 2);
-	QTableWidgetItem* width_item = m_tableWidget->item(4, 2);
-	//QTableWidgetItem* height_item = m_tableWidget->item(5, 2);
-	QTableWidgetItem* thickness_item = m_tableWidget->item(5, 2);
+	//QTableWidgetItem* length_item = m_tableWidget->item(3, 2);
+	//QTableWidgetItem* width_item = m_tableWidget->item(4, 2);
+	////QTableWidgetItem* height_item = m_tableWidget->item(5, 2);
+	//QTableWidgetItem* thickness_item = m_tableWidget->item(5, 2);
 
-	if (path_item && length_item && width_item )
+	if (path_item )
 	{
 		path_item->setText(modelInfo.path);
-		length_item->setText(QString::number(modelInfo.length, 'f', 3));
-		width_item->setText(QString::number(modelInfo.width, 'f', 3));
-		//height_item->setText(QString::number(modelInfo.height, 'f', 3));
-		thickness_item->setText(QString::number(3, 'f', 3));
+		//length_item->setText(QString::number(modelInfo.length, 'f', 3));
+		//width_item->setText(QString::number(modelInfo.width, 'f', 3));
+		////height_item->setText(QString::number(modelInfo.height, 'f', 3));
+		//thickness_item->setText(QString::number(3, 'f', 3));
 	}
 	// 更新厚度值
-	modelInfo.thickness = thickness_item->text().toDouble();
-	ModelDataManager::GetInstance()->SetModelGeometryInfo(modelInfo);
+	//modelInfo.thickness = thickness_item->text().toDouble();
+	//ModelDataManager::GetInstance()->SetModelGeometryInfo(modelInfo);
 }
 
 void GeomPropertyWidget::initWidget()
@@ -39,7 +40,7 @@ void GeomPropertyWidget::initWidget()
 
 	m_tableWidget = new QTableWidget(this);
 	// 设置行列数，这里固定 5 行 4 列
-	m_tableWidget->setRowCount(6);
+	m_tableWidget->setRowCount(11);
 	m_tableWidget->setColumnCount(4);
 	// 隐藏表头（如果不需要显示表头文字，可根据需求决定是否隐藏）
 	m_tableWidget->horizontalHeader()->setVisible(false);
@@ -64,11 +65,11 @@ void GeomPropertyWidget::initWidget()
 	vlayout->addWidget(m_tableWidget);
 	setLayout(vlayout);
 
-	QStringList labels = { "固体发动机三维模型导入","发动机型号","来源","长","直径", "壳体厚度" };
+	QStringList labels = { "几何模型","产品型号","来源","弹体大径","等径段高度", "弹体小径", "变径段高度", "壳体厚度", "胶层厚度", "注药孔孔径", "真空孔孔径" };
 	for (int row = 0; row < labels.size(); ++row) {
 		QTableWidgetItem* serialItem = new QTableWidgetItem(QString::number(row));
 		if (row == 0) {
-			serialItem = new QTableWidgetItem("固体发动机三维模型导入");
+			serialItem = new QTableWidgetItem("几何模型");
 		}
 		serialItem->setFlags(serialItem->flags() & ~Qt::ItemIsEditable); // 不可编辑
 		m_tableWidget->setItem(row, 0, serialItem);
@@ -79,9 +80,9 @@ void GeomPropertyWidget::initWidget()
 	}
 
 	//第2列用空Label
-	QStringList emptyLabels = { " "," ","", "", "", "" };
+	QStringList emptyLabels = { " "," ","", "", "", "","","","","","" };
 	for (int row = 0; row < emptyLabels.size(); ++row) {
-		if (row == 1)
+		if (row == 1 || (row >= 3 && row <= 8))
 		{
 			QTableWidgetItem* labelItem = new QTableWidgetItem(emptyLabels[row]);
 			m_tableWidget->setItem(row, 2, labelItem);
@@ -93,10 +94,55 @@ void GeomPropertyWidget::initWidget()
 			m_tableWidget->setItem(row, 2, labelItem);
 		}
 	}
-	QTableWidgetItem* labelItem = new QTableWidgetItem("");
-	m_tableWidget->setItem(6, 2, labelItem);
+	
 
-	QStringList unitLabels = { " "," ","", "mm", "mm", "mm" };
+	QComboBox* modelComboBox = new QComboBox();
+	modelComboBox->addItems({ "产品一", "产品二", "产品三", "产品四"});
+
+	QTableWidgetItem* sourceValueItem = new QTableWidgetItem("");
+	sourceValueItem->setTextAlignment(Qt::AlignCenter); // 文本居中
+
+	QTableWidgetItem* boreDiameterValueItem = new QTableWidgetItem("391");
+	boreDiameterValueItem->setTextAlignment(Qt::AlignCenter); // 文本居中
+
+	QTableWidgetItem* equaldiameterSectionHeightValueItem = new QTableWidgetItem("560");
+	equaldiameterSectionHeightValueItem->setTextAlignment(Qt::AlignCenter); // 文本居中
+
+	QTableWidgetItem* boreRadiusValueItem = new QTableWidgetItem("0");
+	boreRadiusValueItem->setTextAlignment(Qt::AlignCenter); // 文本居中
+
+	QTableWidgetItem* variableDiameterSectionHeightValueItem = new QTableWidgetItem("0");
+	variableDiameterSectionHeightValueItem->setTextAlignment(Qt::AlignCenter); // 文本居中
+
+	QTableWidgetItem* shellThicknessValueItem = new QTableWidgetItem("20");
+	shellThicknessValueItem->setTextAlignment(Qt::AlignCenter); // 文本居中
+
+	QTableWidgetItem* gasketLayerThicknessValueItem = new QTableWidgetItem("1");
+	gasketLayerThicknessValueItem->setTextAlignment(Qt::AlignCenter); // 文本居中
+
+	QTableWidgetItem* injectionHoleDiameterValueItem = new QTableWidgetItem("20");
+	injectionHoleDiameterValueItem->setTextAlignment(Qt::AlignCenter); // 文本居中
+	injectionHoleDiameterValueItem->setFlags(injectionHoleDiameterValueItem->flags() & ~Qt::ItemIsEditable); // 不可编辑
+
+	QTableWidgetItem* vacuumHoleDiameterValueItem = new QTableWidgetItem("8");
+	vacuumHoleDiameterValueItem->setTextAlignment(Qt::AlignCenter); // 文本居中
+	vacuumHoleDiameterValueItem->setFlags(vacuumHoleDiameterValueItem->flags() & ~Qt::ItemIsEditable); // 不可编辑
+
+
+
+	m_tableWidget->setCellWidget(1, 2, modelComboBox);
+	m_tableWidget->setItem(2, 2, sourceValueItem);
+	m_tableWidget->setItem(3, 2, boreDiameterValueItem);
+	m_tableWidget->setItem(4, 2, equaldiameterSectionHeightValueItem);
+	m_tableWidget->setItem(5, 2, boreRadiusValueItem);
+	m_tableWidget->setItem(6, 2, variableDiameterSectionHeightValueItem);
+	m_tableWidget->setItem(7, 2, shellThicknessValueItem);
+	m_tableWidget->setItem(8, 2, gasketLayerThicknessValueItem);
+	m_tableWidget->setItem(9, 2, injectionHoleDiameterValueItem);
+	m_tableWidget->setItem(10, 2, vacuumHoleDiameterValueItem);
+	
+
+	QStringList unitLabels = { " "," ","", "mm", "mm", "mm", "mm", "mm", "mm", "mm", "mm" };
 	for (int row = 0; row < unitLabels.size(); ++row) {
 		if (row != 0)
 		{
@@ -107,7 +153,7 @@ void GeomPropertyWidget::initWidget()
 	}
 
 	// 设置列宽度
-	QTableWidgetItem* colimnItem = m_tableWidget->item(1, 1);
+	QTableWidgetItem* colimnItem = m_tableWidget->item(4, 1);
 	int itemWidth = QFontMetrics(m_tableWidget->font()).width(colimnItem->text());
 	m_tableWidget->setColumnWidth(1, itemWidth + m_tableWidget->verticalHeader()->width());
 
@@ -139,19 +185,77 @@ void GeomPropertyWidget::initWidget()
 		}
 	}
 
-	//// 单元格背景设置为浅灰色
-	//for (int row = 0; row < m_tableWidget->rowCount(); ++row) {
-	//	m_tableWidget->setRowHeight(row, 10);
-	//	QTableWidgetItem *item = m_tableWidget->item(row, 2);
-	//	if (item && !(item->flags() & Qt::ItemIsEditable))
-	//	{
-	//		item->setBackground(QBrush(QColor(230, 230, 230)));
-	//	}
-	//	if (row != 0)
-	//	{
-	//		QTableWidgetItem *unitItem = m_tableWidget->item(row, 3);
-	//		unitItem->setBackground(QBrush(QColor(230, 230, 230)));
-	//	}
-	//}
+	
+	
+
+	connect(m_tableWidget, &QTableWidget::itemChanged, this, [this, boreDiameterValueItem, equaldiameterSectionHeightValueItem, shellThicknessValueItem, gasketLayerThicknessValueItem](QTableWidgetItem* item) {
+		
+		if (item == boreDiameterValueItem)
+		{
+			auto text = item->text();
+			auto value = text.toDouble();
+			if (value >= 200 && value <= 1000)
+			{
+				m_boreDiameterValue = text;
+			}
+			else
+			{
+				m_tableWidget->blockSignals(true);
+				item->setText(m_boreDiameterValue);
+				m_tableWidget->blockSignals(false);
+			}
+
+		}
+		if (item == equaldiameterSectionHeightValueItem)
+		{
+			auto text = item->text();
+			auto value = text.toDouble();
+			if (value >= 200 && value <= 1000)
+			{
+				m_equaldiameterSectionHeightValue = text;
+			}
+			else
+			{
+				m_tableWidget->blockSignals(true);
+				item->setText(m_equaldiameterSectionHeightValue);
+				m_tableWidget->blockSignals(false);
+			}
+
+		}
+
+		if (item == shellThicknessValueItem )
+		{
+			auto text = item->text();
+			auto value = text.toDouble();
+			if (value >= 20 && value <= 30)
+			{
+				m_shellThicknessValue = text;
+			}
+			else
+			{
+				m_tableWidget->blockSignals(true);
+				item->setText(m_shellThicknessValue);
+				m_tableWidget->blockSignals(false);
+			}
+
+		}
+
+		if (item == gasketLayerThicknessValueItem)
+		{
+			auto text = item->text();
+			auto value = text.toDouble();
+			if (value >= 1 && value <= 5)
+			{
+				m_gasketLayerThicknessValue = text;
+			}
+			else
+			{
+				m_tableWidget->blockSignals(true);
+				item->setText(m_gasketLayerThicknessValue);
+				m_tableWidget->blockSignals(false);
+			}
+
+		}
+	});
 
 }

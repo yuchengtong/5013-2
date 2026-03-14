@@ -28,7 +28,7 @@ void PropellantPropertyWidget::initWidget()
 
 	m_tableWidget = new QTableWidget(this);
 
-	m_tableWidget->setRowCount(25);
+	m_tableWidget->setRowCount(6);
 	m_tableWidget->setColumnCount(4);
 	// 隐藏表头（如果不需要显示表头文字，可根据需求决定是否隐藏）
 	m_tableWidget->horizontalHeader()->setVisible(false);
@@ -51,7 +51,7 @@ void PropellantPropertyWidget::initWidget()
 	vlayout->addWidget(m_tableWidget);
 	setLayout(vlayout);
 
-	QStringList labels = { "材料属性","材料牌号","类别", "密度", "热膨胀系数", "弹性模量","切线模量","泊松比","发火温度","发火超压","10^-5发火概率摩擦感度", "热导率","比热容","I","a","b","c","d","G1","e" ,"g" ,"x" ,"y" ,"z" ,"G2" };
+	QStringList labels = { "材料属性","药液名称","药液类型", "密度", "导热系数","比热容" };
 	for (int row = 0; row < labels.size(); ++row) {
 		QTableWidgetItem* serialItem = new QTableWidgetItem(QString::number(row));
 		if (row == 0) {
@@ -75,12 +75,12 @@ void PropellantPropertyWidget::initWidget()
 	}
 
 	// 设置列宽度
-	QTableWidgetItem *colimnItem = m_tableWidget->item(10, 1);
+	QTableWidgetItem *colimnItem = m_tableWidget->item(1, 1);
 	int itemWidth = QFontMetrics(m_tableWidget->font()).width(colimnItem->text());
 	m_tableWidget->setColumnWidth(1, itemWidth + m_tableWidget->verticalHeader()->width());
 
 	// 单位列
-	QStringList unitLabels = { " "," "," ", "kg/m^3", "/℃", "MPa","MPa"," ","℃","MPa","N", "W/(m∙℃)","J/(kg∙℃)"," "," "," "," "," "," "," " ," " ," " ," " ," " ," " };
+	QStringList unitLabels = { " "," "," ", "kg/m^3", "W/(m∙℃)","J/(kg∙℃)" };
 	for (int row = 0; row < unitLabels.size(); ++row) {
 		if (row != 0)
 		{
@@ -91,7 +91,7 @@ void PropellantPropertyWidget::initWidget()
 
 	}
 
-	QTableWidgetItem* unitColimnItem = m_tableWidget->item(12, 3);
+	QTableWidgetItem* unitColimnItem = m_tableWidget->item(5, 3);
 	int unitItemWidth = QFontMetrics(m_tableWidget->font()).width(unitColimnItem->text());
 	m_tableWidget->setColumnWidth(3, unitItemWidth + m_tableWidget->verticalHeader()->width());
 
@@ -170,7 +170,7 @@ void PropellantPropertyWidget::initWidget()
 void PropellantPropertyWidget::showTableDialog() 
 {
 	QDialog *dialog = new QDialog();
-	dialog->setWindowTitle("含能材料");
+	dialog->setWindowTitle("药液材料");
 	dialog->resize(1000, 500);
 	QVBoxLayout *layout = new QVBoxLayout(this);
 
@@ -180,7 +180,7 @@ void PropellantPropertyWidget::showTableDialog()
 	// 隐藏列号
 	diaTableWidget->horizontalHeader()->setVisible(false);
 	QDir dir;
-	QString filepath = dir.absoluteFilePath("src/database/推进剂材料.xlsx");
+	QString filepath = dir.absoluteFilePath("src/database/药液物性材料.xlsx");
 	int m_rowCount = 0;
 	if (!filepath.isEmpty()) {
 		QXlsx::Document xlsx(filepath);
@@ -203,7 +203,7 @@ void PropellantPropertyWidget::showTableDialog()
 	// 私有库
 	auto ins = ModelDataManager::GetInstance();
 	UserInfo info = ins->GetUserInfo();
-	QString privateFilePath = dir.absoluteFilePath("src/database/" + info.username + "/推进剂材料.xlsx");
+	QString privateFilePath = dir.absoluteFilePath("src/database/" + info.username + "/药液物性材料.xlsx");
 
 
 	QFile file(privateFilePath);
@@ -246,28 +246,11 @@ void PropellantPropertyWidget::showTableDialog()
 			auto ins = ModelDataManager::GetInstance();
 			PropellantPropertyInfo info;
 			info.materialGrade = m_tableWidget->item(1, 2)->text();
+			info.type = m_tableWidget->item(2, 2)->text().toDouble();
 			info.density = m_tableWidget->item(3, 2)->text().toDouble();
-			info.thermalExpansion = m_tableWidget->item(4, 2)->text().toDouble();
-			info.modulus = m_tableWidget->item(5, 2)->text().toDouble();
-			info.tangentModulus = m_tableWidget->item(6, 2)->text().toDouble();
-			info.poisonby = m_tableWidget->item(7, 2)->text().toDouble();
-			info.ignitionTemperature = m_tableWidget->item(8, 2)->text().toDouble();
-			info.fireOverpressure = m_tableWidget->item(9, 2)->text().toDouble();
-			info.frictionSensitivity = m_tableWidget->item(10, 2)->text().toDouble();
-			info.thermalConductivity = m_tableWidget->item(11, 2)->text().toDouble();
-			info.specificHeatCapacity = m_tableWidget->item(12, 2)->text().toDouble();
-			info.i = m_tableWidget->item(13, 2)->text().toDouble();
-			info.a = m_tableWidget->item(14, 2)->text().toDouble();
-			info.b = m_tableWidget->item(15, 2)->text().toDouble();
-			info.c = m_tableWidget->item(16, 2)->text().toDouble();
-			info.d = m_tableWidget->item(17, 2)->text().toDouble();
-			info.g_1 = m_tableWidget->item(18, 2)->text().toDouble();
-			info.e = m_tableWidget->item(19, 2)->text().toDouble();
-			info.g = m_tableWidget->item(20, 2)->text().toDouble();
-			info.x = m_tableWidget->item(21, 2)->text().toDouble();
-			info.y = m_tableWidget->item(22, 2)->text().toDouble();
-			info.z = m_tableWidget->item(23, 2)->text().toDouble();
-			info.g_2 = m_tableWidget->item(24, 2)->text().toDouble();
+			info.thermalConductivity = m_tableWidget->item(4, 2)->text().toDouble();
+			info.specificHeatCapacity = m_tableWidget->item(5, 2)->text().toDouble();
+			
 			info.isChecked = true;
 			ins->SetPropellantPropertyInfo(info);
 
@@ -283,7 +266,7 @@ void PropellantPropertyWidget::showTableDialog()
 					QString timeStr = currentTime.toString("yyyy-MM-dd hh:mm:ss");
 					auto logWidget = gfParent->GetLogWidget();
 					auto textEdit = logWidget->GetTextEdit();
-					QString text = timeStr + "[信息]>开始导入含能材料数据";
+					QString text = timeStr + "[信息]>开始导入药液材料数据";
 					textEdit->appendPlainText(text);
 					logWidget->update();
 

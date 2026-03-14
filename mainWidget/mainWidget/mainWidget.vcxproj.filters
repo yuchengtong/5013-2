@@ -88,15 +88,6 @@
     <ClCompile Include="PropertyWidget\SettingPropertyWidget.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="PropertyWidget\FallPropertyWidget.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="PropertyWidget\FastCombustionPropertyWidget.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="PropertyWidget\SlowCombustionPropertyWidget.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="PropertyWidget\StressResultWidget.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -133,9 +124,6 @@
     <ClCompile Include="PropertyWidget\JudgmentPropertyWidget.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="PropertyWidget\OutheatPropertyWidget.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="GFTreeWidget.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -149,21 +137,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="PropertyWidget\DatabasePropertyWidget.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="PropertyWidget\ExplosiveBlastPropertyWidget.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="PropertyWidget\FragmentationImpactPropertyWidget.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="PropertyWidget\JetImpactPropertyWidget.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="PropertyWidget\SacrificeExplosionPropertyWidget.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="PropertyWidget\ShootPropertyWidget.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="PropertyWidget\StrainResultWidget.cpp">
@@ -238,6 +211,18 @@
     <ClCompile Include="CalculateWorker.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="PropertyWidget\PreForwardDesignPropertyWidget.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PropertyWidget\PreReverseOptimizationPropertyWidget.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PropertyWidget\InForwardDesignPropertyWidget.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PropertyWidget\InReverseOptimizationPropertyWidget.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="occView.h">
@@ -285,15 +270,6 @@
     <QtMoc Include="PropertyWidget\SettingPropertyWidget.h">
       <Filter>Header Files</Filter>
     </QtMoc>
-    <QtMoc Include="PropertyWidget\FallPropertyWidget.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
-    <QtMoc Include="PropertyWidget\FastCombustionPropertyWidget.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
-    <QtMoc Include="PropertyWidget\SlowCombustionPropertyWidget.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
     <QtMoc Include="PropertyWidget\OverpressureResultWidget.h">
       <Filter>Header Files</Filter>
     </QtMoc>
@@ -327,9 +303,6 @@
     <QtMoc Include="PropertyWidget\JudgmentPropertyWidget.h">
       <Filter>Header Files</Filter>
     </QtMoc>
-    <QtMoc Include="PropertyWidget\OutheatPropertyWidget.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
     <QtMoc Include="GFTreeWidgetItemDelegate.h">
       <Filter>Header Files</Filter>
     </QtMoc>
@@ -343,21 +316,6 @@
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="PropertyWidget\DatabasePropertyWidget.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
-    <QtMoc Include="PropertyWidget\ExplosiveBlastPropertyWidget.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
-    <QtMoc Include="PropertyWidget\FragmentationImpactPropertyWidget.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
-    <QtMoc Include="PropertyWidget\JetImpactPropertyWidget.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
-    <QtMoc Include="PropertyWidget\SacrificeExplosionPropertyWidget.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
-    <QtMoc Include="PropertyWidget\ShootPropertyWidget.h">
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="PropertyWidget\StrainResultWidget.h">
@@ -418,6 +376,18 @@
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="CalculateWorker.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="PropertyWidget\PreForwardDesignPropertyWidget.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="PropertyWidget\PreReverseOptimizationPropertyWidget.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="PropertyWidget\InForwardDesignPropertyWidget.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="PropertyWidget\InReverseOptimizationPropertyWidget.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>

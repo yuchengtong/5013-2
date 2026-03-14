@@ -21,7 +21,7 @@ void MaterialPropertyWidget::initWidget()
 
 	m_tableWidget = new QTableWidget(this);
 	// 设置行列数，这里固定 3 行 2 列（对应示例里的 3 条属性），也可动态调整
-	m_tableWidget->setRowCount(5);
+	m_tableWidget->setRowCount(4);
 	m_tableWidget->setColumnCount(3);
 	// 隐藏表头（如果不需要显示表头文字，可根据需求决定是否隐藏）
 	m_tableWidget->horizontalHeader()->setVisible(false);
@@ -46,29 +46,7 @@ void MaterialPropertyWidget::initWidget()
 
 	
 	
-	QDir dir;
-	int propellanRow = 0;
-	QString propellanPath = dir.absoluteFilePath("src/database/推进剂材料.xlsx");
-	if (!propellanPath.isEmpty()) {
-		QXlsx::Document xlsx(propellanPath);
-		int row = xlsx.dimension().lastRow(); // 获取总行数
-		if (row > 0) {
-			propellanRow = row -1;
-		}
-	}
-
-	int steelRow = 0;
-	QString steelPath = dir.absoluteFilePath("src/database/壳体材料.xlsx");
-	if (!steelPath.isEmpty()) {
-		QXlsx::Document xlsx(steelPath);
-		int row  = xlsx.dimension().lastRow(); // 获取总行数
-		if (row > 0) {
-			steelRow = row -1;
-		}
-	}
-
-	
-	QStringList labels = { "材料数据库", "壳体材料", "含能材料", "外防热材料", "防隔热材料" };
+	QStringList labels = { "物性数据库", "壳体材料", "药液材料", "明胶材料" };
 	for (int row = 0; row < labels.size(); ++row) {
 		QTableWidgetItem* serialItem = new QTableWidgetItem(QString::number(row));
 		if (row == 0) {
@@ -96,21 +74,7 @@ void MaterialPropertyWidget::initWidget()
 	}
 
 
-	
 
-	//QTableWidgetItem* titleValueItem = new QTableWidgetItem("数量");
-	//titleValueItem->setFlags(titleValueItem->flags() & ~Qt::ItemIsEditable); // 不可编辑
-	//m_tableWidget->setItem(1, 2, titleValueItem);
-
-
-	//QTableWidgetItem* steelNumItem = new QTableWidgetItem(QString::number(steelRow));
-	//steelNumItem->setFlags(steelNumItem->flags() & ~Qt::ItemIsEditable); // 不可编辑
-	//m_tableWidget->setItem(2, 2, steelNumItem);
-
-
-	//QTableWidgetItem* propellanNumItem = new QTableWidgetItem(QString::number(propellanRow));
-	//propellanNumItem->setFlags(propellanNumItem->flags() & ~Qt::ItemIsEditable); // 不可编辑
-	//m_tableWidget->setItem(3, 2, propellanNumItem);
 	
 	//文本左对齐
 	for (int row = 0; row < m_tableWidget->rowCount(); ++row) {

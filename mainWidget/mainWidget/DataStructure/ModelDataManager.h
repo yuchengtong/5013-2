@@ -190,13 +190,8 @@ struct SacrificeExplosionAnalysisResultInfo {
 // 壳体材料
 struct SteelPropertyInfo {
 	QString materialGrade = ""; // 材料牌号
+	QString type = ""; // 材料类型
 	double density = 0.0; // 密度
-	double thermalExpansion = 0.0;// 热膨胀系数
-	double modulus = 0.0;// 弹性模量
-	double tangentModulus = 0.0;// 切线模量
-	double poisonby = 0.0;// 泊松比
-	double yieldStrength = 0.0;// 屈服强度
-	double tensileStrength = 0.0;// 抗拉强度
 	double thermalConductivity = 0.0;// 热导率
 	double specificHeatCapacity = 0.0;// 比热容
 	bool isChecked = false;
@@ -204,41 +199,18 @@ struct SteelPropertyInfo {
 // 推进剂材料
 struct PropellantPropertyInfo {
 	QString materialGrade = ""; // 材料牌号
+	QString type = ""; // 材料类型
 	double density = 0.0; // 密度
-	double thermalExpansion = 0.0;// 热膨胀系数
-	double modulus = 0.0;// 弹性模量
-	double tangentModulus = 0.0;// 切线模量
-	double poisonby = 0.0;// 泊松比
-	double ignitionTemperature = 0.0;// 发火温度
-	double fireOverpressure = 0.0;// 发火超压
-	double frictionSensitivity = 0.0;// 10^-5发火概率摩擦感度
 	double thermalConductivity = 0.0;// 热导率
 	double specificHeatCapacity = 0.0;// 比热容
-	double i = 0.0;
-	double a = 0.0;
-	double b = 0.0;
-	double c = 0.0;
-	double d = 0.0;
-	double g_1 = 0.0;
-	double e = 0.0;
-	double g = 0.0;
-	double x = 0.0;
-	double y = 0.0;
-	double z = 0.0;
-	double g_2 = 0.0;
 	bool isChecked = false;
 };
 
 // 防隔热材料
 struct InsulatingheatPropertyInfo {
 	QString materialGrade = ""; // 材料牌号
+	QString type = ""; // 材料类型
 	double density = 0.0; // 密度
-	double thermalExpansion = 0.0;// 热膨胀系数
-	double modulus = 0.0;// 弹性模量
-	double tangentModulus = 0.0;// 切线模量
-	double poisonby = 0.0;// 泊松比
-	double yieldStrength = 0.0;// 屈服强度
-	double tensileStrength = 0.0;// 抗拉强度
 	double thermalConductivity = 0.0;// 热导率
 	double specificHeatCapacity = 0.0;// 比热容
 	bool isChecked = false;

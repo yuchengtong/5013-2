@@ -19,4 +19,9 @@ private:
 private:
 	QTableWidget* m_tableWidget = nullptr;
 
+	QString m_boreDiameterValue = "391";
+	QString m_equaldiameterSectionHeightValue = "560";
+	QString m_shellThicknessValue = "20";
+	QString m_gasketLayerThicknessValue = "1";
+
 };

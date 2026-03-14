@@ -22,7 +22,7 @@ void CalculationPropertyWidget::initWidget()
 
 	m_tableWidget = new QTableWidget(this);
 
-	m_tableWidget->setRowCount(9);
+	m_tableWidget->setRowCount(3);
 	m_tableWidget->setColumnCount(3);
 	// 隐藏表头（如果不需要显示表头文字，可根据需求决定是否隐藏）
 	m_tableWidget->horizontalHeader()->setVisible(false);
@@ -42,7 +42,8 @@ void CalculationPropertyWidget::initWidget()
 	vlayout->addWidget(m_tableWidget);
 	setLayout(vlayout);
 
-	QStringList labels = { "计算模型数据库", "跌落模型", "快速烤燃模型", "慢速烤燃模型", "枪击模型","射流冲击模型","破片撞击模型","爆炸冲击波模型","殉爆模型" };
+	QStringList labels = { "计算模型数据库", "预热工艺模型", "注药工艺模型" };
+	QStringList units = { " ", "预热通用代理模型", "产品一代理模型" };
 	for (int row = 0; row < labels.size(); ++row) {
 
 		QTableWidgetItem* serialItem = new QTableWidgetItem(QString::number(row));
@@ -57,7 +58,7 @@ void CalculationPropertyWidget::initWidget()
 		labelItem->setFlags(labelItem->flags() & ~Qt::ItemIsEditable); // 不可编辑
 		m_tableWidget->setItem(row, 1, labelItem);
 
-		QTableWidgetItem* valueItem = new QTableWidgetItem("");
+		QTableWidgetItem* valueItem = new QTableWidgetItem(units[row]);
 		valueItem->setTextAlignment(Qt::AlignCenter); // 文本居中
 		valueItem->setFlags(valueItem->flags() & ~Qt::ItemIsEditable); // 不可编辑
 		m_tableWidget->setItem(row, 2, valueItem);
@@ -65,7 +66,7 @@ void CalculationPropertyWidget::initWidget()
 	}
 
 	// 设置列宽度
-	QTableWidgetItem *colimnItem = m_tableWidget->item(4, 1);
+	QTableWidgetItem *colimnItem = m_tableWidget->item(1, 1);
 	int itemWidth = QFontMetrics(m_tableWidget->font()).width(colimnItem->text());
 	m_tableWidget->setColumnWidth(1, itemWidth + m_tableWidget->verticalHeader()->width());
 

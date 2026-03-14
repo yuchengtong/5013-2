@@ -274,10 +274,10 @@ QMap<int, QWidget*> AuxiliaryAnalysisWidget::getChartWidget()
 void AuxiliaryAnalysisWidget::updateAllData()
 {
 
-	auto tensileStrength = ModelDataManager::GetInstance()->GetSteelPropertyInfo().tensileStrength;	// 壳体抗拉强度
-	auto modulus = ModelDataManager::GetInstance()->GetSteelPropertyInfo().modulus;	// 壳体杨氏模量
-	auto ignitionTemperature = ModelDataManager::GetInstance()->GetPropellantPropertyInfo().ignitionTemperature; // 推进剂发火温度
-	auto fireOverpressure = ModelDataManager::GetInstance()->GetPropellantPropertyInfo().fireOverpressure; // 推进剂发火超压
+	auto tensileStrength = 1;	// 壳体抗拉强度
+	auto modulus = 1;	// 壳体杨氏模量
+	auto ignitionTemperature = 1.0; // 推进剂发火温度
+	auto fireOverpressure = 1.0; // 推进剂发火超压
 
 	QStringList unitList = { "MPa", "℃", "MPa", "no" };
 	QStringList tempUnitList = { "℃", "℃", "℃", "℃" };
@@ -323,7 +323,7 @@ void AuxiliaryAnalysisWidget::updateAllData()
 	datasets1[3] = { m_FallStrainResult.metalsMaxStrain, m_FallStrainResult.propellantsMaxStrain, m_FallStrainResult.outheatMaxStrain, m_FallStrainResult.insulatingheatMaxStrain,
 	 m_FallStrainResult.metalsMinStrain,  m_FallStrainResult.propellantsMinStrain,  m_FallStrainResult.outheatMinStrain,  m_FallStrainResult.insulatingheatMinStrain, };
 	
-	QVector<double> m_fallStandardValues = { tensileStrength, ignitionTemperature, fireOverpressure, tensileStrength/ modulus };
+	QVector<double> m_fallStandardValues = { 1, ignitionTemperature, fireOverpressure, 1.0/ modulus };
 	m_polarChart1->updateDatasets(datasets1, labelGroups, m_fallStandardValues, unitList);
 
 	
@@ -368,7 +368,7 @@ void AuxiliaryAnalysisWidget::updateAllData()
 	datasets4[3] = { m_ShootStrainResult.metalsMaxStrain, m_ShootStrainResult.propellantsMaxStrain, m_ShootStrainResult.outheatMaxStrain, m_ShootStrainResult.insulatingheatMaxStrain,
 	 m_ShootStrainResult.metalsMinStrain,  m_ShootStrainResult.propellantsMinStrain,  m_ShootStrainResult.outheatMinStrain,  m_ShootStrainResult.insulatingheatMinStrain, };
 	
-	QVector<double> m_ShootStandardValues = { tensileStrength, ignitionTemperature, fireOverpressure, tensileStrength / modulus };
+	QVector<double> m_ShootStandardValues = { 1, ignitionTemperature, fireOverpressure, 1.0 / modulus };
 	m_polarChart4->updateDatasets(datasets4, labelGroups, m_ShootStandardValues, unitList);
 
 	// 射流冲击计算结果
@@ -387,7 +387,7 @@ void AuxiliaryAnalysisWidget::updateAllData()
 	datasets5[3] = { m_JetImpactStrainResult.metalsMaxStrain, m_JetImpactStrainResult.propellantsMaxStrain, m_JetImpactStrainResult.outheatMaxStrain, m_JetImpactStrainResult.insulatingheatMaxStrain,
 	 m_JetImpactStrainResult.metalsMinStrain,  m_JetImpactStrainResult.propellantsMinStrain,  m_JetImpactStrainResult.outheatMinStrain,  m_JetImpactStrainResult.insulatingheatMinStrain, };
 	
-	QVector<double> m_JetImpactStandardValues = { tensileStrength, ignitionTemperature, fireOverpressure, tensileStrength / modulus };
+	QVector<double> m_JetImpactStandardValues = { 1, ignitionTemperature, fireOverpressure, 1.0 / modulus };
 	m_polarChart5->updateDatasets(datasets5, labelGroups, m_JetImpactStandardValues, unitList);
 
 	// 破片撞击计算结果
@@ -406,7 +406,7 @@ void AuxiliaryAnalysisWidget::updateAllData()
 	datasets6[3] = { m_FragmentationImpactStrainResult.metalsMaxStrain, m_FragmentationImpactStrainResult.propellantsMaxStrain, m_FragmentationImpactStrainResult.outheatMaxStrain, m_FragmentationImpactStrainResult.insulatingheatMaxStrain,
 	 m_FragmentationImpactStrainResult.metalsMinStrain,  m_FragmentationImpactStrainResult.propellantsMinStrain,  m_FragmentationImpactStrainResult.outheatMinStrain,  m_FragmentationImpactStrainResult.insulatingheatMinStrain, };
 	
-	QVector<double> m_FragmentationImpactStandardValues = { tensileStrength, ignitionTemperature, fireOverpressure, tensileStrength / modulus };
+	QVector<double> m_FragmentationImpactStandardValues = { 1, ignitionTemperature, fireOverpressure, 1.0 / modulus };
 	m_polarChart6->updateDatasets(datasets6, labelGroups, m_FragmentationImpactStandardValues, unitList);
 
 	// 爆炸冲击波计算结果
@@ -425,7 +425,7 @@ void AuxiliaryAnalysisWidget::updateAllData()
 	datasets7[3] = { m_ExplosiveBlastStrainResult.metalsMaxStrain, m_ExplosiveBlastStrainResult.propellantsMaxStrain, m_ExplosiveBlastStrainResult.outheatMaxStrain, m_ExplosiveBlastStrainResult.insulatingheatMaxStrain,
 	 m_ExplosiveBlastStrainResult.metalsMinStrain,  m_ExplosiveBlastStrainResult.propellantsMinStrain,  m_ExplosiveBlastStrainResult.outheatMinStrain,  m_ExplosiveBlastStrainResult.insulatingheatMinStrain, };
 	
-	QVector<double> m_ExplosiveBlastStandardValues = { tensileStrength, ignitionTemperature, fireOverpressure, tensileStrength / modulus };
+	QVector<double> m_ExplosiveBlastStandardValues = { 1, ignitionTemperature, fireOverpressure, 1.0 / modulus };
 	m_polarChart7->updateDatasets(datasets7, labelGroups, m_ExplosiveBlastStandardValues, unitList);
 
 	// 殉爆计算结果
@@ -444,7 +444,7 @@ void AuxiliaryAnalysisWidget::updateAllData()
 	datasets8[3] = { m_SacrificeExplosionStrainResult.metalsMaxStrain, m_SacrificeExplosionStrainResult.propellantsMaxStrain, m_SacrificeExplosionStrainResult.outheatMaxStrain, m_SacrificeExplosionStrainResult.insulatingheatMaxStrain,
 	 m_SacrificeExplosionStrainResult.metalsMinStrain,  m_SacrificeExplosionStrainResult.propellantsMinStrain,  m_SacrificeExplosionStrainResult.outheatMinStrain,  m_SacrificeExplosionStrainResult.insulatingheatMinStrain, };
 	
-	QVector<double> m_SacrificeExplosionStandardValues = { tensileStrength, ignitionTemperature, fireOverpressure, tensileStrength / modulus };
+	QVector<double> m_SacrificeExplosionStandardValues = { 1, ignitionTemperature, fireOverpressure, 1.0 / modulus };
 	m_polarChart8->updateDatasets(datasets8, labelGroups, m_SacrificeExplosionStandardValues, unitList);
 
 

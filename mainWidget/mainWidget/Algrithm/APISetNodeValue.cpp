@@ -123,7 +123,7 @@ bool APISetNodeValue::SetFallStressResult(OccView* occView, std::vector<double>&
 
 	auto high = fallSettingInfo.high;
 	auto angle = fallSettingInfo.angle;
-	auto youngModulus = steelPropertyInfoInfo.modulus;
+	auto youngModulus = 0;
 
 	auto meshInfo = ModelDataManager::GetInstance()->GetModelMeshInfo();
 	Point p0{ (meshInfo.x_min + meshInfo.x_max) / 2.0,
@@ -394,7 +394,7 @@ bool APISetNodeValue::SetFallStrainResult(OccView* occView, std::vector<double>&
 
 	auto high = fallSettingInfo.high;
 	auto angle = fallSettingInfo.angle;
-	auto youngModulus = steelPropertyInfoInfo.modulus;
+	auto youngModulus = 0;
 
 	auto meshInfo = ModelDataManager::GetInstance()->GetModelMeshInfo();
 	Point p0{ (meshInfo.x_min + meshInfo.x_max) / 2.0,
@@ -663,7 +663,7 @@ bool APISetNodeValue::SetFallTemperatureResult(OccView* occView, std::vector<dou
 
 	auto high = fallSettingInfo.high;
 	auto angle = fallSettingInfo.angle;
-	auto youngModulus = steelPropertyInfoInfo.modulus;
+	auto youngModulus = 0;
 
 	auto meshInfo = ModelDataManager::GetInstance()->GetModelMeshInfo();
 	Point p0{ (meshInfo.x_min + meshInfo.x_max) / 2.0,
@@ -932,7 +932,7 @@ bool APISetNodeValue::SetFallOverpressureResult(OccView* occView, std::vector<do
 
 	auto high = fallSettingInfo.high;
 	auto angle = fallSettingInfo.angle;
-	auto youngModulus = steelPropertyInfoInfo.modulus;
+	auto youngModulus = 0;
 
 	auto meshInfo = ModelDataManager::GetInstance()->GetModelMeshInfo();
 	Point p0{ (meshInfo.x_min + meshInfo.x_max) / 2.0,
@@ -1192,7 +1192,7 @@ bool APISetNodeValue::SetFastCombustionTemperatureResult(OccView* occView, std::
 
 	//auto high = fallSettingInfo.high;
 	//auto angle = fallSettingInfo.angle;
-	auto youngModulus = steelPropertyInfoInfo.modulus;
+	auto youngModulus = 0;
 
 	auto meshInfo = ModelDataManager::GetInstance()->GetModelMeshInfo();
 	Point p0{ (meshInfo.x_min + meshInfo.x_max) / 2.0,
@@ -1335,7 +1335,7 @@ bool APISetNodeValue::SetSlowCombustionTemperatureResult(OccView* occView, std::
 	auto slowCombustionAnalysisResultInfo = ModelDataManager::GetInstance()->GetSlowCombustionAnalysisResultInfo();
 
 
-	auto youngModulus = steelPropertyInfoInfo.modulus;
+	auto youngModulus = 0;
 
 	auto meshInfo = ModelDataManager::GetInstance()->GetModelMeshInfo();
 	Point p0{ (meshInfo.x_min + meshInfo.x_max) / 2.0,
@@ -1641,7 +1641,7 @@ bool APISetNodeValue::SetShootStrainResult(OccView* occView, std::vector<double>
 	auto shootSettingInfo = ModelDataManager::GetInstance()->GetShootSettingInfo();
 	auto shootAnalysisResultInfo = ModelDataManager::GetInstance()->GetShootAnalysisResultInfo();
 
-	auto youngModulus = steelPropertyInfoInfo.modulus;
+	auto youngModulus = 0;
 
 	auto meshInfo = ModelDataManager::GetInstance()->GetModelMeshInfo();
 	Point p0{ (meshInfo.x_min + meshInfo.x_max) / 2.0,
@@ -2191,7 +2191,7 @@ bool APISetNodeValue::SetJetImpactStrainResult(OccView* occView, std::vector<dou
 	auto jetImpactSettingInfo = ModelDataManager::GetInstance()->GetJetImpactSettingInfo();
 	auto jetImpactAnalysisResultInfo = ModelDataManager::GetInstance()->GetJetImpactAnalysisResultInfo();
 
-	auto youngModulus = steelPropertyInfoInfo.modulus;
+	auto youngModulus = 0;
 
 	auto meshInfo = ModelDataManager::GetInstance()->GetModelMeshInfo();
 	Point p0{ (meshInfo.x_min + meshInfo.x_max) / 2.0,
@@ -2734,7 +2734,7 @@ bool APISetNodeValue::SetFragmentationStrainResult(OccView* occView, std::vector
 	auto fragmentationSettingInfo = ModelDataManager::GetInstance()->GetFragmentationSettingInfo();
 	auto fragmentationAnalysisResultInfo = ModelDataManager::GetInstance()->GetFragmentationAnalysisResultInfo();
 	auto steelPropertyInfoInfo = ModelDataManager::GetInstance()->GetSteelPropertyInfo();
-	auto youngModulus = steelPropertyInfoInfo.modulus;
+	auto youngModulus = 0;
 
 	auto meshInfo = ModelDataManager::GetInstance()->GetModelMeshInfo();
 	Point p0{ (meshInfo.x_min + meshInfo.x_max) / 2.0,
@@ -3148,7 +3148,7 @@ bool APISetNodeValue::SetExplosiveBlastStressResult(OccView* occView, std::vecto
 
 	//auto high = fallSettingInfo.high;
 	//auto angle = fallSettingInfo.angle;
-	auto youngModulus = steelPropertyInfoInfo.modulus;
+	auto youngModulus = 0;
 
 	auto meshInfo = ModelDataManager::GetInstance()->GetModelMeshInfo();
 	Point p0{ (meshInfo.x_min + meshInfo.x_max) / 2.0,
@@ -3269,7 +3269,7 @@ bool APISetNodeValue::SetExplosiveBlastStrainResult(OccView* occView, std::vecto
 
 	//auto high = fallSettingInfo.high;
 	//auto angle = fallSettingInfo.angle;
-	auto youngModulus = steelPropertyInfoInfo.modulus;
+	auto youngModulus = 0;
 
 	auto meshInfo = ModelDataManager::GetInstance()->GetModelMeshInfo();
 	Point p0{ (meshInfo.x_min + meshInfo.x_max) / 2.0,
@@ -3390,7 +3390,7 @@ bool APISetNodeValue::SetExplosiveBlastTemperatureResult(OccView* occView, std::
 
 	//auto high = fallSettingInfo.high;
 	//auto angle = fallSettingInfo.angle;
-	auto youngModulus = steelPropertyInfoInfo.modulus;
+	auto youngModulus = 0;
 
 	auto meshInfo = ModelDataManager::GetInstance()->GetModelMeshInfo();
 	Point p0{ (meshInfo.x_min + meshInfo.x_max) / 2.0,
@@ -3509,7 +3509,7 @@ bool APISetNodeValue::SetExplosiveBlastOverpressureResult(OccView* occView, std:
 
 	//auto high = fallSettingInfo.high;
 	//auto angle = fallSettingInfo.angle;
-	auto youngModulus = steelPropertyInfoInfo.modulus;
+	auto youngModulus = 0;
 
 	auto meshInfo = ModelDataManager::GetInstance()->GetModelMeshInfo();
 	Point p0{ (meshInfo.x_min + meshInfo.x_max) / 2.0,
@@ -3630,7 +3630,7 @@ bool APISetNodeValue::SetSacrificeExplosionStressResult(OccView* occView, std::v
 
 	//auto high = fallSettingInfo.high;
 	//auto angle = fallSettingInfo.angle;
-	auto youngModulus = steelPropertyInfoInfo.modulus;
+	auto youngModulus = 0;
 
 	auto meshInfo = ModelDataManager::GetInstance()->GetModelMeshInfo();
 	Point p0{ (meshInfo.x_min + meshInfo.x_max) / 2.0,
@@ -3750,7 +3750,7 @@ bool APISetNodeValue::SetSacrificeExplosionStrainResult(OccView* occView, std::v
 
 	//auto high = fallSettingInfo.high;
 	//auto angle = fallSettingInfo.angle;
-	auto youngModulus = steelPropertyInfoInfo.modulus;
+	auto youngModulus = 0;
 
 	auto meshInfo = ModelDataManager::GetInstance()->GetModelMeshInfo();
 	Point p0{ (meshInfo.x_min + meshInfo.x_max) / 2.0,
@@ -3870,7 +3870,7 @@ bool APISetNodeValue::SetSacrificeExplosionTemperatureResult(OccView* occView, s
 
 	//auto high = fallSettingInfo.high;
 	//auto angle = fallSettingInfo.angle;
-	auto youngModulus = steelPropertyInfoInfo.modulus;
+	auto youngModulus = 0;
 
 	auto meshInfo = ModelDataManager::GetInstance()->GetModelMeshInfo();
 	Point p0{ (meshInfo.x_min + meshInfo.x_max) / 2.0,
@@ -3990,7 +3990,7 @@ bool APISetNodeValue::SetSacrificeExplosionOverpressureResult(OccView* occView, 
 
 	//auto high = fallSettingInfo.high;
 	//auto angle = fallSettingInfo.angle;
-	auto youngModulus = steelPropertyInfoInfo.modulus;
+	auto youngModulus = 0;
 
 	auto meshInfo = ModelDataManager::GetInstance()->GetModelMeshInfo();
 	Point p0{ (meshInfo.x_min + meshInfo.x_max) / 2.0,

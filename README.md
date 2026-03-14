@@ -1,50 +1,34 @@
 一 、模型导入树状下方菜单栏PropertyWidget
 
+
+
 1、工程文件	ProjectPropertyWidge
 
 2、几何模型	GeomPropertyWidget
 
 3、数据库	DatabasePropertyWidget
 
-4、材料库	MaterialPropertyWidget
+4、物性数据库	MaterialPropertyWidget
 
-5、壳体材料	SteelPropertyWidget
+5、壳体物性	SteelPropertyWidget
 
-6、推进剂材料	PropellantPropertyWidget
+6、药液物性	PropellantPropertyWidget
 
-7、外防热材料	OutheatPropertyWidget
+7、防隔热材料	InsulatingheatPropertyWidget
 
-8、防隔热材料	InsulatingheatPropertyWidget
+8、计算模型数据库	CalculationPropertyWidget
 
-9、评判标准数据库	JudgmentPropertyWidget
+9、网格	MeshPropertyWidget
 
-10、计算模型数据库	CalculationPropertyWidget
+10、预热工艺正向设计 	PreForwardDesignPropertyWidget
 
-11、网格	MeshPropertyWidget
+11、预热工艺逆向寻优	PreReverseOptimizationPropertyWidget
 
-12、跌落试验	FallPropertyWidget	
+12、注药工艺正向设计	InForwardDesignPropertyWidget
 
-13、快速烤燃试验	FastCombustionPropertyWidget
+13、注药工艺逆向寻优	InReverseOptimizationPropertyWidget
 
-14、慢速烤燃试验	SlowCombustionPropertyWidget
 
-15、枪击试验	ShootPropertyWidget
-
-16、射流冲击试验	JetImpactPropertyWidget
-
-17、破片撞击试验	FragmentationImpactPropertyWidget
-
-18、爆炸冲击波试验	ExplosiveBlastPropertyWidget
-
-19、殉爆试验	SacrificeExplosionPropertyWidget
-
-20、应力分析	StressResultWidget
-
-21、应变分析	StrainResultWidget
-
-22、温度分析	TemperatureResultWidget
-
-23、超压试验	OverpressureResultWidget
 
 
 

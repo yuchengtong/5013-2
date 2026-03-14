@@ -53,7 +53,7 @@ void ProjectPropertyWidge::initWidget()
 	setLayout(vlayout);
 
 
-	QStringList labels = { "项目","工程名称","工程地点","工程时间","测试设备" };
+	QStringList labels = { "项目","工程名称","工程地点","工程时间","工程设备" };
 	for (int row = 0; row < labels.size(); ++row) {
 		QTableWidgetItem* serialItem = new QTableWidgetItem(QString::number(row));
 		if (row == 0) {
@@ -68,7 +68,7 @@ void ProjectPropertyWidge::initWidget()
 	}
 
 	QString currentDate = QDate::currentDate().toString("yyyy-MM-dd");
-	QStringList values = { "项目","测试项目","乌鲁木齐",currentDate,"测试设备" };
+	QStringList values = { "项目","注装工艺1","重庆红宇",currentDate,"测试设备" };
 	for (int row = 0; row < values.size(); ++row) {
 		QTableWidgetItem* labelItem = new QTableWidgetItem(values[row]);
 		m_tableWidget->setItem(row, 2, labelItem);

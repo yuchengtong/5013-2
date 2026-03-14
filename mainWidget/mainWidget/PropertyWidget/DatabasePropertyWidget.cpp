@@ -43,7 +43,7 @@ void DatabasePropertyWidget::initWidget()
 	setLayout(vlayout);
 
 
-	QStringList labels = { "数据库", "评判标准数据库","计算模型数据库" };
+	QStringList labels = { "数据库", "物性数据库","计算模型数据库" };
 	for (int row = 0; row < labels.size(); ++row) {
 		QTableWidgetItem* serialItem = new QTableWidgetItem(QString::number(row));
 		if (row == 0) {
@@ -61,6 +61,12 @@ void DatabasePropertyWidget::initWidget()
 		valueItem->setBackground(QBrush(QColor(230, 230, 230)));
 		m_tableWidget->setItem(row, 2, valueItem);
 	}
+
+	// 设置列宽度
+	QTableWidgetItem* colimnItem = m_tableWidget->item(2, 1);
+	int itemWidth = QFontMetrics(m_tableWidget->font()).width(colimnItem->text());
+	m_tableWidget->setColumnWidth(1, itemWidth + m_tableWidget->verticalHeader()->width());
+
 
 	// 将第0行0列的单元格文本字体加粗
 	QTableWidgetItem* headerItem = m_tableWidget->item(0, 0);
