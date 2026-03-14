@@ -93,6 +93,7 @@ private slots:
 
 private:
 	OccView* m_OccView = nullptr;
+	QFrame* m_plotFrame = nullptr;
 	GFLogWidget* m_LogWidget = nullptr;
 	QStackedWidget* m_PropertyStackWidget = nullptr;
 	GFTreeModelWidget* m_treeModelWidget = nullptr;

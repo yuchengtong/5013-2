@@ -184,7 +184,7 @@ int main(int argc, char *argv[])
 	QFont font = QFont("Arial", 9);
 	QApplication::setFont(font);
 	mainWidget w;
-	QCoreApplication::setApplicationName(QStringLiteral("固体发动机安全性分析与评估系统"));
+	QCoreApplication::setApplicationName(QStringLiteral("预热与注药工艺软件"));
 	/*w.hide();
 	LoginDialog loginDialog;
 	if (loginDialog.exec() == QDialog::Accepted) {

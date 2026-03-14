@@ -34,10 +34,10 @@ private:
 
 	QAction* m_ImportModelWidAct = nullptr;
 	QAction* m_DataBaseWidAct = nullptr;
-	QAction* m_ParamAnalyWidAct = nullptr;
-	QAction* m_IntelligentAnalyWidAct = nullptr;
-	QAction* m_AuxiliaryAnalyWidAct = nullptr;
-	QAction* m_AnalyEvalWidAct = nullptr;
+	//QAction* m_ParamAnalyWidAct = nullptr;
+	//QAction* m_IntelligentAnalyWidAct = nullptr;
+	//QAction* m_AuxiliaryAnalyWidAct = nullptr;
+	//QAction* m_AnalyEvalWidAct = nullptr;
 	QAction* m_HelpAct = nullptr;
 	
 	QTabWidget*m_TabWidget = nullptr;

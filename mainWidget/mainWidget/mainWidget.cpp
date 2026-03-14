@@ -55,7 +55,7 @@ mainWidget::mainWidget(QWidget *parent)
 		"}");
 
     ui->setupUi(this);
-	setWindowTitle("固体发动机安全性分析与评估系统");
+	setWindowTitle("预热与注药工艺软件");
 	//showMaximized();
 	//setMinimumSize(1050, 800);
 
@@ -66,20 +66,12 @@ mainWidget::mainWidget(QWidget *parent)
 	statusbar->addPermanentWidget(m_statusLabel);
 	refreshMemoryUsage(m_statusLabel);
 
-	m_ImportModelWidAct = new QAction("安全性特性参数分析", ui->menuBar);
+	m_ImportModelWidAct = new QAction("预热与注药工艺", ui->menuBar);
 	m_DataBaseWidAct = new QAction("数据库", ui->menuBar);
-	//m_ParamAnalyWidAct = new QAction("安全性特性参数分析", ui->menuBar);
-	m_IntelligentAnalyWidAct= new QAction("数据智能分析", ui->menuBar);
-	m_AnalyEvalWidAct = new QAction("安全性分析与评估", ui->menuBar);
-	m_AuxiliaryAnalyWidAct = new QAction("安全性指标预计、权衡和辅助分析", ui->menuBar);
 	m_HelpAct = new QAction("帮助", ui->menuBar);
 
 	ui->menuBar->addAction(m_DataBaseWidAct);
 	ui->menuBar->addAction(m_ImportModelWidAct);
-	//ui->menuBar->addAction(m_ParamAnalyWidAct);
-	ui->menuBar->addAction(m_IntelligentAnalyWidAct);
-	ui->menuBar->addAction(m_AnalyEvalWidAct);
-	ui->menuBar->addAction(m_AuxiliaryAnalyWidAct);
 	ui->menuBar->addAction(m_HelpAct);
 
 
@@ -352,46 +344,11 @@ mainWidget::mainWidget(QWidget *parent)
 		}
 	});
 
-	//QObject::connect(m_ParamAnalyWidAct, &QAction::triggered, [=]() {
-	//	m_TabWidget->setCurrentIndex(2);
-	//	// 显示工具栏
-	//	ui->mainToolBar->setVisible(true);
-	//	auto occView2 = paramAnalysisWid->GetOccView();
-	//	auto myview=occView2->getView();
-	//	myview->MustBeResized();
-	//});
-
-	QObject::connect(m_IntelligentAnalyWidAct, &QAction::triggered, [=]() {
-		m_TabWidget->setCurrentIndex(2);
-		// 显示工具栏
-		ui->mainToolBar->setVisible(false);
-		/*auto occView3 = IntelligenAnalysisWid->GetOccView();
-		auto myview = occView3->getView();
-		myview->MustBeResized();*/
-	});
-
-	QObject::connect(m_AnalyEvalWidAct, &QAction::triggered, [=]() {
-		m_TabWidget->setCurrentIndex(3);
-		// 显示工具栏
-		ui->mainToolBar->setVisible(true);
-		/*auto occView5 = analysisEvaluationWid->GetOccView();
-		auto myview = occView5->getView();
-		myview->MustBeResized();*/
-		});
-
-	QObject::connect(m_AuxiliaryAnalyWidAct, &QAction::triggered, [=]() {
-		m_TabWidget->setCurrentIndex(4);
-		// 显示工具栏
-		ui->mainToolBar->setVisible(false);
-		// 更新echart数据
-		auxiliaryAnalysisWid->updateAllData();
-	});
-
 	
 
 
 	QObject::connect(m_HelpAct, &QAction::triggered, [=]() {
-		QString aboutText = "**[软件名称] - 固体发动机安全性分析与评估系统**\n\n"
+		QString aboutText = "**[软件名称] - 预热与注药工艺软件**\n\n"
 			"**版本信息**:\n"
 			"- **软件版本**: [v1.0.0]\n"
 			"**版权信息**:\n"
@@ -404,7 +361,7 @@ mainWidget::mainWidget(QWidget *parent)
 			"如果您对本软件有任何问题、建议或反馈，请随时联系我们:\n"
 			"- **电子邮件**: [联系邮箱]\n"
 			"- **网站**: [官方网站]";
-		QMessageBox::about(nullptr, "固体发动机安全性分析与评估系统", aboutText);
+		QMessageBox::about(nullptr, "预热与注药工艺软件", aboutText);
 	});
 	
 

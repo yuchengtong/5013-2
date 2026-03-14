@@ -154,9 +154,20 @@ GFImportModelWidget::GFImportModelWidget(QWidget*parent)
 	m_PropertyStackWidget->addWidget(m_sacrificeExplosionStrainResultWidget);
 
 
-	m_OccView = new OccView(this);
-	m_LogWidget = new GFLogWidget();
+	auto upRightWid = new QWidget();
+	upRightWid->setMinimumHeight(500);
+	{
+		m_OccView = new OccView(this);
+		m_plotFrame = new QFrame();
 
+		auto hLayout = new QHBoxLayout();
+		hLayout->setContentsMargins(0, 0, 0, 0);
+		hLayout->addWidget(m_OccView,3);
+		hLayout->addWidget(m_plotFrame,1);
+		upRightWid->setLayout(hLayout);
+	}
+
+	m_LogWidget = new GFLogWidget();
 
 	// ------ 左侧垂直分割器（树结构与属性表） ------
 	auto leftSplitter = new QSplitter(Qt::Vertical);
@@ -171,9 +182,9 @@ GFImportModelWidget::GFImportModelWidget(QWidget*parent)
 
 	// ------ 右侧垂直分割器（树结构与属性表） ------
 	auto rightSplitter = new QSplitter(Qt::Vertical);
-	rightSplitter->addWidget(m_OccView);
+	rightSplitter->addWidget(upRightWid);
 	rightSplitter->addWidget(m_LogWidget);
-	rightSplitter->setStretchFactor(0, 21);
+	rightSplitter->setStretchFactor(0, 1);
 	rightSplitter->setStretchFactor(1, 1);
 	rightSplitter->setContentsMargins(0, 0, 0, 0);
 	// 设置分割器的Handle宽度为0（消除视觉间隙）

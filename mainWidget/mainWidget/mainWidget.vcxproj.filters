@@ -64,9 +64,6 @@
     <ClCompile Include="ParamAnalyWidget.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GFParamAnalyWidget.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="GFTreeParamAnalyWidget.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -244,9 +241,6 @@
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="ParamAnalyWidget.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
-    <QtMoc Include="GFParamAnalyWidget.h">
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="GFTreeParamAnalyWidget.h">

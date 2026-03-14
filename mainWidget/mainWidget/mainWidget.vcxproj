@@ -126,7 +126,6 @@
     <ClCompile Include="GeometryImportWorker.cpp" />
     <ClCompile Include="GFImportModelWidget.cpp" />
     <ClCompile Include="GFLogWidget.cpp" />
-    <ClCompile Include="GFParamAnalyWidget.cpp" />
     <ClCompile Include="GFTreeModelWidget.cpp" />
     <ClCompile Include="GFTreeParamAnalyWidget.cpp" />
     <ClCompile Include="GFTreeWidget.cpp" />
@@ -202,9 +201,6 @@
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="ParamAnalyWidget.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <QtMoc Include="GFParamAnalyWidget.h" />
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="GFTreeParamAnalyWidget.h" />
