@@ -55,16 +55,7 @@
     <ClCompile Include="GFLogWidget.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="AuxiliaryAnalysisWidget.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="DatabaseWidget.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ParamAnalyWidget.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="GFTreeParamAnalyWidget.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="PropertyWidget\BasePropertyWidget.cpp">
@@ -74,24 +65,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="PropertyWidget\MaterialPropertyWidget.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="PropertyWidget\MeshPropertyWidget.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="PropertyWidget\ResultsPropertyWidget.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="PropertyWidget\SettingPropertyWidget.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="PropertyWidget\StressResultWidget.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="PropertyWidget\TemperatureResultWidget.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="PropertyWidget\OverpressureResultWidget.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="PropertyWidget\SteelPropertyWidget.cpp">
@@ -118,9 +91,6 @@
     <ClCompile Include="PropertyWidget\InsulatingheatPropertyWidget.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="PropertyWidget\JudgmentPropertyWidget.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="GFTreeWidget.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -136,64 +106,16 @@
     <ClCompile Include="PropertyWidget\DatabasePropertyWidget.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="PropertyWidget\StrainResultWidget.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="WordExporter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="CustomPolarChart.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ParamAnalyTreeWidget.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="IntelligentAnalyWidget.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="IntelligentAnalyTreeWidget.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="PropertyWidget\IntelligentPropertyWidget.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="PropertyWidget\IntelligentFallPropertyWidget.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="PropertyWidget\IntelligentFastCombustionPropertyWidget.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="PropertyWidget\IntelligentSlowCombustionPropertyWidget.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="PropertyWidget\IntelligentJetImpactPropertyWidget.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="PropertyWidget\IntelligentFragmentationImpactPropertyWidget.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="PropertyWidget\IntelligentExplosiveBlastPropertyWidget.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="PropertyWidget\IntelligentSacrificeExplosionPropertyWidget.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="PropertyWidget\IntelligentShootPropertyWidget.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="WordExporterWorker.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ParamAnalyCalculateWorker.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Algrithm\APICreateMidSurfaceHelper.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="TriangulationWorker.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="GraphicWidget.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Algrithm\APIRotateMeshHelper.cpp">
@@ -220,6 +142,9 @@
     <ClCompile Include="PropertyWidget\InReverseOptimizationPropertyWidget.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="PropertyWidget\MeshPropertyWidget.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="occView.h">
@@ -234,16 +159,7 @@
     <QtMoc Include="GFLogWidget.h">
       <Filter>Header Files</Filter>
     </QtMoc>
-    <QtMoc Include="AuxiliaryAnalysisWidget.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
     <QtMoc Include="DatabaseWidget.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
-    <QtMoc Include="ParamAnalyWidget.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
-    <QtMoc Include="GFTreeParamAnalyWidget.h">
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="PropertyWidget\BasePropertyWidget.h">
@@ -253,24 +169,6 @@
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="PropertyWidget\MaterialPropertyWidget.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
-    <QtMoc Include="PropertyWidget\MeshPropertyWidget.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
-    <QtMoc Include="PropertyWidget\ResultsPropertyWidget.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
-    <QtMoc Include="PropertyWidget\SettingPropertyWidget.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
-    <QtMoc Include="PropertyWidget\OverpressureResultWidget.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
-    <QtMoc Include="PropertyWidget\TemperatureResultWidget.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
-    <QtMoc Include="PropertyWidget\StressResultWidget.h">
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="PropertyWidget\PropellantPropertyWidget.h">
@@ -294,9 +192,6 @@
     <QtMoc Include="PropertyWidget\InsulatingheatPropertyWidget.h">
       <Filter>Header Files</Filter>
     </QtMoc>
-    <QtMoc Include="PropertyWidget\JudgmentPropertyWidget.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
     <QtMoc Include="GFTreeWidgetItemDelegate.h">
       <Filter>Header Files</Filter>
     </QtMoc>
@@ -312,61 +207,13 @@
     <QtMoc Include="PropertyWidget\DatabasePropertyWidget.h">
       <Filter>Header Files</Filter>
     </QtMoc>
-    <QtMoc Include="PropertyWidget\StrainResultWidget.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
     <QtMoc Include="WordExporter.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
-    <QtMoc Include="CustomPolarChart.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
-    <QtMoc Include="ParamAnalyTreeWidget.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
-    <QtMoc Include="IntelligentAnalyWidget.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
-    <QtMoc Include="IntelligentAnalyTreeWidget.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
-    <QtMoc Include="PropertyWidget\IntelligentPropertyWidget.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
-    <QtMoc Include="PropertyWidget\IntelligentFallPropertyWidget.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
-    <QtMoc Include="PropertyWidget\IntelligentExplosiveBlastPropertyWidget.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
-    <QtMoc Include="PropertyWidget\IntelligentFastCombustionPropertyWidget.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
-    <QtMoc Include="PropertyWidget\IntelligentFragmentationImpactPropertyWidget.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
-    <QtMoc Include="PropertyWidget\IntelligentJetImpactPropertyWidget.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
-    <QtMoc Include="PropertyWidget\IntelligentSacrificeExplosionPropertyWidget.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
-    <QtMoc Include="PropertyWidget\IntelligentSlowCombustionPropertyWidget.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
-    <QtMoc Include="PropertyWidget\IntelligentShootPropertyWidget.h">
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="WordExporterWorker.h">
       <Filter>Header Files</Filter>
     </QtMoc>
-    <QtMoc Include="ParamAnalyCalculateWorker.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
     <QtMoc Include="TriangulationWorker.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
-    <QtMoc Include="GraphicWidget.h">
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="CalculateWorker.h">
@@ -384,15 +231,12 @@
     <QtMoc Include="PropertyWidget\InReverseOptimizationPropertyWidget.h">
       <Filter>Header Files</Filter>
     </QtMoc>
+    <QtMoc Include="PropertyWidget\MeshPropertyWidget.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
   </ItemGroup>
   <ItemGroup>
-    <QtUic Include="AuxiliaryAnalysisWidget.ui">
-      <Filter>Form Files</Filter>
-    </QtUic>
     <QtUic Include="DatabaseWidget.ui">
-      <Filter>Form Files</Filter>
-    </QtUic>
-    <QtUic Include="ParamAnalyWidget.ui">
       <Filter>Form Files</Filter>
     </QtUic>
   </ItemGroup>

@@ -51,107 +51,35 @@ GFImportModelWidget::GFImportModelWidget(QWidget*parent)
 	m_geomPropertyWidget = new GeomPropertyWidget();
 	m_materialPropertyWidget = new MaterialPropertyWidget();
 	m_meshPropertyWidget = new MeshPropertyWidget();
-	m_settingPropertyWidget = new SettingPropertyWidget();
-	m_resultsPropertyWidget = new ResultsPropertyWidget();
-	m_stressResultWidget = new StressResultWidget();
-	m_temperatureResultWidget = new TemperatureResultWidget();
-	m_overpressureResultWidge = new OverpressureResultWidget();
 	m_steelPropertyWidgett = new SteelPropertyWidget();
 	m_propellantPropertyWidget = new PropellantPropertyWidget();
 	m_projectPropertyWidge = new ProjectPropertyWidge();
 	m_calculationPropertyWidget = new CalculationPropertyWidget();
-	m_judgmentPropertyWidget = new JudgmentPropertyWidget();
 	m_insulatingheatPropertyWidget = new InsulatingheatPropertyWidget();
-	m_strainResultWidget = new StrainResultWidget();
 	m_preForwardDesignPropertyWidget = new PreForwardDesignPropertyWidget();
 	m_preReverseOptimizationPropertyWidget = new PreReverseOptimizationPropertyWidget();
 	m_inForwardDesignPropertyWidget = new InForwardDesignPropertyWidget();
 	m_inReverseOptimizationPropertyWidget = new InReverseOptimizationPropertyWidget();
 	m_databasePropertyWidget = new DatabasePropertyWidget();
-	// 枪击结果
-	m_shootStressResultWidget = new StressResultWidget();
-	m_shootTemperatureResultWidget = new TemperatureResultWidget();
-	m_shootOverpressureResultWidge = new OverpressureResultWidget();
-	m_shootStrainResultWidget = new StrainResultWidget();
-	// 破片结果
-	m_fragmentationImpactStressResultWidget = new StressResultWidget();
-	m_fragmentationImpactTemperatureResultWidget = new TemperatureResultWidget();
-	m_fragmentationImpactOverpressureResultWidge = new OverpressureResultWidget();
-	m_fragmentationImpactStrainResultWidget = new StrainResultWidget();
 	
-	// 快烤结果
-	m_fastCombustionTemperatureResultWidget = new TemperatureResultWidget();
-
-	// 慢烤结果
-	m_slowCombustionTemperatureResultWidget = new TemperatureResultWidget();
-
-	// 射流冲击结果
-	m_jetImpactStressResultWidget = new StressResultWidget();
-	m_jetImpactTemperatureResultWidget = new TemperatureResultWidget();
-	m_jetImpactOverpressureResultWidge = new OverpressureResultWidget();
-	m_jetImpactStrainResultWidget = new StrainResultWidget();
-
-	// 爆炸冲击波结果
-	m_explosiveBlastStressResultWidget = new StressResultWidget();
-	m_explosiveBlastTemperatureResultWidget = new TemperatureResultWidget();
-	m_explosiveBlastOverpressureResultWidge = new OverpressureResultWidget();
-	m_explosiveBlastStrainResultWidget = new StrainResultWidget();
-
-	// 殉爆结果
-	m_sacrificeExplosionStressResultWidget = new StressResultWidget();
-	m_sacrificeExplosionTemperatureResultWidget = new TemperatureResultWidget();
-	m_sacrificeExplosionOverpressureResultWidge = new OverpressureResultWidget();
-	m_sacrificeExplosionStrainResultWidget = new StrainResultWidget();
 
 
 	// 将所有的 PropertyWidget 添加到 QStackedWidget 中
 	m_PropertyStackWidget->addWidget(m_geomPropertyWidget);
 	m_PropertyStackWidget->addWidget(m_materialPropertyWidget);
 	m_PropertyStackWidget->addWidget(m_meshPropertyWidget);
-	m_PropertyStackWidget->addWidget(m_settingPropertyWidget);
-	m_PropertyStackWidget->addWidget(m_resultsPropertyWidget);
-	m_PropertyStackWidget->addWidget(m_stressResultWidget);
-	m_PropertyStackWidget->addWidget(m_temperatureResultWidget);
-	m_PropertyStackWidget->addWidget(m_overpressureResultWidge);
 	m_PropertyStackWidget->addWidget(m_steelPropertyWidgett);
 	m_PropertyStackWidget->addWidget(m_propellantPropertyWidget);
 	m_PropertyStackWidget->addWidget(m_projectPropertyWidge);
 	m_PropertyStackWidget->addWidget(m_calculationPropertyWidget);
-	m_PropertyStackWidget->addWidget(m_judgmentPropertyWidget);
 	m_PropertyStackWidget->addWidget(m_insulatingheatPropertyWidget);
-	m_PropertyStackWidget->addWidget(m_strainResultWidget);
 	m_PropertyStackWidget->addWidget(m_preForwardDesignPropertyWidget);
 	m_PropertyStackWidget->addWidget(m_preReverseOptimizationPropertyWidget);
 	m_PropertyStackWidget->addWidget(m_inForwardDesignPropertyWidget);
 	m_PropertyStackWidget->addWidget(m_inReverseOptimizationPropertyWidget);
 	m_PropertyStackWidget->addWidget(m_databasePropertyWidget);
 
-	m_PropertyStackWidget->addWidget(m_shootStressResultWidget);
-	m_PropertyStackWidget->addWidget(m_shootTemperatureResultWidget);
-	m_PropertyStackWidget->addWidget(m_shootOverpressureResultWidge);
-	m_PropertyStackWidget->addWidget(m_shootStrainResultWidget);
-	m_PropertyStackWidget->addWidget(m_fragmentationImpactStressResultWidget);
-	m_PropertyStackWidget->addWidget(m_fragmentationImpactTemperatureResultWidget);
-	m_PropertyStackWidget->addWidget(m_fragmentationImpactOverpressureResultWidge);
-	m_PropertyStackWidget->addWidget(m_fragmentationImpactStrainResultWidget);
-
-	m_PropertyStackWidget->addWidget(m_fastCombustionTemperatureResultWidget);
-	m_PropertyStackWidget->addWidget(m_slowCombustionTemperatureResultWidget);
-
-	m_PropertyStackWidget->addWidget(m_jetImpactStressResultWidget);
-	m_PropertyStackWidget->addWidget(m_jetImpactTemperatureResultWidget);
-	m_PropertyStackWidget->addWidget(m_jetImpactOverpressureResultWidge);
-	m_PropertyStackWidget->addWidget(m_jetImpactStrainResultWidget);
-
-	m_PropertyStackWidget->addWidget(m_explosiveBlastStressResultWidget);
-	m_PropertyStackWidget->addWidget(m_explosiveBlastTemperatureResultWidget);
-	m_PropertyStackWidget->addWidget(m_explosiveBlastOverpressureResultWidge);
-	m_PropertyStackWidget->addWidget(m_explosiveBlastStrainResultWidget);
-
-	m_PropertyStackWidget->addWidget(m_sacrificeExplosionStressResultWidget);
-	m_PropertyStackWidget->addWidget(m_sacrificeExplosionTemperatureResultWidget);
-	m_PropertyStackWidget->addWidget(m_sacrificeExplosionOverpressureResultWidge);
-	m_PropertyStackWidget->addWidget(m_sacrificeExplosionStrainResultWidget);
+	
 
 
 	auto upRightWid = new QWidget();
@@ -243,11 +171,6 @@ void GFImportModelWidget::onTreeItemClicked(const QString& itemData)
 
 		m_PropertyStackWidget->setCurrentWidget(m_materialPropertyWidget);
 	}
-	else if (itemData == "Results") 
-	{
-		occView->SetCameraRotationState(true);
-		m_PropertyStackWidget->setCurrentWidget(m_resultsPropertyWidget);
-	}
 	else if (itemData == "Steel") 
 	{
 		occView->SetCameraRotationState(true);
@@ -257,11 +180,6 @@ void GFImportModelWidget::onTreeItemClicked(const QString& itemData)
 	{
 		occView->SetCameraRotationState(true);
 		m_PropertyStackWidget->setCurrentWidget(m_propellantPropertyWidget);
-	}
-	else if (itemData == "Judgment")
-	{
-		occView->SetCameraRotationState(true);
-		m_PropertyStackWidget->setCurrentWidget(m_judgmentPropertyWidget);
 	}
 	else if (itemData == "ComputationalModel") 
 	{
@@ -332,24 +250,6 @@ void GFImportModelWidget::onTreeItemClicked(const QString& itemData)
 		}
 
 		m_meshPropertyWidget->UpdataPropertyInfo();
-	}
-	else if (itemData == "Analysis") 
-	{
-		occView->SetCameraRotationState(true);
-
-		m_PropertyStackWidget->setCurrentWidget(m_settingPropertyWidget);
-
-		auto modelInfo = ModelDataManager::GetInstance()->GetModelGeometryInfo();
-		if (!modelInfo.shape.IsNull())
-		{
-			Handle(AIS_InteractiveContext) context = occView->getContext();
-			context->EraseAll(true);
-			Handle(AIS_Shape) modelPresentation = new AIS_Shape(modelInfo.shape);
-			context->SetDisplayMode(modelPresentation, AIS_Shaded, true);
-			context->SetColor(modelPresentation, Quantity_Color(0.0, 1.0, 1.0, Quantity_TOC_RGB), true);
-			context->Display(modelPresentation, false);
-			occView->fitAll();
-		}
 	}
 	else if (itemData == "PreForwardDesign")
 	{

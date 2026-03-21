@@ -15,10 +15,6 @@
 #include "GeomPropertyWidget.h"
 #include "MaterialPropertyWidget.h"
 #include "DatabasePropertyWidget.h"
-#include "StressResultWidget.h"
-#include "StrainResultWidget.h"
-#include "TemperatureResultWidget.h"
-#include "OverpressureResultWidget.h"
 
 
 
@@ -48,15 +44,7 @@ private slots:
 
 	void exportWord(const QString& directory, QTreeWidgetItem* item);
 
-	// 转换导出文本数据
-	QMap<QString, QVariant> convertTextData(ProjectPropertyWidge* projectPropertyWidge,
-		GeomPropertyWidget* geomPropertyWidget,
-		MaterialPropertyWidget* materialPropertyWidget,
-		DatabasePropertyWidget* databasePropertyWidget,
-		StressResultWidget* stressResultWidget,
-		StrainResultWidget* strainResultWidget,
-		TemperatureResultWidget* temperatureResultWidget,
-		OverpressureResultWidget* overpressureResultWidge);
+	
 
 
 private:
