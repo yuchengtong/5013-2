@@ -2,11 +2,11 @@
 #include <QWidget>
 #include "BasePropertyWidget.h"
 
-class SteelPropertyWidget : public BasePropertyWidget
+class GelatinPropertyWidget : public BasePropertyWidget
 {
 	Q_OBJECT
 public:
-	explicit SteelPropertyWidget(QWidget* parent = nullptr);
+	explicit GelatinPropertyWidget(QWidget* parent = nullptr);
 
 private:
 	void initWidget() override;

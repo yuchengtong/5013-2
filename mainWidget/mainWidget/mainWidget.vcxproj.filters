@@ -67,7 +67,7 @@
     <ClCompile Include="PropertyWidget\MaterialPropertyWidget.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="PropertyWidget\SteelPropertyWidget.cpp">
+    <ClCompile Include="PropertyWidget\ShellPropertyWidget.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="PropertyWidget\PropellantPropertyWidget.cpp">
@@ -88,7 +88,7 @@
     <ClCompile Include="PropertyWidget\CalculationPropertyWidget.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="PropertyWidget\InsulatingheatPropertyWidget.cpp">
+    <ClCompile Include="PropertyWidget\GelatinPropertyWidget.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="GFTreeWidget.cpp">
@@ -174,7 +174,7 @@
     <QtMoc Include="PropertyWidget\PropellantPropertyWidget.h">
       <Filter>Header Files</Filter>
     </QtMoc>
-    <QtMoc Include="PropertyWidget\SteelPropertyWidget.h">
+    <QtMoc Include="PropertyWidget\ShellPropertyWidget.h">
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="PropertyWidget\ProjectPropertyWidge.h">
@@ -189,7 +189,7 @@
     <QtMoc Include="PropertyWidget\CalculationPropertyWidget.h">
       <Filter>Header Files</Filter>
     </QtMoc>
-    <QtMoc Include="PropertyWidget\InsulatingheatPropertyWidget.h">
+    <QtMoc Include="PropertyWidget\GelatinPropertyWidget.h">
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="GFTreeWidgetItemDelegate.h">

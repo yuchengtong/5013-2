@@ -1,6 +1,6 @@
 ﻿#pragma once
 #pragma execution_character_set("utf-8")
-#include "InsulatingheatPropertyWidget.h"
+#include "GelatinPropertyWidget.h"
 #include <QTableWidget>
 #include <QHeaderView>
 #include <QComboBox>
@@ -15,13 +15,13 @@
 #include <QDateTime>
 #include <QApplication>
 
-InsulatingheatPropertyWidget::InsulatingheatPropertyWidget(QWidget* parent)
+GelatinPropertyWidget::GelatinPropertyWidget(QWidget* parent)
 	:BasePropertyWidget(parent)
 {
 	initWidget();
 }
 
-void InsulatingheatPropertyWidget::initWidget()
+void GelatinPropertyWidget::initWidget()
 {
 	QVBoxLayout* vlayout = new QVBoxLayout(this);
 	vlayout->setContentsMargins(0, 0, 0, 0);
@@ -128,7 +128,7 @@ void InsulatingheatPropertyWidget::initWidget()
 	importWidget->setLayout(importLayout);
 	m_tableWidget->setCellWidget(0, 2, importWidget);
 
-	connect(importButton, &QPushButton::clicked, this, &InsulatingheatPropertyWidget::showTableDialog);
+	connect(importButton, &QPushButton::clicked, this, &GelatinPropertyWidget::showTableDialog);
 	// 合并第一行的第三和第四列
 	m_tableWidget->setSpan(0, 2, 1, 2);
 
@@ -168,7 +168,7 @@ void InsulatingheatPropertyWidget::initWidget()
 
 }
 
-void InsulatingheatPropertyWidget::showTableDialog()
+void GelatinPropertyWidget::showTableDialog()
 {
 	QDialog *dialog = new QDialog();
 	dialog->setWindowTitle("明胶材料");

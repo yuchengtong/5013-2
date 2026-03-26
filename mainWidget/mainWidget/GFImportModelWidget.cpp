@@ -51,19 +51,17 @@ GFImportModelWidget::GFImportModelWidget(QWidget*parent)
 	m_geomPropertyWidget = new GeomPropertyWidget();
 	m_materialPropertyWidget = new MaterialPropertyWidget();
 	m_meshPropertyWidget = new MeshPropertyWidget();
-	m_steelPropertyWidgett = new SteelPropertyWidget();
+	m_steelPropertyWidgett = new ShellPropertyWidget();
 	m_propellantPropertyWidget = new PropellantPropertyWidget();
 	m_projectPropertyWidge = new ProjectPropertyWidge();
 	m_calculationPropertyWidget = new CalculationPropertyWidget();
-	m_insulatingheatPropertyWidget = new InsulatingheatPropertyWidget();
+	m_insulatingheatPropertyWidget = new GelatinPropertyWidget();
 	m_preForwardDesignPropertyWidget = new PreForwardDesignPropertyWidget();
 	m_preReverseOptimizationPropertyWidget = new PreReverseOptimizationPropertyWidget();
 	m_inForwardDesignPropertyWidget = new InForwardDesignPropertyWidget();
 	m_inReverseOptimizationPropertyWidget = new InReverseOptimizationPropertyWidget();
 	m_databasePropertyWidget = new DatabasePropertyWidget();
 	
-
-
 	// 将所有的 PropertyWidget 添加到 QStackedWidget 中
 	m_PropertyStackWidget->addWidget(m_geomPropertyWidget);
 	m_PropertyStackWidget->addWidget(m_materialPropertyWidget);
@@ -79,61 +77,66 @@ GFImportModelWidget::GFImportModelWidget(QWidget*parent)
 	m_PropertyStackWidget->addWidget(m_inReverseOptimizationPropertyWidget);
 	m_PropertyStackWidget->addWidget(m_databasePropertyWidget);
 
-	
-
-
-	auto upRightWid = new QWidget();
-	upRightWid->setMinimumHeight(500);
-	{
-		m_OccView = new OccView(this);
-		m_plotFrame = new QFrame();
-
-		auto hLayout = new QHBoxLayout();
-		hLayout->setContentsMargins(0, 0, 0, 0);
-		hLayout->addWidget(m_OccView,3);
-		hLayout->addWidget(m_plotFrame,1);
-		upRightWid->setLayout(hLayout);
-	}
-
-	m_LogWidget = new GFLogWidget();
-
-	// ------ 左侧垂直分割器（树结构与属性表） ------
-	auto leftSplitter = new QSplitter(Qt::Vertical);
-	leftSplitter->addWidget(m_treeModelWidget);
-	leftSplitter->addWidget(m_PropertyStackWidget);
-	leftSplitter->setStretchFactor(0, 3);
-	leftSplitter->setStretchFactor(1, 1);
-	leftSplitter->setContentsMargins(0, 0, 0, 0);
-	// 设置分割器的Handle宽度为0（消除视觉间隙）
-	leftSplitter->setHandleWidth(1);
-
-
-	// ------ 右侧垂直分割器（树结构与属性表） ------
-	auto rightSplitter = new QSplitter(Qt::Vertical);
-	rightSplitter->addWidget(upRightWid);
-	rightSplitter->addWidget(m_LogWidget);
-	rightSplitter->setStretchFactor(0, 1);
-	rightSplitter->setStretchFactor(1, 1);
-	rightSplitter->setContentsMargins(0, 0, 0, 0);
-	// 设置分割器的Handle宽度为0（消除视觉间隙）
-	rightSplitter->setHandleWidth(1);
-
-
-	// ------ 主水平分割器（左侧与右侧） ------
-	auto mainSplitter = new QSplitter(Qt::Horizontal);
-	mainSplitter->addWidget(leftSplitter);
-	mainSplitter->addWidget(rightSplitter);
-	mainSplitter->setContentsMargins(0, 0, 0, 0);
-	// 设置分割器的Handle宽度为0（消除视觉间隙）
-	mainSplitter->setHandleWidth(1);
-
-	mainSplitter->setStretchFactor(0, 1);
-	mainSplitter->setStretchFactor(1, 9);
 
 	QVBoxLayout* layout = new QVBoxLayout();
-	layout->addWidget(mainSplitter);
-	layout->setContentsMargins(0, 0, 0, 0);
+	{
+		auto mainSplitter = new QSplitter(Qt::Horizontal);
+		{
+			// ------ 左侧垂直分割器（树结构与属性表） ------
+			auto leftSplitter = new QSplitter(Qt::Vertical);
+			leftSplitter->setMinimumWidth(360);
+			{
+				leftSplitter->addWidget(m_treeModelWidget);
+				leftSplitter->addWidget(m_PropertyStackWidget);
+				leftSplitter->setStretchFactor(0, 3);
+				leftSplitter->setStretchFactor(1, 1);
+				leftSplitter->setContentsMargins(0, 0, 0, 0);
+				// 设置分割器的Handle宽度为0（消除视觉间隙）
+				leftSplitter->setHandleWidth(1);
+			}
+
+			m_OccView = new OccView(this);
+
+			// ------ 右侧垂直分割器（树结构与属性表） ------
+			auto rightSplitter = new QSplitter(Qt::Vertical);
+			rightSplitter->setMinimumWidth(360);
+			{
+				auto upRightWid = new QWidget();
+				upRightWid->setMinimumHeight(500);
+
+				m_LogWidget = new GFLogWidget();
+
+				rightSplitter->addWidget(upRightWid);
+				rightSplitter->addWidget(m_LogWidget);
+				rightSplitter->setStretchFactor(0, 1);
+				rightSplitter->setStretchFactor(1, 1);
+				rightSplitter->setContentsMargins(0, 0, 0, 0);
+				// 设置分割器的Handle宽度为0（消除视觉间隙）
+				rightSplitter->setHandleWidth(1);
+			}
+
+			// ------ 主水平分割器（左侧与右侧） ------
+			mainSplitter->addWidget(leftSplitter);
+			mainSplitter->addWidget(m_OccView);
+			mainSplitter->addWidget(rightSplitter);
+			mainSplitter->setContentsMargins(0, 0, 0, 0);
+			// 设置分割器的Handle宽度为0（消除视觉间隙）
+			mainSplitter->setHandleWidth(2);
+
+			mainSplitter->setCollapsible(0, false);
+			mainSplitter->setCollapsible(1, false);
+			mainSplitter->setCollapsible(2, false); 
+
+			mainSplitter->setStretchFactor(0, 1);
+			mainSplitter->setStretchFactor(1, 9);
+		}
+		layout->addWidget(mainSplitter);
+		layout->setContentsMargins(0, 0, 0, 0);
+	}
+
 	setLayout(layout);
+
+	
 
 	// 连接信号和槽
 	connect(m_treeModelWidget, &GFTreeModelWidget::itemClicked, this, &GFImportModelWidget::onTreeItemClicked);

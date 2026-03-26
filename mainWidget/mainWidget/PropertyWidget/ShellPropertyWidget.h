@@ -2,11 +2,11 @@
 #include <QWidget>
 #include "BasePropertyWidget.h"
 
-class InsulatingheatPropertyWidget : public BasePropertyWidget
+class ShellPropertyWidget : public BasePropertyWidget
 {
 	Q_OBJECT
 public:
-	explicit InsulatingheatPropertyWidget(QWidget* parent = nullptr);
+	explicit ShellPropertyWidget(QWidget* parent = nullptr);
 
 private:
 	void initWidget() override;

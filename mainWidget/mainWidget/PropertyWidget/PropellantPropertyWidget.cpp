@@ -52,9 +52,11 @@ void PropellantPropertyWidget::initWidget()
 	setLayout(vlayout);
 
 	QStringList labels = { "材料属性","药液名称","药液类型", "密度", "导热系数","比热容" };
-	for (int row = 0; row < labels.size(); ++row) {
+	for (int row = 0; row < labels.size(); ++row) 
+	{
 		QTableWidgetItem* serialItem = new QTableWidgetItem(QString::number(row));
-		if (row == 0) {
+		if (row == 0)
+		{
 			serialItem = new QTableWidgetItem("材料属性");
 		}
 		serialItem->setFlags(serialItem->flags() & ~Qt::ItemIsEditable); // 不可编辑

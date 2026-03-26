@@ -5,7 +5,6 @@
 #include <QHeaderView>
 #include <QComboBox>
 #include <QDir>
-#include <QPushButton>
 #include <QDialog>
 #include "ModelDataManager.h"
 #include "../GFTreeModelWidget.h"
@@ -20,251 +19,158 @@ InReverseOptimizationPropertyWidget::InReverseOptimizationPropertyWidget(QWidget
 	:BasePropertyWidget(parent)
 {
 	initWidget();
+	bindConnect();
 }
 
 void InReverseOptimizationPropertyWidget::initWidget()
 {
-
-	QVBoxLayout* vlayout = new QVBoxLayout(this);
+	QVBoxLayout* vlayout = new QVBoxLayout();
 	vlayout->setContentsMargins(0, 0, 0, 0);
+	{
+		m_tableWidget = new QTableWidget(this);
+		m_tableWidget->setRowCount(10);
+		m_tableWidget->setColumnCount(5);
+		// 隐藏表头
+		m_tableWidget->horizontalHeader()->setVisible(false);
+		m_tableWidget->verticalHeader()->setVisible(false);
 
-	m_tableWidget = new QTableWidget(this);
+		// 设置固定宽度
+		m_tableWidget->horizontalHeader()->setSectionResizeMode(0, QHeaderView::Fixed);
+		m_tableWidget->horizontalHeader()->setSectionResizeMode(1, QHeaderView::Fixed);
+		m_tableWidget->horizontalHeader()->setSectionResizeMode(2, QHeaderView::Stretch);
+		m_tableWidget->horizontalHeader()->setSectionResizeMode(3, QHeaderView::Fixed);
+		m_tableWidget->horizontalHeader()->setSectionResizeMode(4, QHeaderView::Fixed);
+		m_tableWidget->horizontalHeader()->resizeSection(0, 25);
+		m_tableWidget->horizontalHeader()->resizeSection(1, 150);
+		m_tableWidget->horizontalHeader()->resizeSection(3, 50);
+		m_tableWidget->horizontalHeader()->resizeSection(4, 25);
 
-	m_tableWidget->setRowCount(10);
-	m_tableWidget->setColumnCount(5);
-	// 隐藏表头（如果不需要显示表头文字，可根据需求决定是否隐藏）
-	m_tableWidget->horizontalHeader()->setVisible(false);
-	m_tableWidget->verticalHeader()->setVisible(false);
-
-	// 设置第一列固定宽度（例如100像素）
-	m_tableWidget->horizontalHeader()->setSectionResizeMode(0, QHeaderView::Fixed);
-	m_tableWidget->horizontalHeader()->setSectionResizeMode(1, QHeaderView::Fixed);
-	m_tableWidget->horizontalHeader()->resizeSection(0, 5);
-	m_tableWidget->horizontalHeader()->resizeSection(1, 120);
-	m_tableWidget->horizontalHeader()->resizeSection(3, 80);
-	m_tableWidget->horizontalHeader()->setSectionResizeMode(2, QHeaderView::Stretch);
-	m_tableWidget->horizontalHeader()->setSectionResizeMode(3, QHeaderView::Fixed);
-	// 让表格充满布局，自动调整行列大小
-	m_tableWidget->verticalHeader()->setSectionResizeMode(QHeaderView::Fixed);
-	m_tableWidget->setColumnWidth(0, 5);
-	// 合并第一行的第一和第二列
-	m_tableWidget->setSpan(0, 0, 1, 2);
-
-	vlayout->addWidget(m_tableWidget);
-	setLayout(vlayout);
-	QStringList cols = { "逆向寻优"," ",  "1", "2", "3","4"," ","1","2","3" };
-	for (int row = 0; row < cols.size(); ++row) {
-		QTableWidgetItem* serialItem = new QTableWidgetItem(cols[row]);
-		serialItem->setFlags(serialItem->flags() & ~Qt::ItemIsEditable); // 不可编辑
-		m_tableWidget->setItem(row, 0, serialItem);
-	}
-
-	QStringList labels = { "逆向寻优","工艺输入参数",  "弹体保温温度", "药液浇注温度", "药液浇注速度","真空度","工艺输出参数","相对密度","弹体注药时间","弹体温度云图与温升曲线" };
-	for (int row = 0; row < labels.size(); ++row) {
-		QTableWidgetItem* labelItem = new QTableWidgetItem(labels[row]);
-		labelItem->setTextAlignment(Qt::AlignCenter); // 文本居中
-		labelItem->setFlags(labelItem->flags() & ~Qt::ItemIsEditable); // 不可编辑
-		m_tableWidget->setItem(row, 1, labelItem);
-
-		
-
-	}
-
-	QTableWidgetItem* insulationTemperatureValueItem = new QTableWidgetItem(m_insulationTemperatureValue);
-	insulationTemperatureValueItem->setTextAlignment(Qt::AlignCenter); // 文本居中
-
-	QTableWidgetItem* pouringTemperatureValueItem = new QTableWidgetItem(m_pouringTemperatureValue);
-	pouringTemperatureValueItem->setTextAlignment(Qt::AlignCenter); // 文本居中
-
-	QTableWidgetItem* pouringSpeedValueItem = new QTableWidgetItem(m_pouringSpeedValue);
-	pouringSpeedValueItem->setTextAlignment(Qt::AlignCenter); // 文本居中
-
-	QTableWidgetItem* vacuumDegreeValueItem = new QTableWidgetItem(m_vacuumDegreeValue);
-	vacuumDegreeValueItem->setTextAlignment(Qt::AlignCenter); // 文本居中
-
-	QTableWidgetItem* relativeDensityValueItem = new QTableWidgetItem(m_relativeDensityValue);
-	relativeDensityValueItem->setTextAlignment(Qt::AlignCenter); // 文本居中
-
-	QTableWidgetItem* injectionTimeValueItem = new QTableWidgetItem(m_injectionTimeValue);
-	injectionTimeValueItem->setTextAlignment(Qt::AlignCenter); // 文本居中
-
-
-	m_tableWidget->setItem(2, 2, insulationTemperatureValueItem);
-	m_tableWidget->setItem(3, 2, pouringTemperatureValueItem);
-	m_tableWidget->setItem(4, 2, pouringSpeedValueItem);
-	m_tableWidget->setItem(5, 2, vacuumDegreeValueItem);
-	m_tableWidget->setItem(7, 2, relativeDensityValueItem);
-	m_tableWidget->setItem(8, 2, injectionTimeValueItem);
-
-
-	// 显示按钮
-	QWidget* viewWidget = new QWidget();
-	QPushButton* viewButton = new QPushButton("显示");
-	viewButton->setFixedSize(100, 50);
-	viewButton->setMinimumHeight(30);
-	viewButton->setFlat(false);
-	viewButton->setStyleSheet("QPushButton {"
-		"background-color:  rgba(0, 0, 0, 0);"
-		"border: 2px solid #C1B1B1; "
-		"border-radius: 10px; "
-		"color: black; "
-		"font-weight: bold; "
-		"padding: 5px;"
-		"outline: none;"
-		"}"
-		"QPushButton:hover {"
-		"background-color: rgba(230, 230, 230, 100);"
-		"}");
-	QVBoxLayout* viewLayout = new QVBoxLayout(viewWidget);
-	viewLayout->addWidget(viewButton);
-	viewLayout->setAlignment(Qt::AlignCenter); // 按钮居中显示
-	viewLayout->setMargin(0);
-	viewWidget->setLayout(viewLayout);
-	m_tableWidget->setCellWidget(9, 2, viewWidget);
-	m_tableWidget->setSpan(9, 2, 1, 2);
-
-
-
-	m_inRadioButtonGroup = new QButtonGroup(this);
-	m_inRadioButtonGroup->setExclusive(true); // 显式设置互斥（默认已开启）
-
-	QRadioButton* oneRadio = new QRadioButton("");
-	m_inRadioButtonGroup->addButton(oneRadio, 0);
-	QWidget* oneCellWidget = new QWidget();
-	QHBoxLayout* oneLayout = new QHBoxLayout(oneCellWidget);
-	oneLayout->addWidget(oneRadio);
-	oneLayout->setAlignment(Qt::AlignCenter); // 居中对齐
-	oneLayout->setContentsMargins(0, 0, 0, 0); // 去掉布局边距
-	oneRadio->setChecked(true);
-	
-	QRadioButton* twoRadio = new QRadioButton("");
-	m_inRadioButtonGroup->addButton(twoRadio, 1);
-	QWidget* twoCellWidget = new QWidget();
-	QHBoxLayout* twoLayout = new QHBoxLayout(twoCellWidget);
-	twoLayout->addWidget(twoRadio);
-	twoLayout->setAlignment(Qt::AlignCenter); // 居中对齐
-	twoLayout->setContentsMargins(0, 0, 0, 0); // 去掉布局边距
-
-	QRadioButton* threeRadio = new QRadioButton("");
-	m_inRadioButtonGroup->addButton(threeRadio, 2);
-	QWidget* threeCellWidget = new QWidget();
-	QHBoxLayout* threeLayout = new QHBoxLayout(threeCellWidget);
-	threeLayout->addWidget(threeRadio);
-	threeLayout->setAlignment(Qt::AlignCenter); // 居中对齐
-	threeLayout->setContentsMargins(0, 0, 0, 0); // 去掉布局边距
-
-	QRadioButton* fourRadio = new QRadioButton("");
-	m_inRadioButtonGroup->addButton(fourRadio, 3);
-	QWidget* fourCellWidget = new QWidget();
-	QHBoxLayout* fourLayout = new QHBoxLayout(fourCellWidget);
-	fourLayout->addWidget(fourRadio);
-	fourLayout->setAlignment(Qt::AlignCenter); // 居中对齐
-	fourLayout->setContentsMargins(0, 0, 0, 0); // 去掉布局边距
-
-	m_tableWidget->setCellWidget(2, 4, oneCellWidget);
-	m_tableWidget->setCellWidget(3, 4, twoCellWidget);
-	m_tableWidget->setCellWidget(4, 4, threeCellWidget);
-	m_tableWidget->setCellWidget(5, 4, fourCellWidget);
-
-
-
-	m_outRadioButtonGroup = new QButtonGroup(this);
-	m_inRadioButtonGroup->setExclusive(true); // 显式设置互斥（默认已开启）
-
-	QRadioButton* fiveRadio = new QRadioButton("");
-	m_outRadioButtonGroup->addButton(fiveRadio, 0);
-	QWidget* fiveCellWidget = new QWidget();
-	QHBoxLayout* fiveLayout = new QHBoxLayout(fiveCellWidget);
-	fiveLayout->addWidget(fiveRadio);
-	fiveLayout->setAlignment(Qt::AlignCenter); // 居中对齐
-	fiveLayout->setContentsMargins(0, 0, 0, 0); // 去掉布局边距
-	fiveRadio->setChecked(true);
-
-	QRadioButton* sixRadio = new QRadioButton("");
-	m_outRadioButtonGroup->addButton(sixRadio, 1);
-	QWidget* sixCellWidget = new QWidget();
-	QHBoxLayout* sixLayout = new QHBoxLayout(sixCellWidget);
-	sixLayout->addWidget(sixRadio);
-	sixLayout->setAlignment(Qt::AlignCenter); // 居中对齐
-	sixLayout->setContentsMargins(0, 0, 0, 0); // 去掉布局边距
-
-	m_tableWidget->setCellWidget(7, 4, fiveCellWidget);
-	m_tableWidget->setCellWidget(8, 4, sixCellWidget);
-	
-
-	// 绑定单选按钮选中信号
-	connect(m_inRadioButtonGroup, SIGNAL(buttonClicked(int)),
-		this, SLOT(onRadioSelected(int)));
-	connect(m_outRadioButtonGroup, SIGNAL(buttonClicked(int)),
-		this, SLOT(onRadioSelected(int)));
-
-
-
-	// 设置列宽度
-	QTableWidgetItem* colimnItem = m_tableWidget->item(9, 1);
-	int itemWidth = QFontMetrics(m_tableWidget->font()).width(colimnItem->text());
-	m_tableWidget->setColumnWidth(1, itemWidth + m_tableWidget->verticalHeader()->width());
-
-	// 单位列
-	QStringList unitLabels = { " "," ","℃", "℃", "kg/min","MPa"," ","%","s"," " };
-	for (int row = 0; row < unitLabels.size(); ++row) {
-		if (row != 0)
+		QStringList cols = { "逆向寻优"," ",  "1", "2", "3","4"," ","1","2","3" };
+		for (int row = 0; row < cols.size(); ++row)
 		{
-			QTableWidgetItem* labelItem = new QTableWidgetItem(unitLabels[row]);
-			labelItem->setFlags(labelItem->flags() & ~Qt::ItemIsEditable); // 不可编辑
-			m_tableWidget->setItem(row, 3, labelItem);
+			QTableWidgetItem* serialItem = new QTableWidgetItem(cols[row]);
+			if (row == 0)
+			{
+				serialItem->setTextAlignment(Qt::AlignLeft);
+			}
+			serialItem->setFlags(serialItem->flags() & ~Qt::ItemIsEditable); // 不可编辑
+			m_tableWidget->setItem(row, 0, serialItem);
 		}
 
-	}
+		QStringList labels = { "","工艺输入参数",  "弹体保温温度", "药液浇注温度", "药液浇注速度","真空度","工艺输出参数","相对密度","弹体注药时间","弹体温度云图与温升曲线" };
+		for (int row = 0; row < labels.size(); ++row)
+		{
+			QTableWidgetItem* labelItem = new QTableWidgetItem(labels[row]);
+			labelItem->setTextAlignment(Qt::AlignCenter); // 文本居中	
+			labelItem->setFlags(labelItem->flags() & ~Qt::ItemIsEditable); // 不可编辑
+			m_tableWidget->setItem(row, 1, labelItem);
+		}
 
-	QTableWidgetItem* unitColimnItem = m_tableWidget->item(4, 3);
-	int unitItemWidth = QFontMetrics(m_tableWidget->font()).width(unitColimnItem->text());
-	m_tableWidget->setColumnWidth(3, unitItemWidth + m_tableWidget->verticalHeader()->width());
+		// 计算按钮
+		m_calButton = new QPushButton("计算");
+		m_tableWidget->setCellWidget(0, 2, m_calButton);
+		
+		QTableWidgetItem* insulationTemperatureValueItem = new QTableWidgetItem(m_insulationTemperatureValue);
+		insulationTemperatureValueItem->setTextAlignment(Qt::AlignCenter); // 文本居中
+		QTableWidgetItem* pouringTemperatureValueItem = new QTableWidgetItem(m_pouringTemperatureValue);
+		pouringTemperatureValueItem->setTextAlignment(Qt::AlignCenter); // 文本居中
+		QTableWidgetItem* pouringSpeedValueItem = new QTableWidgetItem(m_pouringSpeedValue);
+		pouringSpeedValueItem->setTextAlignment(Qt::AlignCenter); // 文本居中
+		QTableWidgetItem* vacuumDegreeValueItem = new QTableWidgetItem(m_vacuumDegreeValue);
+		vacuumDegreeValueItem->setTextAlignment(Qt::AlignCenter); // 文本居中
+		QTableWidgetItem* relativeDensityValueItem = new QTableWidgetItem(m_relativeDensityValue);
+		relativeDensityValueItem->setTextAlignment(Qt::AlignCenter); // 文本居中
+		QTableWidgetItem* injectionTimeValueItem = new QTableWidgetItem(m_injectionTimeValue);
+		injectionTimeValueItem->setTextAlignment(Qt::AlignCenter); // 文本居中
+
+		m_tableWidget->setItem(2, 2, insulationTemperatureValueItem);
+		m_tableWidget->setItem(3, 2, pouringTemperatureValueItem);
+		m_tableWidget->setItem(4, 2, pouringSpeedValueItem);
+		m_tableWidget->setItem(5, 2, vacuumDegreeValueItem);
+		m_tableWidget->setItem(7, 2, relativeDensityValueItem);
+		m_tableWidget->setItem(8, 2, injectionTimeValueItem);
+
+		// 显示按钮
+		m_viewButton = new QPushButton("显示");
+		m_tableWidget->setCellWidget(9, 2, m_viewButton);
+
+		QStringList unitLabels = { " "," ","℃", "℃", "kg/min","MPa"," ","%","s"," " };
+		for (int row = 0; row < unitLabels.size(); ++row)
+		{
+			if (row != 0)
+			{
+				QTableWidgetItem* labelItem = new QTableWidgetItem(unitLabels[row]);
+				labelItem->setFlags(labelItem->flags() & ~Qt::ItemIsEditable); // 不可编辑
+				m_tableWidget->setItem(row, 3, labelItem);
+			}
+		}
+
+		auto createCenteredRadioWidget = [](QRadioButton* radio) -> QWidget* {
+			QWidget* container = new QWidget();
+			QHBoxLayout* layout = new QHBoxLayout(container);
+			layout->setAlignment(Qt::AlignCenter);
+			layout->setContentsMargins(0, 0, 0, 0);
+			layout->addWidget(radio);
+			return container;
+		};
+
+		auto firRadioButtonGroup = new QButtonGroup();
+		{
+			m_insulationTempeRadioBtn = new QRadioButton();
+			m_insulationTempeRadioBtn->setChecked(true);
+			m_pouringTempeRadioBtn = new QRadioButton();
+			m_pouringSpeedRadioBtn = new QRadioButton();
+			m_vacuumDegreeRadioBtn = new QRadioButton();
+
+			m_tableWidget->setCellWidget(2, 4, createCenteredRadioWidget(m_insulationTempeRadioBtn));
+			m_tableWidget->setCellWidget(3, 4, createCenteredRadioWidget(m_pouringTempeRadioBtn));
+			m_tableWidget->setCellWidget(4, 4, createCenteredRadioWidget(m_pouringSpeedRadioBtn));
+			m_tableWidget->setCellWidget(5, 4, createCenteredRadioWidget(m_vacuumDegreeRadioBtn));
+
+			firRadioButtonGroup->addButton(m_insulationTempeRadioBtn);
+			firRadioButtonGroup->addButton(m_pouringTempeRadioBtn);
+			firRadioButtonGroup->addButton(m_pouringSpeedRadioBtn);
+			firRadioButtonGroup->addButton(m_vacuumDegreeRadioBtn);
+		}
+		firRadioButtonGroup->setExclusive(true);
+
+		auto secRadioButtonGroup = new QButtonGroup();
+		{
+			m_relativeDensityRadioBtn = new QRadioButton();
+			m_relativeDensityRadioBtn->setChecked(true);
+			m_injectionTimeRadioBtn = new QRadioButton();
+
+			m_tableWidget->setCellWidget(7, 4, createCenteredRadioWidget(m_relativeDensityRadioBtn));
+			m_tableWidget->setCellWidget(8, 4, createCenteredRadioWidget(m_injectionTimeRadioBtn));
+
+			secRadioButtonGroup->addButton(m_relativeDensityRadioBtn);
+			secRadioButtonGroup->addButton(m_injectionTimeRadioBtn);
+		}
+		secRadioButtonGroup->setExclusive(true);
+
+		// 合并单元格
+		m_tableWidget->setSpan(0, 0, 1, 2);
+		m_tableWidget->setSpan(0, 2, 1, 3);
+		m_tableWidget->setSpan(9, 2, 1, 3);
+	}
+	vlayout->addWidget(m_tableWidget);
+	setLayout(vlayout);
 
 	// 将第0行0列的单元格文本字体加粗
 	QTableWidgetItem* headerItem = m_tableWidget->item(0, 0);
-	if (headerItem) {
-		QFont font = headerItem->font();
-		font.setBold(true);
-		headerItem->setFont(font);
-	}
-
-	// 导入按钮
-	QWidget* importWidget = new QWidget();
-	QPushButton* importButton = new QPushButton("计算");
-	importButton->setFixedSize(100, 50);
-	importButton->setMinimumHeight(30);
-	importButton->setFlat(false);
-	importButton->setStyleSheet("QPushButton {"
-		"background-color:  rgba(0, 0, 0, 0);"
-		"border: 2px solid #C1B1B1; "
-		"border-radius: 10px; "
-		"color: black; "
-		"font-weight: bold; "
-		"padding: 5px;"
-		"outline: none;"
-		"}"
-		"QPushButton:hover {"
-		"background-color: rgba(230, 230, 230, 100);"
-		"}");
-	QVBoxLayout* importLayout = new QVBoxLayout(importWidget);
-	importLayout->addWidget(importButton);
-	importLayout->setAlignment(Qt::AlignCenter); // 按钮居中显示
-	importLayout->setMargin(0);
-	importWidget->setLayout(importLayout);
-	m_tableWidget->setCellWidget(0, 2, importWidget);
-
-	connect(importButton, &QPushButton::clicked, this, &InReverseOptimizationPropertyWidget::showTableDialog);
-	// 合并第一行的第三和第四列
-	m_tableWidget->setSpan(0, 2, 1, 2);
-
+	QFont font = headerItem->font();
+	font.setBold(true);
+	headerItem->setFont(font);
+	
 	//文本左对齐
-	for (int row = 0; row < m_tableWidget->rowCount(); ++row) {
-		for (int col = 0; col < m_tableWidget->columnCount(); ++col) {
+	for (int row = 0; row < m_tableWidget->rowCount(); ++row) 
+	{
+		for (int col = 0; col < m_tableWidget->columnCount(); ++col) 
+		{
 			QTableWidgetItem* item = m_tableWidget->item(row, col);
 			if (item)
 			{
-				if (col == 0 && row != 0)
+				if (col == 0)
 				{
 					item->setTextAlignment(Qt::AlignCenter);
 				}
@@ -277,8 +183,8 @@ void InReverseOptimizationPropertyWidget::initWidget()
 	}
 
 	// 遍历第2列（索引为1），将不可编辑单元格背景设置为浅灰色
-	for (int row = 0; row < m_tableWidget->rowCount(); ++row) {
-		// 遍历行，设置行高
+	for (int row = 0; row < m_tableWidget->rowCount(); ++row) 
+	{
 		m_tableWidget->setRowHeight(row, 10);
 		QTableWidgetItem* item = m_tableWidget->item(row, 2);
 		if (item && !(item->flags() & Qt::ItemIsEditable))
@@ -291,12 +197,17 @@ void InReverseOptimizationPropertyWidget::initWidget()
 			unitItem->setBackground(QBrush(QColor(230, 230, 230)));
 		}
 	}
+}
+
+void InReverseOptimizationPropertyWidget::bindConnect()
+{
+	connect(m_calButton, &QPushButton::clicked, this, &InReverseOptimizationPropertyWidget::showTableDialog);
+
 
 }
 
-void InReverseOptimizationPropertyWidget::showTableDialog() {
-
-
+void InReverseOptimizationPropertyWidget::showTableDialog() 
+{
 	QDialog* dialog = new QDialog();
 	dialog->setWindowTitle("壳体材料");
 	dialog->resize(1000, 500);
@@ -432,19 +343,4 @@ void InReverseOptimizationPropertyWidget::showTableDialog() {
 	dialog->exec();
 }
 
-// 单选按钮选中事件处理
-void InReverseOptimizationPropertyWidget::inOnRadioSelected(int btnId)
-{
-	QRadioButton* selectedBtn = qobject_cast<QRadioButton*>(m_inRadioButtonGroup->button(btnId));
-	if (selectedBtn) {
-		// btnId 行号
-	}
-}
 
-void InReverseOptimizationPropertyWidget::outOnRadioSelected(int btnId)
-{
-	QRadioButton* selectedBtn = qobject_cast<QRadioButton*>(m_outRadioButtonGroup->button(btnId));
-	if (selectedBtn) {
-		// btnId 行号
-	}
-}

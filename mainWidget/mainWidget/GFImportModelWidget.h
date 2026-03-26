@@ -8,11 +8,11 @@
 #include "GeomPropertyWidget.h"
 #include "MaterialPropertyWidget.h"
 #include "MeshPropertyWidget.h"
-#include "SteelPropertyWidget.h"
+#include "ShellPropertyWidget.h"
 #include "PropellantPropertyWidget.h"
 #include "ProjectPropertyWidge.h"
 #include "CalculationPropertyWidget.h"
-#include "InsulatingheatPropertyWidget.h"
+#include "GelatinPropertyWidget.h"
 #include "DatabasePropertyWidget.h"
 
 #include "PreForwardDesignPropertyWidget.h"
@@ -63,11 +63,11 @@ private:
 	GeomPropertyWidget* m_geomPropertyWidget = nullptr;
 	MaterialPropertyWidget* m_materialPropertyWidget = nullptr;
 	MeshPropertyWidget* m_meshPropertyWidget = nullptr;
-	SteelPropertyWidget* m_steelPropertyWidgett = nullptr;
+	ShellPropertyWidget* m_steelPropertyWidgett = nullptr;
 	PropellantPropertyWidget* m_propellantPropertyWidget = nullptr;
 	ProjectPropertyWidge* m_projectPropertyWidge = nullptr;
 	CalculationPropertyWidget* m_calculationPropertyWidget = nullptr;
-	InsulatingheatPropertyWidget* m_insulatingheatPropertyWidget = nullptr;
+	GelatinPropertyWidget* m_insulatingheatPropertyWidget = nullptr;
 	DatabasePropertyWidget* m_databasePropertyWidget = nullptr;
 	PreForwardDesignPropertyWidget* m_preForwardDesignPropertyWidget = nullptr;
 	PreReverseOptimizationPropertyWidget* m_preReverseOptimizationPropertyWidget = nullptr;

@@ -44,9 +44,11 @@ void DatabasePropertyWidget::initWidget()
 
 
 	QStringList labels = { "数据库", "物性数据库","计算模型数据库" };
-	for (int row = 0; row < labels.size(); ++row) {
+	for (int row = 0; row < labels.size(); ++row) 
+	{
 		QTableWidgetItem* serialItem = new QTableWidgetItem(QString::number(row));
-		if (row == 0) {
+		if (row == 0)
+		{
 			serialItem = new QTableWidgetItem("数据库");
 		}
 		serialItem->setFlags(serialItem->flags() & ~Qt::ItemIsEditable); // 不可编辑

@@ -53,7 +53,7 @@ mainWidget::mainWidget(QWidget *parent)
     ui->setupUi(this);
 	setWindowTitle("注装工艺参数设计软件V1.0");
 	//showMaximized();
-	//setMinimumSize(1050, 800);
+	setMinimumSize(1900, 1300);
 
 	// 状态栏
 	QStatusBar* statusbar = this->statusBar();

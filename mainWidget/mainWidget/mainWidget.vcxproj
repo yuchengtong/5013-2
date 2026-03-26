@@ -135,14 +135,14 @@
     <ClCompile Include="PropertyWidget\GeomPropertyWidget.cpp" />
     <ClCompile Include="PropertyWidget\InForwardDesignPropertyWidget.cpp" />
     <ClCompile Include="PropertyWidget\InReverseOptimizationPropertyWidget.cpp" />
-    <ClCompile Include="PropertyWidget\InsulatingheatPropertyWidget.cpp" />
+    <ClCompile Include="PropertyWidget\GelatinPropertyWidget.cpp" />
     <ClCompile Include="PropertyWidget\MaterialPropertyWidget.cpp" />
     <ClCompile Include="PropertyWidget\MeshPropertyWidget.cpp" />
     <ClCompile Include="PropertyWidget\PreForwardDesignPropertyWidget.cpp" />
     <ClCompile Include="PropertyWidget\PreReverseOptimizationPropertyWidget.cpp" />
     <ClCompile Include="PropertyWidget\ProjectPropertyWidge.cpp" />
     <ClCompile Include="PropertyWidget\PropellantPropertyWidget.cpp" />
-    <ClCompile Include="PropertyWidget\SteelPropertyWidget.cpp" />
+    <ClCompile Include="PropertyWidget\ShellPropertyWidget.cpp" />
     <ClCompile Include="TriangulationWorker.cpp" />
     <ClCompile Include="WordExporter.cpp" />
     <ClCompile Include="WordExporterWorker.cpp" />
@@ -181,7 +181,7 @@
   <ItemGroup>
     <QtMoc Include="PropertyWidget\MeshPropertyWidget.h" />
     <QtMoc Include="PropertyWidget\PropellantPropertyWidget.h" />
-    <QtMoc Include="PropertyWidget\SteelPropertyWidget.h" />
+    <QtMoc Include="PropertyWidget\ShellPropertyWidget.h" />
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="PropertyWidget\ProjectPropertyWidge.h" />
@@ -199,7 +199,7 @@
     <QtMoc Include="ProgressDialog.h" />
     <QtMoc Include="GFTreeWidget.h" />
     <QtMoc Include="GFTreeWidgetItemDelegate.h" />
-    <QtMoc Include="PropertyWidget\InsulatingheatPropertyWidget.h" />
+    <QtMoc Include="PropertyWidget\GelatinPropertyWidget.h" />
     <QtMoc Include="PropertyWidget\CalculationPropertyWidget.h" />
     <QtMoc Include="LoginDialog.h" />
     <QtMoc Include="DataStructure\ModelDataManager.h" />

@@ -1,6 +1,6 @@
 ﻿#pragma once
 #pragma execution_character_set("utf-8")
-#include "SteelPropertyWidget.h"
+#include "ShellPropertyWidget.h"
 #include <QTableWidget>
 #include <QHeaderView>
 #include <QComboBox>
@@ -12,19 +12,17 @@
 #include "../GFImportModelWidget.h"
 #include "xlsxdocument.h"
 
-
 #include <QDateTime>
 #include <QApplication>
 
-SteelPropertyWidget::SteelPropertyWidget(QWidget* parent)
+ShellPropertyWidget::ShellPropertyWidget(QWidget* parent)
 	:BasePropertyWidget(parent)
 {
 	initWidget();
 }
 
-void SteelPropertyWidget::initWidget()
+void ShellPropertyWidget::initWidget()
 {
-
 	QVBoxLayout* vlayout = new QVBoxLayout(this);
 	vlayout->setContentsMargins(0, 0, 0, 0);
 
@@ -131,7 +129,7 @@ void SteelPropertyWidget::initWidget()
 	importWidget->setLayout(importLayout);
 	m_tableWidget->setCellWidget(0, 2, importWidget);
 
-	connect(importButton, &QPushButton::clicked, this, &SteelPropertyWidget::showTableDialog);
+	connect(importButton, &QPushButton::clicked, this, &ShellPropertyWidget::showTableDialog);
 	// 合并第一行的第三和第四列
 	m_tableWidget->setSpan(0, 2, 1, 2);
 
@@ -171,7 +169,7 @@ void SteelPropertyWidget::initWidget()
 
 }
 
-void SteelPropertyWidget::showTableDialog() {
+void ShellPropertyWidget::showTableDialog() {
 
 
 	QDialog* dialog = new QDialog();
