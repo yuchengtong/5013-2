@@ -101,17 +101,17 @@ GFImportModelWidget::GFImportModelWidget(QWidget*parent)
 			auto rightSplitter = new QSplitter(Qt::Vertical);
 			rightSplitter->setMinimumWidth(360);
 			{
-				m_TimeTempPlot = new TimeTempPlot(this);
-				{
-					QVector<double> time = { 0,1,2,3,4,5,6,7,8,9,10 };
-					QVector<double> temp = { 0,1,2,3,4,5,6,7,8,9,10 };
-					m_TimeTempPlot->AddDataPoint(time, temp);
-				}
+				m_TimeTempPlotWidget = new TimeTempPlotWidget(this);
+				//{
+				//	QVector<double> time = { 0,1,2,3,4,5,6,7,8,9,10 };
+				//	QVector<double> temp = { 0,1,2,3,4,5,6,7,8,9,10 };
+				//	m_TimeTempPlot->AddDataPoint(time, temp);
+				//}
 
 
 				m_LogWidget = new GFLogWidget();
 
-				rightSplitter->addWidget(m_TimeTempPlot);
+				rightSplitter->addWidget(m_TimeTempPlotWidget);
 				rightSplitter->addWidget(m_LogWidget);
 				rightSplitter->setStretchFactor(0, 1);
 				rightSplitter->setStretchFactor(1, 1);

@@ -145,6 +145,7 @@
     <ClCompile Include="PropertyWidget\ShellPropertyWidget.cpp" />
     <ClCompile Include="QCustomPlot\qcustomplot.cpp" />
     <ClCompile Include="TimeTempPlot.cpp" />
+    <ClCompile Include="TimeTempPlotWidget.cpp" />
     <ClCompile Include="TriangulationWorker.cpp" />
     <ClCompile Include="WordExporter.cpp" />
     <ClCompile Include="WordExporterWorker.cpp" />
@@ -189,6 +190,7 @@
     <QtMoc Include="PropertyWidget\ProjectPropertyWidge.h" />
   </ItemGroup>
   <ItemGroup>
+    <QtMoc Include="TimeTempPlotWidget.h" />
     <QtMoc Include="TimeTempPlot.h" />
     <QtMoc Include="QCustomPlot\qcustomplot.h" />
     <QtMoc Include="PropertyWidget\InForwardDesignPropertyWidget.h" />

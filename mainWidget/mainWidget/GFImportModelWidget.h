@@ -21,7 +21,7 @@
 #include "PreReverseOptimizationPropertyWidget.h"
 #include "InForwardDesignPropertyWidget.h"
 #include "InReverseOptimizationPropertyWidget.h"
-#include "TimeTempPlot.h"
+#include "TimeTempPlotWidget.h"
 
 class GFImportModelWidget :public QWidget
 {
@@ -77,6 +77,6 @@ private:
 	InForwardDesignPropertyWidget* m_inForwardDesignPropertyWidget = nullptr;
 	InReverseOptimizationPropertyWidget* m_inReverseOptimizationPropertyWidget = nullptr;
 
-	TimeTempPlot* m_TimeTempPlot = nullptr;
+	TimeTempPlotWidget* m_TimeTempPlotWidget = nullptr;
 };
 

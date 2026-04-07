@@ -151,6 +151,9 @@
     <ClCompile Include="TimeTempPlot.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="TimeTempPlotWidget.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="occView.h">
@@ -244,6 +247,9 @@
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="TimeTempPlot.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="TimeTempPlotWidget.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>
