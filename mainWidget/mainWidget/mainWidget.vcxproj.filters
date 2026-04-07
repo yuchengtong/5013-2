@@ -145,6 +145,12 @@
     <ClCompile Include="PropertyWidget\MeshPropertyWidget.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="QCustomPlot\qcustomplot.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TimeTempPlot.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="occView.h">
@@ -232,6 +238,12 @@
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="PropertyWidget\MeshPropertyWidget.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="QCustomPlot\qcustomplot.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="TimeTempPlot.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>

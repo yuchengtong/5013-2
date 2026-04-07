@@ -6,14 +6,14 @@
 #include <QComboBox>
 #include <QDir>
 #include <QDialog>
-#include "ModelDataManager.h"
+#include <QDateTime>
+#include <QApplication>
 #include "../GFTreeModelWidget.h"
 #include "../GFImportModelWidget.h"
 #include "xlsxdocument.h"
 
+#include "ModelDataManager.h"
 
-#include <QDateTime>
-#include <QApplication>
 
 InReverseOptimizationPropertyWidget::InReverseOptimizationPropertyWidget(QWidget* parent)
 	:BasePropertyWidget(parent)

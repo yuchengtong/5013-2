@@ -1,6 +1,8 @@
 #pragma once
 #include <qwidget.h>
 #include <QStackedWidget>
+#include "QCustomPlot/qcustomplot.h"
+
 
 #include "GFTreeModelWidget.h"
 #include "OccView.h"
@@ -19,6 +21,7 @@
 #include "PreReverseOptimizationPropertyWidget.h"
 #include "InForwardDesignPropertyWidget.h"
 #include "InReverseOptimizationPropertyWidget.h"
+#include "TimeTempPlot.h"
 
 class GFImportModelWidget :public QWidget
 {
@@ -74,6 +77,6 @@ private:
 	InForwardDesignPropertyWidget* m_inForwardDesignPropertyWidget = nullptr;
 	InReverseOptimizationPropertyWidget* m_inReverseOptimizationPropertyWidget = nullptr;
 
-	
+	TimeTempPlot* m_TimeTempPlot = nullptr;
 };
 

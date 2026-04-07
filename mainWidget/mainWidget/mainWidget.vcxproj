@@ -32,12 +32,12 @@
   </ImportGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="QtSettings">
     <QtInstall>msvc2017_64</QtInstall>
-    <QtModules>core;gui;axcontainer;widgets;charts;datavisualization</QtModules>
+    <QtModules>core;gui;axcontainer;widgets;printsupport;charts;datavisualization</QtModules>
     <QtBuildConfig>debug</QtBuildConfig>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'" Label="QtSettings">
     <QtInstall>msvc2017_64</QtInstall>
-    <QtModules>core;gui;axcontainer;widgets;charts;datavisualization</QtModules>
+    <QtModules>core;gui;axcontainer;widgets;printsupport;charts;datavisualization</QtModules>
     <QtBuildConfig>release</QtBuildConfig>
   </PropertyGroup>
   <Target Name="QtMsBuildNotFound" BeforeTargets="CustomBuild;ClCompile" Condition="!Exists('$(QtMsBuild)\qt.targets') or !Exists('$(QtMsBuild)\qt.props')">
@@ -143,6 +143,8 @@
     <ClCompile Include="PropertyWidget\ProjectPropertyWidge.cpp" />
     <ClCompile Include="PropertyWidget\PropellantPropertyWidget.cpp" />
     <ClCompile Include="PropertyWidget\ShellPropertyWidget.cpp" />
+    <ClCompile Include="QCustomPlot\qcustomplot.cpp" />
+    <ClCompile Include="TimeTempPlot.cpp" />
     <ClCompile Include="TriangulationWorker.cpp" />
     <ClCompile Include="WordExporter.cpp" />
     <ClCompile Include="WordExporterWorker.cpp" />
@@ -187,6 +189,8 @@
     <QtMoc Include="PropertyWidget\ProjectPropertyWidge.h" />
   </ItemGroup>
   <ItemGroup>
+    <QtMoc Include="TimeTempPlot.h" />
+    <QtMoc Include="QCustomPlot\qcustomplot.h" />
     <QtMoc Include="PropertyWidget\InForwardDesignPropertyWidget.h" />
     <QtMoc Include="PropertyWidget\InReverseOptimizationPropertyWidget.h" />
     <QtMoc Include="PropertyWidget\PreForwardDesignPropertyWidget.h" />
