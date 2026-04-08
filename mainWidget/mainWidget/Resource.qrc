@@ -47,9 +47,6 @@
         <file alias="Animation/first_frame.svg">src/icon/Animation/first_frame.svg</file>
         <file alias="Animation/first_frame_disable.svg">src/icon/Animation/first_frame_disable.svg</file>
         <file alias="Animation/first_frame_press.svg">src/icon/Animation/first_frame_press.svg</file>
-        <file alias="Animation/last _frame.svg">src/icon/Animation/last _frame.svg</file>
-        <file alias="Animation/last _frame_disable.svg">src/icon/Animation/last _frame_disable.svg</file>
-        <file alias="Animation/last _frame_press.svg">src/icon/Animation/last _frame_press.svg</file>
         <file alias="Animation/next_frame.svg">src/icon/Animation/next_frame.svg</file>
         <file alias="Animation/next_frame_disable.svg">src/icon/Animation/next_frame_disable.svg</file>
         <file alias="Animation/next_frame_press.svg">src/icon/Animation/next_frame_press.svg</file>
@@ -63,5 +60,8 @@
         <file alias="Animation/stop_frame.svg">src/icon/Animation/stop_frame.svg</file>
         <file alias="Animation/stop_frame_disable.svg">src/icon/Animation/stop_frame_disable.svg</file>
         <file alias="Animation/stop_frame_press.svg">src/icon/Animation/stop_frame_press.svg</file>
+        <file alias="Animation/last_frame.svg">src/icon/Animation/last_frame.svg</file>
+        <file alias="Animation/last_frame_disable.svg">src/icon/Animation/last_frame_disable.svg</file>
+        <file alias="Animation/last_frame_press.svg">src/icon/Animation/last_frame_press.svg</file>
     </qresource>
 </RCC>

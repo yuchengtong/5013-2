@@ -6,6 +6,42 @@
 
 const double XFM_TooL_ANIMATION_TIME_TOLERANCE = 1e-4;
 
+
+QString xfmKeyFrameSlider_style_sheet = R"(
+xfmKeyFrameSlider{
+	padding-left : 10px;
+	padding-right: 10px;
+	max-height:22px;
+	min-height:22px;
+/* border:lpx solid black; */
+}
+
+xfmKeyFrameSlider: :groove {
+	background-color:rgba(0, 0, 0, 128) ;
+	height:8px;
+	padding-left:-7px;
+	padding-right:-7px;
+}
+
+xfmKeyFrameSlider::handle{
+	width:15px;
+	height:26px;
+	margin-top:-10px;
+	margin-bottom:-10px;
+	border-image : url(:/animation/xfmKeyFrameSlider_handle. png) ;
+	border-image :url(:/animation/transparent_handle. png) ;
+}
+
+xfmKeyFrameSlider: :sub-page {
+	height:10px;
+	background-color:#c5c5c5;
+	margin-top:-lpx;
+	margin-bottom:-lpx;
+	border: 1px solid #727272;
+}
+
+)";
+
 ToolsAnimationWidget::ToolsAnimationWidget(QWidget* parent)
 	:QWidget{ parent }
 {
@@ -129,60 +165,63 @@ void ToolsAnimationWidget::init()
 {
 	//主布局
 	QVBoxLayout* pVLayout = new QVBoxLayout(this);
-	pVLayout->setSpacing(14);
-	pVLayout->setContentsMargins(0, 10, 0, 0);//动画工具按钮布局
-	m_animToolBtnWidget = new QWidget(this);
-	m_animToolBtnWidget->setFixedHeight(20);
-	QHBoxLayout* pBtnLayout = new QHBoxLayout(m_animToolBtnWidget);
-	pBtnLayout->setSpacing(3);
-	pBtnLayout->setContentsMargins(0, 0, 0, 0);
-	m_comboBox = new QComboBox;
-	m_comboBox->setFixedHeight(20);
-	pBtnLayout->addWidget(m_comboBox);
+	pVLayout->setSpacing(0);
+	pVLayout->setContentsMargins(0, 0, 0, 0);
+	{
+		m_animToolBtnWidget = new QWidget(this);
+		m_animToolBtnWidget->setFixedHeight(20);
+		QHBoxLayout* pBtnLayout = new QHBoxLayout(m_animToolBtnWidget);
+		pBtnLayout->setSpacing(3);
+		pBtnLayout->setContentsMargins(0, 0, 0, 0);
+		{
+			m_comboBox = new QComboBox;
+			m_comboBox->setFixedHeight(20);
 
-	//按钮widget
-	QWidget* btnWidget = new QWidget(this);
-	QHBoxLayout* hLayout = new QHBoxLayout(btnWidget);
-	hLayout->setAlignment(Qt::AlignCenter);
-	hLayout->setSpacing(3);
-	hLayout->setContentsMargins(0, 0, 0, 0);
-	m_firstBtn = new QPushButton();
+			QWidget* btnWidget = new QWidget(this);
+			QHBoxLayout* hLayout = new QHBoxLayout(btnWidget);
+			hLayout->setAlignment(Qt::AlignCenter);
+			hLayout->setSpacing(3);
+			hLayout->setContentsMargins(0, 0, 0, 0);
+			{
+				m_firstBtn = new QPushButton();
+				m_firstBtn->setFixedSize(22, 20);
+				m_firstBtn->setIconSize(QSize(12, 12));
 
-	m_firstBtn->setFixedSize(22, 20);
-	m_firstBtn->setIconSize(QSize(12, 12));
-	m_prevBtn = new QPushButton();
+				m_prevBtn = new QPushButton();
+				m_prevBtn->setFixedSize(22, 20);
+				m_prevBtn->setIconSize(QSize(12, 12));
 
-	m_prevBtn->setFixedSize(22, 20);
-	m_prevBtn->setIconSize(QSize(12, 12));
-	m_nextBtn = new QPushButton();
+				m_nextBtn = new QPushButton();
+				m_nextBtn->setFixedSize(22, 20);
+				m_nextBtn->setIconSize(QSize(12, 12));
 
-	m_nextBtn->setFixedSize(22, 20);
-	m_nextBtn->setIconSize(QSize(12, 12));
-	m_lastBtn = new QPushButton();
+				m_lastBtn = new QPushButton();
+				m_lastBtn->setFixedSize(22, 20);
+				m_lastBtn->setIconSize(QSize(12, 12));
 
-	m_lastBtn->setFixedSize(22, 20);
-	m_lastBtn->setIconSize(QSize(12, 12));
-	m_playBtn = new QPushButton();
-	m_playBtn->setFixedSize(22, 20);
-	m_playBtn->setIconSize(QSize(12, 12));
+				m_playBtn = new QPushButton();
+				m_playBtn->setFixedSize(22, 20);
+				m_playBtn->setIconSize(QSize(12, 12));
+			}
+			hLayout->addWidget(m_firstBtn);
+			hLayout->addWidget(m_prevBtn);
+			hLayout->addWidget(m_playBtn);
+			hLayout->addWidget(m_nextBtn);
+			hLayout->addWidget(m_lastBtn);
 
-	hLayout->addWidget(m_firstBtn);
-	hLayout->addWidget(m_prevBtn);
-	hLayout->addWidget(m_playBtn);
-	hLayout->addWidget(m_nextBtn);
-	hLayout->addWidget(m_lastBtn);
-	pBtnLayout->addWidget(btnWidget);
-	pVLayout->addWidget(m_animToolBtnWidget);
+			pBtnLayout->addWidget(m_comboBox);
+			pBtnLayout->addWidget(btnWidget);
+		}
 
+		m_slider = new QSlider(Qt::Horizontal);
+		m_slider->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+		m_slider->setContentsMargins(0, 0, 0, 0);
+		m_slider->setRange(0, 100);
+		m_slider->installEventFilter(this);
 
-	//滑动条布局
-	m_slider = new QSlider(Qt::Horizontal);
-	m_slider->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-	m_slider->setContentsMargins(0, 0, 0, 0);
-	m_slider->setRange(0, 100);
-
-	m_slider->installEventFilter(this);
-	pVLayout->addWidget(m_slider);
+		pVLayout->addWidget(m_animToolBtnWidget);
+		pVLayout->addWidget(m_slider);
+	}
 	QVector<QPushButton*> btns;
 	btns << m_firstBtn << m_prevBtn << m_nextBtn << m_lastBtn << m_playBtn;
 	for (auto pBtn : btns)
@@ -353,50 +392,50 @@ void ToolsAnimationWidget::setButtonIcon(QPushButton* pBtn, EnumButtonState eSta
 		QIcon icon(":/animation/Animation/first_frame.svg");
 		if (eState == EnumButtonState::Pressed)
 		{
-			icon = QIcon(":/Animation/first_frame_press.svg");
+			icon = QIcon(":/animation/Animation/first_frame_press.svg");
 		}	
 		else if (eState = EnumButtonState::Disabled)
 		{
-			icon = QIcon(":/Animation/first_frame_disable. svg");
+			icon = QIcon(":/animation/Animation/first_frame_disable.svg");
 		}
 		pBtn->setIcon(icon);
 	}
 	else if (pBtn == m_prevBtn)
 	{
-		QIcon icon(":/Animation/prev_frame. svg"); 
+		QIcon icon(":/animation/Animation/prev_frame.svg"); 
 		if (eState == EnumButtonState::Pressed)
 		{
-			icon = QIcon(":/Animation/prev_frame_press. svg");
+			icon = QIcon(":/animation/Animation/prev_frame_press.svg");
 		}
 		else if (eState = EnumButtonState::Disabled)
 		{
-			icon = QIcon(":/Animation/prev_frame_disable. svg");
+			icon = QIcon(":/animation/Animation/prev_frame_disable.svg");
 		}
 		pBtn->setIcon(icon);
 	}
 	else if (pBtn == m_nextBtn)
 	{
-		QIcon icon(":/Animation/next_frame. svg"); 
+		QIcon icon(":/animation/Animation/next_frame.svg"); 
 		if (eState == EnumButtonState::Pressed)
 		{
-			icon = QIcon(":/Animation/next_frame_press. svg");
+			icon = QIcon(":/animation/Animation/next_frame_press.svg");
 		}
 		else if (eState = EnumButtonState::Disabled)
 		{
-			icon = QIcon(":/Animation/next_frame_disable. svg");
+			icon = QIcon(":/animation/Animation/next_frame_disable.svg");
 		}
 		pBtn->setIcon(icon);
 	}
 	else if (pBtn == m_lastBtn)
 	{
-		QIcon icon(":/Animation/last_frame. svg"); 
+		QIcon icon(":/animation/Animation/last_frame.svg"); 
 		if (eState == EnumButtonState::Pressed)
 		{
-			icon = QIcon(":/Animation/last_frame_press. svg");
+			icon = QIcon(":/animation/Animation/last_frame_press.svg");
 		}
 		else if (eState == EnumButtonState::Disabled)
 		{
-			icon = QIcon(":/Animation/last_frame_disable. svg");
+			icon = QIcon(":/animation/Animation/last_frame_disable.svg");
 		}
 		pBtn->setIcon(icon);
 	}
@@ -405,27 +444,27 @@ void ToolsAnimationWidget::setButtonIcon(QPushButton* pBtn, EnumButtonState eSta
 		bool bPause = m_playBtn->property("bPause").toBool();
 		if (bPause)
 		{
-			QIcon icon(":/Animation/stop_frame. svg"); 
+			QIcon icon(":/animation/Animation/stop_frame.svg"); 
 			if (eState == EnumButtonState::Pressed)
 			{
-				icon = QIcon(":/Animation/stop_frame_press. svg");
+				icon = QIcon(":/animation/Animation/stop_frame_press.svg");
 			}
 			else if (eState == EnumButtonState:: Disabled)
 			{
-				icon = QIcon(":/Animation/stop_frame_disable. svg");
+				icon = QIcon(":/animation/Animation/stop_frame_disable.svg");
 			}
 			pBtn->setIcon(icon);
 		}
 		else
 		{
-			QIcon icon(":/Animation/play_frame. svg");
+			QIcon icon(":/animation/Animation/play_frame.svg");
 			if (eState == EnumButtonState::Pressed)
 			{
-				icon = QIcon(":/Animation/play_frame_press. svg");
+				icon = QIcon(":/animation/Animation/play_frame_press.svg");
 			}
 			else if (eState == EnumButtonState::Disabled)
 			{
-				icon = QIcon(":/Animation/play_frame_disable. svg");
+				icon = QIcon(":/animation/Animation/play_frame_disable.svg");
 			}
 			pBtn->setIcon(icon);
 		}
