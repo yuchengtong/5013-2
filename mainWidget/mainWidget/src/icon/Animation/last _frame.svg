@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="_图层_2" data-name="图层 2" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 12 12">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: none;
+      }
+
+      .cls-2 {
+        fill: url(#_未命名的渐变_413);
+      }
+
+      .cls-3 {
+        fill: url(#_未命名的渐变_424);
+      }
+
+      .cls-4 {
+        fill: url(#_未命名的渐变_421);
+      }
+    </style>
+    <linearGradient id="_未命名的渐变_424" data-name="未命名的渐变 424" x1="10" y1="9.54" x2="10" y2="2.46" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#ddd"/>
+      <stop offset=".09" stop-color="#bababa"/>
+      <stop offset=".16" stop-color="#bcbcbc"/>
+      <stop offset=".21" stop-color="#c5c5c5"/>
+      <stop offset=".25" stop-color="#d5d5d5"/>
+      <stop offset=".29" stop-color="#ebebeb"/>
+      <stop offset=".32" stop-color="#fff"/>
+    </linearGradient>
+    <linearGradient id="_未命名的渐变_413" data-name="未命名的渐变 413" x1="4.6" y1="10.54" x2="4.6" y2="1.46" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#ddd"/>
+      <stop offset=".47" stop-color="#fff"/>
+    </linearGradient>
+    <linearGradient id="_未命名的渐变_421" data-name="未命名的渐变 421" x1="2" y1="8.02" x2="6.52" y2="8.02" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#c5c5c5"/>
+      <stop offset="1" stop-color="#c5c5c5" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+  <g id="_图层_1-2" data-name="图层 1">
+    <g id="_图层_2-2" data-name=" 图层 2-2">
+      <g>
+        <g>
+          <rect class="cls-3" x="8.75" y="2.46" width="2.5" height="7.08"/>
+          <path d="M11,2.67v6.67h-2V2.67h2M11.5,2.25h-3v7.5h3V2.25h0Z"/>
+        </g>
+        <g>
+          <path class="cls-2" d="M.75,1.46l7.11,3.65c.37.19.59.53.59.88s-.22.69-.59.88L.75,10.54V1.46Z"/>
+          <path d="M1,1.83l6.73,3.46c.63.32.63,1.09,0,1.42l-6.73,3.46V1.83M.5,1.08v9.83l.76-.39,6.73-3.46c.45-.23.71-.62.71-1.07s-.27-.83-.71-1.07L1.26,1.47l-.76-.39h0Z"/>
+        </g>
+        <rect class="cls-1" width="12" height="12"/>
+      </g>
+      <path class="cls-4" d="M2,9.03v-1.65c0-.3.29-.55.66-.55h3.68c.19,0,.25.2.09.28l-4.12,2.06c-.14.07-.31-.01-.31-.15Z"/>
+    </g>
+  </g>
+</svg>

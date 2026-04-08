@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="_图层_2" data-name="图层 2" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 12 12">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: none;
+      }
+
+      .cls-2 {
+        fill: url(#_未命名的渐变_413);
+      }
+
+      .cls-3 {
+        fill: url(#_未命名的渐变_424);
+      }
+
+      .cls-4 {
+        fill: url(#_未命名的渐变_421);
+      }
+
+      .cls-5 {
+        opacity: .3;
+      }
+    </style>
+    <linearGradient id="_未命名的渐变_424" data-name="未命名的渐变 424" x1="1840" y1="9.54" x2="1840" y2="2.46" gradientTransform="translate(-1838 12) scale(1 -1)" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#ddd"/>
+      <stop offset=".09" stop-color="#bababa"/>
+      <stop offset=".16" stop-color="#bcbcbc"/>
+      <stop offset=".21" stop-color="#c5c5c5"/>
+      <stop offset=".25" stop-color="#d5d5d5"/>
+      <stop offset=".29" stop-color="#ebebeb"/>
+      <stop offset=".32" stop-color="#fff"/>
+    </linearGradient>
+    <linearGradient id="_未命名的渐变_413" data-name="未命名的渐变 413" x1="1834.6" y1="10.54" x2="1834.6" y2="1.46" gradientTransform="translate(1842) rotate(-180) scale(1 -1)" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#ddd"/>
+      <stop offset=".47" stop-color="#fff"/>
+    </linearGradient>
+    <linearGradient id="_未命名的渐变_421" data-name="未命名的渐变 421" x1="1832" y1="8.02" x2="1836.52" y2="8.02" gradientTransform="translate(1842) rotate(-180) scale(1 -1)" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#c5c5c5"/>
+      <stop offset="1" stop-color="#c5c5c5" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+  <g id="_图层_1-2" data-name="图层 1">
+    <g id="_图层_2-2" data-name=" 图层 2-2" class="cls-5">
+      <g>
+        <g>
+          <rect class="cls-3" x=".75" y="2.46" width="2.5" height="7.08" transform="translate(4 12) rotate(-180)"/>
+          <path d="M1,2.67h2v6.67H1V2.67M.5,2.25v7.5s3,0,3,0V2.25s-3,0-3,0h0Z"/>
+        </g>
+        <g>
+          <path class="cls-2" d="M11.25,1.46l-7.11,3.65c-.37.19-.59.53-.59.88,0,.36.22.69.59.88l7.11,3.67V1.46Z"/>
+          <path d="M11,1.83v8.33s-6.73-3.46-6.73-3.46c-.63-.33-.63-1.09,0-1.42l6.73-3.46M11.5,1.08l-.76.39-6.73,3.45c-.44.23-.71.62-.71,1.07s.26.83.71,1.07l6.73,3.46.76.39V1.08h0Z"/>
+        </g>
+        <rect class="cls-1" x="0" y="0" width="12" height="12" transform="translate(12 12) rotate(-180)"/>
+      </g>
+      <path class="cls-4" d="M10,9.03v-1.65c0-.3-.29-.55-.66-.55h-3.68c-.19,0-.25.2-.09.28l4.12,2.06c.14.07.31-.01.31-.15Z"/>
+    </g>
+  </g>
+</svg>

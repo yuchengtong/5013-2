@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="_图层_2" data-name="图层 2" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 12 12">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: none;
+      }
+
+      .cls-2 {
+        fill: url(#_未命名的渐变_478);
+      }
+
+      .cls-3 {
+        fill: url(#_未命名的渐变_963);
+      }
+    </style>
+    <linearGradient id="_未命名的渐变_963" data-name="未命名的渐变 963" x1="6.74" y1="1.51" x2="6.74" y2="10.49" gradientTransform="translate(0 12) scale(1 -1)" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#a5a5c8"/>
+      <stop offset="1" stop-color="#dcdcdc"/>
+    </linearGradient>
+    <linearGradient id="_未命名的渐变_478" data-name="未命名的渐变 478" x1="3" y1="1080.04" x2="8.45" y2="1080.04" gradientTransform="translate(0 -1072)" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#999"/>
+      <stop offset="1" stop-color="#c5c5c5" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+  <g id="_图层_1-2" data-name="图层 1">
+    <g id="_图层_2-2" data-name=" 图层 2-2">
+      <g>
+        <g>
+          <path class="cls-3" d="M1.74,1.51l9.28,3.54c.45.18.72.53.72.95s-.28.77-.72.95L1.74,10.49V1.51Z"/>
+          <path d="M1.99,1.83l8.93,3.41c.77.3.77,1.23,0,1.52L1.99,10.17V1.83M1.49,1.18v9.63l.7-.27,8.93-3.41c.54-.21.87-.64.87-1.14s-.34-.93-.87-1.14L2.19,1.45l-.7-.27h0Z"/>
+        </g>
+        <rect class="cls-1" width="11.91" height="12"/>
+      </g>
+      <path class="cls-2" d="M3,9.1v-1.65c0-.34.33-.62.74-.62h4.53c.18,0,.24.2.08.27l-5.1,2.13c-.11.05-.25-.02-.25-.13Z"/>
+    </g>
+  </g>
+</svg>

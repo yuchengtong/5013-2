@@ -1,7 +1,8 @@
 #pragma once
 #include <QWidget>
-#include "TimeTempPlot.h"
 #include <QSlider>
+#include "TimeTempPlot.h"
+#include "ToolsAnimationWidget.h"
 
 class TimeTempPlotWidget : public QWidget
 {
@@ -14,7 +15,6 @@ public:
 
 private:
 	TimeTempPlot* m_TimeTempPlot = nullptr;
-	QSlider* m_Slider = nullptr;
-
+	ToolsAnimationWidget* m_ToolsAnimationWidget = nullptr;
 };
 

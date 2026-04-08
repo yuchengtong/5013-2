@@ -43,4 +43,25 @@
         <file>src/treeopen.svg</file>
         <file>src/chart_view.png</file>
     </qresource>
+    <qresource prefix="/animation">
+        <file alias="Animation/first_frame.svg">src/icon/Animation/first_frame.svg</file>
+        <file alias="Animation/first_frame_disable.svg">src/icon/Animation/first_frame_disable.svg</file>
+        <file alias="Animation/first_frame_press.svg">src/icon/Animation/first_frame_press.svg</file>
+        <file alias="Animation/last _frame.svg">src/icon/Animation/last _frame.svg</file>
+        <file alias="Animation/last _frame_disable.svg">src/icon/Animation/last _frame_disable.svg</file>
+        <file alias="Animation/last _frame_press.svg">src/icon/Animation/last _frame_press.svg</file>
+        <file alias="Animation/next_frame.svg">src/icon/Animation/next_frame.svg</file>
+        <file alias="Animation/next_frame_disable.svg">src/icon/Animation/next_frame_disable.svg</file>
+        <file alias="Animation/next_frame_press.svg">src/icon/Animation/next_frame_press.svg</file>
+        <file alias="Animation/play_frame.svg">src/icon/Animation/play_frame.svg</file>
+        <file alias="Animation/play_frame_disable.svg">src/icon/Animation/play_frame_disable.svg</file>
+        <file alias="Animation/play_frame_press.svg">src/icon/Animation/play_frame_press.svg</file>
+        <file alias="Animation/prev_frame.svg">src/icon/Animation/prev_frame.svg</file>
+        <file alias="Animation/prev_frame_disable.svg">src/icon/Animation/prev_frame_disable.svg</file>
+        <file alias="Animation/prev_frame_press.svg">src/icon/Animation/prev_frame_press.svg</file>
+        <file alias="Animation/slider_cursor.svg">src/icon/Animation/slider_cursor.svg</file>
+        <file alias="Animation/stop_frame.svg">src/icon/Animation/stop_frame.svg</file>
+        <file alias="Animation/stop_frame_disable.svg">src/icon/Animation/stop_frame_disable.svg</file>
+        <file alias="Animation/stop_frame_press.svg">src/icon/Animation/stop_frame_press.svg</file>
+    </qresource>
 </RCC>
