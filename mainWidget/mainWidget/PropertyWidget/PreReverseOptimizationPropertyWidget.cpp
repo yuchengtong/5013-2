@@ -20,6 +20,7 @@ PreReverseOptimizationPropertyWidget::PreReverseOptimizationPropertyWidget(QWidg
 	:BasePropertyWidget(parent)
 {
 	initWidget();
+	bindConnect();
 }
 
 void PreReverseOptimizationPropertyWidget::initWidget()
@@ -27,178 +28,143 @@ void PreReverseOptimizationPropertyWidget::initWidget()
 
 	QVBoxLayout* vlayout = new QVBoxLayout(this);
 	vlayout->setContentsMargins(0, 0, 0, 0);
+	{
+		m_tableWidget = new QTableWidget(this);
 
-	m_tableWidget = new QTableWidget(this);
+		m_tableWidget->setRowCount(11);
+		m_tableWidget->setColumnCount(5);
+		// 隐藏表头（如果不需要显示表头文字，可根据需求决定是否隐藏）
+		m_tableWidget->horizontalHeader()->setVisible(false);
+		m_tableWidget->verticalHeader()->setVisible(false);
 
-	m_tableWidget->setRowCount(11);
-	m_tableWidget->setColumnCount(5);
-	// 隐藏表头（如果不需要显示表头文字，可根据需求决定是否隐藏）
-	m_tableWidget->horizontalHeader()->setVisible(false);
-	m_tableWidget->verticalHeader()->setVisible(false);
+		// 设置第一列固定宽度（例如100像素）
+		m_tableWidget->horizontalHeader()->setSectionResizeMode(0, QHeaderView::Fixed);
+		m_tableWidget->horizontalHeader()->setSectionResizeMode(1, QHeaderView::Fixed);
+		m_tableWidget->horizontalHeader()->setSectionResizeMode(2, QHeaderView::Stretch);
+		m_tableWidget->horizontalHeader()->setSectionResizeMode(3, QHeaderView::Fixed);
+		m_tableWidget->horizontalHeader()->setSectionResizeMode(4, QHeaderView::Fixed);
+		m_tableWidget->horizontalHeader()->resizeSection(0, 5);
+		m_tableWidget->horizontalHeader()->resizeSection(1, 120);
+		m_tableWidget->horizontalHeader()->resizeSection(3, 80);
+		m_tableWidget->horizontalHeader()->resizeSection(4, 25);
 
-	// 设置第一列固定宽度（例如100像素）
-	m_tableWidget->horizontalHeader()->setSectionResizeMode(0, QHeaderView::Fixed);
-	m_tableWidget->horizontalHeader()->setSectionResizeMode(1, QHeaderView::Fixed);
-	m_tableWidget->horizontalHeader()->resizeSection(0, 5);
-	m_tableWidget->horizontalHeader()->resizeSection(1, 120);
-	m_tableWidget->horizontalHeader()->resizeSection(3, 80);
-	m_tableWidget->horizontalHeader()->setSectionResizeMode(2, QHeaderView::Stretch);
-	m_tableWidget->horizontalHeader()->setSectionResizeMode(3, QHeaderView::Fixed);
-	// 让表格充满布局，自动调整行列大小
-	m_tableWidget->verticalHeader()->setSectionResizeMode(QHeaderView::Fixed);
-	m_tableWidget->setColumnWidth(0, 5);
-	// 合并第一行的第一和第二列
-	m_tableWidget->setSpan(0, 0, 1, 2);
-
-	vlayout->addWidget(m_tableWidget);
-	setLayout(vlayout);
-
-	QStringList cols = { "逆向寻优"," ",  "1", "2", "3","4","5","6"," ","1","2" };
-	for (int row = 0; row < cols.size(); ++row) {
-		QTableWidgetItem* serialItem = new QTableWidgetItem(cols[row]);
-		serialItem->setFlags(serialItem->flags() & ~Qt::ItemIsEditable); // 不可编辑
-		m_tableWidget->setItem(row, 0, serialItem);
-	}
-
-	QStringList labels = { "逆向寻优","工艺设计参数",  "弹体目标温度", "烘箱环境温度", "弹体初始温度","环境对流传热系数","壳体辐射吸收系数","环境发射率","工艺目标参数","弹体预热时间","弹体温度云图与温升曲线" };
-	for (int row = 0; row < labels.size(); ++row) {
-		QTableWidgetItem* labelItem = new QTableWidgetItem(labels[row]);
-		labelItem->setTextAlignment(Qt::AlignCenter); // 文本居中
-		labelItem->setFlags(labelItem->flags() & ~Qt::ItemIsEditable); // 不可编辑
-		m_tableWidget->setItem(row, 1, labelItem);
-
-		
-	}
-
-	QTableWidgetItem* targetTemperatureValueItem = new QTableWidgetItem(m_targetTemperatureValue);
-	targetTemperatureValueItem->setTextAlignment(Qt::AlignCenter); // 文本居中
-
-	QTableWidgetItem* environmentalTemperatureValueItem = new QTableWidgetItem(m_environmentalTemperatureValue);
-	environmentalTemperatureValueItem->setTextAlignment(Qt::AlignCenter); // 文本居中
-
-	QTableWidgetItem* initialTemperatureValueItem = new QTableWidgetItem(m_initialTemperatureValue);
-	initialTemperatureValueItem->setTextAlignment(Qt::AlignCenter); // 文本居中
-
-	QTableWidgetItem* heatTransferCoefficientValueItem = new QTableWidgetItem(m_heatTransferCoefficientValue);
-	heatTransferCoefficientValueItem->setTextAlignment(Qt::AlignCenter); // 文本居中
-
-	QTableWidgetItem* absorptionCoefficientValueItem = new QTableWidgetItem(m_absorptionCoefficientValue);
-	absorptionCoefficientValueItem->setTextAlignment(Qt::AlignCenter); // 文本居中
-
-	QTableWidgetItem* environmentalEmissivityValueItem = new QTableWidgetItem(m_environmentalEmissivityValue);
-	environmentalEmissivityValueItem->setTextAlignment(Qt::AlignCenter); // 文本居中
-
-	QTableWidgetItem* preheatingTimeValueItem = new QTableWidgetItem(m_preheatingTimeValue);
-	preheatingTimeValueItem->setTextAlignment(Qt::AlignCenter); // 文本居中
-
-	QTableWidgetItem* curveItem = new QTableWidgetItem(m_preheatingTimeValue);
-	preheatingTimeValueItem->setTextAlignment(Qt::AlignCenter); // 文本居中
-
-
-
-	m_tableWidget->setItem(2, 2, targetTemperatureValueItem);
-	m_tableWidget->setItem(3, 2, environmentalTemperatureValueItem);
-	m_tableWidget->setItem(4, 2, initialTemperatureValueItem);
-	m_tableWidget->setItem(5, 2, heatTransferCoefficientValueItem);
-	m_tableWidget->setItem(6, 2, absorptionCoefficientValueItem);
-	m_tableWidget->setItem(7, 2, environmentalEmissivityValueItem);
-
-
-	// 显示按钮
-	QWidget* viewWidget = new QWidget();
-	QPushButton* viewButton = new QPushButton("显示");
-	viewButton->setFixedSize(100, 50);
-	viewButton->setMinimumHeight(30);
-	viewButton->setFlat(false);
-	viewButton->setStyleSheet("QPushButton {"
-		"background-color:  rgba(0, 0, 0, 0);"
-		"border: 2px solid #C1B1B1; "
-		"border-radius: 10px; "
-		"color: black; "
-		"font-weight: bold; "
-		"padding: 5px;"
-		"outline: none;"
-		"}"
-		"QPushButton:hover {"
-		"background-color: rgba(230, 230, 230, 100);"
-		"}");
-	QVBoxLayout* viewLayout = new QVBoxLayout(viewWidget);
-	viewLayout->addWidget(viewButton);
-	viewLayout->setAlignment(Qt::AlignCenter); // 按钮居中显示
-	viewLayout->setMargin(0);
-	viewWidget->setLayout(viewLayout);
-	m_tableWidget->setCellWidget(10, 2, viewWidget);
-	m_tableWidget->setSpan(10, 2, 1, 2);
-
-
-
-	m_inRadioButtonGroup = new QButtonGroup(this);
-	m_inRadioButtonGroup->setExclusive(true); // 显式设置互斥（默认已开启）
-
-	QRadioButton* oneRadio = new QRadioButton("");
-	m_inRadioButtonGroup->addButton(oneRadio, 0);
-	QWidget* oneCellWidget = new QWidget();
-	QHBoxLayout* oneLayout = new QHBoxLayout(oneCellWidget);
-	oneLayout->addWidget(oneRadio);
-	oneLayout->setAlignment(Qt::AlignCenter); // 居中对齐
-	oneLayout->setContentsMargins(0, 0, 0, 0); // 去掉布局边距
-	oneRadio->setChecked(true);
-
-	QRadioButton* twoRadio = new QRadioButton("");
-	m_inRadioButtonGroup->addButton(twoRadio, 1);
-	QWidget* twoCellWidget = new QWidget();
-	QHBoxLayout* twoLayout = new QHBoxLayout(twoCellWidget);
-	twoLayout->addWidget(twoRadio);
-	twoLayout->setAlignment(Qt::AlignCenter); // 居中对齐
-	twoLayout->setContentsMargins(0, 0, 0, 0); // 去掉布局边距
-
-	m_tableWidget->setCellWidget(2, 4, oneCellWidget);
-	m_tableWidget->setCellWidget(3, 4, twoCellWidget);
-
-
-	m_outRadioButtonGroup = new QButtonGroup(this);
-	m_inRadioButtonGroup->setExclusive(true); // 显式设置互斥（默认已开启）
-
-	QRadioButton* fiveRadio = new QRadioButton("");
-	m_outRadioButtonGroup->addButton(fiveRadio, 0);
-	QWidget* fiveCellWidget = new QWidget();
-	QHBoxLayout* fiveLayout = new QHBoxLayout(fiveCellWidget);
-	fiveLayout->addWidget(fiveRadio);
-	fiveLayout->setAlignment(Qt::AlignCenter); // 居中对齐
-	fiveLayout->setContentsMargins(0, 0, 0, 0); // 去掉布局边距
-	fiveRadio->setChecked(true);
-
-	
-	m_tableWidget->setCellWidget(9, 4, fiveCellWidget);
-
-
-	// 绑定单选按钮选中信号
-	connect(m_inRadioButtonGroup, SIGNAL(buttonClicked(int)),
-		this, SLOT(onRadioSelected(int)));
-	connect(m_outRadioButtonGroup, SIGNAL(buttonClicked(int)),
-		this, SLOT(onRadioSelected(int)));
-
-	// 设置列宽度
-	QTableWidgetItem* colimnItem = m_tableWidget->item(10, 1);
-	int itemWidth = QFontMetrics(m_tableWidget->font()).width(colimnItem->text());
-	m_tableWidget->setColumnWidth(1, itemWidth + m_tableWidget->verticalHeader()->width());
-
-	// 单位列
-	QStringList unitLabels = { " "," ","℃","℃","℃", "W/㎡·k", "1/m"," "," ","s","" };
-	for (int row = 0; row < unitLabels.size(); ++row) {
-		if (row != 0)
-		{
-			QTableWidgetItem* labelItem = new QTableWidgetItem(unitLabels[row]);
-			labelItem->setFlags(labelItem->flags() & ~Qt::ItemIsEditable); // 不可编辑
-			m_tableWidget->setItem(row, 3, labelItem);
+		QStringList cols = { "逆向寻优"," ",  "1", "2", "3","4","5","6"," ","1","2" };
+		for (int row = 0; row < cols.size(); ++row) {
+			QTableWidgetItem* serialItem = new QTableWidgetItem(cols[row]);
+			serialItem->setFlags(serialItem->flags() & ~Qt::ItemIsEditable); // 不可编辑
+			m_tableWidget->setItem(row, 0, serialItem);
 		}
 
+		QStringList labels = { "逆向寻优","工艺设计参数",  "弹体目标温度", "烘箱环境温度", "弹体初始温度","环境对流传热系数","壳体辐射吸收系数","环境发射率","工艺目标参数","弹体预热时间","弹体温度云图与温升曲线" };
+		for (int row = 0; row < labels.size(); ++row) {
+			QTableWidgetItem* labelItem = new QTableWidgetItem(labels[row]);
+			labelItem->setTextAlignment(Qt::AlignCenter); // 文本居中
+			labelItem->setFlags(labelItem->flags() & ~Qt::ItemIsEditable); // 不可编辑
+			m_tableWidget->setItem(row, 1, labelItem);
+		}
+
+		// 设置列宽度
+		QTableWidgetItem* colimnItem = m_tableWidget->item(10, 1);
+		int itemWidth = QFontMetrics(m_tableWidget->font()).width(colimnItem->text());
+		m_tableWidget->setColumnWidth(1, itemWidth + m_tableWidget->verticalHeader()->width());
+
+		// 计算按钮
+		m_calButton = new QPushButton("计算");
+		m_tableWidget->setCellWidget(0, 2, m_calButton);
+
+
+		QTableWidgetItem* targetTemperatureValueItem = new QTableWidgetItem(m_targetTemperatureValue);
+		targetTemperatureValueItem->setTextAlignment(Qt::AlignCenter); // 文本居中
+
+		QTableWidgetItem* environmentalTemperatureValueItem = new QTableWidgetItem(m_environmentalTemperatureValue);
+		environmentalTemperatureValueItem->setTextAlignment(Qt::AlignCenter); // 文本居中
+
+		QTableWidgetItem* initialTemperatureValueItem = new QTableWidgetItem(m_initialTemperatureValue);
+		initialTemperatureValueItem->setTextAlignment(Qt::AlignCenter); // 文本居中
+
+		QTableWidgetItem* heatTransferCoefficientValueItem = new QTableWidgetItem(m_heatTransferCoefficientValue);
+		heatTransferCoefficientValueItem->setTextAlignment(Qt::AlignCenter); // 文本居中
+
+		QTableWidgetItem* absorptionCoefficientValueItem = new QTableWidgetItem(m_absorptionCoefficientValue);
+		absorptionCoefficientValueItem->setTextAlignment(Qt::AlignCenter); // 文本居中
+
+		QTableWidgetItem* environmentalEmissivityValueItem = new QTableWidgetItem(m_environmentalEmissivityValue);
+		environmentalEmissivityValueItem->setTextAlignment(Qt::AlignCenter); // 文本居中
+
+		QTableWidgetItem* preheatingTimeValueItem = new QTableWidgetItem(m_preheatingTimeValue);
+		preheatingTimeValueItem->setTextAlignment(Qt::AlignCenter); // 文本居中
+
+		QTableWidgetItem* curveItem = new QTableWidgetItem(m_preheatingTimeValue);
+		preheatingTimeValueItem->setTextAlignment(Qt::AlignCenter); // 文本居中
+
+		m_tableWidget->setItem(2, 2, targetTemperatureValueItem);
+		m_tableWidget->setItem(3, 2, environmentalTemperatureValueItem);
+		m_tableWidget->setItem(4, 2, initialTemperatureValueItem);
+		m_tableWidget->setItem(5, 2, heatTransferCoefficientValueItem);
+		m_tableWidget->setItem(6, 2, absorptionCoefficientValueItem);
+		m_tableWidget->setItem(7, 2, environmentalEmissivityValueItem);
+
+		// 显示按钮
+		m_viewButton = new QPushButton("显示");
+		m_tableWidget->setCellWidget(10, 2, m_viewButton);
+
+		// 单位列
+		QStringList unitLabels = { " "," ","℃","℃","℃", "W/㎡·k", "1/m"," "," ","s","" };
+		for (int row = 0; row < unitLabels.size(); ++row) {
+			if (row != 0)
+			{
+				QTableWidgetItem* labelItem = new QTableWidgetItem(unitLabels[row]);
+				labelItem->setFlags(labelItem->flags() & ~Qt::ItemIsEditable); // 不可编辑
+				m_tableWidget->setItem(row, 3, labelItem);
+			}
+
+		}
+
+		auto createCenteredRadioWidget = [](QRadioButton* radio) -> QWidget* {
+			QWidget* container = new QWidget();
+			QHBoxLayout* layout = new QHBoxLayout(container);
+			layout->setAlignment(Qt::AlignCenter);
+			layout->setContentsMargins(0, 0, 0, 0);
+			layout->addWidget(radio);
+			return container;
+		};
+
+		auto firRadioButtonGroup = new QButtonGroup();
+		{
+			m_targetempeRadioBtn = new QRadioButton();
+			m_targetempeRadioBtn->setChecked(true);
+			m_environmentalTempeRadioBtn = new QRadioButton();
+			
+
+			m_tableWidget->setCellWidget(2, 4, createCenteredRadioWidget(m_targetempeRadioBtn));
+			m_tableWidget->setCellWidget(3, 4, createCenteredRadioWidget(m_environmentalTempeRadioBtn));
+			
+
+			firRadioButtonGroup->addButton(m_targetempeRadioBtn);
+			firRadioButtonGroup->addButton(m_environmentalTempeRadioBtn);
+			
+		}
+		firRadioButtonGroup->setExclusive(true);
+
+		auto secRadioButtonGroup = new QButtonGroup();
+		{
+			m_preheatingTimeRadioBtn = new QRadioButton();
+			m_preheatingTimeRadioBtn->setChecked(true);
+
+			m_tableWidget->setCellWidget(9, 4, createCenteredRadioWidget(m_preheatingTimeRadioBtn));
+
+			secRadioButtonGroup->addButton(m_preheatingTimeRadioBtn);
+		}
+		secRadioButtonGroup->setExclusive(true);
+
+		// 合并单元格
+		m_tableWidget->setSpan(0, 0, 1, 2);
+		m_tableWidget->setSpan(0, 2, 1, 3);
+		m_tableWidget->setSpan(10, 2, 1, 3);
 	}
-
-	QTableWidgetItem* unitColimnItem = m_tableWidget->item(5, 3);
-	int unitItemWidth = QFontMetrics(m_tableWidget->font()).width(unitColimnItem->text());
-	m_tableWidget->setColumnWidth(3, unitItemWidth + m_tableWidget->verticalHeader()->width());
-
+	vlayout->addWidget(m_tableWidget);
+	setLayout(vlayout);
+	
 	// 将第0行0列的单元格文本字体加粗
 	QTableWidgetItem* headerItem = m_tableWidget->item(0, 0);
 	if (headerItem) {
@@ -207,34 +173,7 @@ void PreReverseOptimizationPropertyWidget::initWidget()
 		headerItem->setFont(font);
 	}
 
-	// 导入按钮
-	QWidget* importWidget = new QWidget();
-	QPushButton* importButton = new QPushButton("计算");
-	importButton->setFixedSize(100, 50);
-	importButton->setMinimumHeight(30);
-	importButton->setFlat(false);
-	importButton->setStyleSheet("QPushButton {"
-		"background-color:  rgba(0, 0, 0, 0);"
-		"border: 2px solid #C1B1B1; "
-		"border-radius: 10px; "
-		"color: black; "
-		"font-weight: bold; "
-		"padding: 5px;"
-		"outline: none;"
-		"}"
-		"QPushButton:hover {"
-		"background-color: rgba(230, 230, 230, 100);"
-		"}");
-	QVBoxLayout* importLayout = new QVBoxLayout(importWidget);
-	importLayout->addWidget(importButton);
-	importLayout->setAlignment(Qt::AlignCenter); // 按钮居中显示
-	importLayout->setMargin(0);
-	importWidget->setLayout(importLayout);
-	m_tableWidget->setCellWidget(0, 2, importWidget);
-
-	connect(importButton, &QPushButton::clicked, this, &PreReverseOptimizationPropertyWidget::showTableDialog);
-	// 合并第一行的第三和第四列
-	m_tableWidget->setSpan(0, 2, 1, 2);
+	
 
 	//文本左对齐
 	for (int row = 0; row < m_tableWidget->rowCount(); ++row) {
@@ -270,6 +209,11 @@ void PreReverseOptimizationPropertyWidget::initWidget()
 		}
 	}
 
+}
+
+void PreReverseOptimizationPropertyWidget::bindConnect()
+{
+	connect(m_calButton, &QPushButton::clicked, this, &PreReverseOptimizationPropertyWidget::showTableDialog);
 }
 
 void PreReverseOptimizationPropertyWidget::showTableDialog() {
@@ -411,20 +355,3 @@ void PreReverseOptimizationPropertyWidget::showTableDialog() {
 }
 
 
-
-// 单选按钮选中事件处理
-void PreReverseOptimizationPropertyWidget::inOnRadioSelected(int btnId)
-{
-	QRadioButton* selectedBtn = qobject_cast<QRadioButton*>(m_inRadioButtonGroup->button(btnId));
-	if (selectedBtn) {
-		// btnId 行号
-	}
-}
-
-void PreReverseOptimizationPropertyWidget::outOnRadioSelected(int btnId)
-{
-	QRadioButton* selectedBtn = qobject_cast<QRadioButton*>(m_outRadioButtonGroup->button(btnId));
-	if (selectedBtn) {
-		// btnId 行号
-	}
-}

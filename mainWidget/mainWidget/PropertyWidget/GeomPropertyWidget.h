@@ -3,6 +3,8 @@
 #include "BasePropertyWidget.h"
 #include "ModelDataManager.h"
 
+#include <QComboBox>
+
 class GeomPropertyWidget : public BasePropertyWidget
 {
 	Q_OBJECT
@@ -16,8 +18,13 @@ public:
 private:
 	void initWidget() override;
 
+private slots:
+	void onComboBoxChanged(int index);
+
 private:
 	QTableWidget* m_tableWidget = nullptr;
+
+	QComboBox* m_modelComboBox = nullptr;
 
 	QString m_boreDiameterValue = "391";
 	QString m_equaldiameterSectionHeightValue = "560";

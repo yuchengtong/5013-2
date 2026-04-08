@@ -42,6 +42,7 @@ public:
 	GeomPropertyWidget* GetGeomPropertyWidget() { return m_geomPropertyWidget; }
 	MaterialPropertyWidget* GetMaterialPropertyWidget() { return m_materialPropertyWidget; }
 	DatabasePropertyWidget* GetDatabasePropertyWidget() { return m_databasePropertyWidget; }
+	CalculationPropertyWidget* GetCalculationPropertyWidget() { return m_calculationPropertyWidget; }
 
 	
 	PreForwardDesignPropertyWidget* GetPreForwardDesignPropertyWidget() { return m_preForwardDesignPropertyWidget; }

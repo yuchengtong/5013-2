@@ -164,6 +164,14 @@ void GFTreeModelWidget::init()
 	phyProperty->addChild(propellant);
 	phyProperty->addChild(gelatin);	
 
+	//计算模型
+	QTreeWidgetItem* calculationItem = new QTreeWidgetItem(rootItem);
+	{
+		calculationItem->setText(0, "计算模型数据库");
+		calculationItem->setData(0, Qt::UserRole, "Calculation");
+		calculationItem->setIcon(0, error_icon);
+	}
+
 	//网格节点
 	QTreeWidgetItem* meshItem = new QTreeWidgetItem(rootItem);
 	{
@@ -696,7 +704,7 @@ void GFTreeModelWidget::contextMenuEvent(QContextMenuEvent *event)
 		m_ContextMenu->addAction(exportAction);
 		m_ContextMenu->exec(event->globalPos()); // 在鼠标位置显示菜单
 	}
-	else if (text == "固体发动机三维模型导入")
+	else if (text == "几何模型")
 	{
 		m_ContextMenu = new QMenu(this); // 创建菜单对象
 		QAction *customAction = new QAction("导入", this); // 创建动作对象并添加到菜单中

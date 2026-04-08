@@ -80,6 +80,13 @@ void GelatinPropertyWidget::initWidget()
 	int itemWidth = QFontMetrics(m_tableWidget->font()).width(colimnItem->text());
 	m_tableWidget->setColumnWidth(1, itemWidth + m_tableWidget->verticalHeader()->width());
 
+	// 导入按钮
+	QPushButton* importButton = new QPushButton("导入");
+	m_tableWidget->setCellWidget(0, 2, importButton);
+	connect(importButton, &QPushButton::clicked, this, &GelatinPropertyWidget::showTableDialog);
+	// 合并第一行的第三和第四列
+	m_tableWidget->setSpan(0, 2, 1, 2);
+
 	// 单位列
 	QStringList unitLabels = { " "," "," ", "kg/m^3", "W/(m∙℃)","J/(kg∙℃)" };
 	for (int row = 0; row < unitLabels.size(); ++row) {
@@ -103,34 +110,6 @@ void GelatinPropertyWidget::initWidget()
 		font.setBold(true);
 		headerItem->setFont(font);
 	}
-
-	// 导入按钮
-	QWidget* importWidget = new QWidget();
-	QPushButton* importButton = new QPushButton("导入");
-	importButton->setFixedSize(100, 50);
-	importButton->setMinimumHeight(30);
-	importButton->setStyleSheet("QPushButton {"
-		"background-color:  rgba(0, 0, 0, 0);"
-		"border: 2px solid #C1B1B1; "
-		"border-radius: 10px; "
-		"color: black; "
-		"font-weight: bold; "
-		"padding: 5px;"
-		"outline: none;"
-		"}"
-		"QPushButton:hover {"
-		"background-color: rgba(230, 230, 230, 100);"
-		"}");
-	QVBoxLayout* importLayout = new QVBoxLayout(importWidget);
-	importLayout->addWidget(importButton);
-	importLayout->setAlignment(Qt::AlignCenter); // 按钮居中显示
-	importLayout->setMargin(0);
-	importWidget->setLayout(importLayout);
-	m_tableWidget->setCellWidget(0, 2, importWidget);
-
-	connect(importButton, &QPushButton::clicked, this, &GelatinPropertyWidget::showTableDialog);
-	// 合并第一行的第三和第四列
-	m_tableWidget->setSpan(0, 2, 1, 2);
 
 	//文本左对齐
 	for (int row = 0; row < m_tableWidget->rowCount(); ++row) {

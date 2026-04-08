@@ -210,6 +210,12 @@ void GFImportModelWidget::onTreeItemClicked(const QString& itemData)
 
 		m_PropertyStackWidget->setCurrentWidget(m_databasePropertyWidget);
 	}
+	else if (itemData == "Calculation")
+	{
+		occView->SetCameraRotationState(true);
+
+		m_PropertyStackWidget->setCurrentWidget(m_calculationPropertyWidget);
+	}
 	else if (itemData == "Mesh")
 	{
 		occView->SetCameraRotationState(true);

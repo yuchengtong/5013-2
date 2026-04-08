@@ -71,6 +71,12 @@ void InForwardDesignPropertyWidget::initWidget()
 		
 	}
 
+	// 导入按钮
+	QPushButton* importButton = new QPushButton("计算");
+	m_tableWidget->setCellWidget(0, 2, importButton);
+	connect(importButton, &QPushButton::clicked, this, &InForwardDesignPropertyWidget::showTableDialog);
+	// 合并第一行的第三和第四列
+	m_tableWidget->setSpan(0, 2, 1, 2);
 
 	QTableWidgetItem* insulationTemperatureValueItem = new QTableWidgetItem(m_insulationTemperatureValue);
 	insulationTemperatureValueItem->setTextAlignment(Qt::AlignCenter); // 文本居中
@@ -90,10 +96,6 @@ void InForwardDesignPropertyWidget::initWidget()
 	QTableWidgetItem* injectionTimeValueItem = new QTableWidgetItem(m_injectionTimeValue);
 	injectionTimeValueItem->setTextAlignment(Qt::AlignCenter); // 文本居中
 
-
-
-
-
 	m_tableWidget->setItem(2, 2, insulationTemperatureValueItem);
 	m_tableWidget->setItem(3, 2, pouringTemperatureValueItem);
 	m_tableWidget->setItem(4, 2, pouringSpeedValueItem);
@@ -101,34 +103,10 @@ void InForwardDesignPropertyWidget::initWidget()
 	m_tableWidget->setItem(7, 2, relativeDensityValueItem);
 	m_tableWidget->setItem(8, 2, injectionTimeValueItem);
 
-
 	// 显示按钮
-	QWidget* viewWidget = new QWidget();
 	QPushButton* viewButton = new QPushButton("显示");
-	viewButton->setFixedSize(100, 50);
-	viewButton->setMinimumHeight(30);
-	viewButton->setFlat(false);
-	viewButton->setStyleSheet("QPushButton {"
-		"background-color:  rgba(0, 0, 0, 0);"
-		"border: 2px solid #C1B1B1; "
-		"border-radius: 10px; "
-		"color: black; "
-		"font-weight: bold; "
-		"padding: 5px;"
-		"outline: none;"
-		"}"
-		"QPushButton:hover {"
-		"background-color: rgba(230, 230, 230, 100);"
-		"}");
-	QVBoxLayout* viewLayout = new QVBoxLayout(viewWidget);
-	viewLayout->addWidget(viewButton);
-	viewLayout->setAlignment(Qt::AlignCenter); // 按钮居中显示
-	viewLayout->setMargin(0);
-	viewWidget->setLayout(viewLayout);
-	m_tableWidget->setCellWidget(9, 2, viewWidget);
+	m_tableWidget->setCellWidget(9, 2, viewButton);
 	m_tableWidget->setSpan(9, 2, 1, 2);
-
-
 
 	// 设置列宽度
 	QTableWidgetItem* colimnItem = m_tableWidget->item(9, 1);
@@ -159,34 +137,7 @@ void InForwardDesignPropertyWidget::initWidget()
 		headerItem->setFont(font);
 	}
 
-	// 导入按钮
-	QWidget* importWidget = new QWidget();
-	QPushButton* importButton = new QPushButton("计算");
-	importButton->setFixedSize(100, 50);
-	importButton->setMinimumHeight(30);
-	importButton->setFlat(false);
-	importButton->setStyleSheet("QPushButton {"
-		"background-color:  rgba(0, 0, 0, 0);"
-		"border: 2px solid #C1B1B1; "
-		"border-radius: 10px; "
-		"color: black; "
-		"font-weight: bold; "
-		"padding: 5px;"
-		"outline: none;"
-		"}"
-		"QPushButton:hover {"
-		"background-color: rgba(230, 230, 230, 100);"
-		"}");
-	QVBoxLayout* importLayout = new QVBoxLayout(importWidget);
-	importLayout->addWidget(importButton);
-	importLayout->setAlignment(Qt::AlignCenter); // 按钮居中显示
-	importLayout->setMargin(0);
-	importWidget->setLayout(importLayout);
-	m_tableWidget->setCellWidget(0, 2, importWidget);
-
-	connect(importButton, &QPushButton::clicked, this, &InForwardDesignPropertyWidget::showTableDialog);
-	// 合并第一行的第三和第四列
-	m_tableWidget->setSpan(0, 2, 1, 2);
+	
 
 	//文本左对齐
 	for (int row = 0; row < m_tableWidget->rowCount(); ++row) {

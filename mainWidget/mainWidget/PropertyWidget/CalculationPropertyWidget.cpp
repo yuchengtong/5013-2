@@ -108,3 +108,12 @@ void CalculationPropertyWidget::initWidget()
 		}
 	}
 }
+
+
+void CalculationPropertyWidget::updateData(QString text)
+{
+	QTableWidgetItem* valueItem = new QTableWidgetItem(text + "代理模型");
+	valueItem->setFlags(valueItem->flags() & ~Qt::ItemIsEditable); // 不可编辑
+	valueItem->setBackground(QBrush(QColor(230, 230, 230)));
+	m_tableWidget->setItem(2, 2, valueItem);
+}

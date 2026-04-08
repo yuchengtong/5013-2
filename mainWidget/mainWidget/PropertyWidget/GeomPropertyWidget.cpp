@@ -1,9 +1,9 @@
 #pragma once
 #pragma execution_character_set("utf-8")
 #include "GeomPropertyWidget.h"
+#include "../GFImportModelWidget.h"
 #include <QTableWidget>
 #include <QHeaderView>
-#include <QComboBox>
 
 GeomPropertyWidget::GeomPropertyWidget(QWidget* parent)
 	:BasePropertyWidget(parent)
@@ -96,8 +96,8 @@ void GeomPropertyWidget::initWidget()
 	}
 	
 
-	QComboBox* modelComboBox = new QComboBox();
-	modelComboBox->addItems({ "产品一", "产品二", "产品三", "产品四"});
+	m_modelComboBox = new QComboBox();
+	m_modelComboBox->addItems({ "产品一", "产品二", "产品三", "产品四"});
 
 	QTableWidgetItem* sourceValueItem = new QTableWidgetItem("");
 	sourceValueItem->setTextAlignment(Qt::AlignCenter); // 文本居中
@@ -130,7 +130,7 @@ void GeomPropertyWidget::initWidget()
 
 
 
-	m_tableWidget->setCellWidget(1, 2, modelComboBox);
+	m_tableWidget->setCellWidget(1, 2, m_modelComboBox);
 	m_tableWidget->setItem(2, 2, sourceValueItem);
 	m_tableWidget->setItem(3, 2, boreDiameterValueItem);
 	m_tableWidget->setItem(4, 2, equaldiameterSectionHeightValueItem);
@@ -140,7 +140,9 @@ void GeomPropertyWidget::initWidget()
 	m_tableWidget->setItem(8, 2, gasketLayerThicknessValueItem);
 	m_tableWidget->setItem(9, 2, injectionHoleDiameterValueItem);
 	m_tableWidget->setItem(10, 2, vacuumHoleDiameterValueItem);
-	
+
+	connect(m_modelComboBox, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged),
+		this, &GeomPropertyWidget::onComboBoxChanged);
 
 	QStringList unitLabels = { " "," ","", "mm", "mm", "mm", "mm", "mm", "mm", "mm", "mm" };
 	for (int row = 0; row < unitLabels.size(); ++row) {
@@ -258,4 +260,22 @@ void GeomPropertyWidget::initWidget()
 		}
 	});
 
+}
+
+void GeomPropertyWidget::onComboBoxChanged(int index) {
+	QWidget* parent = parentWidget();
+	while (parent)
+	{
+		GFImportModelWidget* gfParent = dynamic_cast<GFImportModelWidget*>(parent);
+		if (gfParent)
+		{
+			CalculationPropertyWidget* calculationPropertyWidget = gfParent->GetCalculationPropertyWidget();
+			calculationPropertyWidget->updateData(m_modelComboBox->currentText());
+			break;
+		}
+		else
+		{
+			parent = parent->parentWidget();
+		}
+	}
 }

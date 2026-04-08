@@ -5,6 +5,7 @@
 #include <QRadioButton>
 #include <QButtonGroup>
 #include <QHBoxLayout>
+#include <QPushButton>
 
 class PreReverseOptimizationPropertyWidget : public BasePropertyWidget
 {
@@ -14,16 +15,16 @@ public:
 
 private:
 	void initWidget() override;
+	void bindConnect();
 
 private slots:
 	void showTableDialog();
 
-	// 单选按钮选中事件处理槽函数
-	void inOnRadioSelected(int btnId);
-	void outOnRadioSelected(int btnId);
-
 private:
 	QTableWidget* m_tableWidget = nullptr;
+
+	QPushButton* m_calButton = nullptr;
+	QPushButton* m_viewButton = nullptr;
 
 	QString m_targetTemperatureValue = "50"; // 弹体目标温度
 	QString m_environmentalTemperatureValue = "90"; // 烘箱环境温度
@@ -33,6 +34,9 @@ private:
 	QString m_environmentalEmissivityValue = "0.5"; // 环境发射率
 	QString m_preheatingTimeValue = ""; // 弹体预热时间
 
-	QButtonGroup* m_inRadioButtonGroup = nullptr; // 单选按钮组
-	QButtonGroup* m_outRadioButtonGroup = nullptr; // 单选按钮组
+	
+	QRadioButton* m_targetempeRadioBtn = nullptr; // 弹体目标温度
+	QRadioButton* m_environmentalTempeRadioBtn = nullptr; // 烘箱环境温度
+
+	QRadioButton* m_preheatingTimeRadioBtn = nullptr; //弹体预热时间
 };
