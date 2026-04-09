@@ -8,7 +8,7 @@ const double XFM_TooL_ANIMATION_TIME_TOLERANCE = 1e-4;
 
 
 QString xfmKeyFrameSlider_style_sheet = R"(
-xfmKeyFrameSlider{
+QSlider{
 	padding-left : 10px;
 	padding-right: 10px;
 	max-height:22px;
@@ -16,28 +16,28 @@ xfmKeyFrameSlider{
 /* border:lpx solid black; */
 }
 
-xfmKeyFrameSlider: :groove {
+QSlider::groove {
 	background-color:rgba(0, 0, 0, 128) ;
 	height:8px;
 	padding-left:-7px;
 	padding-right:-7px;
 }
 
-xfmKeyFrameSlider::handle{
+QSlider::handle{
 	width:15px;
 	height:26px;
 	margin-top:-10px;
 	margin-bottom:-10px;
-	border-image : url(:/animation/xfmKeyFrameSlider_handle. png) ;
-	border-image :url(:/animation/transparent_handle. png) ;
+	border-image:url(:/animation/Animation/slider_cursor.svg) ;
+	border-image:url(:/animation/transparent_handle.png) ;
 }
 
-xfmKeyFrameSlider: :sub-page {
+QSlider::sub-page {
 	height:10px;
 	background-color:#c5c5c5;
 	margin-top:-lpx;
 	margin-bottom:-lpx;
-	border: 1px solid #727272;
+	border:1px solid #727272;
 }
 
 )";
@@ -47,6 +47,203 @@ ToolsAnimationWidget::ToolsAnimationWidget(QWidget* parent)
 {
 	init();
 	bindConnect();
+
+	setStyleSheet(xfmKeyFrameSlider_style_sheet);
+}
+
+void ToolsAnimationWidget::init()
+{
+	//主布局
+	QVBoxLayout* pVLayout = new QVBoxLayout(this);
+	pVLayout->setSpacing(0);
+	pVLayout->setContentsMargins(0, 0, 0, 0);
+	{
+		m_animToolBtnWidget = new QWidget(this);
+		m_animToolBtnWidget->setFixedHeight(20);
+		QHBoxLayout* pBtnLayout = new QHBoxLayout(m_animToolBtnWidget);
+		pBtnLayout->setSpacing(3);
+		pBtnLayout->setContentsMargins(0, 0, 0, 0);
+		{
+			m_comboBox = new QComboBox();
+			m_comboBox->setFixedHeight(20);
+			m_comboBox->setFixedWidth(100);
+
+			QWidget* btnWidget = new QWidget(this);
+			QHBoxLayout* hLayout = new QHBoxLayout(btnWidget);
+			hLayout->setAlignment(Qt::AlignCenter);
+			hLayout->setSpacing(3);
+			hLayout->setContentsMargins(0, 0, 0, 0);
+			{
+				m_firstBtn = new QPushButton();
+				m_firstBtn->setFixedSize(22, 20);
+				m_firstBtn->setIconSize(QSize(12, 12));
+
+				m_prevBtn = new QPushButton();
+				m_prevBtn->setFixedSize(22, 20);
+				m_prevBtn->setIconSize(QSize(12, 12));
+
+				m_nextBtn = new QPushButton();
+				m_nextBtn->setFixedSize(22, 20);
+				m_nextBtn->setIconSize(QSize(12, 12));
+
+				m_lastBtn = new QPushButton();
+				m_lastBtn->setFixedSize(22, 20);
+				m_lastBtn->setIconSize(QSize(12, 12));
+
+				m_playBtn = new QPushButton();
+				m_playBtn->setFixedSize(22, 20);
+				m_playBtn->setIconSize(QSize(12, 12));
+			}
+			hLayout->addWidget(m_firstBtn);
+			hLayout->addWidget(m_prevBtn);
+			hLayout->addWidget(m_playBtn);
+			hLayout->addWidget(m_nextBtn);
+			hLayout->addWidget(m_lastBtn);
+
+			pBtnLayout->addWidget(m_comboBox);
+			pBtnLayout->addWidget(btnWidget);
+		}
+
+		{
+			m_slider = new QSlider(Qt::Horizontal);
+			m_slider->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+			m_slider->setContentsMargins(0, 0, 0, 0);
+			m_slider->setRange(0, 100);
+			m_slider->installEventFilter(this);
+		}
+
+		pVLayout->addWidget(m_animToolBtnWidget);
+		pVLayout->addWidget(m_slider);
+	}
+
+	QVector<QPushButton*> btns;
+	btns << m_firstBtn << m_prevBtn << m_nextBtn << m_lastBtn << m_playBtn;
+	for (auto pBtn : btns)
+	{
+		pBtn->installEventFilter(this);
+		setButtonIcon(pBtn, EnumButtonState::Normal);
+	}
+}
+
+void ToolsAnimationWidget::bindConnect()
+{
+	connect(m_comboBox, QOverload<int>::of(&QComboBox::currentIndexChanged), this, [&](int index) {
+		double time = m_comboBox->currentData().toDouble();
+		emit animationTimeChanged(time);
+		});
+
+	connect(m_slider, &QSlider::valueChanged, this, [&](int value) {
+		double dValue = value / 100.0;
+		double time = dValue * (m_maxValue - m_minValue) + m_minValue;
+		emit animationTimeChanged(time);
+		});
+
+	connect(m_firstBtn, &QPushButton::clicked, this, [&]() {
+		int curIdx = m_comboBox->currentIndex();
+		if (curIdx == 0)
+		{
+			return;
+		}
+		else
+		{
+			m_comboBox->setCurrentIndex(--curIdx);
+		}
+		});
+
+	connect(m_lastBtn, &QPushButton::clicked, this, [&]() {
+		int curIdx = m_comboBox->currentIndex();
+		if (abs(m_timeSteps[curIdx] - m_currentTime) < XFM_TooL_ANIMATION_TIME_TOLERANCE)
+		{
+			if (curIdx == m_timeSteps.size() - 1)
+			{
+				return;
+			}
+			else
+			{
+				m_comboBox->setCurrentIndex(++curIdx);
+			}
+		}
+		else
+		{
+			emit animationTimeChanged(m_timeSteps[curIdx]);
+		}
+		});
+
+	connect(m_prevBtn, &QPushButton::clicked, this, [&]() {
+		if (m_substepIdx == 0)
+		{
+			return;
+		}
+		else
+		{
+			emit animationTimeChanged(m_subSteps[--m_substepIdx]);
+		}
+		});
+
+	connect(m_nextBtn, &QPushButton::clicked, this, [&]() {
+		if (abs(m_subSteps[m_substepIdx] - m_currentTime) < XFM_TooL_ANIMATION_TIME_TOLERANCE)
+		{
+			if (m_substepIdx = m_subSteps.size() - 1)
+			{
+				return;
+			}
+			else
+			{
+				emit animationTimeChanged(m_subSteps[m_substepIdx + 1]);
+			}
+		}
+		else
+		{
+			emit animationTimeChanged(m_subSteps[m_substepIdx]);
+		}
+		});
+
+
+	connect(m_playBtn, &QPushButton::clicked, this, [&]() {
+		bool bPause = m_playBtn->property("bPause").toBool();
+		m_playBtn->setProperty("bPause", !bPause);
+		if (!bPause)
+		{
+			if (m_slider->value() == m_slider->maximum())
+			{
+				m_slider->setValue(0);
+			}
+			if (m_playTimer == nullptr)
+			{
+				m_playTimer = new QTimer();
+				connect(m_playTimer, &QTimer::timeout, this, [&]() {
+					int value = m_slider->value();
+					int step = 100.0 / 8 + 0.5;
+					value += step;
+					if (value > 100)
+					{
+						value = 100;
+					}
+					m_slider->setValue(value);
+					if (value == 100)
+					{
+						m_playBtn->setProperty("bPause", false);
+
+						m_playTimer->stop();
+						delete m_playTimer;
+						m_playTimer = nullptr;
+
+					}
+					});
+				m_playTimer->start(200);
+			}
+		}
+		else
+		{
+			if (m_playTimer != nullptr)
+			{
+				m_playTimer->stop();
+				delete m_playTimer;
+				m_playTimer = nullptr;
+			}
+		}
+
+		});
 }
 
 void ToolsAnimationWidget::SetAnimationRange(double min, double max)
@@ -75,12 +272,12 @@ void ToolsAnimationWidget::SetAnimationSteps(const QStringList& names, const QVe
 		{
 			insertSubStepNumber = 3;
 		}
+
 		for (int j = 0; j < insertSubStepNumber; ++j)
 		{
 			m_subSteps.push_back(times[i - 1] + (j + 1.) / (insertSubStepNumber + 1.) * distance);
 		}
 		m_subSteps.push_back(times[i]);
-
 	}
 
 	m_comboBox->blockSignals(true);
@@ -161,199 +358,7 @@ int ToolsAnimationWidget::GetCurrentStepIndex()
 	return m_comboBox->currentIndex();
 }
 
-void ToolsAnimationWidget::init()
-{
-	//主布局
-	QVBoxLayout* pVLayout = new QVBoxLayout(this);
-	pVLayout->setSpacing(0);
-	pVLayout->setContentsMargins(0, 0, 0, 0);
-	{
-		m_animToolBtnWidget = new QWidget(this);
-		m_animToolBtnWidget->setFixedHeight(20);
-		QHBoxLayout* pBtnLayout = new QHBoxLayout(m_animToolBtnWidget);
-		pBtnLayout->setSpacing(3);
-		pBtnLayout->setContentsMargins(0, 0, 0, 0);
-		{
-			m_comboBox = new QComboBox;
-			m_comboBox->setFixedHeight(20);
 
-			QWidget* btnWidget = new QWidget(this);
-			QHBoxLayout* hLayout = new QHBoxLayout(btnWidget);
-			hLayout->setAlignment(Qt::AlignCenter);
-			hLayout->setSpacing(3);
-			hLayout->setContentsMargins(0, 0, 0, 0);
-			{
-				m_firstBtn = new QPushButton();
-				m_firstBtn->setFixedSize(22, 20);
-				m_firstBtn->setIconSize(QSize(12, 12));
-
-				m_prevBtn = new QPushButton();
-				m_prevBtn->setFixedSize(22, 20);
-				m_prevBtn->setIconSize(QSize(12, 12));
-
-				m_nextBtn = new QPushButton();
-				m_nextBtn->setFixedSize(22, 20);
-				m_nextBtn->setIconSize(QSize(12, 12));
-
-				m_lastBtn = new QPushButton();
-				m_lastBtn->setFixedSize(22, 20);
-				m_lastBtn->setIconSize(QSize(12, 12));
-
-				m_playBtn = new QPushButton();
-				m_playBtn->setFixedSize(22, 20);
-				m_playBtn->setIconSize(QSize(12, 12));
-			}
-			hLayout->addWidget(m_firstBtn);
-			hLayout->addWidget(m_prevBtn);
-			hLayout->addWidget(m_playBtn);
-			hLayout->addWidget(m_nextBtn);
-			hLayout->addWidget(m_lastBtn);
-
-			pBtnLayout->addWidget(m_comboBox);
-			pBtnLayout->addWidget(btnWidget);
-		}
-
-		m_slider = new QSlider(Qt::Horizontal);
-		m_slider->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-		m_slider->setContentsMargins(0, 0, 0, 0);
-		m_slider->setRange(0, 100);
-		m_slider->installEventFilter(this);
-
-		pVLayout->addWidget(m_animToolBtnWidget);
-		pVLayout->addWidget(m_slider);
-	}
-	QVector<QPushButton*> btns;
-	btns << m_firstBtn << m_prevBtn << m_nextBtn << m_lastBtn << m_playBtn;
-	for (auto pBtn : btns)
-	{
-		pBtn->installEventFilter(this);
-		setButtonIcon(pBtn, EnumButtonState:: Normal);
-	}
-
-}
-
-void ToolsAnimationWidget::bindConnect()
-{
-	connect(m_comboBox, QOverload<int>::of(&QComboBox::currentIndexChanged), this, [&](int index) {
-		double time = m_comboBox->currentData().toDouble();
-		emit animationTimeChanged(time);
-		});
-	
-	connect(m_slider, &QSlider::valueChanged, this, [&](int value) {
-		double dValue = value / 100.0;
-		double time = dValue * (m_maxValue - m_minValue) + m_minValue;
-		emit animationTimeChanged(time);
-		});
-
-	connect(m_firstBtn, &QPushButton::clicked, this, [&]() {
-		int curIdx = m_comboBox->currentIndex();
-		if (curIdx == 0)
-		{
-			return;
-		}
-		else
-		{
-			m_comboBox->setCurrentIndex(--curIdx);
-		}
-		});
-
-	connect(m_lastBtn, &QPushButton::clicked, this, [&]() {
-		int curIdx = m_comboBox->currentIndex();
-		if (abs(m_timeSteps[curIdx] - m_currentTime) < XFM_TooL_ANIMATION_TIME_TOLERANCE)
-		{
-			if (curIdx == m_timeSteps.size() - 1)
-			{
-				return;
-			}
-			else
-			{
-				m_comboBox->setCurrentIndex(++curIdx);
-			}
-		}
-		else
-		{
-			emit animationTimeChanged(m_timeSteps[curIdx]);
-		}
-		});
-				
-	connect(m_prevBtn, &QPushButton::clicked, this, [&]() {
-		if (m_substepIdx == 0)
-		{
-			return;
-		}
-		else
-		{
-			emit animationTimeChanged(m_subSteps[--m_substepIdx]);
-		}
-		});
-		
-	connect(m_nextBtn, &QPushButton::clicked, this, [&]() {
-		if (abs(m_subSteps[m_substepIdx] - m_currentTime) < XFM_TooL_ANIMATION_TIME_TOLERANCE)
-		{
-			if (m_substepIdx = m_subSteps.size() - 1)
-			{
-				return;
-			}
-			else
-			{
-				emit animationTimeChanged(m_subSteps[m_substepIdx + 1]);
-			}
-		}
-		else
-		{
-			emit animationTimeChanged(m_subSteps[m_substepIdx]);
-		}
-		});
-
-
-	connect(m_playBtn, &QPushButton::clicked, this, [&]() {
-		bool bPause = m_playBtn->property("bPause").toBool();
-		m_playBtn->setProperty("bPause", !bPause);
-		if (!bPause)
-		{
-			if (m_slider->value() == m_slider->maximum())
-			{
-				m_slider->setValue(0);
-			}
-			if (m_playTimer == nullptr)
-			{
-				m_playTimer = new QTimer();
-				connect(m_playTimer, &QTimer::timeout, this, [&]() {
-					int value = m_slider->value();
-					int step = 100.0 / 8 + 0.5;
-					value += step;
-					if (value > 100)
-					{
-						value = 100;
-					}
-					m_slider->setValue(value);
-					if (value == 100)
-					{
-						m_playBtn->setProperty("bPause", false);
-
-						m_playTimer->stop();
-						delete m_playTimer;
-						m_playTimer = nullptr;
-
-					}
-					});
-				m_playTimer->start(200);
-			}
-		}
-		else
-		{
-			if (m_playTimer != nullptr)
-			{
-				m_playTimer->stop();
-				delete m_playTimer;
-				m_playTimer = nullptr;
-			}
-		}
-
-	});
-
-
-}
 
 void ToolsAnimationWidget::setProcessButtonEnabled(double value)
 {

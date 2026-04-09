@@ -14,7 +14,8 @@ public:
 
     void SetCursorPos(double pos);
 
-private:
+protected:
+    void mouseMoveEvent(QMouseEvent* event) override;
 
 
 
