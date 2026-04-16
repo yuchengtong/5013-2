@@ -328,7 +328,7 @@ void InForwardDesignPropertyWidget::showTableDialog() {
 			auto ins = ModelDataManager::GetInstance();
 
 			SteelPropertyInfo info;
-			info.materialGrade = m_tableWidget->item(1, 2)->text();
+			info.name = m_tableWidget->item(1, 2)->text();
 			info.type = m_tableWidget->item(2, 2)->text();
 			info.density = m_tableWidget->item(3, 2)->text().toDouble();
 			info.thermalConductivity = m_tableWidget->item(4, 2)->text().toDouble();

@@ -226,7 +226,7 @@ void PropellantPropertyWidget::showTableDialog()
 			}
 			auto ins = ModelDataManager::GetInstance();
 			PropellantPropertyInfo info;
-			info.materialGrade = m_tableWidget->item(1, 2)->text();
+			info.name = m_tableWidget->item(1, 2)->text();
 			info.type = m_tableWidget->item(2, 2)->text().toDouble();
 			info.density = m_tableWidget->item(3, 2)->text().toDouble();
 			info.thermalConductivity = m_tableWidget->item(4, 2)->text().toDouble();

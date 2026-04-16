@@ -390,9 +390,8 @@ void GFTreeModelWidget::updataIcon()
 	auto steelInfo = ins->GetSteelPropertyInfo();
 	auto propellantInfo = ins->GetPropellantPropertyInfo();
 	auto calculationInfo = ins->GetCalculationPropertyInfo();
+	auto gelatinPropertyInfo = ins->GetGelatinPropertyInfo();
 	auto judgementPropertyInfo = ins->GetJudgementPropertyInfo();
-	auto insulatingheatPropertyInfo = ins->GetInsulatingheatPropertyInfo();
-	auto outheatPropertyInfo = ins->GetOutheatPropertyInfo();
 
 	int size = m_TreeWidget->topLevelItemCount();
 	QTreeWidgetItem *child;
@@ -402,7 +401,7 @@ void GFTreeModelWidget::updataIcon()
 		int childCount = child->childCount();
 		for (int j = 0; j < childCount; ++j)
 		{
-			if (child->child(j)->text(0).contains("固体发动机三维模型导入"))
+			if (child->child(j)->text(0).contains("几何模型"))
 			{
 				if (geomInfo.path.isEmpty())
 				{
@@ -441,12 +440,12 @@ void GFTreeModelWidget::updataIcon()
 							clChild->child(m)->setIcon(0, checked_icon);
 						}
 					}
-					else if (clChild->child(m)->text(0).contains("材料数据库"))
+					else if (clChild->child(m)->text(0).contains("物性数据库"))
 					{
 						QTreeWidgetItem *clChild_child = clChild->child(m);
 						int clChildCount = clChild_child->childCount();
 						for (int n = 0; n < clChildCount; ++n) {
-							if (clChild_child->child(n)->text(0).contains("壳体材料"))
+							if (clChild_child->child(n)->text(0).contains("壳体物性"))
 							{
 								if (!steelInfo.isChecked)
 								{
@@ -457,7 +456,7 @@ void GFTreeModelWidget::updataIcon()
 									clChild_child->child(n)->setIcon(0, checked_icon);
 								}
 							}
-							if (clChild_child->child(n)->text(0).contains("含能材料"))
+							if (clChild_child->child(n)->text(0).contains("药液物性"))
 							{
 								if (!propellantInfo.isChecked)
 								{
@@ -468,9 +467,9 @@ void GFTreeModelWidget::updataIcon()
 									clChild_child->child(n)->setIcon(0, checked_icon);
 								}
 							}
-							if (clChild_child->child(n)->text(0).contains("绝热层材料"))
+							if (clChild_child->child(n)->text(0).contains("明胶物性"))
 							{
-								if (!insulatingheatPropertyInfo.isChecked)
+								if (!gelatinPropertyInfo.isChecked)
 								{
 									clChild_child->child(n)->setIcon(0, error_icon);
 								}
@@ -479,35 +478,24 @@ void GFTreeModelWidget::updataIcon()
 									clChild_child->child(n)->setIcon(0, checked_icon);
 								}
 							}
-							if (clChild_child->child(n)->text(0).contains("外防热材料"))
-							{
-								if (!outheatPropertyInfo.isChecked)
-								{
-									clChild_child->child(n)->setIcon(0, error_icon);
-								}
-								else
-								{
-									clChild_child->child(n)->setIcon(0, checked_icon);
-								}
-							}
-						}
-						if (outheatPropertyInfo.isChecked && insulatingheatPropertyInfo.isChecked && propellantInfo.isChecked && steelInfo.isChecked)
+													}
+						if (gelatinPropertyInfo.isChecked && propellantInfo.isChecked && steelInfo.isChecked)
 						{
 							clChild_child->setIcon(0, checked_icon);
 						}
 					}
 				}
-				if (judgementPropertyInfo.isChecked && outheatPropertyInfo.isChecked && insulatingheatPropertyInfo.isChecked && propellantInfo.isChecked && steelInfo.isChecked)
+				if (judgementPropertyInfo.isChecked && gelatinPropertyInfo.isChecked && propellantInfo.isChecked && steelInfo.isChecked)
 				{
 					clChild->setIcon(0, checked_icon);
 				}
 			}
-			else if (child->child(j)->text(0).contains("材料数据库"))
+			else if (child->child(j)->text(0).contains("物性数据库"))
 			{
 				QTreeWidgetItem *clChild = child->child(j);
 				int clChildCount = clChild->childCount();
 				for (int m = 0; m < clChildCount; ++m) {
-					if (clChild->child(m)->text(0).contains("壳体材料"))
+					if (clChild->child(m)->text(0).contains("壳体物性"))
 					{
 						if (!steelInfo.isChecked)
 						{
@@ -518,7 +506,7 @@ void GFTreeModelWidget::updataIcon()
 							clChild->child(m)->setIcon(0, checked_icon);
 						}
 					}
-					if (clChild->child(m)->text(0).contains("含能材料"))
+					if (clChild->child(m)->text(0).contains("药液物性"))
 					{
 						if (!propellantInfo.isChecked)
 						{
@@ -529,20 +517,9 @@ void GFTreeModelWidget::updataIcon()
 							clChild->child(m)->setIcon(0, checked_icon);
 						}
 					}
-					if (clChild->child(m)->text(0).contains("绝热层材料"))
+					if (clChild->child(m)->text(0).contains("明胶物性"))
 					{
-						if (!insulatingheatPropertyInfo.isChecked)
-						{
-							clChild->child(m)->setIcon(0, error_icon);
-						}
-						else
-						{
-							clChild->child(m)->setIcon(0, checked_icon);
-						}
-					}
-					if (clChild->child(m)->text(0).contains("外防热材料"))
-					{
-						if (!outheatPropertyInfo.isChecked)
+						if (!gelatinPropertyInfo.isChecked)
 						{
 							clChild->child(m)->setIcon(0, error_icon);
 						}

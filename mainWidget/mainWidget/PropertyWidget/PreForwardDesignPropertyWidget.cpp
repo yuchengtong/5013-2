@@ -16,6 +16,108 @@
 #include <QDateTime>
 #include <QApplication>
 
+
+#include <QString>
+#include <QMap>
+#include <QRegExp>
+#include <stdexcept>
+#include <cmath>
+
+// 计算
+double preForwardCalculateForm(const QString& formula,
+	double A, double B, double C, double D, double E, double F)
+{
+	A = (A - 50) / 35;
+	B = (B - 20) / 10;
+	C = (C - 1) / 4;
+	D = (D - 2160) / 7260;
+	E = (E - 368) / 736;
+	F = (F - 6) / 150;
+
+	QString processedFormula = formula;
+	processedFormula.remove(' '); // 移除所有空格
+
+	// 变量映射：公式二使用 A-F
+	const QMap<QString, double> varMap = {
+		{"A", A}, {"B", B}, {"C", C}, {"D", D}, {"E", E}, {"F", F}
+	};
+
+	/************************ 核心：支持 1/2/3/4次项 + 多变量乘积 ************************/
+	QRegExp regExp("([+-]?)((?:\\d+(?:\\.\\d*)?)|(?:\\.\\d+))(\\*[A-F](?:\\^[234])?(?:\\*[A-F](?:\\^[234])?)*)?");
+	regExp.setMinimal(false);
+
+	double result = 0.0;
+	int pos = 0;
+	int matchCount = 0;
+
+	// 补全开头符号，统一逻辑（和代码一完全一致）
+	if (!processedFormula.isEmpty() && processedFormula[0] != '+' && processedFormula[0] != '-') {
+		processedFormula = "+" + processedFormula;
+	}
+
+	// 循环匹配所有项（结构和代码一完全一致）
+	while ((pos = regExp.indexIn(processedFormula, pos)) != -1) {
+		++matchCount;
+
+		QString signStr = regExp.cap(1);    // 符号 +/-
+		QString coeffStr = regExp.cap(2);   // 系数
+		QString varPart = regExp.cap(3);    // 变量部分（如 *A^2*B^3）
+
+		// 1. 符号解析（和代码一一致）
+		double sign = (signStr == "-") ? -1.0 : 1.0;
+
+		// 2. 系数解析（和代码一一致）
+		bool ok = false;
+		double coeff = coeffStr.toDouble(&ok);
+		if (!ok) {
+			throw std::invalid_argument(QString("无效系数: %1").arg(coeffStr).toStdString());
+		}
+
+		// 3. 计算变量乘积值（支持 ^2 ^3 ^4）
+		double varValue = 1.0;
+		if (!varPart.isEmpty()) {
+			// 去掉开头的 *，按 * 拆分
+			QString vars = varPart.mid(1);
+			QStringList units = vars.split('*');
+
+			for (const QString& unit : units) {
+				if (unit.contains('^')) {
+					// 处理次方项 A^3 / F^4
+					QStringList parts = unit.split('^');
+					QString vName = parts[0];
+					int power = parts[1].toInt();
+
+					if (!varMap.contains(vName)) {
+						throw std::invalid_argument(QString("未知变量: %1").arg(vName).toStdString());
+					}
+					double val = varMap[vName];
+					varValue *= std::pow(val, power);
+				}
+				else {
+					// 单次变量 A/B/C
+					if (!varMap.contains(unit)) {
+						throw std::invalid_argument(QString("未知变量: %1").arg(unit).toStdString());
+					}
+					varValue *= varMap[unit];
+				}
+			}
+		}
+
+		// 累加当前项
+		result += sign * coeff * varValue;
+		pos += regExp.matchedLength();
+	}
+
+	// 公式校验
+	if (matchCount == 0) {
+		throw std::invalid_argument(QString("公式格式错误: %1").arg(formula).toStdString());
+	}
+
+	return result;
+}
+
+
+
 PreForwardDesignPropertyWidget::PreForwardDesignPropertyWidget(QWidget* parent)
 	:BasePropertyWidget(parent)
 {
@@ -78,7 +180,7 @@ void PreForwardDesignPropertyWidget::initWidget()
 	// 导入按钮
 	QPushButton* importButton = new QPushButton("计算");
 	m_tableWidget->setCellWidget(0, 2, importButton);
-	connect(importButton, &QPushButton::clicked, this, &PreForwardDesignPropertyWidget::showTableDialog);
+	connect(importButton, &QPushButton::clicked, this, &PreForwardDesignPropertyWidget::preForwardCalculate);
 	// 合并第一行的第三和第四列
 	m_tableWidget->setSpan(0, 2, 1, 2);
 
@@ -200,142 +302,27 @@ void PreForwardDesignPropertyWidget::initWidget()
 
 }
 
-void PreForwardDesignPropertyWidget::showTableDialog() {
-
-
-	QDialog* dialog = new QDialog();
-	dialog->setWindowTitle("壳体材料");
-	dialog->resize(1000, 500);
-	QVBoxLayout* layout = new QVBoxLayout(this);
-
-	QTableWidget* diaTableWidget = new QTableWidget();
-	// 隐藏行号
-	diaTableWidget->verticalHeader()->setVisible(false);
-	// 隐藏列号
-	diaTableWidget->horizontalHeader()->setVisible(false);
-	QDir dir;
-	QString filepath = dir.absoluteFilePath("src/database/壳体物性材料.xlsx");
-	int m_rowCount = 0;
-
-	if (!filepath.isEmpty()) {
-		QXlsx::Document xlsx(filepath);
-		int rowcount = xlsx.dimension().lastRow(); // 获取总行数
-		int colcount = xlsx.dimension().lastColumn(); // 获取总列数
-		m_rowCount = rowcount;
-
-		diaTableWidget->setRowCount(rowcount);
-		diaTableWidget->setColumnCount(colcount);
-
-		for (int row = 1; row <= rowcount; ++row) {
-			for (int col = 1; col <= colcount; ++col) {
-				QTableWidgetItem* item = new QTableWidgetItem(xlsx.read(row, col).toString());
-				item->setFlags(item->flags() & ~Qt::ItemIsEditable); // 不可编辑
-				diaTableWidget->setItem(row - 1, col - 1, item);
-			}
-		}
-	}
-
-	// 私有库
+void PreForwardDesignPropertyWidget::preForwardCalculate() 
+{
 	auto ins = ModelDataManager::GetInstance();
-	UserInfo info = ins->GetUserInfo();
-	QString privateFilePath = dir.absoluteFilePath("src/database/" + info.username + "/壳体物性材料.xlsx");
+	auto modelGeometryInfo = ins->GetModelGeometryInfo();
+	auto steelPropertyInfo = ins->GetSteelPropertyInfo();
+	auto calculationPropertyInfo = ins->GetCalculationPropertyInfo();
 
+	auto A = m_targetTemperatureValue.toDouble(); // 弹体目标温度（℃）
+	auto B = modelGeometryInfo.shellThickness; // 壳体厚度 (mm)
+	auto C = modelGeometryInfo.gasketLayerThickness; // 胶层厚度(mm)
+	auto D = steelPropertyInfo.density; // 壳体密度 (kg m^-3)
+	auto E = steelPropertyInfo.specificHeatCapacity; // 壳体比热容 (J kg^-1 K^-1)
+	auto F = steelPropertyInfo.thermalConductivity; // 壳体导热系数 (W m^-1 K^-1)
 
-	QFile file(privateFilePath);
-
-	if (!privateFilePath.isEmpty() && file.exists()) {
-		QXlsx::Document xlsx(privateFilePath);
-		int rowcount = xlsx.dimension().lastRow(); // 获取总行数
-		int colcount = xlsx.dimension().lastColumn(); // 获取总列数
-
-		diaTableWidget->setRowCount(m_rowCount + rowcount - 1);
-
-		int xlsxrow = m_rowCount;
-		for (int row = 2; row <= rowcount; ++row) {
-			for (int col = 1; col <= colcount; ++col) {
-				QTableWidgetItem* item = new QTableWidgetItem(xlsx.read(row, col).toString());
-				diaTableWidget->setItem(xlsxrow, col - 1, item);
-			}
-			xlsxrow++;
-		}
-	}
-
-	//设置点击事件，双击单元格
-	connect(diaTableWidget, &QTableWidget::cellDoubleClicked, this, [this, dialog, diaTableWidget](int row, int column) {
-		if (row != 0)
-		{
-			int colcount = diaTableWidget->columnCount();
-			QString value = "";
-			for (int col = 1; col < colcount; ++col) {
-
-				QString content = diaTableWidget->item(row, col)->text();
-				if (col == 1)
-				{
-					value = content;
-				}
-				QTableWidgetItem* valueItem = new QTableWidgetItem(content);
-				valueItem->setTextAlignment(Qt::AlignLeft | Qt::AlignVCenter);
-				valueItem->setFlags(valueItem->flags() & ~Qt::ItemIsEditable); // 不可编辑
-				valueItem->setBackground(QBrush(QColor(230, 230, 230)));
-				m_tableWidget->setItem(col, 2, valueItem);
-			}
-			auto ins = ModelDataManager::GetInstance();
-
-			SteelPropertyInfo info;
-			info.materialGrade = m_tableWidget->item(1, 2)->text();
-			info.type = m_tableWidget->item(2, 2)->text();
-			info.density = m_tableWidget->item(3, 2)->text().toDouble();
-			info.thermalConductivity = m_tableWidget->item(4, 2)->text().toDouble();
-			info.specificHeatCapacity = m_tableWidget->item(5, 2)->text().toDouble();
-			info.isChecked = true;
-			ins->SetSteelPropertyInfo(info);
-
-			// 更新icon
-			QWidget* parent = parentWidget();
-			while (parent) {
-				GFImportModelWidget* gfParent = dynamic_cast<GFImportModelWidget*>(parent);
-				if (gfParent)
-				{
-					gfParent->GetGFTreeModelWidget()->updataIcon();
-					// 写入日志
-					QDateTime currentTime = QDateTime::currentDateTime();
-					QString timeStr = currentTime.toString("yyyy-MM-dd hh:mm:ss");
-					auto logWidget = gfParent->GetLogWidget();
-					auto textEdit = logWidget->GetTextEdit();
-					QString text = timeStr + "[信息]>开始导入壳体物性材料数据";
-					textEdit->appendPlainText(text);
-					logWidget->update();
-
-					// 关键：强制刷新UI，确保日志立即显示
-					QApplication::processEvents();
-
-					// 写入数据库模块
-					MaterialPropertyWidget* m_materialPropertyWidget = gfParent->GetMaterialPropertyWidget();
-					QTableWidget* materialTableWid = m_materialPropertyWidget->GetQTableWidget();
-					QTableWidgetItem* valueItem = new QTableWidgetItem(value);
-					valueItem->setFlags(valueItem->flags() & ~Qt::ItemIsEditable); // 不可编辑
-					valueItem->setBackground(QBrush(QColor(230, 230, 230)));
-					materialTableWid->setItem(1, 2, valueItem);
-					break;
-				}
-				else
-				{
-					parent = parent->parentWidget();
-				}
-			}
-		}
-		dialog->close();
-
-		});
-	//双击单元格选中一行
-	 //设置选中整行
-	diaTableWidget->setSelectionBehavior(QAbstractItemView::SelectRows);
-	diaTableWidget->setSelectionMode(QAbstractItemView::SingleSelection);
-
-	layout->addWidget(diaTableWidget);
-	dialog->setLayout(layout);
-	dialog->setAttribute(Qt::WA_DeleteOnClose); // 关闭时自动删除
-	dialog->exec();
+	
+	double value  = preForwardCalculateForm(calculationPropertyInfo.preForwardCalculateFormula, A, B, C, D, E, F);
+	QString result = QString::number(value, 'f', 4);
+	QTableWidgetItem* resultItem = new QTableWidgetItem(result);
+	m_tableWidget->setItem(9, 2, resultItem);
+	
+	QMessageBox::information(this, "计算", "计算成功");
 }
 
 

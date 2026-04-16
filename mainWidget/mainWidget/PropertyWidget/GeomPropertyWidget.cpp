@@ -102,29 +102,29 @@ void GeomPropertyWidget::initWidget()
 	QTableWidgetItem* sourceValueItem = new QTableWidgetItem("");
 	sourceValueItem->setTextAlignment(Qt::AlignCenter); // 文本居中
 
-	QTableWidgetItem* boreDiameterValueItem = new QTableWidgetItem("391");
+	QTableWidgetItem* boreDiameterValueItem = new QTableWidgetItem(m_boreDiameterValue);
 	boreDiameterValueItem->setTextAlignment(Qt::AlignCenter); // 文本居中
 
-	QTableWidgetItem* equaldiameterSectionHeightValueItem = new QTableWidgetItem("560");
+	QTableWidgetItem* equaldiameterSectionHeightValueItem = new QTableWidgetItem(m_equaldiameterSectionHeightValue);
 	equaldiameterSectionHeightValueItem->setTextAlignment(Qt::AlignCenter); // 文本居中
 
-	QTableWidgetItem* boreRadiusValueItem = new QTableWidgetItem("0");
+	QTableWidgetItem* boreRadiusValueItem = new QTableWidgetItem(m_boreRadiusValue);
 	boreRadiusValueItem->setTextAlignment(Qt::AlignCenter); // 文本居中
 
-	QTableWidgetItem* variableDiameterSectionHeightValueItem = new QTableWidgetItem("0");
+	QTableWidgetItem* variableDiameterSectionHeightValueItem = new QTableWidgetItem(m_variableDiameterSectionHeightValue);
 	variableDiameterSectionHeightValueItem->setTextAlignment(Qt::AlignCenter); // 文本居中
 
-	QTableWidgetItem* shellThicknessValueItem = new QTableWidgetItem("20");
+	QTableWidgetItem* shellThicknessValueItem = new QTableWidgetItem(m_shellThicknessValue);
 	shellThicknessValueItem->setTextAlignment(Qt::AlignCenter); // 文本居中
 
-	QTableWidgetItem* gasketLayerThicknessValueItem = new QTableWidgetItem("1");
+	QTableWidgetItem* gasketLayerThicknessValueItem = new QTableWidgetItem(m_gasketLayerThicknessValue);
 	gasketLayerThicknessValueItem->setTextAlignment(Qt::AlignCenter); // 文本居中
 
-	QTableWidgetItem* injectionHoleDiameterValueItem = new QTableWidgetItem("20");
+	QTableWidgetItem* injectionHoleDiameterValueItem = new QTableWidgetItem(m_injectionHoleDiameterValue);
 	injectionHoleDiameterValueItem->setTextAlignment(Qt::AlignCenter); // 文本居中
 	injectionHoleDiameterValueItem->setFlags(injectionHoleDiameterValueItem->flags() & ~Qt::ItemIsEditable); // 不可编辑
 
-	QTableWidgetItem* vacuumHoleDiameterValueItem = new QTableWidgetItem("8");
+	QTableWidgetItem* vacuumHoleDiameterValueItem = new QTableWidgetItem(m_vacuumHoleDiameterValue);
 	vacuumHoleDiameterValueItem->setTextAlignment(Qt::AlignCenter); // 文本居中
 	vacuumHoleDiameterValueItem->setFlags(vacuumHoleDiameterValueItem->flags() & ~Qt::ItemIsEditable); // 不可编辑
 
@@ -190,8 +190,11 @@ void GeomPropertyWidget::initWidget()
 	
 	
 
-	connect(m_tableWidget, &QTableWidget::itemChanged, this, [this, boreDiameterValueItem, equaldiameterSectionHeightValueItem, shellThicknessValueItem, gasketLayerThicknessValueItem](QTableWidgetItem* item) {
+	connect(m_tableWidget, &QTableWidget::itemChanged, this, [this, boreDiameterValueItem, equaldiameterSectionHeightValueItem, boreRadiusValueItem, variableDiameterSectionHeightValueItem, shellThicknessValueItem, gasketLayerThicknessValueItem, injectionHoleDiameterValueItem, vacuumHoleDiameterValueItem](QTableWidgetItem* item) {
 		
+		auto ins = ModelDataManager::GetInstance();
+		auto modelGeometryInfo = ins->GetModelGeometryInfo();
+
 		if (item == boreDiameterValueItem)
 		{
 			auto text = item->text();
@@ -206,7 +209,7 @@ void GeomPropertyWidget::initWidget()
 				item->setText(m_boreDiameterValue);
 				m_tableWidget->blockSignals(false);
 			}
-
+			modelGeometryInfo.boreDiameter = m_boreDiameterValue.toDouble();
 		}
 		if (item == equaldiameterSectionHeightValueItem)
 		{
@@ -222,9 +225,22 @@ void GeomPropertyWidget::initWidget()
 				item->setText(m_equaldiameterSectionHeightValue);
 				m_tableWidget->blockSignals(false);
 			}
-
+			modelGeometryInfo.equaldiameterSection = m_equaldiameterSectionHeightValue.toDouble();
 		}
-
+		if (item == boreRadiusValueItem)
+		{
+			auto text = item->text();
+			auto value = text.toDouble();
+			m_boreRadiusValue = text;
+			modelGeometryInfo.boreRadius = m_boreRadiusValue.toDouble();
+		}
+		if (item == variableDiameterSectionHeightValueItem)
+		{
+			auto text = item->text();
+			auto value = text.toDouble();
+			m_variableDiameterSectionHeightValue = text;
+			modelGeometryInfo.variableDiameterSectionHeight = m_variableDiameterSectionHeightValue.toDouble();
+		}
 		if (item == shellThicknessValueItem )
 		{
 			auto text = item->text();
@@ -239,7 +255,7 @@ void GeomPropertyWidget::initWidget()
 				item->setText(m_shellThicknessValue);
 				m_tableWidget->blockSignals(false);
 			}
-
+			modelGeometryInfo.shellThickness = m_shellThicknessValue.toDouble();
 		}
 
 		if (item == gasketLayerThicknessValueItem)
@@ -256,8 +272,9 @@ void GeomPropertyWidget::initWidget()
 				item->setText(m_gasketLayerThicknessValue);
 				m_tableWidget->blockSignals(false);
 			}
-
+			modelGeometryInfo.gasketLayerThickness = m_gasketLayerThicknessValue.toDouble();
 		}
+		ins->SetModelGeometryInfo(modelGeometryInfo);
 	});
 
 }

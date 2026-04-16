@@ -227,14 +227,14 @@ void GelatinPropertyWidget::showTableDialog()
 			}
 			auto ins = ModelDataManager::GetInstance();
 
-			InsulatingheatPropertyInfo info;
-			info.materialGrade = m_tableWidget->item(1, 2)->text();
+			GelatinPropertyInfo info;
+			info.name = m_tableWidget->item(1, 2)->text();
 			info.type = m_tableWidget->item(2, 2)->text().toDouble();
 			info.density = m_tableWidget->item(3, 2)->text().toDouble();
 			info.thermalConductivity = m_tableWidget->item(4, 2)->text().toDouble();
 			info.specificHeatCapacity = m_tableWidget->item(5, 2)->text().toDouble();
 			info.isChecked = true;
-			ins->SetInsulatingheatPropertyInfo(info);
+			ins->SetGelatinPropertyInfo(info);
 
 			// 更新icon
 			QWidget* parent = parentWidget();
