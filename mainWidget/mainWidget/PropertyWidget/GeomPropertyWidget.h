@@ -15,6 +15,8 @@ public:
 
 	QTableWidget* GetQTableWidget() { return m_tableWidget; }
 
+	QComboBox* GetModelComboBox() { return m_modelComboBox; }
+
 private:
 	void initWidget() override;
 

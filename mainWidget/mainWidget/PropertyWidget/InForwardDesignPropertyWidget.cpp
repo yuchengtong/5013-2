@@ -16,6 +16,93 @@
 #include <QDateTime>
 #include <QApplication>
 
+//计算
+double inForwardCalculateForm(const QString& formula,
+	double A, double B, double C, double D, double E)
+{
+	QString processedFormula = formula;
+	processedFormula.remove(' '); // 移除所有空格
+
+	// 变量映射：5个变量 A-E
+	const QMap<QString, double> varMap = {
+		{"A", A}, {"B", B}, {"C", C}, {"D", D}, {"E", E}
+	};
+
+	/************************ 核心：支持1-7次项 + 多变量乘积 ************************/
+	// 正则适配：变量A-E，次方支持 ^1~^7（可省略^代表1次）
+	QRegExp regExp("([+-]?)((?:\\d+(?:\\.\\d*)?)|(?:\\.\\d+))(\\*[A-E](?:\\^[1234567])?(?:\\*[A-E](?:\\^[1234567])?)*)?");
+	regExp.setMinimal(false);
+
+	double result = 0.0;
+	int pos = 0;
+	int matchCount = 0;
+
+	// 补全开头符号，统一逻辑
+	if (!processedFormula.isEmpty() && processedFormula[0] != '+' && processedFormula[0] != '-') {
+		processedFormula = "+" + processedFormula;
+	}
+
+	// 循环匹配所有项
+	while ((pos = regExp.indexIn(processedFormula, pos)) != -1) {
+		++matchCount;
+
+		QString signStr = regExp.cap(1);    // 符号 +/-
+		QString coeffStr = regExp.cap(2);   // 系数
+		QString varPart = regExp.cap(3);    // 变量部分（如 *A^7*B^2*E）
+
+		// 1. 符号解析
+		double sign = (signStr == "-") ? -1.0 : 1.0;
+
+		// 2. 系数解析
+		bool ok = false;
+		double coeff = coeffStr.toDouble(&ok);
+		if (!ok) {
+			throw std::invalid_argument(QString("无效系数: %1").arg(coeffStr).toStdString());
+		}
+
+		// 3. 计算变量乘积值（支持 ^1 ~ ^7）
+		double varValue = 1.0;
+		if (!varPart.isEmpty()) {
+			// 去掉开头的 *，按 * 拆分
+			QString vars = varPart.mid(1);
+			QStringList units = vars.split('*');
+
+			for (const QString& unit : units) {
+				if (unit.contains('^')) {
+					// 处理次方项 A^7 / C^3
+					QStringList parts = unit.split('^');
+					QString vName = parts[0];
+					int power = parts[1].toInt();
+
+					if (!varMap.contains(vName)) {
+						throw std::invalid_argument(QString("未知变量: %1").arg(vName).toStdString());
+					}
+					double val = varMap[vName];
+					varValue *= std::pow(val, power);
+				}
+				else {
+					// 单次变量 A/B/C/D/E
+					if (!varMap.contains(unit)) {
+						throw std::invalid_argument(QString("未知变量: %1").arg(unit).toStdString());
+					}
+					varValue *= varMap[unit];
+				}
+			}
+		}
+
+		// 累加当前项
+		result += sign * coeff * varValue;
+		pos += regExp.matchedLength();
+	}
+
+	// 公式校验
+	if (matchCount == 0) {
+		throw std::invalid_argument(QString("公式格式错误: %1").arg(formula).toStdString());
+	}
+
+	return result;
+}
+
 InForwardDesignPropertyWidget::InForwardDesignPropertyWidget(QWidget* parent)
 	:BasePropertyWidget(parent)
 {
@@ -61,7 +148,7 @@ void InForwardDesignPropertyWidget::initWidget()
 	}
 
 
-	QStringList labels = { "正向设计","工艺输入参数",  "弹体保温温度", "药液浇注温度", "药液浇注速度","真空度","工艺输出参数","相对密度","弹体注药时间","弹体温度云图与温升曲线"};
+	QStringList labels = { "正向设计","工艺输入参数",  "弹体保温温度", "药液浇注温度", "阀门开度","真空度","工艺输出参数","相对密度","弹体注药时间","弹体温度云图与温升曲线"};
 	for (int row = 0; row < labels.size(); ++row) {
 		QTableWidgetItem* labelItem = new QTableWidgetItem(labels[row]);
 		labelItem->setTextAlignment(Qt::AlignCenter); // 文本居中
@@ -74,7 +161,7 @@ void InForwardDesignPropertyWidget::initWidget()
 	// 导入按钮
 	QPushButton* importButton = new QPushButton("计算");
 	m_tableWidget->setCellWidget(0, 2, importButton);
-	connect(importButton, &QPushButton::clicked, this, &InForwardDesignPropertyWidget::showTableDialog);
+	connect(importButton, &QPushButton::clicked, this, &InForwardDesignPropertyWidget::inForwardCalculate);
 	// 合并第一行的第三和第四列
 	m_tableWidget->setSpan(0, 2, 1, 2);
 
@@ -84,8 +171,8 @@ void InForwardDesignPropertyWidget::initWidget()
 	QTableWidgetItem* pouringTemperatureValueItem = new QTableWidgetItem(m_pouringTemperatureValue);
 	pouringTemperatureValueItem->setTextAlignment(Qt::AlignCenter); // 文本居中
 
-	QTableWidgetItem* pouringSpeedValueItem = new QTableWidgetItem(m_pouringSpeedValue);
-	pouringSpeedValueItem->setTextAlignment(Qt::AlignCenter); // 文本居中
+	QTableWidgetItem* valveOpeningValueItem = new QTableWidgetItem(m_valveOpeningValue);
+	valveOpeningValueItem->setTextAlignment(Qt::AlignCenter); // 文本居中
 
 	QTableWidgetItem* vacuumDegreeValueItem = new QTableWidgetItem(m_vacuumDegreeValue);
 	vacuumDegreeValueItem->setTextAlignment(Qt::AlignCenter); // 文本居中
@@ -98,7 +185,7 @@ void InForwardDesignPropertyWidget::initWidget()
 
 	m_tableWidget->setItem(2, 2, insulationTemperatureValueItem);
 	m_tableWidget->setItem(3, 2, pouringTemperatureValueItem);
-	m_tableWidget->setItem(4, 2, pouringSpeedValueItem);
+	m_tableWidget->setItem(4, 2, valveOpeningValueItem);
 	m_tableWidget->setItem(5, 2, vacuumDegreeValueItem);
 	m_tableWidget->setItem(7, 2, relativeDensityValueItem);
 	m_tableWidget->setItem(8, 2, injectionTimeValueItem);
@@ -114,7 +201,7 @@ void InForwardDesignPropertyWidget::initWidget()
 	m_tableWidget->setColumnWidth(1, itemWidth + m_tableWidget->verticalHeader()->width());
 
 	// 单位列
-	QStringList unitLabels = { " "," ","℃", "℃", "kg/min","MPa"," ","%","s"," " };
+	QStringList unitLabels = { " "," ","℃", "℃", "mm","MPa"," ","%","s"," " };
 	for (int row = 0; row < unitLabels.size(); ++row) {
 		if (row != 0)
 		{
@@ -175,9 +262,9 @@ void InForwardDesignPropertyWidget::initWidget()
 
 	m_tableWidget->setItem(2, 2, injectionTimeValueItem);
 	m_tableWidget->setItem(3, 2, pouringTemperatureValueItem);
-	m_tableWidget->setItem(4, 2, pouringSpeedValueItem);
+	m_tableWidget->setItem(4, 2, valveOpeningValueItem);
 	m_tableWidget->setItem(5, 2, vacuumDegreeValueItem);
-	connect(m_tableWidget, &QTableWidget::itemChanged, this, [this, insulationTemperatureValueItem, pouringTemperatureValueItem, pouringSpeedValueItem, vacuumDegreeValueItem](QTableWidgetItem* item) {
+	connect(m_tableWidget, &QTableWidget::itemChanged, this, [this, insulationTemperatureValueItem, pouringTemperatureValueItem, valveOpeningValueItem, vacuumDegreeValueItem](QTableWidgetItem* item) {
 
 		if (item == insulationTemperatureValueItem)
 		{
@@ -185,12 +272,12 @@ void InForwardDesignPropertyWidget::initWidget()
 			auto value = text.toDouble();
 			if (value >= 50 && value <= 70)
 			{
-				m_injectionTimeValue = text;
+				m_insulationTemperatureValue = text;
 			}
 			else
 			{
 				m_tableWidget->blockSignals(true);
-				item->setText(m_injectionTimeValue);
+				item->setText(m_insulationTemperatureValue);
 				m_tableWidget->blockSignals(false);
 			}
 		}
@@ -211,18 +298,18 @@ void InForwardDesignPropertyWidget::initWidget()
 			}
 		}
 
-		if (item == pouringSpeedValueItem)
+		if (item == valveOpeningValueItem)
 		{
 			auto text = item->text();
 			auto value = text.toDouble();
 			if (value >= 0 && value <= 30)
 			{
-				m_pouringSpeedValue = text;
+				m_valveOpeningValue = text;
 			}
 			else
 			{
 				m_tableWidget->blockSignals(true);
-				item->setText(m_pouringSpeedValue);
+				item->setText(m_valveOpeningValue);
 				m_tableWidget->blockSignals(false);
 			}
 		}
@@ -231,7 +318,9 @@ void InForwardDesignPropertyWidget::initWidget()
 		{
 			auto text = item->text();
 			auto value = text.toDouble();
-			if (value >= 0.08 && value <= 0.1)
+
+			m_vacuumDegreeValue = text;
+			/*if (value >= 0.08 && value <= 0.1)
 			{
 				m_vacuumDegreeValue = text;
 			}
@@ -240,146 +329,140 @@ void InForwardDesignPropertyWidget::initWidget()
 				m_tableWidget->blockSignals(true);
 				item->setText(m_vacuumDegreeValue);
 				m_tableWidget->blockSignals(false);
-			}
+			}*/
 		}
 	});
 
 }
 
-void InForwardDesignPropertyWidget::showTableDialog() {
+void InForwardDesignPropertyWidget::inForwardCalculate() {
 
 
-	QDialog* dialog = new QDialog();
-	dialog->setWindowTitle("壳体材料");
-	dialog->resize(1000, 500);
-	QVBoxLayout* layout = new QVBoxLayout(this);
-
-	QTableWidget* diaTableWidget = new QTableWidget();
-	// 隐藏行号
-	diaTableWidget->verticalHeader()->setVisible(false);
-	// 隐藏列号
-	diaTableWidget->horizontalHeader()->setVisible(false);
-	QDir dir;
-	QString filepath = dir.absoluteFilePath("src/database/壳体物性材料.xlsx");
-	int m_rowCount = 0;
-
-	if (!filepath.isEmpty()) {
-		QXlsx::Document xlsx(filepath);
-		int rowcount = xlsx.dimension().lastRow(); // 获取总行数
-		int colcount = xlsx.dimension().lastColumn(); // 获取总列数
-		m_rowCount = rowcount;
-
-		diaTableWidget->setRowCount(rowcount);
-		diaTableWidget->setColumnCount(colcount);
-
-		for (int row = 1; row <= rowcount; ++row) {
-			for (int col = 1; col <= colcount; ++col) {
-				QTableWidgetItem* item = new QTableWidgetItem(xlsx.read(row, col).toString());
-				item->setFlags(item->flags() & ~Qt::ItemIsEditable); // 不可编辑
-				diaTableWidget->setItem(row - 1, col - 1, item);
-			}
-		}
-	}
-
-	// 私有库
 	auto ins = ModelDataManager::GetInstance();
-	UserInfo info = ins->GetUserInfo();
-	QString privateFilePath = dir.absoluteFilePath("src/database/" + info.username + "/壳体物性材料.xlsx");
+	auto modelGeometryInfo = ins->GetModelGeometryInfo();
+	auto steelPropertyInfo = ins->GetSteelPropertyInfo();
+	auto calculationPropertyInfo = ins->GetCalculationPropertyInfo();
 
+	auto A = m_valveOpeningValue.toDouble(); // 阀门开度（mm）
+	auto B = modelGeometryInfo.gasketLayerThickness; // 胶层厚度(mm)
+	auto C = modelGeometryInfo.shellThickness; // 壳体厚度 (mm)
+	auto D = m_vacuumDegreeValue.toDouble() * 1000; // 真空度(KPa)
+	auto E = m_insulationTemperatureValue.toDouble(); // 保温温度（℃）
 
-	QFile file(privateFilePath);
-
-	if (!privateFilePath.isEmpty() && file.exists()) {
-		QXlsx::Document xlsx(privateFilePath);
-		int rowcount = xlsx.dimension().lastRow(); // 获取总行数
-		int colcount = xlsx.dimension().lastColumn(); // 获取总列数
-
-		diaTableWidget->setRowCount(m_rowCount + rowcount - 1);
-
-		int xlsxrow = m_rowCount;
-		for (int row = 2; row <= rowcount; ++row) {
-			for (int col = 1; col <= colcount; ++col) {
-				QTableWidgetItem* item = new QTableWidgetItem(xlsx.read(row, col).toString());
-				diaTableWidget->setItem(xlsxrow, col - 1, item);
-			}
-			xlsxrow++;
+	// 获取模型类型
+	QString model = "产品一";
+	QWidget* parent = parentWidget();
+	while (parent) {
+		GFImportModelWidget* gfParent = dynamic_cast<GFImportModelWidget*>(parent);
+		if (gfParent)
+		{
+			auto *modelComboBox = gfParent->GetGeomPropertyWidget()->GetModelComboBox();
+			model = modelComboBox->currentText();
+			break;
+		}
+		else
+		{
+			parent = parent->parentWidget();
 		}
 	}
 
-	//设置点击事件，双击单元格
-	connect(diaTableWidget, &QTableWidget::cellDoubleClicked, this, [this, dialog, diaTableWidget](int row, int column) {
-		if (row != 0)
-		{
-			int colcount = diaTableWidget->columnCount();
-			QString value = "";
-			for (int col = 1; col < colcount; ++col) {
+	double gasRateValue = 0.0;
+	double injectionTimeValue = 0.0;
+	if (model == "产品一")
+	{
+		// 气含率
+		auto gasRateA = (A - 6.740741) / 11.555556;
+		auto gasRateB = (B - 1.074074) / 3.851852;
+		auto gasRateC = (C - 20.185185) / 9.629630;
+		auto gasRateD = (D - 21.111111) / 57.777778;
+		auto gasRateE = (E - 86.370370) / 19.259259;
+		gasRateValue = inForwardCalculateForm(calculationPropertyInfo.oneGasRateCalculateFormula, gasRateA, gasRateB, gasRateC, gasRateD, gasRateE);
 
-				QString content = diaTableWidget->item(row, col)->text();
-				if (col == 1)
-				{
-					value = content;
-				}
-				QTableWidgetItem* valueItem = new QTableWidgetItem(content);
-				valueItem->setTextAlignment(Qt::AlignLeft | Qt::AlignVCenter);
-				valueItem->setFlags(valueItem->flags() & ~Qt::ItemIsEditable); // 不可编辑
-				valueItem->setBackground(QBrush(QColor(230, 230, 230)));
-				m_tableWidget->setItem(col, 2, valueItem);
-			}
-			auto ins = ModelDataManager::GetInstance();
 
-			SteelPropertyInfo info;
-			info.name = m_tableWidget->item(1, 2)->text();
-			info.type = m_tableWidget->item(2, 2)->text();
-			info.density = m_tableWidget->item(3, 2)->text().toDouble();
-			info.thermalConductivity = m_tableWidget->item(4, 2)->text().toDouble();
-			info.specificHeatCapacity = m_tableWidget->item(5, 2)->text().toDouble();
-			info.isChecked = true;
-			ins->SetSteelPropertyInfo(info);
+		// 注药时间
+		auto injectionTimeA = (A - 6.740741) / 11.555556;
+		auto injectionTimeB = (B - 1.074074) / 3.851852;
+		auto injectionTimeC = (C - 20.185185) / 9.629630;
+		auto injectionTimeD = (D - 21.111111) / 57.777778;
+		auto injectionTimeE = (E - 50.370370) / 19.259259;
+		injectionTimeValue = inForwardCalculateForm(calculationPropertyInfo.oneInjectionTimeCalculateFormula, injectionTimeA, injectionTimeB, injectionTimeC, injectionTimeD, injectionTimeE);
+		injectionTimeValue = injectionTimeValue * 21.33;
+	}
+	else if (model == "产品二")
+	{
+		// 气含率
+		auto gasRateA = (A - 6.500000) / 13.000000;
+		auto gasRateB = (B - 1.000000) / 4.000000;
+		auto gasRateC = (C - 20.000000) / 10.000000;
+		auto gasRateD = (D - 20.000000) / 60.000000;
+		auto gasRateE = (E - 50.000000) / 20.000000;
+		gasRateValue = inForwardCalculateForm(calculationPropertyInfo.twoGasRateCalculateFormula, gasRateA, gasRateB, gasRateC, gasRateD, gasRateE);
 
-			// 更新icon
-			QWidget* parent = parentWidget();
-			while (parent) {
-				GFImportModelWidget* gfParent = dynamic_cast<GFImportModelWidget*>(parent);
-				if (gfParent)
-				{
-					gfParent->GetGFTreeModelWidget()->updataIcon();
-					// 写入日志
-					QDateTime currentTime = QDateTime::currentDateTime();
-					QString timeStr = currentTime.toString("yyyy-MM-dd hh:mm:ss");
-					auto logWidget = gfParent->GetLogWidget();
-					auto textEdit = logWidget->GetTextEdit();
-					QString text = timeStr + "[信息]>开始导入壳体物性材料数据";
-					textEdit->appendPlainText(text);
-					logWidget->update();
 
-					// 关键：强制刷新UI，确保日志立即显示
-					QApplication::processEvents();
+		// 注药时间
+		auto injectionTimeA = (A - 6.500000) / 13.000000;
+		auto injectionTimeB = (B - 1.000000) / 4.000000;
+		auto injectionTimeC = (C - 20.000000) / 10.000000;
+		auto injectionTimeD = (D - 20.000000) / 60.000000;
+		auto injectionTimeE = (E - 50.000000) / 20.000000;
+		injectionTimeValue = inForwardCalculateForm(calculationPropertyInfo.twoInjectionTimeCalculateFormula, injectionTimeA, injectionTimeB, injectionTimeC, injectionTimeD, injectionTimeE);
+		injectionTimeValue = injectionTimeValue * 26.67;
+	}
+	else if (model == "产品三")
+	{
+		// 气含率
+		auto gasRateA = (A - 6.500000) / 12.277778;
+		auto gasRateB = (B - 1.000000) / 4.000000;
+		auto gasRateC = (C - 20.000000) / 10.000000;
+		auto gasRateD = (D - 20.000000) / 60.000000;
+		auto gasRateE = (E - 50.000000) / 20.000000;
+		gasRateValue = inForwardCalculateForm(calculationPropertyInfo.threeGasRateCalculateFormula, gasRateA, gasRateB, gasRateC, gasRateD, gasRateE);
 
-					// 写入数据库模块
-					MaterialPropertyWidget* m_materialPropertyWidget = gfParent->GetMaterialPropertyWidget();
-					QTableWidget* materialTableWid = m_materialPropertyWidget->GetQTableWidget();
-					QTableWidgetItem* valueItem = new QTableWidgetItem(value);
-					valueItem->setFlags(valueItem->flags() & ~Qt::ItemIsEditable); // 不可编辑
-					valueItem->setBackground(QBrush(QColor(230, 230, 230)));
-					materialTableWid->setItem(1, 2, valueItem);
-					break;
-				}
-				else
-				{
-					parent = parent->parentWidget();
-				}
-			}
-		}
-		dialog->close();
 
-		});
-	//双击单元格选中一行
-	 //设置选中整行
-	diaTableWidget->setSelectionBehavior(QAbstractItemView::SelectRows);
-	diaTableWidget->setSelectionMode(QAbstractItemView::SingleSelection);
+		// 注药时间
+		auto injectionTimeA = (A - 6.500000) / 12.277778;
+		auto injectionTimeB = (B - 1.000000) / 4.000000;
+		auto injectionTimeC = (C - 20.000000) / 10.000000;
+		auto injectionTimeD = (D - 20.000000) / 60.000000;
+		auto injectionTimeE = (E - 50.000000) / 20.000000;
+		injectionTimeValue = inForwardCalculateForm(calculationPropertyInfo.threeInjectionTimeCalculateFormula, injectionTimeA, injectionTimeB, injectionTimeC, injectionTimeD, injectionTimeE);
+		injectionTimeValue = injectionTimeValue * 26.33;
+	}
+	else
+	{
+		// 气含率
+		auto gasRateA = (A - 8.500000) / 9.796296;
+		auto gasRateB = (B - 1.000000) / 4.000000;
+		auto gasRateC = (C - 20.000000) / 10.000000;
+		auto gasRateD = (D - 20.000000) / 60.000000;
+		auto gasRateE = (E - 50.000000) / 20.000000;
+		gasRateValue = inForwardCalculateForm(calculationPropertyInfo.fourGasRateCalculateFormula, gasRateA, gasRateB, gasRateC, gasRateD, gasRateE);
 
-	layout->addWidget(diaTableWidget);
-	dialog->setLayout(layout);
-	dialog->setAttribute(Qt::WA_DeleteOnClose); // 关闭时自动删除
-	dialog->exec();
+
+		// 注药时间
+		auto injectionTimeA = (A - 8.500000) / 9.796296;
+		auto injectionTimeB = (B - 1.000000) / 4.000000;
+		auto injectionTimeC = (C - 20.000000) / 10.000000;
+		auto injectionTimeD = (D - 20.000000) / 60.000000;
+		auto injectionTimeE = (E - 50.000000) / 20.000000;
+		injectionTimeValue = inForwardCalculateForm(calculationPropertyInfo.fourInjectionTimeCalculateFormula, injectionTimeA, injectionTimeB, injectionTimeC, injectionTimeD, injectionTimeE);
+		injectionTimeValue = injectionTimeValue * 27.33;
+	}
+	
+	// 气含率转相对密度
+	double density = ins->GetSteelPropertyInfo().density;
+	double gas = 1.205 * gasRateValue; // 气体质量
+	double solid = density * (1 - gasRateValue);
+	double relativeDensity = (gas + solid) / density;
+
+
+	QString relativeDensityResult = QString::number(relativeDensity * 100, 'f', 4);
+	QTableWidgetItem* relativeDensityItem = new QTableWidgetItem(relativeDensityResult);
+	m_tableWidget->setItem(7, 2, relativeDensityItem);
+
+	QString injectionTimeResult = QString::number(injectionTimeValue, 'f', 4);
+	QTableWidgetItem* injectionTimeItem = new QTableWidgetItem(injectionTimeResult);
+	m_tableWidget->setItem(8, 2, injectionTimeItem);
+
+	QMessageBox::information(this, "计算", "计算成功");
 }
