@@ -54,6 +54,8 @@ struct ModelMeshInfo {
 
 	double x_min = 0.0;
 	double x_max = 0.0;
+	double y_min = 0.0;
+	double y_max = 0.0;
 	double z_min = 0.0;
 	double z_max = 0.0;
 

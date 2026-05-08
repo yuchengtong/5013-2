@@ -76,6 +76,8 @@ void TriangulationWorker::DoWork()
         //记录x，z的最值
         double x_min = DBL_MAX;
         double x_max = -DBL_MAX;
+        double y_min = DBL_MAX;
+        double y_max = -DBL_MAX;
         double z_min = DBL_MAX;
         double z_max = -DBL_MAX;
 
@@ -85,6 +87,7 @@ void TriangulationWorker::DoWork()
             {
                 int nodeID = it.Key();
                 double x = nodeCoors->Value(nodeID, 1); // 节点x坐标
+                double y = nodeCoors->Value(nodeID, 2); 
                 double z = nodeCoors->Value(nodeID, 3); // 节点z坐标
 
                 if (x < x_min)
@@ -94,6 +97,15 @@ void TriangulationWorker::DoWork()
                 if (x > x_max)
                 {
                     x_max = x;
+                }
+
+                if (y < y_min)
+                {
+                    y_min = y;
+                }
+                if (y > y_max)
+                {
+                    y_max = y;
                 }
 
                 if (z < z_min)
@@ -109,6 +121,10 @@ void TriangulationWorker::DoWork()
 
         meshInfo.x_min = x_min;
         meshInfo.x_max = x_max;
+
+        meshInfo.y_min = y_min;
+        meshInfo.y_max = y_max;
+
         meshInfo.z_min = z_min;
         meshInfo.z_max = z_max;
 

@@ -1,8 +1,21 @@
+#pragma once
+#pragma execution_character_set("utf-8")
 #include "ToolsAnimationWidget.h"
+#include <AIS_Shape.hxx>
+#include <AIS_ColorScale.hxx>
+#include <V3d_View.hxx>
+
 #include <QVBoxLayout>
 #include <QObject>
 #include <QTimer>
 #include <QMouseEvent>
+
+
+
+
+#include "GFImportModelWidget.h"
+#include "APISetNodeValue.h"
+
 
 const double XFM_TooL_ANIMATION_TIME_TOLERANCE = 1e-4;
 
@@ -65,6 +78,14 @@ void ToolsAnimationWidget::init()
 		pBtnLayout->setContentsMargins(0, 0, 0, 0);
 		{
 			m_comboBox = new QComboBox();
+			{
+				m_comboBox->addItem("0");
+				m_comboBox->addItem("1");
+				m_comboBox->addItem("2");
+			}
+
+
+
 			m_comboBox->setFixedHeight(20);
 			m_comboBox->setFixedWidth(100);
 
@@ -130,6 +151,144 @@ void ToolsAnimationWidget::bindConnect()
 	connect(m_comboBox, QOverload<int>::of(&QComboBox::currentIndexChanged), this, [&](int index) {
 		double time = m_comboBox->currentData().toDouble();
 		emit animationTimeChanged(time);
+
+		if (index == 0)
+		{
+			QWidget* parent = parentWidget();
+			while (parent) {
+				GFImportModelWidget* gfParent = dynamic_cast<GFImportModelWidget*>(parent);
+				if (gfParent)
+				{
+					double min_value = 0;
+					double max_value = 10;
+					auto occView=gfParent->GetOccView();
+					//occView->SetCameraRotationState(false);
+					Handle(AIS_InteractiveContext) context = occView->getContext();
+					Handle(V3d_View) view = occView->getView();
+					view->SetProj(V3d_Zneg);
+					std::vector<double> nodeValues;
+					APISetNodeValue::SetPreForwardDesignResult0(occView, nodeValues);
+
+					// 颜色条显示（与原逻辑一致）
+					TCollection_ExtendedString tostr("跌落试验\n应力分析\n单位:MPa", true);
+					Handle(AIS_ColorScale) aColorScale = new AIS_ColorScale();
+					aColorScale->SetFormat(TCollection_AsciiString("%.2f"));
+					aColorScale->SetSize(100, 400);
+					aColorScale->SetRange(min_value, max_value);
+					aColorScale->SetNumberOfIntervals(9);
+					aColorScale->SetLabelPosition(Aspect_TOCSP_RIGHT);
+					aColorScale->SetTextHeight(14);
+					aColorScale->SetColor(Quantity_Color(Quantity_NOC_BLACK));
+					aColorScale->SetTitle(tostr);
+					aColorScale->SetColorRange(Quantity_Color(Quantity_NOC_BLUE1), Quantity_Color(Quantity_NOC_RED));
+					aColorScale->SetLabelType(Aspect_TOCSD_AUTO);
+					aColorScale->SetZLayer(Graphic3d_ZLayerId_TopOSD);
+					Graphic3d_Vec2i anoffset(0, Standard_Integer(450));
+					context->SetTransformPersistence(aColorScale, new Graphic3d_TransformPers(Graphic3d_TMF_2d, Aspect_TOTP_LEFT_UPPER, anoffset));
+					context->SetDisplayMode(aColorScale, 1, Standard_False);
+					context->Display(aColorScale, Standard_True);
+
+
+					break;
+				}
+				else
+				{
+					parent = parent->parentWidget();
+				}
+			}
+
+		}
+		else if (index == 1)
+		{
+			QWidget* parent = parentWidget();
+			while (parent) {
+				GFImportModelWidget* gfParent = dynamic_cast<GFImportModelWidget*>(parent);
+				if (gfParent)
+				{
+					double min_value = 0;
+					double max_value = 10;
+					auto occView = gfParent->GetOccView();
+					//occView->SetCameraRotationState(false);
+					Handle(AIS_InteractiveContext) context = occView->getContext();
+					Handle(V3d_View) view = occView->getView();
+					view->SetProj(V3d_Zneg);
+					std::vector<double> nodeValues;
+					APISetNodeValue::SetPreForwardDesignResult1(occView, nodeValues);
+
+					// 颜色条显示（与原逻辑一致）
+					TCollection_ExtendedString tostr("跌落试验\n应力分析\n单位:MPa", true);
+					Handle(AIS_ColorScale) aColorScale = new AIS_ColorScale();
+					aColorScale->SetFormat(TCollection_AsciiString("%.2f"));
+					aColorScale->SetSize(100, 400);
+					aColorScale->SetRange(min_value, max_value);
+					aColorScale->SetNumberOfIntervals(9);
+					aColorScale->SetLabelPosition(Aspect_TOCSP_RIGHT);
+					aColorScale->SetTextHeight(14);
+					aColorScale->SetColor(Quantity_Color(Quantity_NOC_BLACK));
+					aColorScale->SetTitle(tostr);
+					aColorScale->SetColorRange(Quantity_Color(Quantity_NOC_BLUE1), Quantity_Color(Quantity_NOC_RED));
+					aColorScale->SetLabelType(Aspect_TOCSD_AUTO);
+					aColorScale->SetZLayer(Graphic3d_ZLayerId_TopOSD);
+					Graphic3d_Vec2i anoffset(0, Standard_Integer(450));
+					context->SetTransformPersistence(aColorScale, new Graphic3d_TransformPers(Graphic3d_TMF_2d, Aspect_TOTP_LEFT_UPPER, anoffset));
+					context->SetDisplayMode(aColorScale, 1, Standard_False);
+					context->Display(aColorScale, Standard_True);
+
+					break;
+				}
+				else
+				{
+					parent = parent->parentWidget();
+				}
+			}
+		}
+		else if (index == 2)
+		{
+			QWidget* parent = parentWidget();
+			while (parent) {
+				GFImportModelWidget* gfParent = dynamic_cast<GFImportModelWidget*>(parent);
+				if (gfParent)
+				{
+					double min_value = 0;
+					double max_value = 10;
+					auto occView = gfParent->GetOccView();
+					//occView->SetCameraRotationState(false);
+					Handle(AIS_InteractiveContext) context = occView->getContext();
+					Handle(V3d_View) view = occView->getView();
+					view->SetProj(V3d_Zneg);
+					std::vector<double> nodeValues;
+					APISetNodeValue::SetPreForwardDesignResult2(occView, nodeValues);
+
+					// 颜色条显示（与原逻辑一致）
+					TCollection_ExtendedString tostr("跌落试验\n应力分析\n单位:MPa", true);
+					Handle(AIS_ColorScale) aColorScale = new AIS_ColorScale();
+					aColorScale->SetFormat(TCollection_AsciiString("%.2f"));
+					aColorScale->SetSize(100, 400);
+					aColorScale->SetRange(min_value, max_value);
+					aColorScale->SetNumberOfIntervals(9);
+					aColorScale->SetLabelPosition(Aspect_TOCSP_RIGHT);
+					aColorScale->SetTextHeight(14);
+					aColorScale->SetColor(Quantity_Color(Quantity_NOC_BLACK));
+					aColorScale->SetTitle(tostr);
+					aColorScale->SetColorRange(Quantity_Color(Quantity_NOC_BLUE1), Quantity_Color(Quantity_NOC_RED));
+					aColorScale->SetLabelType(Aspect_TOCSD_AUTO);
+					aColorScale->SetZLayer(Graphic3d_ZLayerId_TopOSD);
+					Graphic3d_Vec2i anoffset(0, Standard_Integer(450));
+					context->SetTransformPersistence(aColorScale, new Graphic3d_TransformPers(Graphic3d_TMF_2d, Aspect_TOTP_LEFT_UPPER, anoffset));
+					context->SetDisplayMode(aColorScale, 1, Standard_False);
+					context->Display(aColorScale, Standard_True);
+
+
+					break;
+				}
+				else
+				{
+					parent = parent->parentWidget();
+				}
+			}
+		}
+
+
 		});
 
 	connect(m_slider, &QSlider::valueChanged, this, [&](int value) {

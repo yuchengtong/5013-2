@@ -10,4 +10,8 @@ public:
 	//µøÂä
 	//static bool SetFallStressResult(OccView* occView, std::vector<double>& nodeValues);
 	
+	static bool SetPreForwardDesignResult0(OccView* occView, std::vector<double>& nodeValues);
+	static bool SetPreForwardDesignResult1(OccView* occView, std::vector<double>& nodeValues);
+	static bool SetPreForwardDesignResult2(OccView* occView, std::vector<double>& nodeValues);
+
 };

@@ -1,5 +1,7 @@
 ﻿#include "APISetNodeValue.h"
 #include "ModelDataManager.h"
+#include <algorithm>
+#include <cmath>
 #include <MeshVS_Mesh.hxx>
 #include <MeshVS_DataMapOfIntegerColor.hxx>
 #include <MeshVS_NodalColorPrsBuilder.hxx>
@@ -9,7 +11,7 @@
 
 struct Point {
 	double x;
-	double z;
+	double y;
 };
 
 void APISetNodeValue::HSVtoRGB(double h, double s, double v, double& r, double& g, double& b)
@@ -106,6 +108,345 @@ MeshVS_DataMapOfIntegerColor APISetNodeValue::GetMeshDataMap(std::vector<double>
 		index++;
 	}
 	return colormap;
+}
+
+bool APISetNodeValue::SetPreForwardDesignResult0(OccView* occView, std::vector<double>& nodeValues)
+{
+	Handle(AIS_InteractiveContext) context = occView->getContext();
+	Handle(V3d_View) view = occView->getView();
+
+	auto modelMeshInfo = ModelDataManager::GetInstance()->GetModelMeshInfo();
+
+	auto meshInfo = ModelDataManager::GetInstance()->GetModelMeshInfo();
+	Point p0{ (meshInfo.x_min + meshInfo.x_max) / 2.0,
+		(meshInfo.y_min + meshInfo.y_max) / 2.0 };
+	Point p1{ meshInfo.x_min, meshInfo.y_min };
+	Point p2{ meshInfo.x_max, meshInfo.y_min };
+	Point p3{ meshInfo.x_max, meshInfo.y_max };
+	Point p4{ meshInfo.x_min, meshInfo.y_max };
+
+	// 边界参数
+	const double x_min = meshInfo.x_min;  // 左侧（注入入口）
+	const double x_max = meshInfo.x_max;  // 右侧
+	const double y_min = meshInfo.y_min;  // 底部
+	const double y_max = meshInfo.y_max;  // 顶部
+
+	// 几何参数
+	const double center_y = (y_min + y_max) / 2.0;  // 垂直中心（Y方向）
+	const double x_inlet = x_min;                    // 注入入口在左侧（X最小值）
+
+	// 物理参数
+	const double max_value = 6.67;   // 根据你的色条最大值调整
+	const double min_value = 0.0;
+	const double inlet_r = 5.0;      // 注入口半径（Y方向）
+	const double decay_x = 150.0;    // 水平衰减长度（X方向，加大让渲染更长）
+	const double decay_y = 15.0;     // 垂直扩散长度（Y方向）
+
+	{
+		TColStd_PackedMapOfInteger allnode;
+		Handle(TColStd_HArray2OfReal) nodecoords;
+		Handle(MeshVS_Mesh) aMesh = nullptr;
+
+		allnode = modelMeshInfo.triangleStructure.GetAllNodes();
+		nodecoords = modelMeshInfo.triangleStructure.GetmyNodeCoords();
+
+		aMesh = new MeshVS_Mesh();
+		aMesh->SetDataSource(&modelMeshInfo.triangleStructure);
+
+		for (TColStd_PackedMapOfInteger::Iterator it(allnode); it.More(); it.Next())
+		{
+			int nodeID = it.Key();
+			double x = nodecoords->Value(nodeID, 1);  // X：水平方向（左右）
+			double y = nodecoords->Value(nodeID, 2);  // Y：垂直方向（上下）
+
+			// 到垂直中心线（Y方向）的距离
+			double r = fabs(y - center_y);
+
+			// 到注入面的水平距离（从左侧向右扩散）
+			double dx = x - x_inlet;  // x 越大，dx 越大，衰减越多
+
+			double value = min_value;
+
+			if (dx >= 0) {  // 只在入口右侧区域计算
+				// 水平衰减：从入口向右指数衰减
+				double v_axial = exp(-dx / decay_x);
+				// 垂直扩散：高斯型
+				double v_radial = exp(-(r * r) / (decay_y * decay_y));
+				value = max_value * v_axial * v_radial;
+			}
+
+			// 钳制
+			if (value > max_value) value = max_value;
+			if (value < min_value) value = min_value;
+
+			nodeValues.push_back(value);
+		}
+		// 设置颜色映射和显示（与原逻辑一致）
+		MeshVS_DataMapOfIntegerColor colormap = GetMeshDataMap(nodeValues, min_value, max_value);
+		Handle(MeshVS_NodalColorPrsBuilder) nodal = new MeshVS_NodalColorPrsBuilder(aMesh, MeshVS_DMF_NodalColorDataPrs | MeshVS_DMF_OCCMask);
+		nodal->SetColors(colormap);
+		aMesh->AddBuilder(nodal);
+		aMesh->GetDrawer()->SetBoolean(MeshVS_DA_ShowEdges, false);
+		context->EraseAll(true);
+		context->Display(aMesh, Standard_True);
+		occView->fitAll();
+	}
+
+	return true;
+
+}
+
+bool APISetNodeValue::SetPreForwardDesignResult1(OccView* occView, std::vector<double>& nodeValues)
+{
+	Handle(AIS_InteractiveContext) context = occView->getContext();
+	Handle(V3d_View) view = occView->getView();
+
+	auto modelMeshInfo = ModelDataManager::GetInstance()->GetModelMeshInfo();
+
+	auto meshInfo = ModelDataManager::GetInstance()->GetModelMeshInfo();
+	Point p0{ (meshInfo.x_min + meshInfo.x_max) / 2.0,
+		(meshInfo.y_min + meshInfo.y_max) / 2.0 };
+	Point p1{ meshInfo.x_min, meshInfo.y_min };
+	Point p2{ meshInfo.x_max, meshInfo.y_min };
+	Point p3{ meshInfo.x_max, meshInfo.y_max };
+	Point p4{ meshInfo.x_min, meshInfo.y_max };
+
+	// 边界参数
+	const double x_min = meshInfo.x_min;
+	const double x_max = meshInfo.x_max;
+	const double y_min = meshInfo.y_min;
+	const double y_max = meshInfo.y_max;
+
+	// 几何参数
+	const double center_y = (y_min + y_max) / 2.0;
+	const double width = x_max - x_min;
+	const double height = y_max - y_min;
+
+	// 物理参数
+	const double max_value = 10.0;
+	const double min_value = 0.0;
+
+	// 射流参数
+	const double jet_half_height = height * 0.03;      // 射流半高
+	const double jet_core_width = height * 0.015;      // 红色核心区半高
+
+	{
+		TColStd_PackedMapOfInteger allnode;
+		Handle(TColStd_HArray2OfReal) nodecoords;
+		Handle(MeshVS_Mesh) aMesh = nullptr;
+
+		allnode = modelMeshInfo.triangleStructure.GetAllNodes();
+		nodecoords = modelMeshInfo.triangleStructure.GetmyNodeCoords();
+
+		aMesh = new MeshVS_Mesh();
+		aMesh->SetDataSource(&modelMeshInfo.triangleStructure);
+
+		for (TColStd_PackedMapOfInteger::Iterator it(allnode); it.More(); it.Next())
+		{
+			int nodeID = it.Key();
+			double x = nodecoords->Value(nodeID, 1);
+			double y = nodecoords->Value(nodeID, 2);
+
+			double value = min_value;
+			double r = fabs(y - center_y);
+
+			// ========== 射流核心区（全红，贯穿整个宽度） ==========
+			if (r < jet_core_width) {
+				// 核心区：全红，从左到右贯穿
+				value = max_value;
+			}
+			// ========== 射流过渡区（核心区外侧，高斯衰减） ==========
+			else if (r < jet_half_height * 4) {
+				// 过渡区：高斯衰减
+				value = max_value * exp(-pow((r - jet_core_width) / (jet_half_height * 0.6), 2));
+			}
+			// ========== 外部气相区 ==========
+			else {
+				value = min_value;
+			}
+
+			// ========== 右侧壁面边界层（只在射流核心区外生效） ==========
+			double dist_to_right = x_max - x;
+			double right_boundary = width * 0.02;
+
+			if (dist_to_right < right_boundary) {
+				// 右侧边界层：所有值衰减到0
+				double factor = dist_to_right / right_boundary;
+				value *= factor;
+			}
+
+			// 上下壁面边界层
+			double dist_to_top = y - y_min;
+			double dist_to_bottom = y_max - y;
+			double wall_dist_y = std::min(dist_to_top, dist_to_bottom);
+			if (wall_dist_y < height * 0.03 && value > min_value) {
+				double factor = wall_dist_y / (height * 0.03);
+				value = min_value + (value - min_value) * factor;
+			}
+
+			// 钳制
+			if (value > max_value) value = max_value;
+			if (value < min_value) value = min_value;
+
+			nodeValues.push_back(value);
+		}
+
+
+
+		// 设置颜色映射和显示（与原逻辑一致）
+		MeshVS_DataMapOfIntegerColor colormap = GetMeshDataMap(nodeValues, min_value, max_value);
+		Handle(MeshVS_NodalColorPrsBuilder) nodal = new MeshVS_NodalColorPrsBuilder(aMesh, MeshVS_DMF_NodalColorDataPrs | MeshVS_DMF_OCCMask);
+		nodal->SetColors(colormap);
+		aMesh->AddBuilder(nodal);
+		aMesh->GetDrawer()->SetBoolean(MeshVS_DA_ShowEdges, false);
+		context->EraseAll(true);
+		context->Display(aMesh, Standard_True);
+		occView->fitAll();
+	}
+
+	return true;
+}
+
+bool APISetNodeValue::SetPreForwardDesignResult2(OccView* occView, std::vector<double>& nodeValues)
+{
+	Handle(AIS_InteractiveContext) context = occView->getContext();
+	Handle(V3d_View) view = occView->getView();
+
+	auto modelMeshInfo = ModelDataManager::GetInstance()->GetModelMeshInfo();
+
+	auto meshInfo = ModelDataManager::GetInstance()->GetModelMeshInfo();
+
+	// 边界参数
+	const double x_min = meshInfo.x_min;
+	const double x_max = meshInfo.x_max;
+	const double y_min = meshInfo.y_min;
+	const double y_max = meshInfo.y_max;
+
+	// 几何参数
+	const double center_y = (y_min + y_max) / 2.0;
+	const double width = x_max - x_min;
+	const double height = y_max - y_min;
+
+	// 物理参数
+	const double max_value = 10.0;
+	const double min_value = 0.0;
+
+	// 射流核心参数（减小！）
+	const double jet_half_height = height * 0.04;      // 射流半高（减小）
+	const double jet_core_width = height * 0.02;       // 红色核心区半高（减小）
+
+	// 界面参数
+	const double interface_base = x_min + width * 0.38;
+	const double wave_amp = height * 0.10;
+	const double wave_center = center_y;
+
+	{
+		TColStd_PackedMapOfInteger allnode;
+		Handle(TColStd_HArray2OfReal) nodecoords;
+		Handle(MeshVS_Mesh) aMesh = nullptr;
+
+		allnode = modelMeshInfo.triangleStructure.GetAllNodes();
+		nodecoords = modelMeshInfo.triangleStructure.GetmyNodeCoords();
+
+		aMesh = new MeshVS_Mesh();
+		aMesh->SetDataSource(&modelMeshInfo.triangleStructure);
+
+		for (TColStd_PackedMapOfInteger::Iterator it(allnode); it.More(); it.Next())
+		{
+			int nodeID = it.Key();
+			double x = nodecoords->Value(nodeID, 1);
+			double y = nodecoords->Value(nodeID, 2);
+
+			double value = min_value;
+			double r = fabs(y - center_y);
+			double dx = x - x_min;
+
+			// ========== 涡旋界面位置 ==========
+			double wave_shape2 =
+				exp(-pow((y - (wave_center - height * 0.22)) / (height * 0.10), 2)) +
+				exp(-pow((y - (wave_center + height * 0.22)) / (height * 0.10), 2));
+
+			double local_interface = interface_base - wave_amp * wave_shape2;
+			double interface_thickness = width * 0.025;  // 加宽过渡区
+
+			// ========== 射流核心（细化） ==========
+			double jet_length = local_interface - x_min;
+			double v_jet = min_value;
+
+			if (dx < jet_length) {
+				if (r < jet_core_width) {
+					v_jet = max_value;  // 核心区全红（窄）
+				}
+				else if (r < jet_half_height * 3) {
+					// 过渡区：高斯衰减（黄→绿→青→蓝）
+					v_jet = max_value * exp(-pow((r - jet_core_width) / (jet_half_height * 0.8), 2));
+				}
+				else {
+					v_jet = min_value;
+				}
+			}
+
+			// ========== 液相区（右侧主体） ==========
+			double v_liquid = min_value;
+			if (x > local_interface + interface_thickness) {
+				v_liquid = max_value;
+
+				// 壁面边界层（右侧）
+				double dist_to_right = x_max - x;
+				if (dist_to_right < width * 0.04) {
+					v_liquid = min_value + (max_value - min_value) * (dist_to_right / (width * 0.04));
+				}
+			}
+
+			// ========== 界面过渡区（关键！恢复渐变） ==========
+			double v_interface = min_value;
+			if (x >= local_interface - interface_thickness && x <= local_interface + interface_thickness) {
+				// 在界面厚度内
+				double frac = (x - (local_interface - interface_thickness)) / (2 * interface_thickness);
+
+				// 界面左侧（气相侧）：蓝→绿→黄→红
+				if (frac < 0.5) {
+					v_interface = max_value * frac * 2;  // 0 -> 0.5*max -> max
+				}
+				else {
+					v_interface = max_value;  // 液相侧全红
+				}
+			}
+
+			// ========== 综合：取三个区域的最大值 ==========
+			value = std::max({ v_jet, v_liquid, v_interface });
+
+			// 上下壁面边界层
+			double dist_to_top = y - y_min;
+			double dist_to_bottom = y_max - y;
+			double wall_dist_y = std::min(dist_to_top, dist_to_bottom);
+			if (wall_dist_y < height * 0.03 && value > min_value) {
+				double factor = wall_dist_y / (height * 0.03);
+				value = min_value + (value - min_value) * factor;
+			}
+
+			// 钳制
+			if (value > max_value) value = max_value;
+			if (value < min_value) value = min_value;
+
+			nodeValues.push_back(value);
+		}
+
+
+
+
+		// 设置颜色映射和显示（与原逻辑一致）
+		MeshVS_DataMapOfIntegerColor colormap = GetMeshDataMap(nodeValues, min_value, max_value);
+		Handle(MeshVS_NodalColorPrsBuilder) nodal = new MeshVS_NodalColorPrsBuilder(aMesh, MeshVS_DMF_NodalColorDataPrs | MeshVS_DMF_OCCMask);
+		nodal->SetColors(colormap);
+		aMesh->AddBuilder(nodal);
+		aMesh->GetDrawer()->SetBoolean(MeshVS_DA_ShowEdges, false);
+		context->EraseAll(true);
+		context->Display(aMesh, Standard_True);
+		occView->fitAll();
+	}
+
+	return true;
 }
 
 

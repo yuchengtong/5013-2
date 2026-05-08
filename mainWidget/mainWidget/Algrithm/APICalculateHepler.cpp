@@ -100,6 +100,18 @@ double calculate(const QString& formula,
 	return result;
 }
 
+bool APICalculateHepler::CalculatePreForwardDesignResult(OccView* occView, std::vector<double>& propertyValue)
+{
+	Handle(AIS_InteractiveContext) context = occView->getContext();
+	auto view = occView->getView();
+	context->EraseAll(true);
+
+	view->SetProj(V3d_Yneg);
+	view->Redraw();
 
 
 
+
+
+	return false;
+}

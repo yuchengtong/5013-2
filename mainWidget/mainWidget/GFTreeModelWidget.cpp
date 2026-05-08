@@ -556,7 +556,7 @@ void GFTreeModelWidget::contextMenuEvent(QContextMenuEvent *event)
 	}
 	//QString type = item->data(0, Qt::UserRole).toString();
 	QString text = item->text(0);
-	if (text == "安全特性参数分析")
+	if (text == "正向设计")
 	{
 		m_ContextMenu = new QMenu(this);
 		QAction* calAction = new QAction("计算", this);
@@ -617,32 +617,26 @@ void GFTreeModelWidget::contextMenuEvent(QContextMenuEvent *event)
 							textEdit->appendPlainText(finishTimeStr + "[" + (success ? "信息" : "错误") + "]>" + msg);
 							if (success)
 							{
-								auto tensileStrength = 1;	// 壳体抗拉强度
-								auto ignitionTemperature = 1.0; // 推进剂发火温度
-								auto fireOverpressure = 1.0; // 推进剂发火超压
-								for (int i = 0; i < item->childCount(); ++i) {
-									QTreeWidgetItem* childItem = item->child(i);
-									auto originalName = childItem->text(0);
-									int dotIndex = originalName.indexOf('.');
-									QString processedName;
-									if (dotIndex != -1)
-									{
-										processedName = originalName.mid(dotIndex + 1).trimmed();
-									}
-									else {
-										processedName = originalName;
-									}
+								std::vector<double> resultValue;
+								resultValue.reserve(8);
+								bool success = APICalculateHepler::CalculatePreForwardDesignResult(occView, resultValue);
 
-									bool isChecked = (childItem->checkState(0) == Qt::Checked);
-									if (isChecked)
-									{
-										QString text = timeStr + "[信息]>开始进行" + processedName;
-										textEdit->appendPlainText(text);
+								QDateTime currentTime = QDateTime::currentDateTime();
+								QString timeStr = currentTime.toString("yyyy-MM-dd hh:mm:ss");
+								if (success)
+								{
+									QString text = timeStr + "[信息]>跌落安全性分析计算完成";
+									textEdit->appendPlainText(text);
 
-									
-									}
+									context->EraseAll(true);
+									view->SetProj(V3d_Yneg);
+									view->Redraw();
+
+									auto geomInfo = ModelDataManager::GetInstance()->GetModelGeometryInfo();
+									auto oriShape = geomInfo.shape;
 								}
-								logWidget->update();
+
+
 							}
 							else if (!success)
 							{
