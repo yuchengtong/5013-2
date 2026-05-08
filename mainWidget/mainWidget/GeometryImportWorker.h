@@ -22,7 +22,7 @@ public slots:
 signals:
     void ProgressUpdated(int progress);
     void StatusUpdated(const QString& status);
-    void WorkFinished(bool success, const QString& msg, const ModelGeometryInfo& info);
+    void WorkFinished(bool success, const QString& msg, ModelGeometryInfo info);
 
 private:
     QString m_filePath;

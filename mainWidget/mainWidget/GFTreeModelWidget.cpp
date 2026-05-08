@@ -81,6 +81,8 @@
 #include "TriangulationWorker.h"
 #include "APICalculateHepler.h"
 #include "CalculateWorker.h"
+#include <BRepAlgoAPI_Fuse.hxx>
+#include <ShapeFix_Shape.hxx>
 
 
 GFTreeModelWidget::GFTreeModelWidget(QWidget*parent)
@@ -732,7 +734,7 @@ void GFTreeModelWidget::contextMenuEvent(QContextMenuEvent *event)
 
 					// 处理导入结果
 					connect(worker, &GeometryImportWorker::WorkFinished, this,
-						[=](bool success, const QString& msg, const ModelGeometryInfo& info) {
+						[=](bool success, const QString& msg, ModelGeometryInfo info) {
 							// 更新日志
 							QDateTime finishTime = QDateTime::currentDateTime();
 							QString finishTimeStr = finishTime.toString("yyyy-MM-dd hh:mm:ss");
@@ -740,6 +742,28 @@ void GFTreeModelWidget::contextMenuEvent(QContextMenuEvent *event)
 
 							if (success && !info.shape.IsNull())
 							{
+								// ========== 沿 XOZ 平面对称（Y=0） ==========
+								gp_Trsf mirrorTransform;
+								gp_Ax2 symPlane(gp_Pnt(0, 0, 0), gp_Dir(0, 1, 0)); // XOZ平面，法向为Y轴
+								mirrorTransform.SetMirror(symPlane);
+
+								BRepBuilderAPI_Transform mirrorBuilder(info.shape, mirrorTransform, Standard_True);
+								if (mirrorBuilder.IsDone()) {
+									TopoDS_Shape mirroredShape = mirrorBuilder.Shape();
+
+									// 布尔合并：原始 + 镜像 = 完整模型
+									BRepAlgoAPI_Fuse fuse(info.shape, mirroredShape);
+									if (fuse.IsDone()) {
+										TopoDS_Shape fusedShape = fuse.Shape();
+
+										// 修复拓扑
+										ShapeFix_Shape fixer(fusedShape);
+										fixer.Perform();
+										info.shape = fixer.Shape();
+									}
+								}
+
+
 								// 保存模型信息
 								ModelDataManager::GetInstance()->SetModelGeometryInfo(info);
 								updataIcon();
