@@ -51,7 +51,7 @@ void GelatinPropertyWidget::initWidget()
 	vlayout->addWidget(m_tableWidget);
 	setLayout(vlayout);
 
-	QStringList labels = { "材料属性","明胶名称", "明胶类型","密度", "导热系数","比热容" };
+	QStringList labels = { "材料属性","明胶名称", "明胶类型","密度","比热容", "导热系数" };
 	for (int row = 0; row < labels.size(); ++row) {
 		QTableWidgetItem* serialItem = new QTableWidgetItem(QString::number(row));
 		if (row == 0) {
@@ -88,7 +88,7 @@ void GelatinPropertyWidget::initWidget()
 	m_tableWidget->setSpan(0, 2, 1, 2);
 
 	// 单位列
-	QStringList unitLabels = { " "," "," ", "kg/m^3", "W/(m∙℃)","J/(kg∙℃)" };
+	QStringList unitLabels = { " "," "," ", "kg/m^3","J/(kg∙℃)", "W/(m∙℃)" };
 	for (int row = 0; row < unitLabels.size(); ++row) {
 		if (row != 0)
 		{
@@ -231,8 +231,8 @@ void GelatinPropertyWidget::showTableDialog()
 			info.name = m_tableWidget->item(1, 2)->text();
 			info.type = m_tableWidget->item(2, 2)->text().toDouble();
 			info.density = m_tableWidget->item(3, 2)->text().toDouble();
-			info.thermalConductivity = m_tableWidget->item(4, 2)->text().toDouble();
-			info.specificHeatCapacity = m_tableWidget->item(5, 2)->text().toDouble();
+			info.specificHeatCapacity = m_tableWidget->item(4, 2)->text().toDouble();
+			info.thermalConductivity = m_tableWidget->item(5, 2)->text().toDouble();
 			info.isChecked = true;
 			ins->SetGelatinPropertyInfo(info);
 

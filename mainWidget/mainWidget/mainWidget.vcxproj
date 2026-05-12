@@ -115,6 +115,8 @@
     <ClCompile Include="Algrithm\APICalculateHepler.cpp" />
     <ClCompile Include="Algrithm\APIRotateMeshHelper.cpp" />
     <ClCompile Include="Algrithm\APISetNodeValue.cpp" />
+    <ClCompile Include="Algrithm\InReverseFormulaSolver.cpp" />
+    <ClCompile Include="Algrithm\PreReverseFormulaSolver.cpp" />
     <ClCompile Include="CalculateWorker.cpp" />
     <ClCompile Include="Algrithm\APICreateMidSurfaceHelper.cpp" />
     <ClCompile Include="DatabaseWidget.cpp" />
@@ -217,6 +219,8 @@
     <ClInclude Include="Algrithm\APISetNodeValue.h" />
     <ClInclude Include="Algrithm\colour_change_algrithm.h" />
     <QtMoc Include="CalculateWorker.h" />
+    <QtMoc Include="Algrithm\PreReverseFormulaSolver.h" />
+    <QtMoc Include="Algrithm\InReverseFormulaSolver.h" />
     <ClInclude Include="DataStructure\TriangleStructure.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

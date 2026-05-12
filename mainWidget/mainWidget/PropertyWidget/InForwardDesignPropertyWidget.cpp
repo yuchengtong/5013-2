@@ -264,13 +264,13 @@ void InForwardDesignPropertyWidget::initWidget()
 	m_tableWidget->setItem(3, 2, pouringTemperatureValueItem);
 	m_tableWidget->setItem(4, 2, valveOpeningValueItem);
 	m_tableWidget->setItem(5, 2, vacuumDegreeValueItem);
-	connect(m_tableWidget, &QTableWidget::itemChanged, this, [this, insulationTemperatureValueItem, pouringTemperatureValueItem, valveOpeningValueItem, vacuumDegreeValueItem](QTableWidgetItem* item) {
+	connect(m_tableWidget, &QTableWidget::itemChanged, this, [this, insulationTemperatureValueItem, pouringTemperatureValueItem, valveOpeningValueItem, vacuumDegreeValueItem, relativeDensityValueItem, injectionTimeValueItem](QTableWidgetItem* item) {
 
 		if (item == insulationTemperatureValueItem)
 		{
 			auto text = item->text();
 			auto value = text.toDouble();
-			if (value >= 50 && value <= 70)
+			if (value >= 50 && value <= 110)
 			{
 				m_insulationTemperatureValue = text;
 			}
@@ -330,6 +330,20 @@ void InForwardDesignPropertyWidget::initWidget()
 				item->setText(m_vacuumDegreeValue);
 				m_tableWidget->blockSignals(false);
 			}*/
+		}
+
+		if (item == relativeDensityValueItem)
+		{
+			auto text = item->text();
+			auto value = text.toDouble();
+			m_relativeDensityValue = text;
+		}
+
+		if (item == injectionTimeValueItem)
+		{
+			auto text = item->text();
+			auto value = text.toDouble();
+			m_injectionTimeValue = text;
 		}
 	});
 

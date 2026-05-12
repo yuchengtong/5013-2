@@ -157,6 +157,12 @@
     <ClCompile Include="ToolsAnimationWidget.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Algrithm\PreReverseFormulaSolver.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Algrithm\InReverseFormulaSolver.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="occView.h">
@@ -256,6 +262,12 @@
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="ToolsAnimationWidget.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="Algrithm\PreReverseFormulaSolver.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="Algrithm\InReverseFormulaSolver.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>

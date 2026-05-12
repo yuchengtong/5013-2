@@ -57,7 +57,7 @@ void InReverseOptimizationPropertyWidget::initWidget()
 			m_tableWidget->setItem(row, 0, serialItem);
 		}
 
-		QStringList labels = { "","工艺输入参数",  "弹体保温温度", "药液浇注温度", "药液浇注速度","真空度","工艺输出参数","相对密度","弹体注药时间","弹体温度云图与温升曲线" };
+		QStringList labels = { "","工艺输入参数",  "弹体保温温度", "药液浇注温度", "阀门开度","真空度","工艺输出参数","相对密度","弹体注药时间","弹体温度云图与温升曲线" };
 		for (int row = 0; row < labels.size(); ++row)
 		{
 			QTableWidgetItem* labelItem = new QTableWidgetItem(labels[row]);
@@ -74,8 +74,8 @@ void InReverseOptimizationPropertyWidget::initWidget()
 		insulationTemperatureValueItem->setTextAlignment(Qt::AlignCenter); // 文本居中
 		QTableWidgetItem* pouringTemperatureValueItem = new QTableWidgetItem(m_pouringTemperatureValue);
 		pouringTemperatureValueItem->setTextAlignment(Qt::AlignCenter); // 文本居中
-		QTableWidgetItem* pouringSpeedValueItem = new QTableWidgetItem(m_pouringSpeedValue);
-		pouringSpeedValueItem->setTextAlignment(Qt::AlignCenter); // 文本居中
+		QTableWidgetItem* valveOpeningValueItem = new QTableWidgetItem(m_valveOpeningValue);
+		valveOpeningValueItem->setTextAlignment(Qt::AlignCenter); // 文本居中
 		QTableWidgetItem* vacuumDegreeValueItem = new QTableWidgetItem(m_vacuumDegreeValue);
 		vacuumDegreeValueItem->setTextAlignment(Qt::AlignCenter); // 文本居中
 		QTableWidgetItem* relativeDensityValueItem = new QTableWidgetItem(m_relativeDensityValue);
@@ -85,16 +85,89 @@ void InReverseOptimizationPropertyWidget::initWidget()
 
 		m_tableWidget->setItem(2, 2, insulationTemperatureValueItem);
 		m_tableWidget->setItem(3, 2, pouringTemperatureValueItem);
-		m_tableWidget->setItem(4, 2, pouringSpeedValueItem);
+		m_tableWidget->setItem(4, 2, valveOpeningValueItem);
 		m_tableWidget->setItem(5, 2, vacuumDegreeValueItem);
 		m_tableWidget->setItem(7, 2, relativeDensityValueItem);
 		m_tableWidget->setItem(8, 2, injectionTimeValueItem);
+
+
+		connect(m_tableWidget, &QTableWidget::itemChanged, this, [this, insulationTemperatureValueItem, pouringTemperatureValueItem, valveOpeningValueItem, vacuumDegreeValueItem, relativeDensityValueItem, injectionTimeValueItem](QTableWidgetItem* item) {
+
+			if (item == insulationTemperatureValueItem)
+			{
+				auto text = item->text();
+				auto value = text.toDouble();
+				if (value >= 0 && value <= 110)
+				{
+					m_insulationTemperatureValue = text;
+				}
+				else
+				{
+					m_tableWidget->blockSignals(true);
+					item->setText(m_insulationTemperatureValue);
+					m_tableWidget->blockSignals(false);
+				}
+			}
+
+			if (item == pouringTemperatureValueItem)
+			{
+				auto text = item->text();
+				auto value = text.toDouble();
+				if (value >= 50 && value <= 85)
+				{
+					m_pouringTemperatureValue = text;
+				}
+				else
+				{
+					m_tableWidget->blockSignals(true);
+					item->setText(m_pouringTemperatureValue);
+					m_tableWidget->blockSignals(false);
+				}
+			}
+
+			if (item == valveOpeningValueItem)
+			{
+				auto text = item->text();
+				auto value = text.toDouble();
+				if (value >= 0 && value <= 30)
+				{
+					m_valveOpeningValue = text;
+				}
+				else
+				{
+					m_tableWidget->blockSignals(true);
+					item->setText(m_valveOpeningValue);
+					m_tableWidget->blockSignals(false);
+				}
+			}
+
+			if (item == vacuumDegreeValueItem)
+			{
+				auto text = item->text();
+				auto value = text.toDouble();
+				m_vacuumDegreeValue = text;
+			}
+
+			if (item == relativeDensityValueItem)
+			{
+				auto text = item->text();
+				auto value = text.toDouble();
+				m_relativeDensityValue = text;
+			}
+
+			if (item == injectionTimeValueItem)
+			{
+				auto text = item->text();
+				auto value = text.toDouble();
+				m_injectionTimeValue = text;
+			}
+		});
 
 		// 显示按钮
 		m_viewButton = new QPushButton("显示");
 		m_tableWidget->setCellWidget(9, 2, m_viewButton);
 
-		QStringList unitLabels = { " "," ","℃", "℃", "kg/min","MPa"," ","%","s"," " };
+		QStringList unitLabels = { " "," ","℃", "℃", "mm","MPa"," ","%","s"," " };
 		for (int row = 0; row < unitLabels.size(); ++row)
 		{
 			if (row != 0)
@@ -117,19 +190,19 @@ void InReverseOptimizationPropertyWidget::initWidget()
 		auto firRadioButtonGroup = new QButtonGroup();
 		{
 			m_insulationTempeRadioBtn = new QRadioButton();
-			m_insulationTempeRadioBtn->setChecked(true);
 			m_pouringTempeRadioBtn = new QRadioButton();
-			m_pouringSpeedRadioBtn = new QRadioButton();
+			m_valveOpeningRadioBtn = new QRadioButton();
+			m_valveOpeningRadioBtn->setChecked(true);
 			m_vacuumDegreeRadioBtn = new QRadioButton();
 
-			m_tableWidget->setCellWidget(2, 4, createCenteredRadioWidget(m_insulationTempeRadioBtn));
-			m_tableWidget->setCellWidget(3, 4, createCenteredRadioWidget(m_pouringTempeRadioBtn));
-			m_tableWidget->setCellWidget(4, 4, createCenteredRadioWidget(m_pouringSpeedRadioBtn));
+			//m_tableWidget->setCellWidget(2, 4, createCenteredRadioWidget(m_insulationTempeRadioBtn));
+			//m_tableWidget->setCellWidget(3, 4, createCenteredRadioWidget(m_pouringTempeRadioBtn));
+			m_tableWidget->setCellWidget(4, 4, createCenteredRadioWidget(m_valveOpeningRadioBtn));
 			m_tableWidget->setCellWidget(5, 4, createCenteredRadioWidget(m_vacuumDegreeRadioBtn));
 
 			firRadioButtonGroup->addButton(m_insulationTempeRadioBtn);
 			firRadioButtonGroup->addButton(m_pouringTempeRadioBtn);
-			firRadioButtonGroup->addButton(m_pouringSpeedRadioBtn);
+			firRadioButtonGroup->addButton(m_valveOpeningRadioBtn);
 			firRadioButtonGroup->addButton(m_vacuumDegreeRadioBtn);
 		}
 		firRadioButtonGroup->setExclusive(true);
@@ -197,150 +270,650 @@ void InReverseOptimizationPropertyWidget::initWidget()
 			unitItem->setBackground(QBrush(QColor(230, 230, 230)));
 		}
 	}
+
+
 }
 
 void InReverseOptimizationPropertyWidget::bindConnect()
 {
-	connect(m_calButton, &QPushButton::clicked, this, &InReverseOptimizationPropertyWidget::showTableDialog);
+	connect(m_calButton, &QPushButton::clicked, this, &InReverseOptimizationPropertyWidget::calculate);
 
 
 }
 
-void InReverseOptimizationPropertyWidget::showTableDialog() 
+void InReverseOptimizationPropertyWidget::calculate()
 {
-	QDialog* dialog = new QDialog();
-	dialog->setWindowTitle("壳体材料");
-	dialog->resize(1000, 500);
-	QVBoxLayout* layout = new QVBoxLayout(this);
-
-	QTableWidget* diaTableWidget = new QTableWidget();
-	// 隐藏行号
-	diaTableWidget->verticalHeader()->setVisible(false);
-	// 隐藏列号
-	diaTableWidget->horizontalHeader()->setVisible(false);
-	QDir dir;
-	QString filepath = dir.absoluteFilePath("src/database/壳体物性材料.xlsx");
-	int m_rowCount = 0;
-
-	if (!filepath.isEmpty()) {
-		QXlsx::Document xlsx(filepath);
-		int rowcount = xlsx.dimension().lastRow(); // 获取总行数
-		int colcount = xlsx.dimension().lastColumn(); // 获取总列数
-		m_rowCount = rowcount;
-
-		diaTableWidget->setRowCount(rowcount);
-		diaTableWidget->setColumnCount(colcount);
-
-		for (int row = 1; row <= rowcount; ++row) {
-			for (int col = 1; col <= colcount; ++col) {
-				QTableWidgetItem* item = new QTableWidgetItem(xlsx.read(row, col).toString());
-				item->setFlags(item->flags() & ~Qt::ItemIsEditable); // 不可编辑
-				diaTableWidget->setItem(row - 1, col - 1, item);
-			}
-		}
-	}
-
-	// 私有库
 	auto ins = ModelDataManager::GetInstance();
-	UserInfo info = ins->GetUserInfo();
-	QString privateFilePath = dir.absoluteFilePath("src/database/" + info.username + "/壳体物性材料.xlsx");
+	auto modelGeometryInfo = ins->GetModelGeometryInfo();
+	auto steelPropertyInfo = ins->GetSteelPropertyInfo();
+	auto calculationPropertyInfo = ins->GetCalculationPropertyInfo();
 
+	auto A = m_valveOpeningValue.toDouble(); // 阀门开度（mm）
+	auto B = modelGeometryInfo.gasketLayerThickness; // 胶层厚度(mm)
+	auto C = modelGeometryInfo.shellThickness; // 壳体厚度 (mm)
+	auto D = m_vacuumDegreeValue.toDouble() * 1000; // 真空度(KPa)
+	auto E = m_insulationTemperatureValue.toDouble(); // 保温温度（℃）
 
-	QFile file(privateFilePath);
-
-	if (!privateFilePath.isEmpty() && file.exists()) {
-		QXlsx::Document xlsx(privateFilePath);
-		int rowcount = xlsx.dimension().lastRow(); // 获取总行数
-		int colcount = xlsx.dimension().lastColumn(); // 获取总列数
-
-		diaTableWidget->setRowCount(m_rowCount + rowcount - 1);
-
-		int xlsxrow = m_rowCount;
-		for (int row = 2; row <= rowcount; ++row) {
-			for (int col = 1; col <= colcount; ++col) {
-				QTableWidgetItem* item = new QTableWidgetItem(xlsx.read(row, col).toString());
-				diaTableWidget->setItem(xlsxrow, col - 1, item);
-			}
-			xlsxrow++;
+	// 获取模型类型
+	QString model = "产品一";
+	QWidget* parent = parentWidget();
+	while (parent) {
+		GFImportModelWidget* gfParent = dynamic_cast<GFImportModelWidget*>(parent);
+		if (gfParent)
+		{
+			auto* modelComboBox = gfParent->GetGeomPropertyWidget()->GetModelComboBox();
+			model = modelComboBox->currentText();
+			break;
+		}
+		else
+		{
+			parent = parent->parentWidget();
 		}
 	}
 
-	//设置点击事件，双击单元格
-	connect(diaTableWidget, &QTableWidget::cellDoubleClicked, this, [this, dialog, diaTableWidget](int row, int column) {
-		if (row != 0)
+	auto valveOpeningBool =  m_valveOpeningRadioBtn->isChecked(); // 阀门开度
+	auto vacuumDegreeBool = m_vacuumDegreeRadioBtn->isChecked(); // 真空度
+	
+	auto relativeDensityBool = m_relativeDensityRadioBtn->isChecked(); // 相对密度
+	auto injectionTimeBool = m_injectionTimeRadioBtn->isChecked(); // 弹体注药时间
+
+	m_solver = new InReverseFormulaSolver(this);
+	
+	double density = ins->GetSteelPropertyInfo().density;
+	QString formula = calculationPropertyInfo.oneGasRateCalculateFormula; // 方程
+
+	QMap<char, double> known; // 计算入参值
+
+	
+	if (model == "产品一")
+	{
+		
+
+		double target = 0;
+
+		if (relativeDensityBool)
 		{
-			int colcount = diaTableWidget->columnCount();
-			QString value = "";
-			for (int col = 1; col < colcount; ++col) {
-
-				QString content = diaTableWidget->item(row, col)->text();
-				if (col == 1)
-				{
-					value = content;
-				}
-				QTableWidgetItem* valueItem = new QTableWidgetItem(content);
-				valueItem->setTextAlignment(Qt::AlignLeft | Qt::AlignVCenter);
-				valueItem->setFlags(valueItem->flags() & ~Qt::ItemIsEditable); // 不可编辑
-				valueItem->setBackground(QBrush(QColor(230, 230, 230)));
-				m_tableWidget->setItem(col, 2, valueItem);
+			///////////////////////////// 已知相对密度/////////////////////////////////////
+			// 相对密度转为气含率
+			if (m_relativeDensityValue == "")
+			{
+				QMessageBox::information(this, "提示", "相对密度不能为空！");
+				return;
 			}
-			auto ins = ModelDataManager::GetInstance();
+			known['A'] = (A - 6.740741) / 11.555556;
+			known['B'] = (B - 1.074074) / 3.851852;
+			known['C'] = (C - 20.185185) / 9.629630;
+			known['D'] = (D - 21.111111) / 57.777778;
+			known['E'] = (E - 86.370370) / 19.259259;
 
-			SteelPropertyInfo info;
-			info.name = m_tableWidget->item(1, 2)->text();
-			info.type = m_tableWidget->item(2, 2)->text();
-			info.density = m_tableWidget->item(3, 2)->text().toDouble();
-			info.thermalConductivity = m_tableWidget->item(4, 2)->text().toDouble();
-			info.specificHeatCapacity = m_tableWidget->item(5, 2)->text().toDouble();
-			info.isChecked = true;
-			ins->SetSteelPropertyInfo(info);
+			auto relativeDensity = m_relativeDensityValue.toDouble();
+			auto gasRateValue = ((1 - relativeDensity / 100) * density) / (density - 1.205);
+			QString formula = calculationPropertyInfo.oneGasRateCalculateFormula; // 方程
+			target = gasRateValue;
 
-			// 更新icon
-			QWidget* parent = parentWidget();
-			while (parent) {
-				GFImportModelWidget* gfParent = dynamic_cast<GFImportModelWidget*>(parent);
-				if (gfParent)
-				{
-					gfParent->GetGFTreeModelWidget()->updataIcon();
-					// 写入日志
-					QDateTime currentTime = QDateTime::currentDateTime();
-					QString timeStr = currentTime.toString("yyyy-MM-dd hh:mm:ss");
-					auto logWidget = gfParent->GetLogWidget();
-					auto textEdit = logWidget->GetTextEdit();
-					QString text = timeStr + "[信息]>开始导入壳体物性材料数据";
-					textEdit->appendPlainText(text);
-					logWidget->update();
+			connect(m_solver, &InReverseFormulaSolver::solveCompleted, this, [=](const std::vector<double>& resList) {
+				qDebug() << "解数量：" << resList.size();
 
-					// 关键：强制刷新UI，确保日志立即显示
-					QApplication::processEvents();
-
-					// 写入数据库模块
-					MaterialPropertyWidget* m_materialPropertyWidget = gfParent->GetMaterialPropertyWidget();
-					QTableWidget* materialTableWid = m_materialPropertyWidget->GetQTableWidget();
-					QTableWidgetItem* valueItem = new QTableWidgetItem(value);
-					valueItem->setFlags(valueItem->flags() & ~Qt::ItemIsEditable); // 不可编辑
-					valueItem->setBackground(QBrush(QColor(230, 230, 230)));
-					materialTableWid->setItem(1, 2, valueItem);
-					break;
+				if (resList.empty()) {
+					QMessageBox::warning(this, "警告", "无解");
+					return;
 				}
-				else
-				{
-					parent = parent->parentWidget();
+				for (double v : resList) {
+					if (valveOpeningBool)
+					{
+						// 对阀门开度寻优
+						double value = v;
+						value = 11.555556 * v + 6.740741;
+						qDebug() << "阀门开度原始解：" << v << " 换算后：" << value;
+						if (value >= 0 && value <= 100) {
+							m_valveOpeningValue = QString::number(value, 'f', 4);
+							m_tableWidget->setItem(4, 2, new QTableWidgetItem(QString::number(value, 'f', 4)));
+							QMessageBox::information(this, "成功", "计算完成");
+							return;
+						}
+					}
+					else
+					{
+						// 对真空度寻优
+						double value = v;
+						value = (57.777778 * v + 21.111111)/1000;
+						qDebug() << "真空度原始解：" << v << " 换算后：" << value;
+
+						if (value >= 0 && value <= 100) {
+							m_vacuumDegreeValue = QString::number(value, 'f', 4);
+							m_tableWidget->setItem(5, 2, new QTableWidgetItem(QString::number(value, 'f', 4)));
+							QMessageBox::information(this, "成功", "计算完成");
+							return;
+						}
+					}
+
 				}
+				QMessageBox::warning(this, "提示", "解超出范围");
+				});
+
+			if (valveOpeningBool)
+			{
+				// 对阀门开度寻优
+				known.remove('A');
+				m_solver->solveReverse(formula, target, known, 'A');
+			}
+			else
+			{
+				// 对真空度寻优
+				known.remove('D');
+				m_solver->solveReverse(formula, target, known, 'D');
 			}
 		}
-		dialog->close();
+		else
+		{
+			//////////////////////////// 已知弹体注药时间//////////////////////////////////////////
 
-		});
-	//双击单元格选中一行
-	 //设置选中整行
-	diaTableWidget->setSelectionBehavior(QAbstractItemView::SelectRows);
-	diaTableWidget->setSelectionMode(QAbstractItemView::SingleSelection);
+			if (m_injectionTimeValue == "")
+			{
+				QMessageBox::information(this, "提示", "弹体注药时间不能为空！");
+				return;
+			}
+			known['A'] = (A - 6.740741) / 11.555556;
+			known['B'] = (B - 1.074074) / 3.851852;
+			known['C'] = (C - 20.185185) / 9.629630;
+			known['D'] = (D - 21.111111) / 57.777778;
+			known['E'] = (E - 50.370370) / 19.259259;
+			auto injectionTimeValue = m_injectionTimeValue.toDouble() / 21.33;
+			formula = calculationPropertyInfo.oneInjectionTimeCalculateFormula;
+			target = injectionTimeValue;
 
-	layout->addWidget(diaTableWidget);
-	dialog->setLayout(layout);
-	dialog->setAttribute(Qt::WA_DeleteOnClose); // 关闭时自动删除
-	dialog->exec();
+			connect(m_solver, &InReverseFormulaSolver::solveCompleted, this, [=](const std::vector<double>& resList) {
+				qDebug() << "解数量：" << resList.size();
+
+				if (resList.empty()) {
+					QMessageBox::warning(this, "警告", "无解");
+					return;
+				}
+				for (double v : resList) {
+					if (valveOpeningBool)
+					{
+						// 对阀门开度寻优
+						double value = v;
+						value = 11.555556 * v + 6.740741;
+						qDebug() << "阀门开度原始解：" << v << " 换算后：" << value;
+						if (value >= 0 && value <= 100) {
+							m_valveOpeningValue = QString::number(value, 'f', 4);
+							m_tableWidget->setItem(4, 2, new QTableWidgetItem(QString::number(value, 'f', 4)));
+							QMessageBox::information(this, "成功", "计算完成");
+							return;
+						}
+					}
+					else
+					{
+						// 对真空度寻优
+						double value = v;
+						value = (57.777778 * v + 21.111111)/1000;
+						qDebug() << "真空度原始解：" << v << " 换算后：" << value;
+
+						if (value >= 0 && value <= 100) {
+							m_vacuumDegreeValue = QString::number(value, 'f', 4);
+							m_tableWidget->setItem(5, 2, new QTableWidgetItem(QString::number(value, 'f', 4)));
+							QMessageBox::information(this, "成功", "计算完成");
+							return;
+						}
+					}
+
+				}
+				QMessageBox::warning(this, "提示", "解超出范围");
+				});
+
+			if (valveOpeningBool)
+			{
+				// 对阀门开度寻优
+				known.remove('A');
+				m_solver->solveReverse(formula, target, known, 'A');
+			}
+			else
+			{
+				// 对真空度寻优
+				known.remove('D');
+				m_solver->solveReverse(formula, target, known, 'D');
+			}
+		}
+	}
+	else if (model == "产品二")
+	{
+		known['A'] = (A - 6.500000) / 13.000000;
+		known['B'] = (B - 1.000000) / 4.000000;
+		known['C'] = (C - 20.000000) / 10.000000;
+		known['D'] = (D - 20.000000) / 60.000000;
+		known['E'] = (E - 50.000000) / 20.000000;
+
+		double target = 0;
+
+		if (relativeDensityBool)
+		{
+			///////////////////////////// 已知相对密度/////////////////////////////////////
+			// 相对密度转为气含率
+			if (m_relativeDensityValue == "")
+			{
+				QMessageBox::information(this, "提示", "相对密度不能为空！");
+				return;
+			}
+			auto relativeDensity = m_relativeDensityValue.toDouble();
+			auto gasRateValue = ((1 - relativeDensity / 100) * density) / (density - 1.205);
+			QString formula = calculationPropertyInfo.twoGasRateCalculateFormula; // 方程
+			target = gasRateValue;
+
+			connect(m_solver, &InReverseFormulaSolver::solveCompleted, this, [=](const std::vector<double>& resList) {
+				qDebug() << "解数量：" << resList.size();
+
+				if (resList.empty()) {
+					QMessageBox::warning(this, "警告", "无解");
+					return;
+				}
+				for (double v : resList) {
+					if (valveOpeningBool)
+					{
+						// 对阀门开度寻优
+						double value = v;
+						value = 13.000000 * v + 6.500000;
+						qDebug() << "阀门开度原始解：" << v << " 换算后：" << value;
+						if (value >= 0 && value <= 100) {
+							m_valveOpeningValue = QString::number(value, 'f', 4);
+							m_tableWidget->setItem(4, 2, new QTableWidgetItem(QString::number(value, 'f', 4)));
+							QMessageBox::information(this, "成功", "计算完成");
+							return;
+						}
+					}
+					else
+					{
+						// 对真空度寻优
+						double value = v;
+						value = (60.000000 * v + 20.000000) / 1000;
+						qDebug() << "真空度原始解：" << v << " 换算后：" << value;
+
+						if (value >= 0 && value <= 100) {
+							m_vacuumDegreeValue = QString::number(value, 'f', 4);
+							m_tableWidget->setItem(5, 2, new QTableWidgetItem(QString::number(value, 'f', 4)));
+							QMessageBox::information(this, "成功", "计算完成");
+							return;
+						}
+					}
+
+				}
+				QMessageBox::warning(this, "提示", "解超出范围");
+				});
+
+			if (valveOpeningBool)
+			{
+				// 对阀门开度寻优
+				known.remove('A');
+				m_solver->solveReverse(formula, target, known, 'A');
+			}
+			else
+			{
+				// 对真空度寻优
+				known.remove('D');
+				m_solver->solveReverse(formula, target, known, 'D');
+			}
+		}
+		else
+		{
+			//////////////////////////// 已知弹体注药时间//////////////////////////////////////////
+
+			if (m_injectionTimeValue == "")
+			{
+				QMessageBox::information(this, "提示", "弹体注药时间不能为空！");
+				return;
+			}
+
+			auto injectionTimeValue = m_injectionTimeValue.toDouble() / 26.67;
+			formula = calculationPropertyInfo.twoInjectionTimeCalculateFormula;
+			target = injectionTimeValue;
+
+			connect(m_solver, &InReverseFormulaSolver::solveCompleted, this, [=](const std::vector<double>& resList) {
+				qDebug() << "解数量：" << resList.size();
+
+				if (resList.empty()) {
+					QMessageBox::warning(this, "警告", "无解");
+					return;
+				}
+				for (double v : resList) {
+					if (valveOpeningBool)
+					{
+						// 对阀门开度寻优
+						double value = v;
+						value = 13.000000 * v + 6.500000;
+						qDebug() << "阀门开度原始解：" << v << " 换算后：" << value;
+						if (value >= 0 && value <= 100) {
+							m_valveOpeningValue = QString::number(value, 'f', 4);
+							m_tableWidget->setItem(4, 2, new QTableWidgetItem(QString::number(value, 'f', 4)));
+							QMessageBox::information(this, "成功", "计算完成");
+							return;
+						}
+					}
+					else
+					{
+						// 对真空度寻优
+						double value = v;
+						value = (60.000000 * v + 20.000000) / 1000;
+						qDebug() << "真空度原始解：" << v << " 换算后：" << value;
+
+						if (value >= 0 && value <= 100) {
+							m_vacuumDegreeValue = QString::number(value, 'f', 4);
+							m_tableWidget->setItem(5, 2, new QTableWidgetItem(QString::number(value, 'f', 4)));
+							QMessageBox::information(this, "成功", "计算完成");
+							return;
+						}
+					}
+
+				}
+				QMessageBox::warning(this, "提示", "解超出范围");
+				});
+
+			if (valveOpeningBool)
+			{
+				// 对阀门开度寻优
+				known.remove('A');
+				m_solver->solveReverse(formula, target, known, 'A');
+			}
+			else
+			{
+				// 对真空度寻优
+				known.remove('D');
+				m_solver->solveReverse(formula, target, known, 'D');
+			}
+		}
+	}
+	else if (model == "产品三")
+	{
+		known['A'] = (A - 6.500000) / 12.277778;
+		known['B'] = (B - 1.000000) / 4.000000;
+		known['C'] = (C - 20.000000) / 10.000000;
+		known['D'] = (D - 20.000000) / 60.000000;
+		known['E'] = (E - 50.000000) / 20.000000;
+
+		double target = 0;
+
+		if (relativeDensityBool)
+		{
+			///////////////////////////// 已知相对密度/////////////////////////////////////
+			// 相对密度转为气含率
+			if (m_relativeDensityValue == "")
+			{
+				QMessageBox::information(this, "提示", "相对密度不能为空！");
+				return;
+			}
+			auto relativeDensity = m_relativeDensityValue.toDouble();
+			auto gasRateValue = ((1 - relativeDensity / 100) * density) / (density - 1.205);
+			QString formula = calculationPropertyInfo.threeGasRateCalculateFormula; // 方程
+			target = gasRateValue;
+
+			connect(m_solver, &InReverseFormulaSolver::solveCompleted, this, [=](const std::vector<double>& resList) {
+				qDebug() << "解数量：" << resList.size();
+
+				if (resList.empty()) {
+					QMessageBox::warning(this, "警告", "无解");
+					return;
+				}
+				for (double v : resList) {
+					if (valveOpeningBool)
+					{
+						// 对阀门开度寻优
+						double value = v;
+						value = 2.277778 * v + 6.500000;
+						qDebug() << "阀门开度原始解：" << v << " 换算后：" << value;
+						if (value >= 0 && value <= 100) {
+							m_valveOpeningValue = QString::number(value, 'f', 4);
+							m_tableWidget->setItem(4, 2, new QTableWidgetItem(QString::number(value, 'f', 4)));
+							QMessageBox::information(this, "成功", "计算完成");
+							return;
+						}
+					}
+					else
+					{
+						// 对真空度寻优
+						double value = v;
+						value = (60.000000 * v + 20.000000) / 1000;
+						qDebug() << "真空度原始解：" << v << " 换算后：" << value;
+
+						if (value >= 0 && value <= 100) {
+							m_vacuumDegreeValue = QString::number(value, 'f', 4);
+							m_tableWidget->setItem(5, 2, new QTableWidgetItem(QString::number(value, 'f', 4)));
+							QMessageBox::information(this, "成功", "计算完成");
+							return;
+						}
+					}
+
+				}
+				QMessageBox::warning(this, "提示", "解超出范围");
+				});
+
+			if (valveOpeningBool)
+			{
+				// 对阀门开度寻优
+				known.remove('A');
+				m_solver->solveReverse(formula, target, known, 'A');
+			}
+			else
+			{
+				// 对真空度寻优
+				known.remove('D');
+				m_solver->solveReverse(formula, target, known, 'D');
+			}
+		}
+		else
+		{
+			//////////////////////////// 已知弹体注药时间//////////////////////////////////////////
+
+			if (m_injectionTimeValue == "")
+			{
+				QMessageBox::information(this, "提示", "弹体注药时间不能为空！");
+				return;
+			}
+
+			auto injectionTimeValue = m_injectionTimeValue.toDouble() / 27.33;
+			formula = calculationPropertyInfo.threeInjectionTimeCalculateFormula;
+			target = injectionTimeValue;
+
+			connect(m_solver, &InReverseFormulaSolver::solveCompleted, this, [=](const std::vector<double>& resList) {
+				qDebug() << "解数量：" << resList.size();
+
+				if (resList.empty()) {
+					QMessageBox::warning(this, "警告", "无解");
+					return;
+				}
+				for (double v : resList) {
+					if (valveOpeningBool)
+					{
+						// 对阀门开度寻优
+						double value = v;
+						value = 2.277778 * v + 6.500000;
+						qDebug() << "阀门开度原始解：" << v << " 换算后：" << value;
+						if (value >= 0 && value <= 100) {
+							m_valveOpeningValue = QString::number(value, 'f', 4);
+							m_tableWidget->setItem(4, 2, new QTableWidgetItem(QString::number(value, 'f', 4)));
+							QMessageBox::information(this, "成功", "计算完成");
+							return;
+						}
+					}
+					else
+					{
+						// 对真空度寻优
+						double value = v;
+						value = (60.000000 * v + 20.000000) / 1000;
+						qDebug() << "真空度原始解：" << v << " 换算后：" << value;
+
+						if (value >= 0 && value <= 100) {
+							m_vacuumDegreeValue = QString::number(value, 'f', 4);
+							m_tableWidget->setItem(5, 2, new QTableWidgetItem(QString::number(value, 'f', 4)));
+							QMessageBox::information(this, "成功", "计算完成");
+							return;
+						}
+					}
+
+				}
+				QMessageBox::warning(this, "提示", "解超出范围");
+				});
+
+			if (valveOpeningBool)
+			{
+				// 对阀门开度寻优
+				known.remove('A');
+				m_solver->solveReverse(formula, target, known, 'A');
+			}
+			else
+			{
+				// 对真空度寻优
+				known.remove('D');
+				m_solver->solveReverse(formula, target, known, 'D');
+			}
+		}
+	}
+	else
+	{
+		known['A'] = (A - 8.500000) / 9.796296;
+		known['B'] = (B - 1.000000) / 4.000000;
+		known['C'] = (C - 20.000000) / 10.000000;
+		known['D'] = (D - 20.000000) / 60.000000;
+		known['E'] = (E - 50.000000) / 20.000000;
+
+		double target = 0;
+
+		if (relativeDensityBool)
+		{
+			///////////////////////////// 已知相对密度/////////////////////////////////////
+			// 相对密度转为气含率
+			if (m_relativeDensityValue == "")
+			{
+				QMessageBox::information(this, "提示", "相对密度不能为空！");
+				return;
+			}
+			auto relativeDensity = m_relativeDensityValue.toDouble();
+			auto gasRateValue = ((1 - relativeDensity / 100) * density) / (density - 1.205);
+			QString formula = calculationPropertyInfo.fourGasRateCalculateFormula; // 方程
+			target = gasRateValue;
+			
+
+			connect(m_solver, &InReverseFormulaSolver::solveCompleted, this, [=](const std::vector<double>& resList) {
+				qDebug() << "解数量：" << resList.size();
+
+				if (resList.empty()) {
+					QMessageBox::warning(this, "警告", "无解");
+					return;
+				}
+				for (double v : resList) {
+					if (valveOpeningBool)
+					{
+						// 对阀门开度寻优
+						double value = v;
+						value = 9.796296 * v + 8.500000;
+						qDebug() << "阀门开度原始解：" << v << " 换算后：" << value;
+						if (value >= 0 && value <= 100) {
+							m_valveOpeningValue = QString::number(value, 'f', 4);
+							m_tableWidget->setItem(4, 2, new QTableWidgetItem(QString::number(value, 'f', 4)));
+							QMessageBox::information(this, "成功", "计算完成");
+							return;
+						}
+					}
+					else
+					{
+						// 对真空度寻优
+						double value = v;
+						value = (60.000000 * v + 20.000000) / 1000;
+						qDebug() << "真空度原始解：" << v << " 换算后：" << value;
+
+						if (value >= 0 && value <= 100) {
+							m_vacuumDegreeValue = QString::number(value, 'f', 4);
+							m_tableWidget->setItem(5, 2, new QTableWidgetItem(QString::number(value, 'f', 4)));
+							QMessageBox::information(this, "成功", "计算完成");
+							return;
+						}
+					}
+
+				}
+				QMessageBox::warning(this, "提示", "解超出范围");
+				});
+
+			if (valveOpeningBool)
+			{
+				known.remove('A');
+				// 对阀门开度寻优
+				m_solver->solveReverse(formula, target, known, 'A');
+			}
+			else
+			{
+				known.remove('D');
+				// 对真空度寻优
+				m_solver->solveReverse(formula, target, known, 'D');
+			}
+		}
+		else
+		{
+			//////////////////////////// 已知弹体注药时间//////////////////////////////////////////
+
+			if (m_injectionTimeValue == "")
+			{
+				QMessageBox::information(this, "提示", "弹体注药时间不能为空！");
+				return;
+			}
+
+			auto injectionTimeValue = m_injectionTimeValue.toDouble() / 21.33;
+			formula = calculationPropertyInfo.fourInjectionTimeCalculateFormula;
+			target = injectionTimeValue;
+
+			connect(m_solver, &InReverseFormulaSolver::solveCompleted, this, [=](const std::vector<double>& resList) {
+				qDebug() << "解数量：" << resList.size();
+
+				if (resList.empty()) {
+					QMessageBox::warning(this, "警告", "无解");
+					return;
+				}
+				for (double v : resList) {
+					if (valveOpeningBool)
+					{
+						// 对阀门开度寻优
+						double value = v;
+						value = 9.796296 * v + 8.500000;
+						qDebug() << "阀门开度原始解：" << v << " 换算后：" << value;
+						if (value >= 0 && value <= 100) {
+							m_valveOpeningValue = QString::number(value, 'f', 4);
+							m_tableWidget->setItem(4, 2, new QTableWidgetItem(QString::number(value, 'f', 4)));
+							QMessageBox::information(this, "成功", "计算完成");
+							return;
+						}
+					}
+					else
+					{
+						// 对真空度寻优
+						double value = v;
+						value = (60.000000 * v + 20.000000) / 1000;
+						qDebug() << "真空度原始解：" << v << " 换算后：" << value;
+
+						if (value >= 0 && value <= 100) {
+							m_vacuumDegreeValue = QString::number(value, 'f', 4);
+							m_tableWidget->setItem(5, 2, new QTableWidgetItem(QString::number(value, 'f', 4)));
+							QMessageBox::information(this, "成功", "计算完成");
+							return;
+						}
+					}
+
+				}
+				QMessageBox::warning(this, "提示", "解超出范围");
+				});
+
+			if (valveOpeningBool)
+			{
+				known.remove('A');
+				// 对阀门开度寻优
+				m_solver->solveReverse(formula, target, known, 'A');
+			}
+			else
+			{
+				known.remove('D');
+				// 对真空度寻优
+				m_solver->solveReverse(formula, target, known, 'D');
+			}
+		}
+
+	}
+
 }
 
 
