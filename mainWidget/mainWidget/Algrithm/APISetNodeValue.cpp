@@ -57,29 +57,28 @@
 
 
 APISetNodeValue::FrameParams APISetNodeValue::frames[12] = {
-	{0.10, 0.015, 0.04, false, 0.00, 0.00, 0.00, false},
-	{0.20, 0.015, 0.04, false, 0.00, 0.00, 0.00, false},
-	{0.35, 0.015, 0.04, false, 0.00, 0.00, 0.00, false},
-	{0.50, 0.015, 0.04, false, 0.00, 0.00, 0.00, false},
-	{0.70, 0.015, 0.04, false, 0.00, 0.00, 0.00, false},
-	{0.95, 0.015, 0.04, false, 0.00, 0.00, 0.00, false},
-	{0.95, 0.018, 0.05, true, 0.02, 0.20, 0.85, true},
-	{0.95, 0.020, 0.055, true, 0.04, 0.35, 0.88, true},
-	{0.95, 0.022, 0.06, true, 0.06, 0.50, 0.90, true},
-	{0.95, 0.025, 0.065, true, 0.07, 0.65, 0.92, true},
-	{0.95, 0.028, 0.07, true, 0.08, 0.80, 0.94, true},
-	{0.95, 0.030, 0.08, true, 0.10, 0.95, 0.95, true}
+	{0.20, 0.008, 0.025, false, 0.00, 0.00, 0.00, false},
+	{0.35, 0.008, 0.025, false, 0.00, 0.00, 0.00, false},
+	{0.50, 0.010, 0.025, false, 0.00, 0.00, 0.00, false},
+	{0.65, 0.010, 0.025, false, 0.00, 0.00, 0.00, false},
+	{0.80, 0.010, 0.025, false, 0.00, 0.00, 0.00, false},
+	{0.95, 0.010, 0.025, false, 0.00, 0.00, 0.00, false},
+
+	{0.95, 0.022, 0.055, true,  0.18, 0.80, 1.00, true},
+	{0.95, 0.020, 0.050, true,  0.14, 0.70, 0.98, true},
+	{0.95, 0.018, 0.045, true,  0.10, 0.60, 0.96, true},
+	{0.95, 0.016, 0.040, true,  0.08, 0.50, 0.94, true},
+	{0.95, 0.014, 0.035, true,  0.06, 0.40, 0.92, true},
+	{0.95, 0.012, 0.030, true,  0.04, 0.30, 0.90, true},
 };
 
 // ==================== 提取并分类边线 ====================
 std::vector<APISetNodeValue::ModelEdge> APISetNodeValue::ExtractAndClassifyEdges(const TopoDS_Shape& shape) {
-	std::vector<ModelEdge> edges;
+	std::vector<APISetNodeValue::ModelEdge> edges;
 
-	// 先找出边界
 	double minX = 999999, maxX = -999999;
 	double minY = 999999, maxY = -999999;
 
-	// 第一遍：找边界
 	TopExp_Explorer exp1(shape, TopAbs_EDGE);
 	for (; exp1.More(); exp1.Next()) {
 		TopoDS_Edge edge = TopoDS::Edge(exp1.Current());
@@ -94,7 +93,10 @@ std::vector<APISetNodeValue::ModelEdge> APISetNodeValue::ExtractAndClassifyEdges
 		maxY = std::max(maxY, std::max(p1.Y(), p2.Y()));
 	}
 
-	// 第二遍：分类
+	const double tol = std::max(1e-3, std::max(maxX - minX, maxY - minY) * 0.005);
+	const double midTol = tol * 2.0;
+	const double dupTol = 1e-6;
+
 	TopExp_Explorer exp2(shape, TopAbs_EDGE);
 	for (; exp2.More(); exp2.Next()) {
 		TopoDS_Edge edge = TopoDS::Edge(exp2.Current());
@@ -103,6 +105,25 @@ std::vector<APISetNodeValue::ModelEdge> APISetNodeValue::ExtractAndClassifyEdges
 		gp_Pnt p1 = BRep_Tool::Pnt(v1);
 		gp_Pnt p2 = BRep_Tool::Pnt(v2);
 
+		double edgeMinX = std::min(p1.X(), p2.X());
+		double edgeMaxX = std::max(p1.X(), p2.X());
+		double edgeMinY = std::min(p1.Y(), p2.Y());
+		double edgeMaxY = std::max(p1.Y(), p2.Y());
+		double dx = std::fabs(p1.X() - p2.X());
+		double dy = std::fabs(p1.Y() - p2.Y());
+
+		// 快速剔除：外接矩形完全在内部
+		if (edgeMinX > minX + tol && edgeMaxX < maxX - tol &&
+			edgeMinY > minY + tol && edgeMaxY < maxY - tol) {
+			continue;
+		}
+
+		// 【关键】垂直边（平行于Y轴）硬性过滤：必须经过 X 最大的点
+		// 即：只有贴在最右边界上的垂直壁才保留，内部垂直加强筋全部剔除
+		if (dx < tol && edgeMaxX < maxX - tol) {
+			continue; // 内部垂直边，过滤
+		}
+
 		ModelEdge me;
 		me.p1 = p1;
 		me.p2 = p2;
@@ -110,61 +131,76 @@ std::vector<APISetNodeValue::ModelEdge> APISetNodeValue::ExtractAndClassifyEdges
 		me.isRightEdge = false;
 		me.isBottomEdge = false;
 
-		double edgeMinX = std::min(p1.X(), p2.X());
-		double edgeMaxX = std::max(p1.X(), p2.X());
-		double edgeMinY = std::min(p1.Y(), p2.Y());
-		double edgeMaxY = std::max(p1.Y(), p2.Y());
-
-		// 左边线：X最小（入射口，排除）
-		if (edgeMaxX < minX + 1e-3) {
-			// 入射口，不加入壁面边
+		// 左侧入口边（X最小）：排除
+		if (edgeMaxX < minX + tol) {
 			continue;
 		}
-		// 右边线：X最大
-		else if (edgeMinX > maxX - 1e-3) {
+		// 底部边（X最大）
+		else if (edgeMinX > maxX - tol) {
 			me.isRightEdge = true;
 		}
-		// 上边线：Y最大（最上方）
-		else if (edgeMaxY > maxY - 1e-3) {
+		// 右侧壁（Y最大）
+		else if (edgeMaxY > maxY - tol) {
 			me.isTopEdge = true;
 		}
-		// 下边线：Y最小（最下方）
-		else if (edgeMinY < minY + 1e-3) {
+		// 左侧壁（Y最小）
+		else if (edgeMinY < minY + tol) {
 			me.isBottomEdge = true;
 		}
-		// 其他边（锥底的倾斜边）
+		// 倾斜外轮廓边
 		else {
-			// 判断是上边部分还是下边部分
-			double midY = (p1.Y() + p2.Y()) / 2.0;
 			double midX = (p1.X() + p2.X()) / 2.0;
+			double midY = (p1.Y() + p2.Y()) / 2.0;
 
-			// 如果中点靠近右侧，是锥底的倾斜边
-			if (midX > (minX + maxX) / 2.0) {
-				// 根据中点Y判断是上锥还是下锥
-				if (midY > (minY + maxY) / 2.0) {
-					me.isTopEdge = true;    // 上锥边
-				}
-				else {
-					me.isBottomEdge = true; // 下锥边
-				}
-			}
+			bool midOnBoundary = (midX > maxX - midTol) ||
+				(midY > maxY - midTol) ||
+				(midY < minY + midTol);
+			if (!midOnBoundary) continue;
+
+			bool hasOuter = (p1.X() > maxX - tol) || (p2.X() > maxX - tol) ||
+				(p1.Y() > maxY - tol) || (p2.Y() > maxY - tol) ||
+				(p1.Y() < minY + tol) || (p2.Y() < minY + tol);
+			if (!hasOuter) continue;
+
+			if (midY > (minY + maxY) / 2.0) me.isTopEdge = true;
+			else me.isBottomEdge = true;
 		}
 
 		edges.push_back(me);
 	}
 
-	return edges;
+	// ==================== 几何去重 ====================
+	auto arePointsEqual = [&](const gp_Pnt& a, const gp_Pnt& b) {
+		return std::fabs(a.X() - b.X()) < dupTol && std::fabs(a.Y() - b.Y()) < dupTol;
+	};
+
+	std::vector<ModelEdge> uniqueEdges;
+	for (const auto& e : edges) {
+		bool isDup = false;
+		for (const auto& u : uniqueEdges) {
+			if ((arePointsEqual(e.p1, u.p1) && arePointsEqual(e.p2, u.p2)) ||
+				(arePointsEqual(e.p1, u.p2) && arePointsEqual(e.p2, u.p1))) {
+				isDup = true;
+				break;
+			}
+		}
+		if (!isDup) uniqueEdges.push_back(e);
+	}
+
+	return uniqueEdges;
 }
 
 // ==================== 判断点是否在壁厚区域 ====================
 bool APISetNodeValue::IsInWallRegion(double x, double y,
 	const std::vector<ModelEdge>& edges,
 	double wallThickness) {
-	for (const auto& edge : edges) {
-		// 只检查上、右、下边线（左侧是入射口）
-		if (edge.isTopEdge || edge.isRightEdge || edge.isBottomEdge) {
+	for (const auto& edge : edges) 
+	{
+		if (edge.isTopEdge || edge.isRightEdge || edge.isBottomEdge) 
+		{
 			double dist = PointToSegmentDistance(x, y, edge.p1, edge.p2);
-			if (dist < wallThickness) {
+			if (dist < wallThickness) 
+			{
 				return true;
 			}
 		}
@@ -182,8 +218,7 @@ double APISetNodeValue::PointToSegmentDistance(double x, double y, const gp_Pnt&
 		return sqrt((x - a.X()) * (x - a.X()) + (y - a.Y()) * (y - a.Y()));
 	}
 
-	double t = std::max(0.0, std::min(1.0,
-		((x - a.X()) * dx + (y - a.Y()) * dy) / len2));
+	double t = std::clamp(((x - a.X()) * dx + (y - a.Y()) * dy) / len2, 0.0, 1.0);
 
 	double closestX = a.X() + t * dx;
 	double closestY = a.Y() + t * dy;
@@ -258,9 +293,8 @@ MeshVS_DataMapOfIntegerColor APISetNodeValue::GetMeshDataMap(std::vector<double>
 	MeshVS_DataMapOfIntegerColor colormap;
 	int index = 0;
 
-	// 处理特殊情况：避免除零
 	if (max <= min) {
-		Quantity_Color defaultColor(0.5, 0.5, 0.5, Quantity_TOC_RGB); // 灰色
+		Quantity_Color defaultColor(0.5, 0.5, 0.5, Quantity_TOC_RGB);
 		for (size_t i = 0; i < tt.size(); ++i) {
 			colormap.Bind(i + 1, defaultColor);
 		}
@@ -269,21 +303,21 @@ MeshVS_DataMapOfIntegerColor APISetNodeValue::GetMeshDataMap(std::vector<double>
 
 	for (double t : tt)
 	{
-		// 1. 归一化到[0,1]范围
 		a = (t - min) / (max - min);
-		a = std::clamp(a, 0.0, 1.0); // 确保值在有效范围
+		a = std::clamp(a, 0.0, 1.0);
 
-		// 2. 定义HSV参数（保持蓝→绿→红趋势）
-		// H: 0.666(蓝) → 0.333(绿) → 0(红)，对应HSV色轮
-		double h = 0.666 - a * 0.666; // 从蓝色(0.666)过渡到红色(0)
-		double s = 1.0;               // 最大饱和度
-		double v = 1.0;               // 最大明度
+		// 【修正】线性映射，保留完整黄绿青过渡
+		// 如果仍希望红色稍宽，用 1.5 次方而非 2 次方
+		// a = 1.0 - std::pow(1.0 - a, 1.5);
+		// a = std::clamp(a, 0.0, 1.0);
 
-		// 3. 手动转换HSV到RGB
+		double h = 0.666 - a * 0.666;
+		double s = 1.0;
+		double v = 1.0;
+
 		HSVtoRGB(h, s, v, r, g, b);
 
-		// 4. 绑定颜色到索引
-		if (t == -1.0) { // 如果检测到特殊值，则设置为灰色
+		if (t == -1.0) {
 			colormap.Bind(index + 1, Quantity_Color(0.5, 0.5, 0.5, Quantity_TOC_RGB));
 		}
 		else {
@@ -639,41 +673,33 @@ bool APISetNodeValue::SetPreForwardDesignResult(OccView* occView, std::vector<do
 	Handle(V3d_View) view = occView->getView();
 
 	auto modelGeometryInfo = ModelDataManager::GetInstance()->GetModelGeometryInfo();
-	auto syShape = modelGeometryInfo.symmetricalShape;
-
 	auto modelMeshInfo = ModelDataManager::GetInstance()->GetModelMeshInfo();
-	// 提取边界线
+
 	std::vector<ModelEdge> boundaryEdges = ExtractAndClassifyEdges(modelGeometryInfo.symmetricalShape);
 
-	// 壁厚 = 10
 	const double WALL_THICKNESS = 10.0;
 	const double WALL_VALUE = -1.0;
 
-	// 边界参数
 	const double x_min = modelMeshInfo.x_min;
 	const double x_max = modelMeshInfo.x_max;
-	const double y_min = modelMeshInfo.y_min;  // 底部（Y最小）
-	const double y_max = modelMeshInfo.y_max;  // 顶部（Y最大）
+	const double y_min = modelMeshInfo.y_min;
+	const double y_max = modelMeshInfo.y_max;
 
-	// 几何参数
-	const double center_y = (y_min + y_max) / 2.0;
-	const double width = x_max - x_min;
-	const double height = y_max - y_min;
+	const double y_center = (y_min + y_max) * 0.5;
+	const double width = y_max - y_min;
+	const double height = x_max - x_min;
 
-	// 物理参数
 	const double max_value = 10.0;
 	const double min_value = 0.0;
 
 	FrameParams fp = frames[frame];
 
-	// 射流参数
-	const double jet_length = width * fp.jet_length_ratio;
-	const double jet_core_width = height * fp.jet_core_ratio;
-	const double jet_transition = height * fp.jet_transition_ratio;
+	const double jet_length = height * fp.jet_length_ratio;
+	const double jet_core_width = width * fp.jet_core_ratio;
+	const double jet_transition = width * fp.jet_transition_ratio;
 
-	// 界面参数
-	const double interface_base = x_min + jet_length;
-	const double wave_amp = height * fp.wave_amp_ratio;
+	const double liquid_interface_x = x_min + height * fp.liquid_fill_ratio;
+	const double wave_amp = width * fp.wave_amp_ratio;
 
 	{
 		TColStd_PackedMapOfInteger allnode;
@@ -692,87 +718,94 @@ bool APISetNodeValue::SetPreForwardDesignResult(OccView* occView, std::vector<do
 			double x = nodecoords->Value(nodeID, 1);
 			double y = nodecoords->Value(nodeID, 2);
 
-			// ========== 步骤1：判断壁厚区域（上、右、下） ==========
-			if (IsInWallRegion(x, y, boundaryEdges, WALL_THICKNESS)) {
+			// 壁厚区
+			bool isWall = IsInWallRegion(x, y, boundaryEdges, WALL_THICKNESS);
+			bool isRightForce = (x > x_max - 15.0);
+			bool isBottomWall = (y < y_min + 15.0) || (y > y_max - 15.0);
+
+			if (isWall || isRightForce || isBottomWall) {
 				nodeValues.push_back(WALL_VALUE);
 				continue;
 			}
 
-			// ========== 步骤2：流体区域计算 ==========
 			double value = min_value;
-			double r = fabs(y - center_y);
+			double dy = fabs(y - y_center);
 			double dx = x - x_min;
 
-			// --- 射流核心与过渡区 ---
-			if (dx < jet_length) {
-				if (r < jet_core_width) {
-					value = max_value;
-				}
-				else if (r < jet_transition * 3) {
-					value = max_value * exp(-pow((r - jet_core_width) / (jet_transition * 0.6), 2));
+			// ========== 射流核心 ==========
+			double jet_value = min_value;
+			if (dx >= 0 && dx <= jet_length + jet_transition * 2.0) {
+				double taper = 1.0 - (dx / std::max(jet_length, 1e-6)) * 0.3;
+				taper = std::max(taper, 0.4);
+
+				double local_core = jet_core_width * taper;
+				double local_sigma = jet_transition * taper * 0.5;
+
+				double r_eff = std::max(0.0, dy - local_core);
+				double profile = exp(-pow(r_eff / local_sigma, 2));
+
+				if (dx <= jet_length) {
+					jet_value = max_value * profile;
 				}
 				else {
-					value = min_value;
+					double tail = 0.5 * (1.0 + cos(std::min((dx - jet_length) / (jet_transition * 2.0) * 3.14159265358979323846, 3.14159265358979323846)));
+					jet_value = max_value * profile * tail;
 				}
 			}
 
-			// --- 射流尾部平滑过渡区 (关键修改点1) ---
-			// 在射流长度后增加一个衰减区，使颜色平滑过渡到背景
-			const double tail_transition_length = width * 0.05; // 尾部过渡区长度，可根据效果调整
-			if (dx >= jet_length && dx < jet_length + tail_transition_length) {
-				double tail_factor = 1.0 - (dx - jet_length) / tail_transition_length;
-				// 计算当前径向位置在无尾部衰减时应有的值
-				double base_value = min_value;
-				if (r < jet_core_width) {
-					base_value = max_value;
-				}
-				else if (r < jet_transition * 3) {
-					base_value = max_value * exp(-pow((r - jet_core_width) / (jet_transition * 0.6), 2));
-				}
-				value = std::max(value, base_value * tail_factor);
-			}
+			// ========== 液相区（主体全红，界面过渡） ==========
+			double liquid_value = min_value;
+			if (fp.has_liquid_fill) {
+				double hump_left = wave_amp * exp(-pow((y - (y_center - width * 0.22)) / (width * 0.08), 2));
+				double hump_right = wave_amp * exp(-pow((y - (y_center + width * 0.22)) / (width * 0.08), 2));
+				double crater = wave_amp * 1.5 * exp(-pow((y - y_center) / (width * 0.10), 2));
 
-			// --- 界面波动和液相填充 ---
-			if (fp.has_interface_wave) {
-				double wave_shape =
-					exp(-pow((y - (center_y - height * 0.22)) / (height * 0.10), 2)) +
-					exp(-pow((y - (center_y + height * 0.22)) / (height * 0.10), 2));
+				double local_interface = liquid_interface_x - hump_left - hump_right + crater;
+				double interface_thick = height * 0.015;
 
-				double local_interface = interface_base - wave_amp * wave_shape;
-				double interface_thickness = width * 0.015;
-
-				if (fp.has_liquid_fill && x > local_interface + interface_thickness) {
-					value = std::max(value, max_value * fp.liquid_core_ratio);
+				if (x >= local_interface + interface_thick) {
+					// 【修正】液相主体直接给 max_value（全红），不乘 liquid_core_ratio
+					liquid_value = max_value;
 				}
-				else if (x >= local_interface - interface_thickness &&
-					x <= local_interface + interface_thickness) {
-					double frac = (x - (local_interface - interface_thickness)) / (2 * interface_thickness);
-					value = std::max(value, max_value * fp.liquid_core_ratio * frac);
+				else if (x >= local_interface - interface_thick) {
+					// 界面过渡区，从 0 渐变到 max_value
+					double frac = (x - (local_interface - interface_thick)) / (2.0 * interface_thick);
+					liquid_value = max_value * frac;
 				}
 			}
 
-			// --- 上下壁面边界层 (关键修改点2) ---
-			// 调整逻辑，确保底部和顶部的颜色衰减更合理
-			double dist_to_top = y_max - y;      // 到顶部距离
-			double dist_to_bottom = y - y_min;   // 到底部距离
-			double wall_dist_y = std::min(dist_to_top, dist_to_bottom);
+			// 综合
+			value = std::max(jet_value, liquid_value);
 
-			// 增加阈值并调整衰减因子，防止底部过度变暗
-			const double wall_layer_thickness = height * 0.04; // 稍微增加边界层厚度
-			if (wall_dist_y < wall_layer_thickness && value > min_value) {
-				double factor = wall_dist_y / wall_layer_thickness;
-				// 使用非线性衰减（例如平方），让靠近壁面的区域衰减更快，但远离壁面的区域保留更多原值
-				factor = factor * factor;
-				value = min_value + (value - min_value) * factor;
+			// ========== 壁面边界层：红→灰渐变，蓝→灰硬截断 ==========
+			double min_wall_dist = 1e9;
+			for (auto& e : boundaryEdges) {
+				if (e.isTopEdge || e.isRightEdge || e.isBottomEdge) {
+					double d = PointToSegmentDistance(x, y, e.p1, e.p2);
+					if (d < min_wall_dist) min_wall_dist = d;
+				}
 			}
 
-			// 钳制
-			if (value > max_value) value = max_value;
-			if (value < min_value) value = min_value;
+			double layer_thick = width * 0.04;
+			double red_threshold = max_value * 0.5; // 5.0
 
+			if (min_wall_dist < layer_thick && value > red_threshold) {
+				// 红色区域：向壁面渐变到灰色
+				double f = min_wall_dist / layer_thick;
+				f = f * f;
+
+				// 壁面处 = 低值（灰色边界），内部保持红色
+				double wall_target = min_value + (max_value - min_value) * 0.15; // 1.5
+				value = wall_target + (value - wall_target) * f;
+			}
+			// else：蓝色区域不做渐变，硬截断
+
+			value = std::clamp(value, min_value, max_value);
 			nodeValues.push_back(value);
 		}
-		// 设置颜色映射和显示（与原逻辑一致）
+
+
+		// 设置颜色映射和显示
 		MeshVS_DataMapOfIntegerColor colormap = GetMeshDataMap(nodeValues, min_value, max_value);
 		Handle(MeshVS_NodalColorPrsBuilder) nodal = new MeshVS_NodalColorPrsBuilder(aMesh, MeshVS_DMF_NodalColorDataPrs | MeshVS_DMF_OCCMask);
 		nodal->SetColors(colormap);

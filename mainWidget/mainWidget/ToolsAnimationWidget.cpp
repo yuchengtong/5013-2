@@ -82,6 +82,15 @@ void ToolsAnimationWidget::init()
 				m_comboBox->addItem("0");
 				m_comboBox->addItem("1");
 				m_comboBox->addItem("2");
+				m_comboBox->addItem("3");
+				m_comboBox->addItem("4");
+				m_comboBox->addItem("5");
+				m_comboBox->addItem("6");
+				m_comboBox->addItem("7");
+				m_comboBox->addItem("8");
+				m_comboBox->addItem("9");
+				m_comboBox->addItem("10");
+				m_comboBox->addItem("11");
 			}
 
 
@@ -152,6 +161,50 @@ void ToolsAnimationWidget::bindConnect()
 		double time = m_comboBox->currentData().toDouble();
 		emit animationTimeChanged(time);
 
+		QWidget* parent = parentWidget();
+		while (parent) {
+			GFImportModelWidget* gfParent = dynamic_cast<GFImportModelWidget*>(parent);
+			if (gfParent)
+			{
+				double min_value = 0;
+				double max_value = 10;
+				auto occView = gfParent->GetOccView();
+				//occView->SetCameraRotationState(false);
+				Handle(AIS_InteractiveContext) context = occView->getContext();
+				Handle(V3d_View) view = occView->getView();
+				view->SetProj(V3d_Zneg);
+				view->SetTwist(-M_PI / 2.0);
+				std::vector<double> nodeValues;
+				APISetNodeValue::SetPreForwardDesignResult(occView, nodeValues, index);
+
+				// 颜色条显示（与原逻辑一致）
+				TCollection_ExtendedString tostr("体积分数", true);
+				Handle(AIS_ColorScale) aColorScale = new AIS_ColorScale();
+				aColorScale->SetFormat(TCollection_AsciiString("%.2f"));
+				aColorScale->SetSize(100, 400);
+				aColorScale->SetRange(min_value, max_value);
+				aColorScale->SetNumberOfIntervals(9);
+				aColorScale->SetLabelPosition(Aspect_TOCSP_RIGHT);
+				aColorScale->SetTextHeight(14);
+				aColorScale->SetColor(Quantity_Color(Quantity_NOC_BLACK));
+				aColorScale->SetTitle(tostr);
+				aColorScale->SetColorRange(Quantity_Color(Quantity_NOC_BLUE1), Quantity_Color(Quantity_NOC_RED));
+				aColorScale->SetLabelType(Aspect_TOCSD_AUTO);
+				aColorScale->SetZLayer(Graphic3d_ZLayerId_TopOSD);
+				Graphic3d_Vec2i anoffset(0, Standard_Integer(450));
+				context->SetTransformPersistence(aColorScale, new Graphic3d_TransformPers(Graphic3d_TMF_2d, Aspect_TOTP_LEFT_UPPER, anoffset));
+				context->SetDisplayMode(aColorScale, 1, Standard_False);
+				context->Display(aColorScale, Standard_True);
+
+
+				break;
+			}
+			else
+			{
+				parent = parent->parentWidget();
+			}
+		}
+		/*
 		if (index == 0)
 		{
 			QWidget* parent = parentWidget();
@@ -287,7 +340,7 @@ void ToolsAnimationWidget::bindConnect()
 				}
 			}
 		}
-
+		*/
 
 		});
 

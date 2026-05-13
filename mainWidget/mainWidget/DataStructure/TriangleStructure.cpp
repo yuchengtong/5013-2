@@ -73,11 +73,11 @@ TriangleStructure::TriangleStructure(TopoDS_Shape& shape,
     // === Step 5: 设置参数（零初始化！）===
     Ng_Meshing_Parameters mp = {};
     mp.uselocalh = 1;
-    mp.maxh = 5.0;
-    mp.minh = 0.1;
-    mp.elementsperedge = 3.0;
-    mp.elementspercurve = 4.0;
-    mp.grading = 0.25;
+    mp.maxh = 3.0;              // 从1.5增大到3.0，网格尺寸翻倍
+    mp.minh = 0.1;              // 从0.02增大到0.1，避免局部过密
+    mp.elementsperedge = 3.0;   // 从5.0减小到3.0，每条边单元数减少
+    mp.elementspercurve = 4.0;  // 从6.0减小到4.0，每条曲线单元数减少
+    mp.grading = 0.25;          // 恢复默认过渡速率
     mp.closeedgeenable = 0;
     mp.optsurfmeshenable = 1;
 

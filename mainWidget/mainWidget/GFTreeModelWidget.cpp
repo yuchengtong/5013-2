@@ -736,24 +736,63 @@ void GFTreeModelWidget::contextMenuEvent(QContextMenuEvent *event)
 
 							if (success && !info.shape.IsNull())
 							{
-								// ========== 沿 XOZ 平面对称（Y=0） ==========
-								gp_Trsf mirrorTransform;
-								gp_Ax2 symPlane(gp_Pnt(0, 0, 0), gp_Dir(0, 1, 0)); // XOZ平面，法向为Y轴
-								mirrorTransform.SetMirror(symPlane);
+								double minX = DBL_MAX;
+								double minY = DBL_MAX;
+								double maxY = -DBL_MAX; // 新增：用于记录最大Y值，辅助判断底部边
+								double maxX = -DBL_MAX;
+								gp_Pnt bottomP1, bottomP2; // 修改：记录底部边线的两个端点
+								bool hasBottomEdge = false; // 修改：标记是否找到底部边
 
-								BRepBuilderAPI_Transform mirrorBuilder(info.shape, mirrorTransform, Standard_True);
-								if (mirrorBuilder.IsDone()) {
-									TopoDS_Shape mirroredShape = mirrorBuilder.Shape();
+								TopExp_Explorer exp(info.shape, TopAbs_EDGE);
+								for (; exp.More(); exp.Next())
+								{
+									TopoDS_Edge edge = TopoDS::Edge(exp.Current());
+									TopoDS_Vertex v1, v2;
+									TopExp::Vertices(edge, v1, v2);
+									gp_Pnt p1 = BRep_Tool::Pnt(v1);
+									gp_Pnt p2 = BRep_Tool::Pnt(v2);
 
-									// 布尔合并：原始 + 镜像 = 完整模型
-									BRepAlgoAPI_Fuse fuse(info.shape, mirroredShape);
-									if (fuse.IsDone()) {
-										TopoDS_Shape fusedShape = fuse.Shape();
+									bool vertical = (fabs(p1.X() - p2.X()) < 1e-3);
+									bool horizontal = (fabs(p1.Y() - p2.Y()) < 1e-3);
 
-										// 修复拓扑
-										ShapeFix_Shape fixer(fusedShape);
-										fixer.Perform();
-										info.shape = fixer.Shape();
+									// 寻找最下侧的水平边（作为对称轴）
+									if (horizontal) {
+										double currentY = p1.Y();
+										if (currentY < minY) {
+											minY = currentY;
+											bottomP1 = p1; bottomP2 = p2; // 记录底部边的两个端点
+											hasBottomEdge = true;
+										}
+									}
+									// 顺便记录最大Y值，方便后续逻辑使用
+									maxY = std::max(maxY, std::max(p1.Y(), p2.Y()));
+
+									// 寻找最左侧的垂直边（如果后续还需要用到）
+									if (vertical) {
+										minX = std::min(minX, p1.X());
+									}
+									maxX = std::max(maxX, std::max(p1.X(), p2.X()));
+								}
+
+								// 沿底部水平边对称生成完整模型
+								if (hasBottomEdge)
+								{
+									// 构建对称轴（底部水平边）
+									gp_Ax1 mirrorAxis(bottomP1, gp_Dir(bottomP2.XYZ() - bottomP1.XYZ()));
+
+									// 设置镜像变换
+									gp_Trsf mirrorTrsf;
+									mirrorTrsf.SetMirror(mirrorAxis);
+
+									// 执行镜像
+									BRepBuilderAPI_Transform mirrorBRep(info.shape, mirrorTrsf, false);
+									TopoDS_Shape mirroredShape = mirrorBRep.Shape();
+
+									// 将原模型与镜像模型进行布尔并集（Fuse）融合
+									BRepAlgoAPI_Fuse fuseOp(info.shape, mirroredShape);
+									if (fuseOp.IsDone())
+									{
+										info.symmetricalShape = fuseOp.Shape();
 									}
 								}
 
@@ -843,7 +882,7 @@ void GFTreeModelWidget::contextMenuEvent(QContextMenuEvent *event)
 
 					// 创建工作线程和工作对象
 					auto geomInfo = ModelDataManager::GetInstance()->GetModelGeometryInfo();
-					TriangulationWorker* worker = new TriangulationWorker(geomInfo.shape);
+					TriangulationWorker* worker = new TriangulationWorker(geomInfo.symmetricalShape);
 					QThread* workerThread = new QThread();
 					worker->moveToThread(workerThread);
 
