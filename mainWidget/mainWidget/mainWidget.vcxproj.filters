@@ -163,6 +163,9 @@
     <ClCompile Include="Algrithm\InReverseFormulaSolver.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ReverseOptimizationWorker.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="occView.h">
@@ -268,6 +271,9 @@
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="Algrithm\InReverseFormulaSolver.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="ReverseOptimizationWorker.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>

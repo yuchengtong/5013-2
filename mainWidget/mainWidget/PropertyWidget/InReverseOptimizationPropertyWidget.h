@@ -16,10 +16,13 @@ public:
 
 private:
 	void initWidget() override;
-	void bindConnect();
+
 private slots:
 	void calculate();
 
+	void reset();
+
+	void forwardCalculate(); // 正向计算
 
 private:
 	QTableWidget* m_tableWidget = nullptr;
@@ -29,8 +32,8 @@ private:
 
 	QString m_insulationTemperatureValue = "50"; // 弹体保温温度
 	QString m_pouringTemperatureValue = "102"; // 药液浇注温度
-	QString m_valveOpeningValue = "6.5"; // 阀门开度
-	QString m_vacuumDegreeValue = "0.1"; // 真空度
+	QString m_valveOpeningValue = "5"; // 阀门开度
+	QString m_vacuumDegreeValue = "0.02"; // 真空度
 	QString m_relativeDensityValue = ""; // 相对密度
 	QString m_injectionTimeValue = ""; // 弹体注药时间
 

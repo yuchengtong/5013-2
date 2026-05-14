@@ -65,7 +65,7 @@ void GeomPropertyWidget::initWidget()
 	vlayout->addWidget(m_tableWidget);
 	setLayout(vlayout);
 
-	QStringList labels = { "几何模型","产品型号","来源","弹体大径","等径段高度", "弹体小径", "变径段高度", "壳体厚度", "胶层厚度", "注药孔孔径", "真空孔孔径" };
+	QStringList labels = { "几何模型","产品型号","来源","弹体大径","等径段高度", "弹体小径", "变径段高度", "壳体厚度(20～30)", "胶层厚度(1～5)", "注药孔孔径(5～39)", "真空孔孔径" };
 	for (int row = 0; row < labels.size(); ++row) {
 		QTableWidgetItem* serialItem = new QTableWidgetItem(QString::number(row));
 		if (row == 0) {
@@ -104,29 +104,40 @@ void GeomPropertyWidget::initWidget()
 
 	QTableWidgetItem* boreDiameterValueItem = new QTableWidgetItem(m_boreDiameterValue);
 	boreDiameterValueItem->setTextAlignment(Qt::AlignCenter); // 文本居中
+	boreDiameterValueItem->setFlags(boreDiameterValueItem->flags() & ~Qt::ItemIsEditable); // 不可编辑
+	boreDiameterValueItem->setBackground(QBrush(QColor(230, 230, 230)));
 
 	QTableWidgetItem* equaldiameterSectionHeightValueItem = new QTableWidgetItem(m_equaldiameterSectionHeightValue);
 	equaldiameterSectionHeightValueItem->setTextAlignment(Qt::AlignCenter); // 文本居中
+	equaldiameterSectionHeightValueItem->setFlags(equaldiameterSectionHeightValueItem->flags() & ~Qt::ItemIsEditable); // 不可编辑
+	equaldiameterSectionHeightValueItem->setBackground(QBrush(QColor(230, 230, 230)));
 
 	QTableWidgetItem* boreRadiusValueItem = new QTableWidgetItem(m_boreRadiusValue);
 	boreRadiusValueItem->setTextAlignment(Qt::AlignCenter); // 文本居中
+	boreRadiusValueItem->setFlags(boreRadiusValueItem->flags() & ~Qt::ItemIsEditable); // 不可编辑
+	boreRadiusValueItem->setBackground(QBrush(QColor(230, 230, 230)));
 
 	QTableWidgetItem* variableDiameterSectionHeightValueItem = new QTableWidgetItem(m_variableDiameterSectionHeightValue);
 	variableDiameterSectionHeightValueItem->setTextAlignment(Qt::AlignCenter); // 文本居中
+	variableDiameterSectionHeightValueItem->setFlags(variableDiameterSectionHeightValueItem->flags() & ~Qt::ItemIsEditable); // 不可编辑
+	variableDiameterSectionHeightValueItem->setBackground(QBrush(QColor(230, 230, 230)));
 
 	QTableWidgetItem* shellThicknessValueItem = new QTableWidgetItem(m_shellThicknessValue);
 	shellThicknessValueItem->setTextAlignment(Qt::AlignCenter); // 文本居中
+	shellThicknessValueItem->setBackground(QBrush(QColor(255, 254, 195)));
 
 	QTableWidgetItem* gasketLayerThicknessValueItem = new QTableWidgetItem(m_gasketLayerThicknessValue);
 	gasketLayerThicknessValueItem->setTextAlignment(Qt::AlignCenter); // 文本居中
+	gasketLayerThicknessValueItem->setBackground(QBrush(QColor(255, 254, 195)));
 
 	QTableWidgetItem* injectionHoleDiameterValueItem = new QTableWidgetItem(m_injectionHoleDiameterValue);
 	injectionHoleDiameterValueItem->setTextAlignment(Qt::AlignCenter); // 文本居中
-	injectionHoleDiameterValueItem->setFlags(injectionHoleDiameterValueItem->flags() & ~Qt::ItemIsEditable); // 不可编辑
+	injectionHoleDiameterValueItem->setBackground(QBrush(QColor(255, 254, 195)));
 
 	QTableWidgetItem* vacuumHoleDiameterValueItem = new QTableWidgetItem(m_vacuumHoleDiameterValue);
 	vacuumHoleDiameterValueItem->setTextAlignment(Qt::AlignCenter); // 文本居中
 	vacuumHoleDiameterValueItem->setFlags(vacuumHoleDiameterValueItem->flags() & ~Qt::ItemIsEditable); // 不可编辑
+	vacuumHoleDiameterValueItem->setBackground(QBrush(QColor(230, 230, 230)));
 
 
 
@@ -150,12 +161,13 @@ void GeomPropertyWidget::initWidget()
 		{
 			QTableWidgetItem* labelItem = new QTableWidgetItem(unitLabels[row]);
 			labelItem->setFlags(labelItem->flags() & ~Qt::ItemIsEditable); // 不可编辑
+			labelItem->setBackground(QBrush(QColor(230, 230, 230)));
 			m_tableWidget->setItem(row, 3, labelItem);
 		}
 	}
 
 	// 设置列宽度
-	QTableWidgetItem* colimnItem = m_tableWidget->item(4, 1);
+	QTableWidgetItem* colimnItem = m_tableWidget->item(9, 1);
 	int itemWidth = QFontMetrics(m_tableWidget->font()).width(colimnItem->text());
 	m_tableWidget->setColumnWidth(1, itemWidth + m_tableWidget->verticalHeader()->width());
 
@@ -273,6 +285,22 @@ void GeomPropertyWidget::initWidget()
 				m_tableWidget->blockSignals(false);
 			}
 			modelGeometryInfo.gasketLayerThickness = m_gasketLayerThicknessValue.toDouble();
+		}
+		if (item == injectionHoleDiameterValueItem)
+		{
+			auto text = item->text();
+			auto value = text.toDouble();
+			if (value >= 5 && value <= 39)
+			{
+				m_injectionHoleDiameterValue = text;
+			}
+			else
+			{
+				m_tableWidget->blockSignals(true);
+				item->setText(m_injectionHoleDiameterValue);
+				m_tableWidget->blockSignals(false);
+			}
+			modelGeometryInfo.injectionHoleDiameter = m_injectionHoleDiameterValue.toDouble();
 		}
 		ins->SetModelGeometryInfo(modelGeometryInfo);
 	});

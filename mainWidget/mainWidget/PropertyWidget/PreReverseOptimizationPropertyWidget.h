@@ -16,15 +16,17 @@ public:
 
 private:
 	void initWidget() override;
-	void bindConnect();
 
 private slots:
 	void calculate();
+
+	void reset();
 
 private:
 	QTableWidget* m_tableWidget = nullptr;
 
 	QPushButton* m_calButton = nullptr;
+	QPushButton* m_resetButton = nullptr;
 	QPushButton* m_viewButton = nullptr;
 
 	QString m_targetTemperatureValue = "50"; // 弹体目标温度

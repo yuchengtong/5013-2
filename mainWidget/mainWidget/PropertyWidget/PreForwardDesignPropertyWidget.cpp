@@ -162,7 +162,7 @@ void PreForwardDesignPropertyWidget::initWidget()
 		m_tableWidget->setItem(row, 0, serialItem);
 	}
 
-	QStringList labels = { "正向设计","工艺输入参数",  "弹体目标温度", "烘箱环境温度", "弹体初始温度","环境对流传热系数","壳体辐射吸收系数","环境发射率","工艺输出参数","弹体预热时间","弹体温度云图与温升曲线" };
+	QStringList labels = { "正向设计","工艺输入参数",  "弹体目标温度(50～90)", "烘箱环境温度", "弹体初始温度","环境对流传热系数","壳体辐射吸收系数","环境发射率","工艺输出参数","弹体预热时间","弹体温度云图与温升曲线" };
 	for (int row = 0; row < labels.size(); ++row) {
 		QTableWidgetItem* labelItem = new QTableWidgetItem(labels[row]);
 		labelItem->setTextAlignment(Qt::AlignCenter); // 文本居中
@@ -179,34 +179,52 @@ void PreForwardDesignPropertyWidget::initWidget()
 
 	// 导入按钮
 	QPushButton* importButton = new QPushButton("计算");
+	QPushButton* resetButton = new QPushButton("默认");
 	m_tableWidget->setCellWidget(0, 2, importButton);
+	m_tableWidget->setCellWidget(1, 2, resetButton);
 	connect(importButton, &QPushButton::clicked, this, &PreForwardDesignPropertyWidget::preForwardCalculate);
+	connect(resetButton, &QPushButton::clicked, this, &PreForwardDesignPropertyWidget::reset);
 	// 合并第一行的第三和第四列
 	m_tableWidget->setSpan(0, 2, 1, 2);
+	m_tableWidget->setSpan(1, 2, 1, 2);
+
 
 	QTableWidgetItem* targetTemperatureValueItem = new QTableWidgetItem(m_targetTemperatureValue);
 	targetTemperatureValueItem->setTextAlignment(Qt::AlignCenter); // 文本居中
+	targetTemperatureValueItem->setBackground(QBrush(QColor(255, 254, 195)));
 
 	QTableWidgetItem* environmentalTemperatureValueItem = new QTableWidgetItem(m_environmentalTemperatureValue);
 	environmentalTemperatureValueItem->setTextAlignment(Qt::AlignCenter); // 文本居中
+	environmentalTemperatureValueItem->setFlags(environmentalTemperatureValueItem->flags() & ~Qt::ItemIsEditable); // 不可编辑
+	environmentalTemperatureValueItem->setBackground(QBrush(QColor(230, 230, 230)));
 
 	QTableWidgetItem* initialTemperatureValueItem = new QTableWidgetItem(m_initialTemperatureValue);
 	initialTemperatureValueItem->setTextAlignment(Qt::AlignCenter); // 文本居中
+	initialTemperatureValueItem->setFlags(initialTemperatureValueItem->flags() & ~Qt::ItemIsEditable); // 不可编辑
+	initialTemperatureValueItem->setBackground(QBrush(QColor(230, 230, 230)));
 
 	QTableWidgetItem* heatTransferCoefficientValueItem = new QTableWidgetItem(m_heatTransferCoefficientValue);
 	heatTransferCoefficientValueItem->setTextAlignment(Qt::AlignCenter); // 文本居中
+	heatTransferCoefficientValueItem->setFlags(heatTransferCoefficientValueItem->flags() & ~Qt::ItemIsEditable); // 不可编辑
+	heatTransferCoefficientValueItem->setBackground(QBrush(QColor(230, 230, 230)));
 
 	QTableWidgetItem* absorptionCoefficientValueItem = new QTableWidgetItem(m_absorptionCoefficientValue);
 	absorptionCoefficientValueItem->setTextAlignment(Qt::AlignCenter); // 文本居中
+	absorptionCoefficientValueItem->setFlags(absorptionCoefficientValueItem->flags() & ~Qt::ItemIsEditable); // 不可编辑
+	absorptionCoefficientValueItem->setBackground(QBrush(QColor(230, 230, 230)));
 
 	QTableWidgetItem* environmentalEmissivityValueItem = new QTableWidgetItem(m_environmentalEmissivityValue);
 	environmentalEmissivityValueItem->setTextAlignment(Qt::AlignCenter); // 文本居中
+	environmentalEmissivityValueItem->setFlags(environmentalEmissivityValueItem->flags() & ~Qt::ItemIsEditable); // 不可编辑
+	environmentalEmissivityValueItem->setBackground(QBrush(QColor(230, 230, 230)));
 
 	QTableWidgetItem* preheatingTimeValueItem = new QTableWidgetItem(m_preheatingTimeValue);
 	preheatingTimeValueItem->setTextAlignment(Qt::AlignCenter); // 文本居中
+	preheatingTimeValueItem->setBackground(QBrush(QColor(2, 253, 254)));
+
 
 	QTableWidgetItem* curveItem = new QTableWidgetItem(m_preheatingTimeValue);
-	preheatingTimeValueItem->setTextAlignment(Qt::AlignCenter); // 文本居中
+	curveItem->setTextAlignment(Qt::AlignCenter); // 文本居中
 
 
 	m_tableWidget->setItem(2, 2, targetTemperatureValueItem);
@@ -215,6 +233,7 @@ void PreForwardDesignPropertyWidget::initWidget()
 	m_tableWidget->setItem(5, 2, heatTransferCoefficientValueItem);
 	m_tableWidget->setItem(6, 2, absorptionCoefficientValueItem);
 	m_tableWidget->setItem(7, 2, environmentalEmissivityValueItem);
+	m_tableWidget->setItem(9, 2, preheatingTimeValueItem);
 
 	// 显示按钮
 	QPushButton* viewButton = new QPushButton("显示");
@@ -286,7 +305,7 @@ void PreForwardDesignPropertyWidget::initWidget()
 		{
 			auto text = item->text();
 			auto value = text.toDouble();
-			if (value >=50 && value <= 85)
+			if (value >=50 && value <= 90)
 			{
 				m_targetTemperatureValue = text;
 			}
@@ -318,11 +337,26 @@ void PreForwardDesignPropertyWidget::preForwardCalculate()
 
 	
 	double value  = preForwardCalculateForm(calculationPropertyInfo.preForwardCalculateFormula, A, B, C, D, E, F);
-	QString result = QString::number(value, 'f', 4);
-	QTableWidgetItem* resultItem = new QTableWidgetItem(result);
+	QString result = QString::number(qRound(value));
+	m_preheatingTimeValue = result;
+	QTableWidgetItem* resultItem = new QTableWidgetItem(m_preheatingTimeValue);
+	resultItem->setBackground(QBrush(QColor(2, 253, 254)));
 	m_tableWidget->setItem(9, 2, resultItem);
 	
 	QMessageBox::information(this, "计算", "计算成功");
+}
+
+void PreForwardDesignPropertyWidget::reset()
+{
+	m_targetTemperatureValue = "50";
+	QTableWidgetItem* targetTemperatureValueItem = new QTableWidgetItem(m_targetTemperatureValue);
+	targetTemperatureValueItem->setBackground(QBrush(QColor(255, 254, 195)));
+	m_tableWidget->setItem(2, 2, targetTemperatureValueItem);
+
+	m_preheatingTimeValue = "";
+	QTableWidgetItem* resultItem = new QTableWidgetItem(m_preheatingTimeValue);
+	resultItem->setBackground(QBrush(QColor(2, 253, 254)));
+	m_tableWidget->setItem(9, 2, resultItem);
 }
 
 

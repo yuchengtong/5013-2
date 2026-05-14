@@ -51,7 +51,7 @@ mainWidget::mainWidget(QWidget *parent)
 		"}");
 
     ui->setupUi(this);
-	setWindowTitle("注装工艺参数设计软件V1.0");
+	setWindowTitle("TNT基/DNAN基熔铸炸药注装工艺参数匹配设计工具软件");
 	//showMaximized();
 	setMinimumSize(1900, 1300);
 
@@ -328,20 +328,18 @@ mainWidget::mainWidget(QWidget *parent)
 
 
 	QObject::connect(m_HelpAct, &QAction::triggered, [=]() {
-		QString aboutText = "**[软件名称] - 注装工艺参数设计软件V1.0**\n\n"
-			"**版本信息**:\n"
-			"- **软件版本**: [v1.0.0]\n"
-			"**版权信息**:\n"
-			"- **版权所有**: [版权所有者或公司名称]\n"
-			"- **版权声明**:\n"
-			"本软件受版权法和国际条约的保护。未经版权所有者的明确书面许可，严禁对本软件进行任何形式的复制、分发、修改或逆向工程。本软件的部分组件可能使用了第三方的开源软件，这些软件遵循各自的开源许可协议，具体信息可在软件的 LICENSE 文件或相应组件的文档中找到。\n\n"
-			"**开发团队**:\n"
-			"- **开发团队**: [开发团队或组织的名称]\n"
-			"**联系我们**:\n"
-			"如果您对本软件有任何问题、建议或反馈，请随时联系我们:\n"
-			"- **电子邮件**: [联系邮箱]\n"
-			"- **网站**: [官方网站]";
-		QMessageBox::about(nullptr, "注装工艺参数设计软件V1.0", aboutText);
+		QString aboutText = "软件名称：TNT基/DNAN基熔铸炸药注装工艺参数匹配设计工具软件\n"
+			"软件版本：V1.0.0\n"
+			"版权所有：南京理工大学\n"
+			"开发团队：南京理工大学\n"
+			"电子邮件：wuxingliang94@njust.edu.cn\n"
+			"官方网站：https://www.njust.edu.cn\n"
+			"版权声明：\n"
+			"    本软件受版权法和国际条约的保护。未经版权所有者的明确书面许可，严禁对本软件进行任何形式的复制、分发、修改或逆向工程。本软件的部分组件可能使用了第三方的开源软件，这些软件遵循各自的开源许可协议，具体信息可在相应组件的文档中找到。\n"
+			"    如果您对本软件有任何问题、建议或反馈，请随时联系我们！\n";
+		QMessageBox::about(nullptr, "TNT基/DNAN基熔铸炸药注装工艺参数匹配设计工具软件", aboutText);
+
+	
 	});
 	
 

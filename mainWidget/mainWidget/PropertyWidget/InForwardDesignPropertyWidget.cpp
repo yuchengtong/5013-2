@@ -148,7 +148,7 @@ void InForwardDesignPropertyWidget::initWidget()
 	}
 
 
-	QStringList labels = { "正向设计","工艺输入参数",  "弹体保温温度", "药液浇注温度", "阀门开度","真空度","工艺输出参数","相对密度","弹体注药时间","弹体温度云图与温升曲线"};
+	QStringList labels = { "正向设计","工艺输入参数",  "弹体保温温度(50～70)", "药液浇注温度", "阀门开度(5～39)","真空度(0.02～0.08)","工艺输出参数","相对密度","弹体注药时间","弹体温度云图与温升曲线"};
 	for (int row = 0; row < labels.size(); ++row) {
 		QTableWidgetItem* labelItem = new QTableWidgetItem(labels[row]);
 		labelItem->setTextAlignment(Qt::AlignCenter); // 文本居中
@@ -160,28 +160,41 @@ void InForwardDesignPropertyWidget::initWidget()
 
 	// 导入按钮
 	QPushButton* importButton = new QPushButton("计算");
+	QPushButton* resetButton = new QPushButton("默认");
 	m_tableWidget->setCellWidget(0, 2, importButton);
+	m_tableWidget->setCellWidget(1, 2, resetButton);
 	connect(importButton, &QPushButton::clicked, this, &InForwardDesignPropertyWidget::inForwardCalculate);
+	connect(resetButton, &QPushButton::clicked, this, &InForwardDesignPropertyWidget::reset);
+
+
 	// 合并第一行的第三和第四列
 	m_tableWidget->setSpan(0, 2, 1, 2);
+	m_tableWidget->setSpan(1, 2, 1, 2);
 
 	QTableWidgetItem* insulationTemperatureValueItem = new QTableWidgetItem(m_insulationTemperatureValue);
 	insulationTemperatureValueItem->setTextAlignment(Qt::AlignCenter); // 文本居中
+	insulationTemperatureValueItem->setBackground(QBrush(QColor(255, 254, 195)));
 
 	QTableWidgetItem* pouringTemperatureValueItem = new QTableWidgetItem(m_pouringTemperatureValue);
 	pouringTemperatureValueItem->setTextAlignment(Qt::AlignCenter); // 文本居中
+	pouringTemperatureValueItem->setFlags(pouringTemperatureValueItem->flags() & ~Qt::ItemIsEditable); // 不可编辑
+	pouringTemperatureValueItem->setBackground(QBrush(QColor(230, 230, 230)));
 
 	QTableWidgetItem* valveOpeningValueItem = new QTableWidgetItem(m_valveOpeningValue);
 	valveOpeningValueItem->setTextAlignment(Qt::AlignCenter); // 文本居中
+	valveOpeningValueItem->setBackground(QBrush(QColor(255, 254, 195)));
 
 	QTableWidgetItem* vacuumDegreeValueItem = new QTableWidgetItem(m_vacuumDegreeValue);
 	vacuumDegreeValueItem->setTextAlignment(Qt::AlignCenter); // 文本居中
+	vacuumDegreeValueItem->setBackground(QBrush(QColor(255, 254, 195)));
 
 	QTableWidgetItem* relativeDensityValueItem = new QTableWidgetItem(m_relativeDensityValue);
 	relativeDensityValueItem->setTextAlignment(Qt::AlignCenter); // 文本居中
+	relativeDensityValueItem->setBackground(QBrush(QColor(2, 253, 254)));
 
 	QTableWidgetItem* injectionTimeValueItem = new QTableWidgetItem(m_injectionTimeValue);
 	injectionTimeValueItem->setTextAlignment(Qt::AlignCenter); // 文本居中
+	injectionTimeValueItem->setBackground(QBrush(QColor(2, 253, 254)));
 
 	m_tableWidget->setItem(2, 2, insulationTemperatureValueItem);
 	m_tableWidget->setItem(3, 2, pouringTemperatureValueItem);
@@ -270,7 +283,7 @@ void InForwardDesignPropertyWidget::initWidget()
 		{
 			auto text = item->text();
 			auto value = text.toDouble();
-			if (value >= 50 && value <= 110)
+			if (value >= 50 && value <= 70)
 			{
 				m_insulationTemperatureValue = text;
 			}
@@ -302,7 +315,7 @@ void InForwardDesignPropertyWidget::initWidget()
 		{
 			auto text = item->text();
 			auto value = text.toDouble();
-			if (value >= 0 && value <= 30)
+			if (value >= 5 && value <= 39)
 			{
 				m_valveOpeningValue = text;
 			}
@@ -319,8 +332,7 @@ void InForwardDesignPropertyWidget::initWidget()
 			auto text = item->text();
 			auto value = text.toDouble();
 
-			m_vacuumDegreeValue = text;
-			/*if (value >= 0.08 && value <= 0.1)
+			if (value >= 0.02 && value <= 0.08)
 			{
 				m_vacuumDegreeValue = text;
 			}
@@ -329,21 +341,41 @@ void InForwardDesignPropertyWidget::initWidget()
 				m_tableWidget->blockSignals(true);
 				item->setText(m_vacuumDegreeValue);
 				m_tableWidget->blockSignals(false);
-			}*/
+			}
 		}
 
 		if (item == relativeDensityValueItem)
 		{
 			auto text = item->text();
 			auto value = text.toDouble();
-			m_relativeDensityValue = text;
+
+			if (value > 0 && value <= 1)
+			{
+				m_relativeDensityValue = text;
+			}
+			else
+			{
+				m_tableWidget->blockSignals(true);
+				item->setText(m_relativeDensityValue);
+				m_tableWidget->blockSignals(false);
+			}
 		}
 
 		if (item == injectionTimeValueItem)
 		{
 			auto text = item->text();
 			auto value = text.toDouble();
-			m_injectionTimeValue = text;
+			if (value > 0 )
+			{
+				m_injectionTimeValue = text;
+			}
+			else
+			{
+				m_tableWidget->blockSignals(true);
+				item->setText(m_injectionTimeValue);
+				m_tableWidget->blockSignals(false);
+			}
+
 		}
 	});
 
@@ -389,7 +421,7 @@ void InForwardDesignPropertyWidget::inForwardCalculate() {
 		auto gasRateB = (B - 1.074074) / 3.851852;
 		auto gasRateC = (C - 20.185185) / 9.629630;
 		auto gasRateD = (D - 21.111111) / 57.777778;
-		auto gasRateE = (E - 86.370370) / 19.259259;
+		auto gasRateE = (E - 50.370370) / 19.259259;
 		gasRateValue = inForwardCalculateForm(calculationPropertyInfo.oneGasRateCalculateFormula, gasRateA, gasRateB, gasRateC, gasRateD, gasRateE);
 
 
@@ -472,11 +504,42 @@ void InForwardDesignPropertyWidget::inForwardCalculate() {
 
 	QString relativeDensityResult = QString::number(relativeDensity * 100, 'f', 4);
 	QTableWidgetItem* relativeDensityItem = new QTableWidgetItem(relativeDensityResult);
+	relativeDensityItem->setBackground(QBrush(QColor(2, 253, 254)));
 	m_tableWidget->setItem(7, 2, relativeDensityItem);
 
-	QString injectionTimeResult = QString::number(injectionTimeValue, 'f', 4);
+	QString injectionTimeResult = QString::number(qRound(injectionTimeValue));
 	QTableWidgetItem* injectionTimeItem = new QTableWidgetItem(injectionTimeResult);
+	injectionTimeItem->setBackground(QBrush(QColor(2, 253, 254)));
 	m_tableWidget->setItem(8, 2, injectionTimeItem);
 
 	QMessageBox::information(this, "计算", "计算成功");
+}
+
+void InForwardDesignPropertyWidget::reset()
+{
+	m_insulationTemperatureValue = "50";
+	QTableWidgetItem* insulationTemperatureValueItem = new QTableWidgetItem(m_insulationTemperatureValue);
+	insulationTemperatureValueItem->setBackground(QBrush(QColor(255, 254, 195)));
+	m_tableWidget->setItem(2, 2, insulationTemperatureValueItem);
+
+	m_valveOpeningValue = "5";
+	QTableWidgetItem* valveOpeningValueItem = new QTableWidgetItem(m_valveOpeningValue);
+	valveOpeningValueItem->setBackground(QBrush(QColor(255, 254, 195)));
+	m_tableWidget->setItem(4, 2, valveOpeningValueItem);
+
+	m_vacuumDegreeValue = "0.02";
+	QTableWidgetItem* vacuumDegreeValueItem = new QTableWidgetItem(m_vacuumDegreeValue);
+	vacuumDegreeValueItem->setBackground(QBrush(QColor(255, 254, 195)));
+	m_tableWidget->setItem(5, 2, vacuumDegreeValueItem);
+
+
+	m_relativeDensityValue = "";
+	QTableWidgetItem* relativeDensityItem = new QTableWidgetItem(m_relativeDensityValue);
+	relativeDensityItem->setBackground(QBrush(QColor(2, 253, 254)));
+	m_tableWidget->setItem(7, 2, relativeDensityItem);
+
+	m_injectionTimeValue = "";
+	QTableWidgetItem* injectionTimeItem = new QTableWidgetItem(m_injectionTimeValue);
+	injectionTimeItem->setBackground(QBrush(QColor(2, 253, 254)));
+	m_tableWidget->setItem(8, 2, injectionTimeItem);
 }
