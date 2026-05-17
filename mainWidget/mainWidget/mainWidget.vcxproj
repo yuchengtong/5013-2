@@ -67,7 +67,7 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>$(ProjectDir)3rdParty\nglib;$(ProjectDir)Algrithm;$(ProjectDir)DataStructure;$(ProjectDir)PropertyWidget;$(ProjectDir)3rdParty\OpenCASCADE\opencascade-7.4.0\inc;$(ProjectDir)3rdParty\QXlsx\include;$(QTDIR)\include\ActiveQt;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)CurvePlotWidget;$(ProjectDir)3rdParty\nglib;$(ProjectDir)Algrithm;$(ProjectDir)DataStructure;$(ProjectDir)PropertyWidget;$(ProjectDir)3rdParty\OpenCASCADE\opencascade-7.4.0\inc;$(ProjectDir)3rdParty\QXlsx\include;$(QTDIR)\include\ActiveQt;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <PreprocessorDefinitions>OCCGEOMETRY;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
@@ -78,7 +78,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>$(ProjectDir)Algrithm;$(ProjectDir)DataStructure;$(ProjectDir)PropertyWidget;$(ProjectDir)3rdParty\OpenCASCADE\opencascade-7.4.0\inc;$(ProjectDir)3rdParty\QXlsx\include;$(ProjectDir)3rdParty\nglib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)CurvePlotWidget;$(ProjectDir)Algrithm;$(ProjectDir)DataStructure;$(ProjectDir)PropertyWidget;$(ProjectDir)3rdParty\OpenCASCADE\opencascade-7.4.0\inc;$(ProjectDir)3rdParty\QXlsx\include;$(ProjectDir)3rdParty\nglib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <PreprocessorDefinitions>OCCGEOMETRY</PreprocessorDefinitions>
     </ClCompile>
@@ -117,8 +117,17 @@
     <ClCompile Include="Algrithm\APISetNodeValue.cpp" />
     <ClCompile Include="Algrithm\InReverseFormulaSolver.cpp" />
     <ClCompile Include="Algrithm\PreReverseFormulaSolver.cpp" />
+    <ClCompile Include="BaseCurvePlot.cpp" />
+    <ClCompile Include="BaseCurvePlotWidget.cpp" />
     <ClCompile Include="CalculateWorker.cpp" />
     <ClCompile Include="Algrithm\APICreateMidSurfaceHelper.cpp" />
+    <ClCompile Include="CurvePlotWidget\InForwardDensityTempWid.cpp" />
+    <ClCompile Include="CurvePlotWidget\InForwardDensityVacuumWid.cpp" />
+    <ClCompile Include="CurvePlotWidget\InForwardDensityValveWid.cpp" />
+    <ClCompile Include="CurvePlotWidget\InForwardTimeTempWid.cpp" />
+    <ClCompile Include="CurvePlotWidget\InForwardTimeVacuumWid.cpp" />
+    <ClCompile Include="CurvePlotWidget\InForwardTimeValveWid.cpp" />
+    <ClCompile Include="CurvePlotWidget\PreForwardTimeTempWid.cpp" />
     <ClCompile Include="DatabaseWidget.cpp" />
     <ClCompile Include="DataStructure\ModelDataManager.cpp" />
     <ClCompile Include="DataStructure\TriangleStructure.cpp" />
@@ -147,8 +156,6 @@
     <ClCompile Include="PropertyWidget\ShellPropertyWidget.cpp" />
     <ClCompile Include="QCustomPlot\qcustomplot.cpp" />
     <ClCompile Include="ReverseOptimizationWorker.cpp" />
-    <ClCompile Include="TimeTempPlot.cpp" />
-    <ClCompile Include="TimeTempPlotWidget.cpp" />
     <ClCompile Include="ToolsAnimationWidget.cpp" />
     <ClCompile Include="TriangulationWorker.cpp" />
     <ClCompile Include="WordExporter.cpp" />
@@ -196,8 +203,6 @@
   <ItemGroup>
     <QtMoc Include="ReverseOptimizationWorker.h" />
     <QtMoc Include="ToolsAnimationWidget.h" />
-    <QtMoc Include="TimeTempPlotWidget.h" />
-    <QtMoc Include="TimeTempPlot.h" />
     <QtMoc Include="QCustomPlot\qcustomplot.h" />
     <QtMoc Include="PropertyWidget\InForwardDesignPropertyWidget.h" />
     <QtMoc Include="PropertyWidget\InReverseOptimizationPropertyWidget.h" />
@@ -223,6 +228,15 @@
     <QtMoc Include="CalculateWorker.h" />
     <QtMoc Include="Algrithm\PreReverseFormulaSolver.h" />
     <QtMoc Include="Algrithm\InReverseFormulaSolver.h" />
+    <QtMoc Include="BaseCurvePlot.h" />
+    <QtMoc Include="BaseCurvePlotWidget.h" />
+    <QtMoc Include="CurvePlotWidget\PreForwardTimeTempWid.h" />
+    <QtMoc Include="CurvePlotWidget\InForwardDensityTempWid.h" />
+    <QtMoc Include="CurvePlotWidget\InForwardDensityVacuumWid.h" />
+    <QtMoc Include="CurvePlotWidget\InForwardDensityValveWid.h" />
+    <QtMoc Include="CurvePlotWidget\InForwardTimeTempWid.h" />
+    <QtMoc Include="CurvePlotWidget\InForwardTimeVacuumWid.h" />
+    <QtMoc Include="CurvePlotWidget\InForwardTimeValveWid.h" />
     <ClInclude Include="DataStructure\TriangleStructure.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

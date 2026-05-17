@@ -37,6 +37,7 @@
 #include "GFTreeModelWidget.h"
 #include "colour_change_algrithm.h"
 #include "APISetNodeValue.h"
+#include "BaseCurvePlotWidget.h"
 
 
 GFImportModelWidget::GFImportModelWidget(QWidget*parent)
@@ -95,45 +96,81 @@ GFImportModelWidget::GFImportModelWidget(QWidget*parent)
 				leftSplitter->setHandleWidth(1);
 			}
 
-			m_OccView = new OccView(this);
-
-			// ------ 右侧垂直分割器（树结构与属性表） ------
-			auto rightSplitter = new QSplitter(Qt::Vertical);
-			rightSplitter->setMinimumWidth(360);
+			auto preForwardWidget = new QWidget();
+			auto mainLayout1 = new QVBoxLayout();
+			mainLayout1->setSpacing(0); 
+			mainLayout1->setContentsMargins(0, 0, 0, 0);
 			{
-				m_TimeTempPlotWidget = new TimeTempPlotWidget(this);
-				//{
-				//	QVector<double> time = { 0,1,2,3,4,5,6,7,8,9,10 };
-				//	QVector<double> temp = { 0,1,2,3,4,5,6,7,8,9,10 };
-				//	m_TimeTempPlot->AddDataPoint(time, temp);
-				//}
+				m_OccView = new OccView(this);
+				m_OccView->setMinimumSize(300, 345);
 
+				m_ToolsAnimationWidget = new ToolsAnimationWidget();
+
+				m_PreForwardTimeTempWid = new PreForwardTimeTempWid();
+				m_PreForwardTimeTempWid->setMinimumHeight(200);
 
 				m_LogWidget = new GFLogWidget();
+				m_LogWidget->setMinimumHeight(200);
 
-				rightSplitter->addWidget(m_TimeTempPlotWidget);
-				rightSplitter->addWidget(m_LogWidget);
-				rightSplitter->setStretchFactor(0, 1);
-				rightSplitter->setStretchFactor(1, 1);
-				rightSplitter->setContentsMargins(0, 0, 0, 0);
-				// 设置分割器的Handle宽度为0（消除视觉间隙）
-				rightSplitter->setHandleWidth(1);
+				mainLayout1->addWidget(m_OccView, 0);
+				mainLayout1->addWidget(m_ToolsAnimationWidget, 0);
+				mainLayout1->addWidget(m_PreForwardTimeTempWid, 0);
+				mainLayout1->addWidget(m_LogWidget, 0); 
+
+				preForwardWidget->setLayout(mainLayout1);
+			}
+	
+			auto InForwardWidget1 = new QWidget();
+			auto mainLayout2 = new QVBoxLayout();
+			mainLayout2->setSpacing(0);
+			mainLayout2->setContentsMargins(0, 0, 0, 0);
+			{
+				m_InForwardDensityTempWid = new InForwardDensityTempWid();
+				m_InForwardDensityValveWid = new InForwardDensityValveWid();
+				m_InForwardDensityVacuumWid = new InForwardDensityVacuumWid();
+
+				mainLayout2->addWidget(m_InForwardDensityTempWid);
+				mainLayout2->addWidget(m_InForwardDensityValveWid);
+				mainLayout2->addWidget(m_InForwardDensityVacuumWid);
+
+				InForwardWidget1->setLayout(mainLayout2);
 			}
 
+			auto InForwardWidget2 = new QWidget();
+			auto mainLayout3 = new QVBoxLayout();
+			mainLayout3->setSpacing(0);
+			mainLayout3->setContentsMargins(0, 0, 0, 0);
+			{
+				m_InForwardTimeTempWid = new InForwardTimeTempWid();
+				m_InForwardTimeValveWid = new InForwardTimeValveWid();
+				m_InForwardTimeVacuumWid = new InForwardTimeVacuumWid();
+
+				mainLayout3->addWidget(m_InForwardTimeTempWid);
+				mainLayout3->addWidget(m_InForwardTimeValveWid);
+				mainLayout3->addWidget(m_InForwardTimeVacuumWid);
+
+				InForwardWidget2->setLayout(mainLayout3);
+			}
+	
 			// ------ 主水平分割器（左侧与右侧） ------
 			mainSplitter->addWidget(leftSplitter);
-			mainSplitter->addWidget(m_OccView);
-			mainSplitter->addWidget(rightSplitter);
+			mainSplitter->addWidget(preForwardWidget);
+			mainSplitter->addWidget(InForwardWidget1);
+			mainSplitter->addWidget(InForwardWidget2);
+
 			mainSplitter->setContentsMargins(0, 0, 0, 0);
-			// 设置分割器的Handle宽度为0（消除视觉间隙）
 			mainSplitter->setHandleWidth(2);
 
 			mainSplitter->setCollapsible(0, false);
 			mainSplitter->setCollapsible(1, false);
 			mainSplitter->setCollapsible(2, false); 
+			mainSplitter->setCollapsible(3, false);
 
+			mainSplitter->setSizes(QList<int>() << 271 << 543 << 543 << 543);
 			mainSplitter->setStretchFactor(0, 1);
-			mainSplitter->setStretchFactor(1, 9);
+			mainSplitter->setStretchFactor(1, 2);
+			mainSplitter->setStretchFactor(2, 2);
+			mainSplitter->setStretchFactor(3, 2);
 		}
 		layout->addWidget(mainSplitter);
 		layout->setContentsMargins(0, 0, 0, 0);

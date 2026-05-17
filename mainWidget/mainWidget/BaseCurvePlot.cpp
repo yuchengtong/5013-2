@@ -1,14 +1,13 @@
 #pragma execution_character_set("utf-8")
-#include "TimeTempPlot.h"
+#include "BaseCurvePlot.h"
 
-
-TimeTempPlot::TimeTempPlot(QWidget* parent) : QCustomPlot(parent)
+BaseCurvePlot::BaseCurvePlot(QWidget* parent) : QCustomPlot(parent)
 {
     init();
     this->setMouseTracking(true);
 }
 
-void TimeTempPlot::init()
+void BaseCurvePlot::init()
 {
     m_vLine = new QCPItemLine(this);
     m_vLine->setPen(QPen(Qt::red, 1, Qt::DashLine));
@@ -23,8 +22,7 @@ void TimeTempPlot::init()
     m_tracer->setStyle(QCPItemTracer::tsCircle);
     m_tracer->setGraph(this->graph(0));
 
-    this->xAxis->setLabel("时间 (s)");
-    this->yAxis->setLabel("温度 (°C)");
+
     this->addGraph();
     this->graph(0)->setPen(QPen(Qt::blue, 2));
     this->graph(0)->setName("温度曲线");
@@ -42,21 +40,21 @@ void TimeTempPlot::init()
     m_textLabel->setPadding(QMargins(5, 3, 5, 3)); // 内边距
 }
 
-void TimeTempPlot::AddDataPoint(const QVector<double>& times, const QVector<double>& temperatures)
+void BaseCurvePlot::AddDataPoint(const QVector<double>& x, const QVector<double>& y)
 {
-    if (times.isEmpty() || times.size() != temperatures.size())
+    if (x.isEmpty() || x.size() != y.size())
     {
         return;
     }
 
-    this->graph(0)->setData(times, temperatures);
+    this->graph(0)->setData(x, y);
 
     // 设置 X 轴范围
-    this->xAxis->setRange(times.first(), times.last());
+    this->xAxis->setRange(x.first(), x.last());
 
     // 设置 Y 轴范围 (留出一点边距)
-    double minY = *std::min_element(temperatures.constBegin(), temperatures.constEnd());
-    double maxY = *std::max_element(temperatures.constBegin(), temperatures.constEnd());
+    double minY = *std::min_element(y.constBegin(), y.constEnd());
+    double maxY = *std::max_element(y.constBegin(), y.constEnd());
     double margin = (maxY - minY) * 0.1;
     this->yAxis->setRange(minY - margin, maxY + margin);
 
@@ -69,7 +67,18 @@ void TimeTempPlot::AddDataPoint(const QVector<double>& times, const QVector<doub
     m_tracer->setVisible(true);
 }
 
-void TimeTempPlot::mouseMoveEvent(QMouseEvent* event)
+void BaseCurvePlot::SetXName(const QString& str)
+{
+    this->xAxis->setLabel(str);
+
+}
+
+void BaseCurvePlot::SetYName(const QString& str)
+{
+    this->yAxis->setLabel(str);
+}
+
+void BaseCurvePlot::mouseMoveEvent(QMouseEvent* event)
 {
     double mouseX = event->pos().x();
     double mouseY = event->pos().y();
@@ -129,4 +138,3 @@ void TimeTempPlot::mouseMoveEvent(QMouseEvent* event)
     this->replot();
     QCustomPlot::mouseMoveEvent(event);
 }
-

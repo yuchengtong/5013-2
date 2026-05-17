@@ -148,12 +148,6 @@
     <ClCompile Include="QCustomPlot\qcustomplot.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="TimeTempPlot.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="TimeTempPlotWidget.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="ToolsAnimationWidget.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -164,6 +158,33 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ReverseOptimizationWorker.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BaseCurvePlotWidget.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BaseCurvePlot.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CurvePlotWidget\PreForwardTimeTempWid.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CurvePlotWidget\InForwardDensityTempWid.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CurvePlotWidget\InForwardDensityVacuumWid.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CurvePlotWidget\InForwardDensityValveWid.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CurvePlotWidget\InForwardTimeTempWid.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CurvePlotWidget\InForwardTimeVacuumWid.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CurvePlotWidget\InForwardTimeValveWid.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -258,12 +279,6 @@
     <QtMoc Include="QCustomPlot\qcustomplot.h">
       <Filter>Header Files</Filter>
     </QtMoc>
-    <QtMoc Include="TimeTempPlot.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
-    <QtMoc Include="TimeTempPlotWidget.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
     <QtMoc Include="ToolsAnimationWidget.h">
       <Filter>Header Files</Filter>
     </QtMoc>
@@ -274,6 +289,33 @@
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="ReverseOptimizationWorker.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="BaseCurvePlot.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="BaseCurvePlotWidget.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="CurvePlotWidget\PreForwardTimeTempWid.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="CurvePlotWidget\InForwardDensityTempWid.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="CurvePlotWidget\InForwardDensityVacuumWid.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="CurvePlotWidget\InForwardDensityValveWid.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="CurvePlotWidget\InForwardTimeTempWid.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="CurvePlotWidget\InForwardTimeVacuumWid.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="CurvePlotWidget\InForwardTimeValveWid.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>

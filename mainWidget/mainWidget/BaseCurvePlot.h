@@ -1,16 +1,18 @@
 #pragma once
 #include "QCustomPlot/qcustomplot.h"
 
-
-class TimeTempPlot :public QCustomPlot
+class BaseCurvePlot :public QCustomPlot
 {
     Q_OBJECT
 public:
-    explicit TimeTempPlot(QWidget* parent = nullptr);
+    explicit BaseCurvePlot(QWidget* parent = nullptr);
 
     void init();
 
-    void AddDataPoint(const QVector<double>& times, const QVector<double>& temperatures);
+    void AddDataPoint(const QVector<double>& x, const QVector<double>& y);
+
+    void SetXName(const QString& str);
+    void SetYName(const QString& str);
 
 protected:
     void mouseMoveEvent(QMouseEvent* event) override;

@@ -126,7 +126,6 @@ PreForwardDesignPropertyWidget::PreForwardDesignPropertyWidget(QWidget* parent)
 
 void PreForwardDesignPropertyWidget::initWidget()
 {
-
 	QVBoxLayout* vlayout = new QVBoxLayout(this);
 	vlayout->setContentsMargins(0, 0, 0, 0);
 
@@ -343,6 +342,43 @@ void PreForwardDesignPropertyWidget::preForwardCalculate()
 	resultItem->setBackground(QBrush(QColor(2, 253, 254)));
 	m_tableWidget->setItem(9, 2, resultItem);
 	
+
+
+	//更新曲线图
+	QWidget* parent = parentWidget();
+	while (parent)
+	{
+		GFImportModelWidget* gfParent = dynamic_cast<GFImportModelWidget*>(parent);
+		if (gfParent)
+		{
+			QDateTime currentTime = QDateTime::currentDateTime();
+			QString timeStr = currentTime.toString("yyyy-MM-dd hh:mm:ss");
+			auto logWidget = gfParent->GetLogWidget();
+			auto textEdit = logWidget->GetTextEdit();
+
+
+			auto preForwardTimeTempWid = gfParent->GetPreForwardTimeTempWid();
+
+			//preForwardTimeTempWid->AddDataPoint();
+
+
+			
+
+			break;
+		}
+		else
+		{
+			parent = parent->parentWidget();
+		}
+	}
+
+
+
+
+
+
+
+
 	QMessageBox::information(this, "计算", "计算成功");
 }
 
