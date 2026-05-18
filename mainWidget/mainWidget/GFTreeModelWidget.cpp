@@ -162,6 +162,7 @@ void GFTreeModelWidget::init()
 		gelatin->setData(0, Qt::UserRole, "Gelatin");
 		gelatin->setIcon(0, error_icon);
 	}
+	phyProperty->setExpanded(true);
 	phyProperty->addChild(steel);
 	phyProperty->addChild(propellant);
 	phyProperty->addChild(gelatin);	
@@ -898,13 +899,20 @@ void GFTreeModelWidget::contextMenuEvent(QContextMenuEvent *event)
 
 					// 处理导入结果
 					connect(worker, &TriangulationWorker::WorkFinished, this,
-						[=](bool success, const QString& msg, const ModelMeshInfo& info) {
+						[=](bool success, const QString& msg, ModelMeshInfo info) {
 							// 更新日志
 							QDateTime finishTime = QDateTime::currentDateTime();
 							QString finishTimeStr = finishTime.toString("yyyy-MM-dd hh:mm:ss");
 							textEdit->appendPlainText(finishTimeStr + "[" + (success ? "信息" : "错误") + "]>" + msg);
 							if (success)
 							{
+								auto modelGeometryInfo = ModelDataManager::GetInstance()->GetModelGeometryInfo();
+								info.preForwardBoundaryEdges = APISetNodeValue::ExtractAndClassifyEdges(modelGeometryInfo.symmetricalShape);
+								info.preForwardYCenter = (info.y_min + info.y_max) * 0.5;
+								info.preForwardWidth = info.y_max - info.y_min;
+								info.preForwardHeight = info.x_max - info.x_min;
+								info.preForwardGeoCached = true;
+								
 								ModelDataManager::GetInstance()->SetModelMeshInfo(info);
 								BRep_Builder builder;
 								TopoDS_Compound compound;

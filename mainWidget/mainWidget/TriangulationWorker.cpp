@@ -145,8 +145,8 @@ void TriangulationWorker::DoWork()
             (modelGeometryInfo.theZmin + modelGeometryInfo.theZmax) / 2.0);
         auto meshData90 = aDataSource->RotateXZ(90, (modelGeometryInfo.theXmin + modelGeometryInfo.theXmax) / 2.0,
             (modelGeometryInfo.theZmin + modelGeometryInfo.theZmax) / 2.0);
-        meshInfo.triangleStructure45 = *meshData45;
-        meshInfo.triangleStructure90 = *meshData90;
+        //meshInfo.triangleStructure45 = *meshData45;
+        //meshInfo.triangleStructure90 = *meshData90;
 
         //delete aDataSource;  // 清理资源
 

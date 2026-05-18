@@ -19,8 +19,6 @@
 #include <MeshVS_DrawerAttribute.hxx>
 #include <MeshVS_MeshPrsBuilder.hxx>
 #include <MeshVS_NodalColorPrsBuilder.hxx>
-#include <MeshVS_NodalColorPrsBuilder.hxx>
-
 
 #include <QSplitter>
 #include <QHBoxLayout>
@@ -192,7 +190,7 @@ GFImportModelWidget::~GFImportModelWidget()
 void GFImportModelWidget::onTreeItemClicked(const QString& itemData)
 {
 	auto occView = GetOccView();
-	if (itemData == "Geometry") 
+	if (itemData == "Geometry")
 	{
 		occView->SetCameraRotationState(true);
 
@@ -210,13 +208,13 @@ void GFImportModelWidget::onTreeItemClicked(const QString& itemData)
 		}
 		m_geomPropertyWidget->UpdataPropertyInfo();
 	}
-	else if (itemData == "PhysicalProperty") 
+	else if (itemData == "PhysicalProperty")
 	{
 		occView->SetCameraRotationState(true);
 
 		m_PropertyStackWidget->setCurrentWidget(m_materialPropertyWidget);
 	}
-	else if (itemData == "Steel") 
+	else if (itemData == "Steel")
 	{
 		occView->SetCameraRotationState(true);
 		m_PropertyStackWidget->setCurrentWidget(m_steelPropertyWidgett);
@@ -226,22 +224,22 @@ void GFImportModelWidget::onTreeItemClicked(const QString& itemData)
 		occView->SetCameraRotationState(true);
 		m_PropertyStackWidget->setCurrentWidget(m_propellantPropertyWidget);
 	}
-	else if (itemData == "ComputationalModel") 
+	else if (itemData == "ComputationalModel")
 	{
 		occView->SetCameraRotationState(true);
 		m_PropertyStackWidget->setCurrentWidget(m_calculationPropertyWidget);
 	}
-	else if (itemData == "Project") 
+	else if (itemData == "Project")
 	{
 		occView->SetCameraRotationState(true);
 		m_PropertyStackWidget->setCurrentWidget(m_projectPropertyWidge);
 	}
-	else if (itemData == "Gelatin") 
+	else if (itemData == "Gelatin")
 	{
 		occView->SetCameraRotationState(true);
 		m_PropertyStackWidget->setCurrentWidget(m_insulatingheatPropertyWidget);
 	}
-	else if (itemData == "DataBase") 
+	else if (itemData == "DataBase")
 	{
 		occView->SetCameraRotationState(true);
 
@@ -304,25 +302,65 @@ void GFImportModelWidget::onTreeItemClicked(const QString& itemData)
 	}
 	else if (itemData == "PreForwardDesign")
 	{
-	occView->SetCameraRotationState(true);
-	m_PropertyStackWidget->setCurrentWidget(m_preForwardDesignPropertyWidget);
+		occView->SetCameraRotationState(true);
+
+		auto modelInfo = ModelDataManager::GetInstance()->GetModelGeometryInfo();
+		if (!modelInfo.shape.IsNull())
+		{
+			Handle(AIS_InteractiveContext) context = occView->getContext();
+			context->EraseAll(true);
+			Handle(AIS_Shape) modelPresentation = new AIS_Shape(modelInfo.shape);
+			context->SetDisplayMode(modelPresentation, AIS_Shaded, true);
+			context->SetColor(modelPresentation, Quantity_Color(0.0, 1.0, 1.0, Quantity_TOC_RGB), true);
+			context->Display(modelPresentation, false);
+			occView->fitAll();
+		}
+
+		m_PropertyStackWidget->setCurrentWidget(m_preForwardDesignPropertyWidget);
+
 	}
 	else if (itemData == "PreReverseOptimization")
 	{
-	occView->SetCameraRotationState(true);
-	m_PropertyStackWidget->setCurrentWidget(m_preReverseOptimizationPropertyWidget);
+		occView->SetCameraRotationState(true);
+
+		auto modelInfo = ModelDataManager::GetInstance()->GetModelGeometryInfo();
+		if (!modelInfo.shape.IsNull())
+		{
+			Handle(AIS_InteractiveContext) context = occView->getContext();
+			context->EraseAll(true);
+			Handle(AIS_Shape) modelPresentation = new AIS_Shape(modelInfo.shape);
+			context->SetDisplayMode(modelPresentation, AIS_Shaded, true);
+			context->SetColor(modelPresentation, Quantity_Color(0.0, 1.0, 1.0, Quantity_TOC_RGB), true);
+			context->Display(modelPresentation, false);
+			occView->fitAll();
+		}
+
+		m_PropertyStackWidget->setCurrentWidget(m_preReverseOptimizationPropertyWidget);
 	}
 	else if (itemData == "InForwardDesign")
 	{
-	occView->SetCameraRotationState(true);
-	m_PropertyStackWidget->setCurrentWidget(m_inForwardDesignPropertyWidget);
+		occView->SetCameraRotationState(true);
+		m_PropertyStackWidget->setCurrentWidget(m_inForwardDesignPropertyWidget);
 	}
 	else if (itemData == "InReverseOptimization")
 	{
-	occView->SetCameraRotationState(true);
-	m_PropertyStackWidget->setCurrentWidget(m_inReverseOptimizationPropertyWidget);
+		occView->SetCameraRotationState(true);
+
+		auto modelInfo = ModelDataManager::GetInstance()->GetModelGeometryInfo();
+		if (!modelInfo.shape.IsNull())
+		{
+			Handle(AIS_InteractiveContext) context = occView->getContext();
+			context->EraseAll(true);
+			Handle(AIS_Shape) modelPresentation = new AIS_Shape(modelInfo.shape);
+			context->SetDisplayMode(modelPresentation, AIS_Shaded, true);
+			context->SetColor(modelPresentation, Quantity_Color(0.0, 1.0, 1.0, Quantity_TOC_RGB), true);
+			context->Display(modelPresentation, false);
+			occView->fitAll();
+		}
+
+		m_PropertyStackWidget->setCurrentWidget(m_inReverseOptimizationPropertyWidget);
 	}
-		
+
 }
 
 

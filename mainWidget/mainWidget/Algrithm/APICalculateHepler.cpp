@@ -110,8 +110,5 @@ bool APICalculateHepler::CalculatePreForwardDesignResult(OccView* occView, std::
 	view->Redraw();
 
 
-
-
-
 	return false;
 }

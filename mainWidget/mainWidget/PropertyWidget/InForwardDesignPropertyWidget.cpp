@@ -381,9 +381,8 @@ void InForwardDesignPropertyWidget::initWidget()
 
 }
 
-void InForwardDesignPropertyWidget::inForwardCalculate() {
-
-
+void InForwardDesignPropertyWidget::inForwardCalculate() 
+{
 	auto ins = ModelDataManager::GetInstance();
 	auto modelGeometryInfo = ins->GetModelGeometryInfo();
 	auto steelPropertyInfo = ins->GetSteelPropertyInfo();
@@ -398,8 +397,9 @@ void InForwardDesignPropertyWidget::inForwardCalculate() {
 	// 获取模型类型
 	QString model = "产品一";
 	QWidget* parent = parentWidget();
+	GFImportModelWidget* gfParent = nullptr;
 	while (parent) {
-		GFImportModelWidget* gfParent = dynamic_cast<GFImportModelWidget*>(parent);
+		gfParent = dynamic_cast<GFImportModelWidget*>(parent);
 		if (gfParent)
 		{
 			auto *modelComboBox = gfParent->GetGeomPropertyWidget()->GetModelComboBox();
@@ -511,6 +511,13 @@ void InForwardDesignPropertyWidget::inForwardCalculate() {
 	QTableWidgetItem* injectionTimeItem = new QTableWidgetItem(injectionTimeResult);
 	injectionTimeItem->setBackground(QBrush(QColor(2, 253, 254)));
 	m_tableWidget->setItem(8, 2, injectionTimeItem);
+
+
+	auto toolsAnimationWidget=gfParent->GetToolsAnimationWidget();
+	QStringList names = { "第一帧" ,"第二帧" ,"第三帧" ,"第四帧" ,"第五帧" ,"第六帧" ,
+	"第七帧" ,"第八帧" ,"第九帧" ,"第十帧" ,"第十一帧" ,"第十二帧" };
+	QVector<double> times = {1,2,3,4,5,6,7,8,9,10,11,12};
+	toolsAnimationWidget->SetAnimationSteps(names, times);
 
 	QMessageBox::information(this, "计算", "计算成功");
 }

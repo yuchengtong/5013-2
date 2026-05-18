@@ -1,6 +1,9 @@
 #pragma once
 #include <Standard_Type.hxx>
 #include <TopoDS_Shape.hxx>
+#include <AIS_ColorScale.hxx>
+#include <MeshVS_MeshPrsBuilder.hxx>
+#include <MeshVS_NodalColorPrsBuilder.hxx>
 #include <gp_Pnt.hxx>
 
 #include <QObject>
@@ -9,6 +12,8 @@
 #include <QRandomGenerator>
 
 #include "TriangleStructure.h"
+#include "APISetNodeValue.h"
+
 
 
 struct UserInfo {
@@ -50,8 +55,6 @@ struct ModelGeometryInfo {
 
 struct ModelMeshInfo {
 	TriangleStructure triangleStructure;
-	TriangleStructure triangleStructure45;
-	TriangleStructure triangleStructure90;
 	bool isChecked=false;
 
 	double x_min = 0.0;
@@ -60,6 +63,25 @@ struct ModelMeshInfo {
 	double y_max = 0.0;
 	double z_min = 0.0;
 	double z_max = 0.0;
+
+
+	// ====== 前向设计动画缓存（模型不变则永久有效） ======
+	bool preForwardGeoCached = false;
+	std::vector <APISetNodeValue::ModelEdge> preForwardBoundaryEdges;
+	double preForwardYCenter = 0.0;
+	double preForwardWidth = 0.0;
+	double preForwardHeight = 0.0;
+
+	bool preForwardMeshDataCached = false;
+	TColStd_PackedMapOfInteger preForwardAllNodes;
+	Handle(TColStd_HArray2OfReal) preForwardNodeCoords;
+
+	// OCC 显示对象（只创建一次）
+	bool preForwardDisplayCreated = false;
+	Handle(MeshVS_Mesh) preForwardMesh;
+	Handle(MeshVS_NodalColorPrsBuilder) preForwardNodalBuilder;
+	Handle(AIS_ColorScale) preForwardColorScale;
+	bool preForwardViewInitialized = false;
 
 };
 
@@ -126,6 +148,11 @@ struct InForwardPropertyInfo {
 	double m_relativeDensityValue = 0.0; // 相对密度
 	double m_injectionTimeValue = 0.0; // 弹体注药时间
 	bool isChecked = false;
+
+
+
+
+
 };
 
 // 注药逆向寻优

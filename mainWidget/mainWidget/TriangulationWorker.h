@@ -26,7 +26,7 @@ signals:
 
     void StatusUpdated(const QString& status);
 
-    void WorkFinished(bool success, const QString& msg, const ModelMeshInfo& info);
+    void WorkFinished(bool success, const QString& msg, ModelMeshInfo info);
 
 private:
     TopoDS_Shape m_originalShape;  // 待划分网格的原始几何

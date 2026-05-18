@@ -59,6 +59,10 @@ public:
 	InReverseOptimizationPropertyWidget* GetInReverseOptimizationPropertyWidget() { return m_inReverseOptimizationPropertyWidget; }
 
 	//ÇúÏßÍ¼
+	ToolsAnimationWidget* GetToolsAnimationWidget() {
+		return m_ToolsAnimationWidget;
+	}
+
 	PreForwardTimeTempWid* GetPreForwardTimeTempWid() { return m_PreForwardTimeTempWid; }
 	InForwardDensityTempWid* GetInForwardDensityTempWid() { return m_InForwardDensityTempWid; }
 	InForwardDensityValveWid* GetInForwardDensityValveWid() { return m_InForwardDensityValveWid; }
