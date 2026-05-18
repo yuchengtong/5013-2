@@ -4,65 +4,47 @@
 #include <QComboBox>
 #include <QPushButton>
 #include <QSlider>
+#include <QTimer>
 
 class ToolsAnimationWidget : public QWidget
 {
-	Q_OBJECT
+    Q_OBJECT
 public:
-	explicit ToolsAnimationWidget(QWidget* parent = nullptr);
-
-	void SetAnimationRange(double min, double max);
-
-	void SetAnimationSteps(const QStringList& names, const QVector<double>& times);
-
-	void UpdateUI(double time);
-
-	int GetCurrentStepIndex();
+    explicit ToolsAnimationWidget(QWidget* parent = nullptr);
+    void SetAnimationSteps(const QStringList& names);
+    void UpdateUI(int frameIndex);
+    int GetCurrentFrameIndex();
 
 private:
-	void init();
+    void init();
+    void bindConnect();
+    void setButtonState(int frameIndex);
+    void goToFrame(int frameIndex);  // ¡û ÐÂÔö
 
-	void bindConnect();
-
-	void setProcessButtonEnabled(double value);
-
-
-	enum EnumButtonState
-	{
-		Normal,
-		Hover,
-		Pressed,
-		Checked,
-		Disabled,
-	};
-	void setButtonIcon(QPushButton* pBtn, EnumButtonState eState);
-
+    enum EnumButtonState
+    {
+        Normal, Hover, Pressed, Checked, Disabled,
+    };
+    void setButtonIcon(QPushButton* pBtn, EnumButtonState eState);
 
 protected:
-	bool eventFilter(QObject* obj,QEvent* ev) override;
+    bool eventFilter(QObject* obj, QEvent* ev) override;
 
 signals:
-	void animationTimeChanged(double);
+    void animationFrameChanged(int frameIndex);
 
 private:
-	QComboBox* m_comboBox;
-	QPushButton* m_firstBtn;
-	QPushButton* m_prevBtn;
-	QPushButton* m_nextBtn;
-	QPushButton* m_lastBtn;
-	QPushButton* m_playBtn;
-	QWidget* m_animToolBtnWidget = nullptr; 
-	QSlider* m_slider;
-	QTimer* m_playTimer = nullptr;
-	int m_substepIdx = 0;
+    QComboBox* m_comboBox;
+    QPushButton* m_firstBtn;
+    QPushButton* m_prevBtn;
+    QPushButton* m_nextBtn;
+    QPushButton* m_lastBtn;
+    QPushButton* m_playBtn;
+    QWidget* m_animToolBtnWidget = nullptr;
+    QSlider* m_slider;
+    QTimer* m_playTimer = nullptr;
 
-private:
-	QVector<double> m_timeSteps;
-	QVector<double> m_subSteps;
-	double m_minValue = 0.0;
-	double m_maxValue = 0.0;
-	double m_currentTime = 0.0;
-
-
+    int m_frameCount = 0;
+    int m_currentFrame = 0;
+    QVector<int> m_subSteps;
 };
-

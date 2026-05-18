@@ -15,6 +15,8 @@
 
 #include <QDateTime>
 #include <QApplication>
+#include <V3d_TypeOfOrientation.hxx>
+#include <V3d_View.hxx>
 
 //计算
 double inForwardCalculateForm(const QString& formula,
@@ -516,11 +518,51 @@ void InForwardDesignPropertyWidget::inForwardCalculate()
 	auto toolsAnimationWidget=gfParent->GetToolsAnimationWidget();
 	QStringList names = { "第一帧" ,"第二帧" ,"第三帧" ,"第四帧" ,"第五帧" ,"第六帧" ,
 	"第七帧" ,"第八帧" ,"第九帧" ,"第十帧" ,"第十一帧" ,"第十二帧" };
-	QVector<double> times = {1,2,3,4,5,6,7,8,9,10,11,12};
-	toolsAnimationWidget->SetAnimationSteps(names, times);
+	toolsAnimationWidget->SetAnimationSteps(names);
 
-	QMessageBox::information(this, "计算", "计算成功");
+
+
+	connect(toolsAnimationWidget, &ToolsAnimationWidget::animationFrameChanged, this, [=](int frameIndex) {
+		auto occView = gfParent->GetOccView();
+		std::vector<double> nodeValues;
+		APISetNodeValue::SetPreForwardDesignResult(occView, nodeValues, frameIndex);
+
+		// 颜色标尺（从原 comboBox 槽搬过来）
+		Handle(AIS_InteractiveContext) context = occView->getContext();
+		Handle(V3d_View) view = occView->getView();
+		view->SetProj(V3d_Zneg);
+		view->SetTwist(-M_PI / 2.0);
+
+		double min_value = 0;
+		double max_value = 10;
+		TCollection_ExtendedString tostr("温度云图", true);
+		Handle(AIS_ColorScale) aColorScale = new AIS_ColorScale();
+		aColorScale->SetFormat(TCollection_AsciiString("%.2f"));
+		aColorScale->SetSize(50, 200);
+		aColorScale->SetRange(min_value, max_value);
+		aColorScale->SetNumberOfIntervals(9);
+		aColorScale->SetLabelPosition(Aspect_TOCSP_RIGHT);
+		aColorScale->SetTextHeight(14);
+		aColorScale->SetColor(Quantity_Color(Quantity_NOC_BLACK));
+		aColorScale->SetTitle(tostr);
+		aColorScale->SetColorRange(Quantity_Color(Quantity_NOC_BLUE1), Quantity_Color(Quantity_NOC_RED));
+		aColorScale->SetLabelType(Aspect_TOCSD_AUTO);
+		aColorScale->SetZLayer(Graphic3d_ZLayerId_TopOSD);
+		Graphic3d_Vec2i anoffset(0, Standard_Integer(200));
+		context->SetTransformPersistence(aColorScale, new Graphic3d_TransformPers(Graphic3d_TMF_2d, Aspect_TOTP_LEFT_UPPER, anoffset));
+		context->SetDisplayMode(aColorScale, 1, Standard_False);
+		context->Display(aColorScale, Standard_True);
+		});
+
+	// 初始化第 0 帧
+	auto occView = gfParent->GetOccView();
+	std::vector<double> nodeValues;
+	APISetNodeValue::SetPreForwardDesignResult(occView, nodeValues, 0);
+	toolsAnimationWidget->UpdateUI(0);
+
+	QMessageBox::information(this, "提示", "计算成功");
 }
+
 
 void InForwardDesignPropertyWidget::reset()
 {

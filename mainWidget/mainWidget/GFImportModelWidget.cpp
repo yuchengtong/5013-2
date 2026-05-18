@@ -87,7 +87,7 @@ GFImportModelWidget::GFImportModelWidget(QWidget*parent)
 			{
 				leftSplitter->addWidget(m_treeModelWidget);
 				leftSplitter->addWidget(m_PropertyStackWidget);
-				leftSplitter->setStretchFactor(0, 3);
+				leftSplitter->setStretchFactor(0, 2);
 				leftSplitter->setStretchFactor(1, 1);
 				leftSplitter->setContentsMargins(0, 0, 0, 0);
 				// 设置分割器的Handle宽度为0（消除视觉间隙）
