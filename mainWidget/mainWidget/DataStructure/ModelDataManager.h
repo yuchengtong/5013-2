@@ -144,10 +144,12 @@ struct InForwardPropertyInfo {
 	double m_insulationTemperatureValue = 50.0; // 弹体保温温度
 	double m_pouringTemperatureValue = 102.0; // 药液浇注温度
 	double m_pouringSpeedValue = 15.0; // 药液浇注速度
-	double m_vacuumDegreeValue = 0.1; // 真空度
+	double m_vacuumDegreeValue = 0.02; // 真空度
 	double m_relativeDensityValue = 0.0; // 相对密度
 	double m_injectionTimeValue = 0.0; // 弹体注药时间
 	bool isChecked = false;
+
+
 
 
 

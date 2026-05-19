@@ -550,6 +550,11 @@ void InForwardDesignPropertyWidget::inForwardCalculate() {
 					relativeDensity = 1.0;
 				}
 				QString relativeDensityResult = QString::number(relativeDensity * 100, 'f', 4);
+				// ±£´æ½á¹û
+				InForwardPropertyInfo inForwardPropertyInfo = ins->GetInForwardPropertyInfo();
+				inForwardPropertyInfo.m_relativeDensityValue = relativeDensityResult.toDouble();
+				ins->SetInForwardPropertyInfo(inForwardPropertyInfo);
+
 				QTableWidgetItem* relativeDensityItem = new QTableWidgetItem(relativeDensityResult);
 				relativeDensityItem->setBackground(QBrush(QColor(2, 253, 254)));
 				m_tableWidget->setItem(7, 2, relativeDensityItem);
