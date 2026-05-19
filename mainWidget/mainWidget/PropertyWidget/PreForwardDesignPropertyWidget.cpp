@@ -385,7 +385,7 @@ void PreForwardDesignPropertyWidget::preForwardCalculate()
 					{
 						QMessageBox::warning(this, "计算失败", msg);
 					}
-					QMessageBox::information(this, "计算", "计算成功");
+					//QMessageBox::information(this, "计算", "计算成功");
 
 					QString newTimeStr = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss");
 					QString newText = newTimeStr + "[信息]>预热工艺正向计算完成";

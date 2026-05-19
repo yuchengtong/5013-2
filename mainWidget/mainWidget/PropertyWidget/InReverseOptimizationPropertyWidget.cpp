@@ -524,7 +524,7 @@ void InReverseOptimizationPropertyWidget::calculate()
 											QTableWidgetItem* item = new QTableWidgetItem(m_valveOpeningValue);
 											item->setBackground(QBrush(QColor(2, 253, 254)));
 											m_tableWidget->setItem(4, 2, item);
-											QMessageBox::information(this, "成功", "计算完成");
+											//QMessageBox::information(this, "成功", "计算完成");
 											return;
 										}
 									}
@@ -539,7 +539,7 @@ void InReverseOptimizationPropertyWidget::calculate()
 											QTableWidgetItem* item = new QTableWidgetItem(m_vacuumDegreeValue);
 											item->setBackground(QBrush(QColor(2, 253, 254)));
 											m_tableWidget->setItem(5, 2, item);
-											QMessageBox::information(this, "成功", "计算完成");
+											//QMessageBox::information(this, "成功", "计算完成");
 											return;
 										}
 									}
@@ -586,7 +586,7 @@ void InReverseOptimizationPropertyWidget::calculate()
 											QTableWidgetItem* item = new QTableWidgetItem(m_valveOpeningValue);
 											item->setBackground(QBrush(QColor(2, 253, 254)));
 											m_tableWidget->setItem(4, 2, item);
-											QMessageBox::information(this, "成功", "计算完成");
+											//QMessageBox::information(this, "成功", "计算完成");
 											return;
 										}
 									}
@@ -601,7 +601,7 @@ void InReverseOptimizationPropertyWidget::calculate()
 											QTableWidgetItem* item = new QTableWidgetItem(m_vacuumDegreeValue);
 											item->setBackground(QBrush(QColor(2, 253, 254)));
 											m_tableWidget->setItem(5, 2, item);
-											QMessageBox::information(this, "成功", "计算完成");
+											//QMessageBox::information(this, "成功", "计算完成");
 											return;
 										}
 									}
@@ -660,7 +660,7 @@ void InReverseOptimizationPropertyWidget::calculate()
 											QTableWidgetItem* item = new QTableWidgetItem(m_valveOpeningValue);
 											item->setBackground(QBrush(QColor(2, 253, 254)));
 											m_tableWidget->setItem(4, 2, item);
-											QMessageBox::information(this, "成功", "计算完成");
+											//QMessageBox::information(this, "成功", "计算完成");
 											return;
 										}
 									}
@@ -675,7 +675,7 @@ void InReverseOptimizationPropertyWidget::calculate()
 											QTableWidgetItem* item = new QTableWidgetItem(m_vacuumDegreeValue);
 											item->setBackground(QBrush(QColor(2, 253, 254)));
 											m_tableWidget->setItem(5, 2, item);
-											QMessageBox::information(this, "成功", "计算完成");
+											//QMessageBox::information(this, "成功", "计算完成");
 											return;
 										}
 									}
@@ -723,7 +723,7 @@ void InReverseOptimizationPropertyWidget::calculate()
 											QTableWidgetItem* item = new QTableWidgetItem(m_valveOpeningValue);
 											item->setBackground(QBrush(QColor(2, 253, 254)));
 											m_tableWidget->setItem(4, 2, item);
-											QMessageBox::information(this, "成功", "计算完成");
+											//QMessageBox::information(this, "成功", "计算完成");
 											return;
 										}
 									}
@@ -738,7 +738,7 @@ void InReverseOptimizationPropertyWidget::calculate()
 											QTableWidgetItem* item = new QTableWidgetItem(m_vacuumDegreeValue);
 											item->setBackground(QBrush(QColor(2, 253, 254)));
 											m_tableWidget->setItem(5, 2, item);
-											QMessageBox::information(this, "成功", "计算完成");
+											//QMessageBox::information(this, "成功", "计算完成");
 											return;
 										}
 									}
@@ -797,7 +797,7 @@ void InReverseOptimizationPropertyWidget::calculate()
 											QTableWidgetItem* item = new QTableWidgetItem(m_valveOpeningValue);
 											item->setBackground(QBrush(QColor(2, 253, 254)));
 											m_tableWidget->setItem(4, 2, item);
-											QMessageBox::information(this, "成功", "计算完成");
+											//QMessageBox::information(this, "成功", "计算完成");
 											return;
 										}
 									}
@@ -812,7 +812,7 @@ void InReverseOptimizationPropertyWidget::calculate()
 											QTableWidgetItem* item = new QTableWidgetItem(m_vacuumDegreeValue);
 											item->setBackground(QBrush(QColor(2, 253, 254)));
 											m_tableWidget->setItem(5, 2, item);
-											QMessageBox::information(this, "成功", "计算完成");
+											//QMessageBox::information(this, "成功", "计算完成");
 											return;
 										}
 									}
@@ -860,7 +860,7 @@ void InReverseOptimizationPropertyWidget::calculate()
 											QTableWidgetItem* item = new QTableWidgetItem(m_valveOpeningValue);
 											item->setBackground(QBrush(QColor(2, 253, 254)));
 											m_tableWidget->setItem(4, 2, item);
-											QMessageBox::information(this, "成功", "计算完成");
+											//QMessageBox::information(this, "成功", "计算完成");
 											return;
 										}
 									}
@@ -875,7 +875,7 @@ void InReverseOptimizationPropertyWidget::calculate()
 											QTableWidgetItem* item = new QTableWidgetItem(m_vacuumDegreeValue);
 											item->setBackground(QBrush(QColor(2, 253, 254)));
 											m_tableWidget->setItem(5, 2, item);
-											QMessageBox::information(this, "成功", "计算完成");
+											//QMessageBox::information(this, "成功", "计算完成");
 											return;
 										}
 									}
@@ -935,7 +935,7 @@ void InReverseOptimizationPropertyWidget::calculate()
 											QTableWidgetItem* item = new QTableWidgetItem(m_valveOpeningValue);
 											item->setBackground(QBrush(QColor(2, 253, 254)));
 											m_tableWidget->setItem(4, 2, item);
-											QMessageBox::information(this, "成功", "计算完成");
+											//QMessageBox::information(this, "成功", "计算完成");
 											return;
 										}
 									}
@@ -950,7 +950,7 @@ void InReverseOptimizationPropertyWidget::calculate()
 											QTableWidgetItem* item = new QTableWidgetItem(m_vacuumDegreeValue);
 											item->setBackground(QBrush(QColor(2, 253, 254)));
 											m_tableWidget->setItem(5, 2, item);
-											QMessageBox::information(this, "成功", "计算完成");
+											//QMessageBox::information(this, "成功", "计算完成");
 											return;
 										}
 									}
@@ -998,7 +998,7 @@ void InReverseOptimizationPropertyWidget::calculate()
 											QTableWidgetItem* item = new QTableWidgetItem(m_valveOpeningValue);
 											item->setBackground(QBrush(QColor(2, 253, 254)));
 											m_tableWidget->setItem(4, 2, item);
-											QMessageBox::information(this, "成功", "计算完成");
+											//QMessageBox::information(this, "成功", "计算完成");
 											return;
 										}
 									}
@@ -1013,7 +1013,7 @@ void InReverseOptimizationPropertyWidget::calculate()
 											QTableWidgetItem* item = new QTableWidgetItem(m_vacuumDegreeValue);
 											item->setBackground(QBrush(QColor(2, 253, 254)));
 											m_tableWidget->setItem(5, 2, item);
-											QMessageBox::information(this, "成功", "计算完成");
+											//QMessageBox::information(this, "成功", "计算完成");
 											return;
 										}
 									}

@@ -350,7 +350,7 @@ void PreReverseOptimizationPropertyWidget::calculate()
 					QTableWidgetItem* resultItem = new QTableWidgetItem(QString::number(qRound(value)));
 					resultItem->setBackground(QBrush(QColor(2, 253, 254)));
 					m_tableWidget->setItem(2, 2, resultItem);
-					QMessageBox::information(this, "成功", "计算完成");
+					//QMessageBox::information(this, "成功", "计算完成");
 					return;
 				}
 			}
