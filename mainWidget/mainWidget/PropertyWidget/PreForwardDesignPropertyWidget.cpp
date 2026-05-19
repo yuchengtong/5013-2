@@ -11,6 +11,8 @@
 #include "../GFTreeModelWidget.h"
 #include "../GFImportModelWidget.h"
 #include "xlsxdocument.h"
+#include "../ForwardDesignWorker.h"
+#include "../ProgressDialog.h"
 
 
 #include <QDateTime>
@@ -238,6 +240,7 @@ void PreForwardDesignPropertyWidget::initWidget()
 	QPushButton* viewButton = new QPushButton("显示");
 	m_tableWidget->setCellWidget(10, 2, viewButton);
 	m_tableWidget->setSpan(10, 2, 1, 2);
+	connect(viewButton, &QPushButton::clicked, this, &PreForwardDesignPropertyWidget::view);
 
 	// 单位列
 	QStringList unitLabels = { " "," ","℃","℃","℃", "W/㎡·k", "1/m"," "," ","s","" };
@@ -322,32 +325,9 @@ void PreForwardDesignPropertyWidget::initWidget()
 
 void PreForwardDesignPropertyWidget::preForwardCalculate() 
 {
-	auto ins = ModelDataManager::GetInstance();
-	auto modelGeometryInfo = ins->GetModelGeometryInfo();
-	auto steelPropertyInfo = ins->GetSteelPropertyInfo();
-	auto calculationPropertyInfo = ins->GetCalculationPropertyInfo();
 
-	auto A = m_targetTemperatureValue.toDouble(); // 弹体目标温度（℃）
-	auto B = modelGeometryInfo.shellThickness; // 壳体厚度 (mm)
-	auto C = modelGeometryInfo.gasketLayerThickness; // 胶层厚度(mm)
-	auto D = steelPropertyInfo.density; // 壳体密度 (kg m^-3)
-	auto E = steelPropertyInfo.specificHeatCapacity; // 壳体比热容 (J kg^-1 K^-1)
-	auto F = steelPropertyInfo.thermalConductivity; // 壳体导热系数 (W m^-1 K^-1)
-
-	
-	double value  = preForwardCalculateForm(calculationPropertyInfo.preForwardCalculateFormula, A, B, C, D, E, F);
-	QString result = QString::number(qRound(value));
-	m_preheatingTimeValue = result;
-	QTableWidgetItem* resultItem = new QTableWidgetItem(m_preheatingTimeValue);
-	resultItem->setBackground(QBrush(QColor(2, 253, 254)));
-	m_tableWidget->setItem(9, 2, resultItem);
-	
-
-
-	//更新曲线图
 	QWidget* parent = parentWidget();
-	while (parent)
-	{
+	while (parent) {
 		GFImportModelWidget* gfParent = dynamic_cast<GFImportModelWidget*>(parent);
 		if (gfParent)
 		{
@@ -355,14 +335,77 @@ void PreForwardDesignPropertyWidget::preForwardCalculate()
 			QString timeStr = currentTime.toString("yyyy-MM-dd hh:mm:ss");
 			auto logWidget = gfParent->GetLogWidget();
 			auto textEdit = logWidget->GetTextEdit();
+			QString text = timeStr + "[信息]>开始预热工艺正向计算";
+			textEdit->appendPlainText(text);
+			logWidget->update();
+
+			QApplication::processEvents();
 
 
-			auto preForwardTimeTempWid = gfParent->GetPreForwardTimeTempWid();
+			// 创建进度对话框
+			ProgressDialog* progressDialog = new ProgressDialog("预热工艺正向计算", this);
+			progressDialog->show();
 
-			//preForwardTimeTempWid->AddDataPoint();
+			// 创建工作线程和工作对象
+			ForwardDesignWorker* calculateWorker = new ForwardDesignWorker();
+			QThread* calculateThread = new QThread();
+			calculateWorker->moveToThread(calculateThread);
+
+			// 连接信号槽
+			connect(calculateThread, &QThread::started, calculateWorker, &ForwardDesignWorker::DoWork);
+			connect(calculateWorker, &ForwardDesignWorker::ProgressUpdated, progressDialog, &ProgressDialog::SetProgress);
+			connect(calculateWorker, &ForwardDesignWorker::StatusUpdated, progressDialog, &ProgressDialog::SetStatusText);
+			connect(progressDialog, &ProgressDialog::Canceled, calculateWorker, &ForwardDesignWorker::RequestInterruption, Qt::DirectConnection);
+
+			// 处理导入结果
+			connect(calculateWorker, &ForwardDesignWorker::WorkFinished, this,
+				[=](bool success, const QString& msg) {
+
+					auto ins = ModelDataManager::GetInstance();
+					auto modelGeometryInfo = ins->GetModelGeometryInfo();
+					auto steelPropertyInfo = ins->GetSteelPropertyInfo();
+					auto calculationPropertyInfo = ins->GetCalculationPropertyInfo();
+
+					auto A = m_targetTemperatureValue.toDouble(); // 弹体目标温度（℃）
+					auto B = modelGeometryInfo.shellThickness; // 壳体厚度 (mm)
+					auto C = modelGeometryInfo.gasketLayerThickness; // 胶层厚度(mm)
+					auto D = steelPropertyInfo.density; // 壳体密度 (kg m^-3)
+					auto E = steelPropertyInfo.specificHeatCapacity; // 壳体比热容 (J kg^-1 K^-1)
+					auto F = steelPropertyInfo.thermalConductivity; // 壳体导热系数 (W m^-1 K^-1)
 
 
-			
+					double value = preForwardCalculateForm(calculationPropertyInfo.preForwardCalculateFormula, A, B, C, D, E, F);
+					QString result = QString::number(qRound(value));
+					m_preheatingTimeValue = result;
+					QTableWidgetItem* resultItem = new QTableWidgetItem(m_preheatingTimeValue);
+					resultItem->setBackground(QBrush(QColor(2, 253, 254)));
+					m_tableWidget->setItem(9, 2, resultItem);
+
+					if (!success)
+					{
+						QMessageBox::warning(this, "计算失败", msg);
+					}
+					QMessageBox::information(this, "计算", "计算成功");
+
+					QString newTimeStr = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss");
+					QString newText = newTimeStr + "[信息]>预热工艺正向计算完成";
+					textEdit->appendPlainText(newText);
+					logWidget->update();
+					QApplication::processEvents();
+
+					// 清理资源
+					progressDialog->close();
+					calculateThread->quit();
+					calculateThread->wait();
+					calculateWorker->deleteLater();
+					calculateThread->deleteLater();
+					progressDialog->deleteLater();
+				});
+
+			// 启动线程
+			calculateThread->start();
+
+
 
 			break;
 		}
@@ -372,14 +415,7 @@ void PreForwardDesignPropertyWidget::preForwardCalculate()
 		}
 	}
 
-
-
-
-
-
-
-
-	QMessageBox::information(this, "计算", "计算成功");
+	
 }
 
 void PreForwardDesignPropertyWidget::reset()
@@ -397,3 +433,73 @@ void PreForwardDesignPropertyWidget::reset()
 
 
 
+void PreForwardDesignPropertyWidget::view()
+{
+
+	double start = 49.0;  // 初始温度
+	double end = m_targetTemperatureValue.toDouble(); // 弹体目标温度（℃）
+	double step = (end-start)/10;
+
+	auto ins = ModelDataManager::GetInstance();
+	auto modelGeometryInfo = ins->GetModelGeometryInfo();
+	auto steelPropertyInfo = ins->GetSteelPropertyInfo();
+	auto calculationPropertyInfo = ins->GetCalculationPropertyInfo();
+
+	auto A = m_targetTemperatureValue.toDouble(); // 弹体目标温度（℃）
+	auto B = modelGeometryInfo.shellThickness; // 壳体厚度 (mm)
+	auto C = modelGeometryInfo.gasketLayerThickness; // 胶层厚度(mm)
+	auto D = steelPropertyInfo.density; // 壳体密度 (kg m^-3)
+	auto E = steelPropertyInfo.specificHeatCapacity; // 壳体比热容 (J kg^-1 K^-1)
+	auto F = steelPropertyInfo.thermalConductivity; // 壳体导热系数 (W m^-1 K^-1)
+
+	QVector<double> x;
+	QVector<double> y;
+	for (double i = start; i <= end; i += step) {
+		x.push_back(i);
+		double value = preForwardCalculateForm(calculationPropertyInfo.preForwardCalculateFormula, i, B, C, D, E, F);
+		QString result = QString::number(qRound(value));
+		y.push_back(result.toDouble());
+
+	}
+	x.push_back(end);
+	double value = preForwardCalculateForm(calculationPropertyInfo.preForwardCalculateFormula, end, B, C, D, E, F);
+	QString result = QString::number(qRound(value));
+	y.push_back(result.toDouble());
+
+
+	
+	// 更新曲线图
+	QWidget* parent = parentWidget();
+	while (parent)
+	{
+		GFImportModelWidget* gfParent = dynamic_cast<GFImportModelWidget*>(parent);
+		if (gfParent)
+		{
+			QDateTime currentTime = QDateTime::currentDateTime();
+			QString timeStr = currentTime.toString("yyyy-MM-dd hh:mm:ss");
+			auto logWidget = gfParent->GetLogWidget();
+			auto textEdit = logWidget->GetTextEdit();
+
+
+			auto preForwardTimeTempWid = gfParent->GetPreForwardTimeTempWid();
+
+			/*QVector<double> x;
+			x.push_back(0.0);
+			x.push_back(300.0);
+			x.push_back(600.0);
+			QVector<double> y;
+			y.push_back(22.0);
+			y.push_back(40.0);
+			y.push_back(60.0);*/
+
+
+			preForwardTimeTempWid->AddDataPoint(x, y);
+
+			break;
+		}
+		else
+		{
+			parent = parent->parentWidget();
+		}
+	}
+}

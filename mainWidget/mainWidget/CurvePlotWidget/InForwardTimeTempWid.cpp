@@ -9,7 +9,7 @@ InForwardTimeTempWid::InForwardTimeTempWid(QWidget* parent) : BaseCurvePlotWidge
 
 void InForwardTimeTempWid::init()
 {
-	SetTitleName("注药工艺正向设计");
-	SetXName("时间（s）");
-	SetYName("温度（℃）");
+	SetTitleName("注药工艺正向设计时间温度");
+	SetXName("温度（℃）");
+	SetYName("时间（s）");
 }

@@ -131,6 +131,7 @@
     <ClCompile Include="DatabaseWidget.cpp" />
     <ClCompile Include="DataStructure\ModelDataManager.cpp" />
     <ClCompile Include="DataStructure\TriangleStructure.cpp" />
+    <ClCompile Include="ForwardDesignWorker.cpp" />
     <ClCompile Include="GeometryImportWorker.cpp" />
     <ClCompile Include="GFImportModelWidget.cpp" />
     <ClCompile Include="GFLogWidget.cpp" />
@@ -201,6 +202,7 @@
     <QtMoc Include="PropertyWidget\ProjectPropertyWidge.h" />
   </ItemGroup>
   <ItemGroup>
+    <QtMoc Include="ForwardDesignWorker.h" />
     <QtMoc Include="ReverseOptimizationWorker.h" />
     <QtMoc Include="ToolsAnimationWidget.h" />
     <QtMoc Include="QCustomPlot\qcustomplot.h" />

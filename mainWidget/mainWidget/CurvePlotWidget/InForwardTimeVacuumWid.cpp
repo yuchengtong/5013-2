@@ -9,7 +9,7 @@ InForwardTimeVacuumWid::InForwardTimeVacuumWid(QWidget* parent) : BaseCurvePlotW
 
 void InForwardTimeVacuumWid::init()
 {
-	SetTitleName("注药工艺正向设计");
-	SetXName("时间（s）");
-	SetYName("真空度（MPa）");
+	SetTitleName("注药工艺正向设计时间真空度");
+	SetXName("真空度（MPa）");
+	SetYName("时间（s）");
 }

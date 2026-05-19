@@ -9,7 +9,7 @@ InForwardDensityVacuumWid::InForwardDensityVacuumWid(QWidget* parent) : BaseCurv
 
 void InForwardDensityVacuumWid::init()
 {
-	SetTitleName("注药工艺正向设计");
-	SetXName("密度（%）");
-	SetYName("真空度（MPa）");
+	SetTitleName("注药工艺正向设计密度真空度");
+	SetXName("真空度（MPa）");
+	SetYName("密度（%）");
 }

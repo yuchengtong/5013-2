@@ -277,7 +277,7 @@ void PreReverseOptimizationPropertyWidget::calculate()
 	}
 
 	// 创建进度对话框
-	ProgressDialog* progressDialog = new ProgressDialog("开始计算", this);
+	ProgressDialog* progressDialog = new ProgressDialog("预热工艺工程逆向寻优", this);
 	progressDialog->show();
 
 	// 创建工作线程和工作对象

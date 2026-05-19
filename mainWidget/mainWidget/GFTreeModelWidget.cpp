@@ -172,7 +172,7 @@ void GFTreeModelWidget::init()
 	{
 		calculationItem->setText(0, "计算模型数据库");
 		calculationItem->setData(0, Qt::UserRole, "Calculation");
-		calculationItem->setIcon(0, error_icon);
+		calculationItem->setIcon(0, checked_icon);
 	}
 
 	//网格节点
@@ -432,18 +432,7 @@ void GFTreeModelWidget::updataIcon()
 				int clChildCount = clChild->childCount();
 				for (int m = 0; m < clChildCount; ++m) {
 
-					if (clChild->child(m)->text(0).contains("标准数据库"))
-					{
-						if (!judgementPropertyInfo.isChecked)
-						{
-							clChild->child(m)->setIcon(0, error_icon);
-						}
-						else
-						{
-							clChild->child(m)->setIcon(0, checked_icon);
-						}
-					}
-					else if (clChild->child(m)->text(0).contains("物性数据库"))
+					if (clChild->child(m)->text(0).contains("物性数据库"))
 					{
 						QTreeWidgetItem *clChild_child = clChild->child(m);
 						int clChildCount = clChild_child->childCount();
@@ -485,6 +474,7 @@ void GFTreeModelWidget::updataIcon()
 						if (gelatinPropertyInfo.isChecked && propellantInfo.isChecked && steelInfo.isChecked)
 						{
 							clChild_child->setIcon(0, checked_icon);
+							clChild->setIcon(0, checked_icon);
 						}
 					}
 				}
@@ -523,17 +513,6 @@ void GFTreeModelWidget::updataIcon()
 					if (clChild->child(m)->text(0).contains("明胶物性"))
 					{
 						if (!gelatinPropertyInfo.isChecked)
-						{
-							clChild->child(m)->setIcon(0, error_icon);
-						}
-						else
-						{
-							clChild->child(m)->setIcon(0, checked_icon);
-						}
-					}
-					if (clChild->child(m)->text(0).contains("标准数据库"))
-					{
-						if (!judgementPropertyInfo.isChecked)
 						{
 							clChild->child(m)->setIcon(0, error_icon);
 						}

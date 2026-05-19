@@ -16,6 +16,8 @@ private slots:
 
 	void reset();
 
+	void view();
+
 private:
 	QTableWidget* m_tableWidget = nullptr;
 

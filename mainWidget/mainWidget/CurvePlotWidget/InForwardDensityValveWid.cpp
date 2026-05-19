@@ -9,7 +9,7 @@ InForwardDensityValveWid::InForwardDensityValveWid(QWidget* parent) : BaseCurveP
 
 void InForwardDensityValveWid::init()
 {
-	SetTitleName("注药工艺正向设计");
-	SetXName("密度（%）");
-	SetYName("阀门开度（mm）");
+	SetTitleName("注药工艺正向设计密度阀门开度");
+	SetXName("阀门开度（mm）");
+	SetYName("密度（%）");
 }

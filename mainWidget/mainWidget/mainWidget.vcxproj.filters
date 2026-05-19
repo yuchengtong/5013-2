@@ -187,6 +187,9 @@
     <ClCompile Include="CurvePlotWidget\InForwardTimeValveWid.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ForwardDesignWorker.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="occView.h">
@@ -316,6 +319,9 @@
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="CurvePlotWidget\InForwardTimeValveWid.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="ForwardDesignWorker.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>
