@@ -381,9 +381,12 @@ void PreForwardDesignPropertyWidget::preForwardCalculate()
 					resultItem->setBackground(QBrush(QColor(2, 253, 254)));
 					m_tableWidget->setItem(9, 2, resultItem);
 
+					// 更新曲线图
+					view();
+
 					if (!success)
 					{
-						QMessageBox::warning(this, "计算失败", msg);
+						//QMessageBox::warning(this, "计算失败", msg);
 					}
 					//QMessageBox::information(this, "计算", "计算成功");
 
@@ -436,8 +439,8 @@ void PreForwardDesignPropertyWidget::reset()
 void PreForwardDesignPropertyWidget::view()
 {
 
-	double start = 49.0;  // 初始温度
-	double end = m_targetTemperatureValue.toDouble(); // 弹体目标温度（℃）
+	double start = 50.0;  // 初始温度
+	double end = 90.0; // 弹体目标温度（℃）
 	double step = (end-start)/10;
 
 	auto ins = ModelDataManager::GetInstance();

@@ -153,7 +153,7 @@ void InForwardDesignPropertyWidget::initWidget()
 	}
 
 
-	QStringList labels = { "正向设计","工艺输入参数",  "弹体保温温度(50～70)", "药液浇注温度", "阀门开度(5～39)","真空度(0.02～0.08)","工艺输出参数","相对密度","弹体注药时间","弹体温度云图与温升曲线"};
+	QStringList labels = { "正向设计","工艺输入参数",  "弹体保温温度(50～70)", "药液浇注温度", "阀门开度(13～39)","真空度(0.02～0.08)","工艺输出参数","相对密度","弹体注药时间","弹体温度云图与温升曲线"};
 	for (int row = 0; row < labels.size(); ++row) {
 		QTableWidgetItem* labelItem = new QTableWidgetItem(labels[row]);
 		labelItem->setTextAlignment(Qt::AlignCenter); // 文本居中
@@ -321,7 +321,7 @@ void InForwardDesignPropertyWidget::initWidget()
 		{
 			auto text = item->text();
 			auto value = text.toDouble();
-			if (value >= 5 && value <= 39)
+			if (value >= 13 && value <= 39)
 			{
 				m_valveOpeningValue = text;
 			}
@@ -430,7 +430,7 @@ void InForwardDesignPropertyWidget::inForwardCalculate() {
 				auto steelPropertyInfo = ins->GetSteelPropertyInfo();
 				auto calculationPropertyInfo = ins->GetCalculationPropertyInfo();
 
-				auto A = m_valveOpeningValue.toDouble(); // 阀门开度（mm）
+				auto A = m_valveOpeningValue.toDouble()/2.0; // 阀门开度（mm）
 				auto B = modelGeometryInfo.gasketLayerThickness; // 胶层厚度(mm)
 				auto C = modelGeometryInfo.shellThickness; // 壳体厚度 (mm)
 				auto D = m_vacuumDegreeValue.toDouble() * 1000; // 真空度(KPa)
@@ -615,11 +615,12 @@ void InForwardDesignPropertyWidget::inForwardCalculate() {
 				APISetNodeValue::SetPreForwardDesignResult(occView, nodeValues, 0);
 				toolsAnimationWidget->UpdateUI(0);
 
-
+				// 更新曲线图
+				view();
 
 				if (!success)
 				{
-					QMessageBox::warning(this, "计算失败", msg);
+					//QMessageBox::warning(this, "计算失败", msg);
 				}
 				//QMessageBox::information(this, "计算", "计算成功");
 				QString newTimeStr = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss");
@@ -658,12 +659,12 @@ void InForwardDesignPropertyWidget::inForwardCalculate() {
 
 void InForwardDesignPropertyWidget::reset()
 {
-	m_insulationTemperatureValue = "50";
+	m_insulationTemperatureValue = "60";
 	QTableWidgetItem* insulationTemperatureValueItem = new QTableWidgetItem(m_insulationTemperatureValue);
 	insulationTemperatureValueItem->setBackground(QBrush(QColor(255, 254, 195)));
 	m_tableWidget->setItem(2, 2, insulationTemperatureValueItem);
 
-	m_valveOpeningValue = "5";
+	m_valveOpeningValue = "13";
 	QTableWidgetItem* valveOpeningValueItem = new QTableWidgetItem(m_valveOpeningValue);
 	valveOpeningValueItem->setBackground(QBrush(QColor(255, 254, 195)));
 	m_tableWidget->setItem(4, 2, valveOpeningValueItem);
@@ -693,7 +694,7 @@ void InForwardDesignPropertyWidget::view()
 	auto steelPropertyInfo = ins->GetSteelPropertyInfo();
 	auto calculationPropertyInfo = ins->GetCalculationPropertyInfo();
 
-	auto A = m_valveOpeningValue.toDouble(); // 阀门开度（mm）
+	auto A = m_valveOpeningValue.toDouble()/2.0; // 阀门开度（mm）
 	auto B = modelGeometryInfo.gasketLayerThickness; // 胶层厚度(mm)
 	auto C = modelGeometryInfo.shellThickness; // 壳体厚度 (mm)
 	auto D = m_vacuumDegreeValue.toDouble() * 1000; // 真空度(KPa)
@@ -732,8 +733,8 @@ void InForwardDesignPropertyWidget::view()
 			if (model == "产品一")
 			{
 				//温度密度曲线
-				double densityTempXStart = 49.0;  // 弹体保温温度(50～70)
-				double densityTempXEnd = m_insulationTemperatureValue.toDouble(); // 弹体目标温度（℃）
+				double densityTempXStart = 50.0;  // 弹体保温温度(50～70)
+				double densityTempXEnd = 70.0; // 弹体目标温度（℃）
 				double densityTempStep = (densityTempXEnd - densityTempXStart) / 10;
 
 				for (double i = densityTempXStart; i <= densityTempXEnd; i += densityTempStep) {
@@ -763,12 +764,12 @@ void InForwardDesignPropertyWidget::view()
 
 
 				///阀门开度密度曲线
-				double densityValveXStart = 4.9;  // 阀门开度(5～39)
-				double densityValveXEnd = m_valveOpeningValue.toDouble(); // 阀门开度(5～39)
+				double densityValveXStart = 13.0;  // 阀门开度(13～39)
+				double densityValveXEnd = 39.0; // 阀门开度(13～39)
 				double densityValveStep = (densityValveXEnd - densityValveXStart) / 10;
 				for (double i = densityValveXStart; i <= densityValveXEnd; i += densityValveStep) {
 
-					auto tempA = (i - 6.740741) / 11.555556;
+					auto tempA = ((i/2.0) - 6.740741) / 11.555556;
 					auto tempB = (B - 1.074074) / 3.851852;
 					auto tempC = (C - 20.185185) / 9.629630;
 					auto tempD = (D - 21.111111) / 57.777778;
@@ -792,8 +793,8 @@ void InForwardDesignPropertyWidget::view()
 				}
 
 				//真空度密度曲线
-				double densityVacuumXStart = 19.0;  // 真空度(20～80)
-				double densityVacuumXEnd = m_vacuumDegreeValue.toDouble() * 1000.0; // 真空度(20～80)
+				double densityVacuumXStart = 20.0;  // 真空度(20～80)
+				double densityVacuumXEnd = 80.0; // 真空度(20～80)
 				double densityVacuumStep = (densityVacuumXEnd - densityVacuumXStart) / 10;
 				for (double i = densityVacuumXStart; i <= densityVacuumXEnd; i += densityVacuumStep) {
 
@@ -822,8 +823,8 @@ void InForwardDesignPropertyWidget::view()
 
 
 				//温度注药时间曲线
-				double timeTempXStart = 49.0;  // 弹体保温温度(50～70)
-				double timeTempXEnd = m_insulationTemperatureValue.toDouble(); // 弹体目标温度（℃）
+				double timeTempXStart = 50.0;  // 弹体保温温度(50～70)
+				double timeTempXEnd = 70.0; // 弹体目标温度（℃）
 				double timeTempStep = (timeTempXEnd - timeTempXStart) / 10;
 
 				for (double i = timeTempXStart; i <= timeTempXEnd; i += timeTempStep) {
@@ -846,12 +847,12 @@ void InForwardDesignPropertyWidget::view()
 
 
 				///阀门开度注药时间曲线
-				double timeValveXStart = 4.9;  // 阀门开度(5～39)
-				double timeValveXEnd = m_valveOpeningValue.toDouble(); // 阀门开度(5～39)
+				double timeValveXStart = 13.0;  // 阀门开度(13～39)
+				double timeValveXEnd = 39.0; // 阀门开度(13～39)
 				double timeValveStep = (timeValveXEnd - timeValveXStart) / 10;
 				for (double i = timeValveXStart; i <= timeValveXEnd; i += timeValveStep) {
 
-					auto tempA = (i - 6.740741) / 11.555556;
+					auto tempA = ((i / 2.0) - 6.740741) / 11.555556;
 					auto tempB = (B - 1.074074) / 3.851852;
 					auto tempC = (C - 20.185185) / 9.629630;
 					auto tempD = (D - 21.111111) / 57.777778;
@@ -868,8 +869,8 @@ void InForwardDesignPropertyWidget::view()
 				}
 
 				//真空度注药时间曲线
-				double timeVacuumXStart = 19.0;  // 真空度(20～80)
-				double timeVacuumXEnd = m_vacuumDegreeValue.toDouble() * 1000.0; // 真空度(20～80)
+				double timeVacuumXStart = 20.0;  // 真空度(20～80)
+				double timeVacuumXEnd = 80.0; // 真空度(20～80)
 				double timeVacuumStep = (timeVacuumXEnd - timeVacuumXStart) / 10;
 				for (double i = timeVacuumXStart; i <= timeVacuumXEnd; i += timeVacuumStep) {
 
@@ -892,8 +893,8 @@ void InForwardDesignPropertyWidget::view()
 			else if (model == "产品二")
 			{
 				//温度密度曲线
-				double densityTempXStart = 49.0;  // 弹体保温温度(50～70)
-				double densityTempXEnd = m_insulationTemperatureValue.toDouble(); // 弹体目标温度（℃）
+				double densityTempXStart = 50.0;  // 弹体保温温度(50～70)
+				double densityTempXEnd = 70.0; // 弹体目标温度（℃）
 				double densityTempStep = (densityTempXEnd - densityTempXStart) / 10;
 
 				for (double i = densityTempXStart; i <= densityTempXEnd; i += densityTempStep) {
@@ -924,12 +925,12 @@ void InForwardDesignPropertyWidget::view()
 
 
 				///阀门开度密度曲线
-				double densityValveXStart = 4.9;  // 阀门开度(5～39)
-				double densityValveXEnd = m_valveOpeningValue.toDouble(); // 阀门开度(5～39)
+				double densityValveXStart = 13.0;  // 阀门开度(13～39)
+				double densityValveXEnd = 39.0; // 阀门开度(5～39)
 				double densityValveStep = (densityValveXEnd - densityValveXStart) / 10;
 				for (double i = densityValveXStart; i <= densityValveXEnd; i += densityValveStep) {
 
-					auto tempA = (i - 6.500000) / 13.000000;
+					auto tempA = ((i / 2.0) - 6.500000) / 13.000000;
 					auto tempB = (B - 1.000000) / 4.000000;
 					auto tempC = (C - 20.000000) / 10.000000;
 					auto tempD = (D - 20.000000) / 60.000000;
@@ -953,8 +954,8 @@ void InForwardDesignPropertyWidget::view()
 				}
 
 				//真空度密度曲线
-				double densityVacuumXStart = 19.0;  // 真空度(20～80)
-				double densityVacuumXEnd = m_vacuumDegreeValue.toDouble() * 1000.0; // 真空度(20～80)
+				double densityVacuumXStart = 20.0;  // 真空度(20～80)
+				double densityVacuumXEnd = 80.0; // 真空度(20～80)
 				double densityVacuumStep = (densityVacuumXEnd - densityVacuumXStart) / 10;
 				for (double i = densityVacuumXStart; i <= densityVacuumXEnd; i += densityVacuumStep) {
 
@@ -983,8 +984,8 @@ void InForwardDesignPropertyWidget::view()
 
 
 				//温度注药时间曲线
-				double timeTempXStart = 49.0;  // 弹体保温温度(50～70)
-				double timeTempXEnd = m_insulationTemperatureValue.toDouble(); // 弹体目标温度（℃）
+				double timeTempXStart = 50.0;  // 弹体保温温度(50～70)
+				double timeTempXEnd = 70.0; // 弹体目标温度（℃）
 				double timeTempStep = (timeTempXEnd - timeTempXStart) / 10;
 
 				for (double i = timeTempXStart; i <= timeTempXEnd; i += timeTempStep) {
@@ -1007,12 +1008,12 @@ void InForwardDesignPropertyWidget::view()
 
 
 				///阀门开度注药时间曲线
-				double timeValveXStart = 4.9;  // 阀门开度(5～39)
-				double timeValveXEnd = m_valveOpeningValue.toDouble(); // 阀门开度(5～39)
+				double timeValveXStart = 13.0;  // 阀门开度(13～39)
+				double timeValveXEnd = 39.0; // 阀门开度(5～39)
 				double timeValveStep = (timeValveXEnd - timeValveXStart) / 10;
 				for (double i = timeValveXStart; i <= timeValveXEnd; i += timeValveStep) {
 
-					auto tempA = (i - 6.500000) / 13.000000;
+					auto tempA = ((i / 2.0) - 6.500000) / 13.000000;
 					auto tempB = (B - 1.000000) / 4.000000;
 					auto tempC = (C - 20.000000) / 10.000000;
 					auto tempD = (D - 20.000000) / 60.000000;
@@ -1029,8 +1030,8 @@ void InForwardDesignPropertyWidget::view()
 				}
 
 				//真空度注药时间曲线
-				double timeVacuumXStart = 19.0;  // 真空度(20～80)
-				double timeVacuumXEnd = m_vacuumDegreeValue.toDouble() * 1000.0; // 真空度(20～80)
+				double timeVacuumXStart = 20.0;  // 真空度(20～80)
+				double timeVacuumXEnd = 80.0; // 真空度(20～80)
 				double timeVacuumStep = (timeVacuumXEnd - timeVacuumXStart) / 10;
 				for (double i = timeVacuumXStart; i <= timeVacuumXEnd; i += timeVacuumStep) {
 
@@ -1053,8 +1054,8 @@ void InForwardDesignPropertyWidget::view()
 			else if (model == "产品三")
 			{
 				//温度密度曲线
-				double densityTempXStart = 49.0;  // 弹体保温温度(50～70)
-				double densityTempXEnd = m_insulationTemperatureValue.toDouble(); // 弹体目标温度（℃）
+				double densityTempXStart = 50.0;  // 弹体保温温度(50～70)
+				double densityTempXEnd = 70.0; // 弹体目标温度（℃）
 				double densityTempStep = (densityTempXEnd - densityTempXStart) / 10;
 
 				for (double i = densityTempXStart; i <= densityTempXEnd; i += densityTempStep) {
@@ -1085,12 +1086,12 @@ void InForwardDesignPropertyWidget::view()
 
 
 				///阀门开度密度曲线
-				double densityValveXStart = 4.9;  // 阀门开度(5～39)
-				double densityValveXEnd = m_valveOpeningValue.toDouble(); // 阀门开度(5～39)
+				double densityValveXStart = 13.0;  // 阀门开度(13～39)
+				double densityValveXEnd = 39.0; // 阀门开度(39～39)
 				double densityValveStep = (densityValveXEnd - densityValveXStart) / 10;
 				for (double i = densityValveXStart; i <= densityValveXEnd; i += densityValveStep) {
 
-					auto tempA = (i - 6.500000) / 12.277778;
+					auto tempA = ((i / 2.0) - 6.500000) / 12.277778;
 					auto tempB = (B - 1.000000) / 4.000000;
 					auto tempC = (C - 20.000000) / 10.000000;
 					auto tempD = (D - 20.000000) / 60.000000;
@@ -1114,8 +1115,8 @@ void InForwardDesignPropertyWidget::view()
 				}
 
 				//真空度密度曲线
-				double densityVacuumXStart = 19.0;  // 真空度(20～80)
-				double densityVacuumXEnd = m_vacuumDegreeValue.toDouble() * 1000.0; // 真空度(20～80)
+				double densityVacuumXStart = 20.0;  // 真空度(20～80)
+				double densityVacuumXEnd = 80.0; // 真空度(20～80)
 				double densityVacuumStep = (densityVacuumXEnd - densityVacuumXStart) / 10;
 				for (double i = densityVacuumXStart; i <= densityVacuumXEnd; i += densityVacuumStep) {
 
@@ -1144,8 +1145,8 @@ void InForwardDesignPropertyWidget::view()
 
 
 				//温度注药时间曲线
-				double timeTempXStart = 49.0;  // 弹体保温温度(50～70)
-				double timeTempXEnd = m_insulationTemperatureValue.toDouble(); // 弹体目标温度（℃）
+				double timeTempXStart = 50.0;  // 弹体保温温度(50～70)
+				double timeTempXEnd = 70.0; // 弹体目标温度（℃）
 				double timeTempStep = (timeTempXEnd - timeTempXStart) / 10;
 
 				for (double i = timeTempXStart; i <= timeTempXEnd; i += timeTempStep) {
@@ -1168,12 +1169,12 @@ void InForwardDesignPropertyWidget::view()
 
 
 				///阀门开度注药时间曲线
-				double timeValveXStart = 4.9;  // 阀门开度(5～39)
-				double timeValveXEnd = m_valveOpeningValue.toDouble(); // 阀门开度(5～39)
+				double timeValveXStart = 13.0;  // 阀门开度(13～39)
+				double timeValveXEnd = 39.0; // 阀门开度(13～39)
 				double timeValveStep = (timeValveXEnd - timeValveXStart) / 10;
 				for (double i = timeValveXStart; i <= timeValveXEnd; i += timeValveStep) {
 
-					auto tempA = (i - 6.500000) / 12.277778;
+					auto tempA = ((i / 2.0) - 6.500000) / 12.277778;
 					auto tempB = (B - 1.000000) / 4.000000;
 					auto tempC = (C - 20.000000) / 10.000000;
 					auto tempD = (D - 20.000000) / 60.000000;
@@ -1190,8 +1191,8 @@ void InForwardDesignPropertyWidget::view()
 				}
 
 				//真空度注药时间曲线
-				double timeVacuumXStart = 19.0;  // 真空度(20～80)
-				double timeVacuumXEnd = m_vacuumDegreeValue.toDouble() * 1000.0; // 真空度(20～80)
+				double timeVacuumXStart = 20.0;  // 真空度(20～80)
+				double timeVacuumXEnd = 80.0; // 真空度(20～80)
 				double timeVacuumStep = (timeVacuumXEnd - timeVacuumXStart) / 10;
 				for (double i = timeVacuumXStart; i <= timeVacuumXEnd; i += timeVacuumStep) 
 				{
@@ -1214,8 +1215,8 @@ void InForwardDesignPropertyWidget::view()
 			else if (model == "产品四")
 			{
 				//温度密度曲线
-				double densityTempXStart = 49.0;  // 弹体保温温度(50～70)
-				double densityTempXEnd = m_insulationTemperatureValue.toDouble(); // 弹体目标温度（℃）
+				double densityTempXStart = 50.0;  // 弹体保温温度(50～70)
+				double densityTempXEnd = 70.0; // 弹体目标温度（℃）
 				double densityTempStep = (densityTempXEnd - densityTempXStart) / 10;
 
 				for (double i = densityTempXStart; i <= densityTempXEnd; i += densityTempStep) {
@@ -1246,12 +1247,12 @@ void InForwardDesignPropertyWidget::view()
 
 
 				///阀门开度密度曲线
-				double densityValveXStart = 4.9;  // 阀门开度(5～39)
-				double densityValveXEnd = m_valveOpeningValue.toDouble(); // 阀门开度(5～39)
+				double densityValveXStart = 13.0;  // 阀门开度(13～39)
+				double densityValveXEnd = 39.0; // 阀门开度(39～39)
 				double densityValveStep = (densityValveXEnd - densityValveXStart) / 10;
 				for (double i = densityValveXStart; i <= densityValveXEnd; i += densityValveStep) {
 
-					auto tempA = (i - 8.500000) / 9.796296;
+					auto tempA = ((i / 2.0) - 8.500000) / 9.796296;
 					auto tempB = (B - 1.000000) / 4.000000;
 					auto tempC = (C - 20.000000) / 10.000000;
 					auto tempD = (D - 20.000000) / 60.000000;
@@ -1275,8 +1276,8 @@ void InForwardDesignPropertyWidget::view()
 				}
 
 				//真空度密度曲线
-				double densityVacuumXStart = 19.0;  // 真空度(20～80)
-				double densityVacuumXEnd = m_vacuumDegreeValue.toDouble() * 1000.0; // 真空度(20～80)
+				double densityVacuumXStart = 20.0;  // 真空度(20～80)
+				double densityVacuumXEnd = 80.0; // 真空度(20～80)
 				double densityVacuumStep = (densityVacuumXEnd - densityVacuumXStart) / 10;
 				for (double i = densityVacuumXStart; i <= densityVacuumXEnd; i += densityVacuumStep) {
 
@@ -1305,8 +1306,8 @@ void InForwardDesignPropertyWidget::view()
 
 
 				//温度注药时间曲线
-				double timeTempXStart = 49.0;  // 弹体保温温度(50～70)
-				double timeTempXEnd = m_insulationTemperatureValue.toDouble(); // 弹体目标温度（℃）
+				double timeTempXStart = 50.0;  // 弹体保温温度(50～70)
+				double timeTempXEnd = 70.0; // 弹体目标温度（℃）
 				double timeTempStep = (timeTempXEnd - timeTempXStart) / 10;
 
 				for (double i = timeTempXStart; i <= timeTempXEnd; i += timeTempStep) {
@@ -1329,12 +1330,12 @@ void InForwardDesignPropertyWidget::view()
 
 
 				///阀门开度注药时间曲线
-				double timeValveXStart = 5.0;  // 阀门开度(5～39)
-				double timeValveXEnd = m_valveOpeningValue.toDouble(); // 阀门开度(5～39)
+				double timeValveXStart = 13.0;  // 阀门开度(13～39)
+				double timeValveXEnd = 39.0; // 阀门开度(5～39)
 				double timeValveStep = (timeValveXEnd - timeValveXStart) / 10;
 				for (double i = timeValveXStart; i <= timeValveXEnd; i += timeValveStep) {
 
-					auto tempA = (i - 8.500000) / 9.796296;
+					auto tempA = ((i / 2.0) - 8.500000) / 9.796296;
 					auto tempB = (B - 1.000000) / 4.000000;
 					auto tempC = (C - 20.000000) / 10.000000;
 					auto tempD = (D - 20.000000) / 60.000000;
@@ -1351,8 +1352,8 @@ void InForwardDesignPropertyWidget::view()
 				}
 
 				//真空度注药时间曲线
-				double timeVacuumXStart = 19.0;  // 真空度(20～80)
-				double timeVacuumXEnd = m_vacuumDegreeValue.toDouble() * 1000.0; // 真空度(20～80)
+				double timeVacuumXStart = 20.0;  // 真空度(20～80)
+				double timeVacuumXEnd = 80.0; // 真空度(20～80)
 				double timeVacuumStep = (timeVacuumXEnd - timeVacuumXStart) / 10;
 				for (double i = timeVacuumXStart; i <= timeVacuumXEnd; i += timeVacuumStep)
 				{

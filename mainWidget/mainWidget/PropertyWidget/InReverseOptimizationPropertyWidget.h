@@ -30,7 +30,7 @@ private:
 	QPushButton* m_calButton = nullptr;
 	QPushButton* m_viewButton = nullptr;
 
-	QString m_insulationTemperatureValue = "50"; // 弹体保温温度
+	QString m_insulationTemperatureValue = "60"; // 弹体保温温度
 	QString m_pouringTemperatureValue = "102"; // 药液浇注温度
 	QString m_valveOpeningValue = "5"; // 阀门开度
 	QString m_vacuumDegreeValue = "0.02"; // 真空度

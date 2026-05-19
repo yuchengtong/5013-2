@@ -520,7 +520,7 @@ void InReverseOptimizationPropertyWidget::calculate()
 										double value = v;
 										value = 11.555556 * v + 6.740741;
 										if (value >= 0 && value <= 100) {
-											m_valveOpeningValue = QString::number(value, 'f', 2);
+											m_valveOpeningValue = QString::number(value * 2.0, 'f', 2);
 											QTableWidgetItem* item = new QTableWidgetItem(m_valveOpeningValue);
 											item->setBackground(QBrush(QColor(2, 253, 254)));
 											m_tableWidget->setItem(4, 2, item);
@@ -582,7 +582,7 @@ void InReverseOptimizationPropertyWidget::calculate()
 										double value = v;
 										value = 11.555556 * v + 6.740741;
 										if (value >= 0 && value <= 100) {
-											m_valveOpeningValue = QString::number(value, 'f', 2);
+											m_valveOpeningValue = QString::number(value * 2.0, 'f', 2);
 											QTableWidgetItem* item = new QTableWidgetItem(m_valveOpeningValue);
 											item->setBackground(QBrush(QColor(2, 253, 254)));
 											m_tableWidget->setItem(4, 2, item);
@@ -656,7 +656,7 @@ void InReverseOptimizationPropertyWidget::calculate()
 										double value = v;
 										value = 13.000000 * v + 6.500000;
 										if (value >= 0 && value <= 100) {
-											m_valveOpeningValue = QString::number(value, 'f', 2);
+											m_valveOpeningValue = QString::number(value * 2.0, 'f', 2);
 											QTableWidgetItem* item = new QTableWidgetItem(m_valveOpeningValue);
 											item->setBackground(QBrush(QColor(2, 253, 254)));
 											m_tableWidget->setItem(4, 2, item);
@@ -719,7 +719,7 @@ void InReverseOptimizationPropertyWidget::calculate()
 										double value = v;
 										value = 13.000000 * v + 6.500000;
 										if (value >= 0 && value <= 100) {
-											m_valveOpeningValue = QString::number(value, 'f', 2);
+											m_valveOpeningValue = QString::number(value * 2.0, 'f', 2);
 											QTableWidgetItem* item = new QTableWidgetItem(m_valveOpeningValue);
 											item->setBackground(QBrush(QColor(2, 253, 254)));
 											m_tableWidget->setItem(4, 2, item);
@@ -793,7 +793,7 @@ void InReverseOptimizationPropertyWidget::calculate()
 										double value = v;
 										value = 2.277778 * v + 6.500000;
 										if (value >= 0 && value <= 100) {
-											m_valveOpeningValue = QString::number(value, 'f', 2);
+											m_valveOpeningValue = QString::number(value * 2.0, 'f', 2);
 											QTableWidgetItem* item = new QTableWidgetItem(m_valveOpeningValue);
 											item->setBackground(QBrush(QColor(2, 253, 254)));
 											m_tableWidget->setItem(4, 2, item);
@@ -856,7 +856,7 @@ void InReverseOptimizationPropertyWidget::calculate()
 										double value = v;
 										value = 2.277778 * v + 6.500000;
 										if (value >= 0 && value <= 100) {
-											m_valveOpeningValue = QString::number(value, 'f', 2);
+											m_valveOpeningValue = QString::number(value * 2.0, 'f', 2);
 											QTableWidgetItem* item = new QTableWidgetItem(m_valveOpeningValue);
 											item->setBackground(QBrush(QColor(2, 253, 254)));
 											m_tableWidget->setItem(4, 2, item);
@@ -931,7 +931,7 @@ void InReverseOptimizationPropertyWidget::calculate()
 										double value = v;
 										value = 9.796296 * v + 8.500000;
 										if (value >= 0 && value <= 100) {
-											m_valveOpeningValue = QString::number(value, 'f', 2);
+											m_valveOpeningValue = QString::number(value * 2.0, 'f', 2);
 											QTableWidgetItem* item = new QTableWidgetItem(m_valveOpeningValue);
 											item->setBackground(QBrush(QColor(2, 253, 254)));
 											m_tableWidget->setItem(4, 2, item);
@@ -994,7 +994,7 @@ void InReverseOptimizationPropertyWidget::calculate()
 										double value = v;
 										value = 9.796296 * v + 8.500000;
 										if (value >= 0 && value <= 100) {
-											m_valveOpeningValue = QString::number(value, 'f', 2);
+											m_valveOpeningValue = QString::number(value * 2.0, 'f', 2);
 											QTableWidgetItem* item = new QTableWidgetItem(m_valveOpeningValue);
 											item->setBackground(QBrush(QColor(2, 253, 254)));
 											m_tableWidget->setItem(4, 2, item);
@@ -1039,7 +1039,7 @@ void InReverseOptimizationPropertyWidget::calculate()
 					}
 					if (!success)
 					{
-						QMessageBox::warning(this, "计算失败", msg);
+						//QMessageBox::warning(this, "计算失败", msg);
 					}
 					// 正向计算
 					forwardCalculate();
@@ -1075,7 +1075,7 @@ void InReverseOptimizationPropertyWidget::calculate()
 
 void InReverseOptimizationPropertyWidget::reset()
 {
-	m_insulationTemperatureValue = "50";
+	m_insulationTemperatureValue = "60";
 	QTableWidgetItem* insulationTemperatureValueItem = new QTableWidgetItem(m_insulationTemperatureValue);
 	insulationTemperatureValueItem->setBackground(QBrush(QColor(2, 253, 254)));
 	m_tableWidget->setItem(2, 2, insulationTemperatureValueItem);
@@ -1111,7 +1111,7 @@ void InReverseOptimizationPropertyWidget::forwardCalculate()
 	auto steelPropertyInfo = ins->GetSteelPropertyInfo();
 	auto calculationPropertyInfo = ins->GetCalculationPropertyInfo();
 
-	auto A = m_valveOpeningValue.toDouble(); // 阀门开度（mm）
+	auto A = m_valveOpeningValue.toDouble()/2.0; // 阀门开度（mm）
 	auto B = modelGeometryInfo.gasketLayerThickness; // 胶层厚度(mm)
 	auto C = modelGeometryInfo.shellThickness; // 壳体厚度 (mm)
 	auto D = m_vacuumDegreeValue.toDouble() * 1000; // 真空度(KPa)

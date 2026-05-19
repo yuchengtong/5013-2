@@ -369,7 +369,7 @@ void PreReverseOptimizationPropertyWidget::calculate()
 		m_solver->solve(formula, target, 0, B, C, D, E, F, 'A');
 		if (!success)
 		{
-			QMessageBox::warning(this, "计算失败", msg);
+			//QMessageBox::warning(this, "计算失败", msg);
 		}
 		// 清理资源
 		progressDialog->close();
