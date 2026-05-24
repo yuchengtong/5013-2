@@ -153,14 +153,14 @@ void InForwardDesignPropertyWidget::initWidget()
 	}
 
 
-	QStringList labels = { "正向设计","工艺输入参数",  "弹体保温温度(50～70)", "药液浇注温度", "阀门开度(13～39)","真空度(0.02～0.08)","工艺输出参数","相对密度","弹体注药时间","弹体温度云图与温升曲线"};
+	QStringList labels = { "正向设计","工艺输入参数",  "弹体保温温度(50～70)", "药液浇注温度", "阀门开度(13～39)","真空度(0.02～0.08)","工艺输出参数","相对密度","弹体注药时间","弹体温度云图与温升曲线" };
 	for (int row = 0; row < labels.size(); ++row) {
 		QTableWidgetItem* labelItem = new QTableWidgetItem(labels[row]);
 		labelItem->setTextAlignment(Qt::AlignCenter); // 文本居中
 		labelItem->setFlags(labelItem->flags() & ~Qt::ItemIsEditable); // 不可编辑
 		m_tableWidget->setItem(row, 1, labelItem);
 
-		
+
 	}
 
 	// 导入按钮
@@ -243,7 +243,7 @@ void InForwardDesignPropertyWidget::initWidget()
 		headerItem->setFont(font);
 	}
 
-	
+
 
 	//文本左对齐
 	for (int row = 0; row < m_tableWidget->rowCount(); ++row) {
@@ -279,7 +279,7 @@ void InForwardDesignPropertyWidget::initWidget()
 		}
 	}
 
-	m_tableWidget->setItem(2, 2, injectionTimeValueItem);
+	m_tableWidget->setItem(2, 2, insulationTemperatureValueItem);
 	m_tableWidget->setItem(3, 2, pouringTemperatureValueItem);
 	m_tableWidget->setItem(4, 2, valveOpeningValueItem);
 	m_tableWidget->setItem(5, 2, vacuumDegreeValueItem);
@@ -355,7 +355,7 @@ void InForwardDesignPropertyWidget::initWidget()
 			auto text = item->text();
 			auto value = text.toDouble();
 
-			if (value > 0 && value <= 1)
+			if (value > 0 && value <= 100)
 			{
 				m_relativeDensityValue = text;
 			}
@@ -371,7 +371,7 @@ void InForwardDesignPropertyWidget::initWidget()
 		{
 			auto text = item->text();
 			auto value = text.toDouble();
-			if (value > 0 )
+			if (value > 0)
 			{
 				m_injectionTimeValue = text;
 			}
@@ -383,11 +383,22 @@ void InForwardDesignPropertyWidget::initWidget()
 			}
 
 		}
-	});
+		});
 
 }
 
 void InForwardDesignPropertyWidget::inForwardCalculate() {
+
+	auto ins = ModelDataManager::GetInstance();
+	auto modelGeometryInfo = ins->GetModelGeometryInfo();
+	auto steelPropertyInfo = ins->GetSteelPropertyInfo();
+	auto calculationPropertyInfo = ins->GetCalculationPropertyInfo();
+
+	if (steelPropertyInfo.density == 0.0)
+	{
+		QMessageBox::warning(this, "提示", "壳体物性材料参数数值不能为0");
+		return;
+	}
 
 	QWidget* parent = parentWidget();
 	GFImportModelWidget* gfParent = nullptr;
@@ -425,232 +436,389 @@ void InForwardDesignPropertyWidget::inForwardCalculate() {
 			connect(calculateWorker, &ForwardDesignWorker::WorkFinished, this,
 				[=](bool success, const QString& msg) {
 
-				auto ins = ModelDataManager::GetInstance();
-				auto modelGeometryInfo = ins->GetModelGeometryInfo();
-				auto steelPropertyInfo = ins->GetSteelPropertyInfo();
-				auto calculationPropertyInfo = ins->GetCalculationPropertyInfo();
+					
 
-				auto A = m_valveOpeningValue.toDouble()/2.0; // 阀门开度（mm）
-				auto B = modelGeometryInfo.gasketLayerThickness; // 胶层厚度(mm)
-				auto C = modelGeometryInfo.shellThickness; // 壳体厚度 (mm)
-				auto D = m_vacuumDegreeValue.toDouble() * 1000; // 真空度(KPa)
-				auto E = m_insulationTemperatureValue.toDouble(); // 保温温度（℃）
+					auto A = m_valveOpeningValue.toDouble() / 2.0; // 阀门开度（mm）
+					auto B = modelGeometryInfo.gasketLayerThickness; // 胶层厚度(mm)
+					auto C = modelGeometryInfo.shellThickness; // 壳体厚度 (mm)
+					auto D = m_vacuumDegreeValue.toDouble() * 1000; // 真空度(KPa)
+					auto E = m_insulationTemperatureValue.toDouble(); // 保温温度（℃）
 
-				// 获取模型类型
-				QString model = "产品一";
-				QWidget* parent = parentWidget();
-				while (parent) {
-					GFImportModelWidget* gfParent = dynamic_cast<GFImportModelWidget*>(parent);
-					if (gfParent)
+					// 获取模型类型
+					QString model = "产品一";
+					QWidget* parent = parentWidget();
+					while (parent) {
+						GFImportModelWidget* gfParent = dynamic_cast<GFImportModelWidget*>(parent);
+						if (gfParent)
+						{
+							auto* modelComboBox = gfParent->GetGeomPropertyWidget()->GetModelComboBox();
+							model = modelComboBox->currentText();
+							break;
+						}
+						else
+						{
+							parent = parent->parentWidget();
+						}
+					}
+
+					double gasRateValue = 0.0;
+					double injectionTimeValue = 0.0;
+					if (model == "产品一")
 					{
-						auto *modelComboBox = gfParent->GetGeomPropertyWidget()->GetModelComboBox();
-						model = modelComboBox->currentText();
-						break;
+						if (A < 6.740741)
+						{
+							A = 6.740741;
+						}
+						else if (A > 18.296296)
+						{
+							A = 18.296296;
+						}
+						if (B < 1.074074)
+						{
+							B = 1.074074;
+						}
+						else if (B > 4.9259266)
+						{
+							B = 4.925926;
+						}
+						if (C < 20.185185)
+						{
+							C = 20.185185;
+						}
+						else if (C > 29.814815)
+						{
+							C = 29.814815;
+						}
+						if (D < 21.111111)
+						{
+							D = 21.111111;
+						}
+						else if (D > 78.888889)
+						{
+							D = 78.888889;
+						}
+						if (E < 53.000000)
+						{
+							E = 53.000000;
+						}
+						else if (E > 69.629630)
+						{
+							E = 69.629630;
+						}
+						// 气含率
+						auto gasRateA = (A - 12.509291) / 2.218704;
+						auto gasRateB = (B - 3.01888) / 0.702157;
+						auto gasRateC = (C - 25.076659) / 1.740173;
+						auto gasRateD = (D - 50.037481) / 10.504812;
+						auto gasRateE = (E - 60.043506) / 3.582356;
+						gasRateValue = inForwardCalculateForm(calculationPropertyInfo.oneGasRateCalculateFormula, gasRateA, gasRateB, gasRateC, gasRateD, gasRateE);
+
+
+						// 注药时间
+						auto injectionTimeA = (A - 12.518519) / 2.177802;
+						auto injectionTimeB = (B - 2.999897) / 0.725859;
+						auto injectionTimeC = (C - 25.001792) / 1.8102640;
+						auto injectionTimeD = (D - 50.000000) / 10.889012;
+						auto injectionTimeE = (E - 60.005435) / 3.621028;
+						injectionTimeValue = inForwardCalculateForm(calculationPropertyInfo.oneInjectionTimeCalculateFormula, injectionTimeA, injectionTimeB, injectionTimeC, injectionTimeD, injectionTimeE);
+						injectionTimeValue = injectionTimeValue * 21.33;
+					}
+					else if (model == "产品二")
+					{
+						if (A < 6.500000)
+						{
+							A = 6.500000;
+						}
+						else if (A > 19.500000)
+						{
+							A = 19.500000;
+						}
+						if (B < 1.000000)
+						{
+							B = 1.000000;
+						}
+						else if (B > 5.000000)
+						{
+							B = 5.000000;
+						}
+						if (C < 20.000000)
+						{
+							C = 20.000000;
+						}
+						else if (C > 30.000000)
+						{
+							C = 30.000000;
+						}
+						if (D < 20.000000)
+						{
+							D = 20.000000;
+						}
+						else if (D > 80.000000)
+						{
+							D = 80.000000;
+						}
+						if (E < 50.000000)
+						{
+							E = 50.000000;
+						}
+						else if (E > 70.000000)
+						{
+							E = 70.000000;
+						}
+						// 气含率
+						auto gasRateA = (A - 13.000000) / 2.44883;
+						auto gasRateB = (B - 3.000000) / 0.753487;
+						auto gasRateC = (C - 25.000000) / 1.883716;
+						auto gasRateD = (D - 50.000000) / 11.302298;
+						auto gasRateE = (E - 60.000000) / 3.767433;
+						gasRateValue = inForwardCalculateForm(calculationPropertyInfo.twoGasRateCalculateFormula, gasRateA, gasRateB, gasRateC, gasRateD, gasRateE);
+
+
+						// 注药时间
+						auto injectionTimeA = (A - 13.000000) / 2.44883;
+						auto injectionTimeB = (B - 3.000000) / 0.753487;
+						auto injectionTimeC = (C - 25.000000) / 1.883716;
+						auto injectionTimeD = (D - 50.000000) / 11.302298;
+						auto injectionTimeE = (E - 60.000000) / 3.767433;
+						injectionTimeValue = inForwardCalculateForm(calculationPropertyInfo.twoInjectionTimeCalculateFormula, injectionTimeA, injectionTimeB, injectionTimeC, injectionTimeD, injectionTimeE);
+						injectionTimeValue = injectionTimeValue * 26.67;
+					}
+					else if (model == "产品三")
+					{
+						if (A < 6.500000)
+						{
+							A = 6.500000;
+						}
+						else if (A > 18.777778)
+						{
+							A = 18.777778;
+						}
+						if (B < 1.000000)
+						{
+							B = 1.000000;
+						}
+						else if (B > 5.000000)
+						{
+							B = 5.000000;
+						}
+						if (C < 20.000000)
+						{
+							C = 20.000000;
+						}
+						else if (C > 30.000000)
+						{
+							C = 30.000000;
+						}
+						if (D < 20.000000)
+						{
+							D = 20.000000;
+						}
+						else if (D > 80.000000)
+						{
+							D = 80.000000;
+						}
+						if (E < 50.000000)
+						{
+							E = 50.000000;
+						}
+						else if (E > 70.000000)
+						{
+							E = 70.000000;
+						}
+						// 气含率
+						auto gasRateA = (A - 12.638889) / 2.312785;
+						auto gasRateB = (B - 3.000000) / 0.753487;
+						auto gasRateC = (C - 25.000000) / 1.883716;
+						auto gasRateD = (D - 50.000000) / 11.302298;
+						auto gasRateE = (E - 60.000000) / 3.767433;
+						gasRateValue = inForwardCalculateForm(calculationPropertyInfo.threeGasRateCalculateFormula, gasRateA, gasRateB, gasRateC, gasRateD, gasRateE);
+
+
+						// 注药时间
+						auto injectionTimeA = (A - 12.638889) / 2.312785;
+						auto injectionTimeB = (B - 3.000000) / 0.753487;
+						auto injectionTimeC = (C - 25.000000) / 1.883716;
+						auto injectionTimeD = (D - 50.000000) / 11.302298;
+						auto injectionTimeE = (E - 60.000000) / 3.767433;
+						injectionTimeValue = inForwardCalculateForm(calculationPropertyInfo.threeInjectionTimeCalculateFormula, injectionTimeA, injectionTimeB, injectionTimeC, injectionTimeD, injectionTimeE);
+						injectionTimeValue = injectionTimeValue * 26.33;
 					}
 					else
 					{
-						parent = parent->parentWidget();
+						if (A < 8.500000)
+						{
+							A = 8.500000;
+						}
+						else if (A > 18.296296)
+						{
+							A = 18.296296;
+						}
+						if (B < 1.000000)
+						{
+							B = 1.000000;
+						}
+						else if (B > 5.000000)
+						{
+							B = 5.000000;
+						}
+						if (C < 20.000000)
+						{
+							C = 20.000000;
+						}
+						else if (C > 30.000000)
+						{
+							C = 30.000000;
+						}
+						if (D < 20.000000)
+						{
+							D = 20.000000;
+						}
+						else if (D > 80.000000)
+						{
+							D = 80.000000;
+						}
+						if (E < 50.000000)
+						{
+							E = 50.000000;
+						}
+						else if (E > 70.000000)
+						{
+							E = 70.000000;
+						}
+						// 气含率
+						auto gasRateA = (A - 13.398148) / 1.845344;
+						auto gasRateB = (B - 3.000000) / 0.753487;
+						auto gasRateC = (C - 25.000000) / 1.883716;
+						auto gasRateD = (D - 50.000000) / 11.302298;
+						auto gasRateE = (E - 60.000000) / 3.767433;
+						gasRateValue = inForwardCalculateForm(calculationPropertyInfo.fourGasRateCalculateFormula, gasRateA, gasRateB, gasRateC, gasRateD, gasRateE);
+
+
+						// 注药时间
+						auto injectionTimeA = (A - 13.398148) / 1.845344;
+						auto injectionTimeB = (B - 3.000000) / 0.753487;
+						auto injectionTimeC = (C - 25.000000) / 1.883716;
+						auto injectionTimeD = (D - 50.000000) / 11.302298;
+						auto injectionTimeE = (E - 60.000000) / 3.767433;
+						injectionTimeValue = inForwardCalculateForm(calculationPropertyInfo.fourInjectionTimeCalculateFormula, injectionTimeA, injectionTimeB, injectionTimeC, injectionTimeD, injectionTimeE);
+						injectionTimeValue = injectionTimeValue * 27.33;
 					}
-				}
 
-				double gasRateValue = 0.0;
-				double injectionTimeValue = 0.0;
-				if (model == "产品一")
-				{
-					// 气含率
-					auto gasRateA = (A - 6.740741) / 11.555556;
-					auto gasRateB = (B - 1.074074) / 3.851852;
-					auto gasRateC = (C - 20.185185) / 9.629630;
-					auto gasRateD = (D - 21.111111) / 57.777778;
-					auto gasRateE = (E - 50.370370) / 19.259259;
-					gasRateValue = inForwardCalculateForm(calculationPropertyInfo.oneGasRateCalculateFormula, gasRateA, gasRateB, gasRateC, gasRateD, gasRateE);
+					// 气含率转相对密度
+					double density = ins->GetSteelPropertyInfo().density;
+					double gas = 1.205 * gasRateValue; // 气体质量
+					double solid = density * (1 - gasRateValue);
+					double relativeDensity = (gas + solid) / density;
+					if (relativeDensity < 0.0)
+					{
+						relativeDensity = 0;
+					}
+					if (relativeDensity > 1.0)
+					{
+						relativeDensity = 1.0;
+					}
+					QString relativeDensityResult = QString::number(relativeDensity * 100, 'f', 4);
+					// 保存结果
+					InForwardPropertyInfo inForwardPropertyInfo = ins->GetInForwardPropertyInfo();
+					inForwardPropertyInfo.m_relativeDensityValue = relativeDensityResult.toDouble();
+					ins->SetInForwardPropertyInfo(inForwardPropertyInfo);
 
+					QTableWidgetItem* relativeDensityItem = new QTableWidgetItem(relativeDensityResult);
+					relativeDensityItem->setBackground(QBrush(QColor(2, 253, 254)));
+					m_tableWidget->setItem(7, 2, relativeDensityItem);
 
-					// 注药时间
-					auto injectionTimeA = (A - 6.740741) / 11.555556;
-					auto injectionTimeB = (B - 1.074074) / 3.851852;
-					auto injectionTimeC = (C - 20.185185) / 9.629630;
-					auto injectionTimeD = (D - 21.111111) / 57.777778;
-					auto injectionTimeE = (E - 50.370370) / 19.259259;
-					injectionTimeValue = inForwardCalculateForm(calculationPropertyInfo.oneInjectionTimeCalculateFormula, injectionTimeA, injectionTimeB, injectionTimeC, injectionTimeD, injectionTimeE);
-					injectionTimeValue = injectionTimeValue * 21.33;
-				}
-				else if (model == "产品二")
-				{
-					// 气含率
-					auto gasRateA = (A - 6.500000) / 13.000000;
-					auto gasRateB = (B - 1.000000) / 4.000000;
-					auto gasRateC = (C - 20.000000) / 10.000000;
-					auto gasRateD = (D - 20.000000) / 60.000000;
-					auto gasRateE = (E - 50.000000) / 20.000000;
-					gasRateValue = inForwardCalculateForm(calculationPropertyInfo.twoGasRateCalculateFormula, gasRateA, gasRateB, gasRateC, gasRateD, gasRateE);
-
-
-					// 注药时间
-					auto injectionTimeA = (A - 6.500000) / 13.000000;
-					auto injectionTimeB = (B - 1.000000) / 4.000000;
-					auto injectionTimeC = (C - 20.000000) / 10.000000;
-					auto injectionTimeD = (D - 20.000000) / 60.000000;
-					auto injectionTimeE = (E - 50.000000) / 20.000000;
-					injectionTimeValue = inForwardCalculateForm(calculationPropertyInfo.twoInjectionTimeCalculateFormula, injectionTimeA, injectionTimeB, injectionTimeC, injectionTimeD, injectionTimeE);
-					injectionTimeValue = injectionTimeValue * 26.67;
-				}
-				else if (model == "产品三")
-				{
-					// 气含率
-					auto gasRateA = (A - 6.500000) / 12.277778;
-					auto gasRateB = (B - 1.000000) / 4.000000;
-					auto gasRateC = (C - 20.000000) / 10.000000;
-					auto gasRateD = (D - 20.000000) / 60.000000;
-					auto gasRateE = (E - 50.000000) / 20.000000;
-					gasRateValue = inForwardCalculateForm(calculationPropertyInfo.threeGasRateCalculateFormula, gasRateA, gasRateB, gasRateC, gasRateD, gasRateE);
-
-
-					// 注药时间
-					auto injectionTimeA = (A - 6.500000) / 12.277778;
-					auto injectionTimeB = (B - 1.000000) / 4.000000;
-					auto injectionTimeC = (C - 20.000000) / 10.000000;
-					auto injectionTimeD = (D - 20.000000) / 60.000000;
-					auto injectionTimeE = (E - 50.000000) / 20.000000;
-					injectionTimeValue = inForwardCalculateForm(calculationPropertyInfo.threeInjectionTimeCalculateFormula, injectionTimeA, injectionTimeB, injectionTimeC, injectionTimeD, injectionTimeE);
-					injectionTimeValue = injectionTimeValue * 26.33;
-				}
-				else
-				{
-					// 气含率
-					auto gasRateA = (A - 8.500000) / 9.796296;
-					auto gasRateB = (B - 1.000000) / 4.000000;
-					auto gasRateC = (C - 20.000000) / 10.000000;
-					auto gasRateD = (D - 20.000000) / 60.000000;
-					auto gasRateE = (E - 50.000000) / 20.000000;
-					gasRateValue = inForwardCalculateForm(calculationPropertyInfo.fourGasRateCalculateFormula, gasRateA, gasRateB, gasRateC, gasRateD, gasRateE);
-
-
-					// 注药时间
-					auto injectionTimeA = (A - 8.500000) / 9.796296;
-					auto injectionTimeB = (B - 1.000000) / 4.000000;
-					auto injectionTimeC = (C - 20.000000) / 10.000000;
-					auto injectionTimeD = (D - 20.000000) / 60.000000;
-					auto injectionTimeE = (E - 50.000000) / 20.000000;
-					injectionTimeValue = inForwardCalculateForm(calculationPropertyInfo.fourInjectionTimeCalculateFormula, injectionTimeA, injectionTimeB, injectionTimeC, injectionTimeD, injectionTimeE);
-					injectionTimeValue = injectionTimeValue * 27.33;
-				}
-	
-				// 气含率转相对密度
-				double density = ins->GetSteelPropertyInfo().density;
-				double gas = 1.205 * gasRateValue; // 气体质量
-				double solid = density * (1 - gasRateValue);
-				double relativeDensity = (gas + solid) / density;
-				if (relativeDensity < 0.0)
-				{
-					relativeDensity = 0;
-				}
-				if (relativeDensity > 1.0)
-				{
-					relativeDensity = 1.0;
-				}
-				QString relativeDensityResult = QString::number(relativeDensity * 100, 'f', 4);
-				// 保存结果
-				InForwardPropertyInfo inForwardPropertyInfo = ins->GetInForwardPropertyInfo();
-				inForwardPropertyInfo.m_relativeDensityValue = relativeDensityResult.toDouble();
-				ins->SetInForwardPropertyInfo(inForwardPropertyInfo);
-
-				QTableWidgetItem* relativeDensityItem = new QTableWidgetItem(relativeDensityResult);
-				relativeDensityItem->setBackground(QBrush(QColor(2, 253, 254)));
-				m_tableWidget->setItem(7, 2, relativeDensityItem);
-
-				if (injectionTimeValue < 0.0)
-				{
-					injectionTimeValue = 0;
-				}
-				QString injectionTimeResult = QString::number(qRound(injectionTimeValue));
-				QTableWidgetItem* injectionTimeItem = new QTableWidgetItem(injectionTimeResult);
-				injectionTimeItem->setBackground(QBrush(QColor(2, 253, 254)));
-				m_tableWidget->setItem(8, 2, injectionTimeItem);
+					if (injectionTimeValue < 0.0)
+					{
+						injectionTimeValue = 0;
+					}
+					QString injectionTimeResult = QString::number(qRound(injectionTimeValue));
+					QTableWidgetItem* injectionTimeItem = new QTableWidgetItem(injectionTimeResult);
+					injectionTimeItem->setBackground(QBrush(QColor(2, 253, 254)));
+					m_tableWidget->setItem(8, 2, injectionTimeItem);
 
 
 
-				auto toolsAnimationWidget = gfParent->GetToolsAnimationWidget();
-				QStringList names = { "第一帧" ,"第二帧" ,"第三帧" ,"第四帧" ,"第五帧" ,"第六帧" ,
-				"第七帧" ,"第八帧" ,"第九帧" ,"第十帧" ,"第十一帧" ,"第十二帧" };
-				toolsAnimationWidget->SetAnimationSteps(names);
+					auto toolsAnimationWidget = gfParent->GetToolsAnimationWidget();
+					QStringList names = { "第一帧" ,"第二帧" ,"第三帧" ,"第四帧" ,"第五帧" ,"第六帧" ,
+					"第七帧" ,"第八帧" ,"第九帧" ,"第十帧" ,"第十一帧" ,"第十二帧" };
+					toolsAnimationWidget->SetAnimationSteps(names);
 
 
 
-				connect(toolsAnimationWidget, &ToolsAnimationWidget::animationFrameChanged, this, [=](int frameIndex) {
+					connect(toolsAnimationWidget, &ToolsAnimationWidget::animationFrameChanged, this, [=](int frameIndex) {
+						auto occView = gfParent->GetOccView();
+						std::vector<double> nodeValues;
+						APISetNodeValue::SetPreForwardDesignResult(occView, nodeValues, frameIndex);
+
+						// 颜色标尺（从原 comboBox 槽搬过来）
+						Handle(AIS_InteractiveContext) context = occView->getContext();
+						Handle(V3d_View) view = occView->getView();
+						view->SetProj(V3d_Zneg);
+						view->SetTwist(-M_PI / 2.0);
+
+						double min_value = 0;
+						double max_value = 10;
+						TCollection_ExtendedString tostr("温度云图", true);
+						Handle(AIS_ColorScale) aColorScale = new AIS_ColorScale();
+						aColorScale->SetFormat(TCollection_AsciiString("%.2f"));
+						aColorScale->SetSize(50, 200);
+						aColorScale->SetRange(min_value, max_value);
+						aColorScale->SetNumberOfIntervals(9);
+						aColorScale->SetLabelPosition(Aspect_TOCSP_RIGHT);
+						aColorScale->SetTextHeight(14);
+						aColorScale->SetColor(Quantity_Color(Quantity_NOC_BLACK));
+						aColorScale->SetTitle(tostr);
+						aColorScale->SetColorRange(Quantity_Color(Quantity_NOC_BLUE1), Quantity_Color(Quantity_NOC_RED));
+						aColorScale->SetLabelType(Aspect_TOCSD_AUTO);
+						aColorScale->SetZLayer(Graphic3d_ZLayerId_TopOSD);
+						Graphic3d_Vec2i anoffset(0, Standard_Integer(200));
+						context->SetTransformPersistence(aColorScale, new Graphic3d_TransformPers(Graphic3d_TMF_2d, Aspect_TOTP_LEFT_UPPER, anoffset));
+						context->SetDisplayMode(aColorScale, 1, Standard_False);
+						context->Display(aColorScale, Standard_True);
+						});
+
+					// 初始化第 0 帧
 					auto occView = gfParent->GetOccView();
 					std::vector<double> nodeValues;
-					APISetNodeValue::SetPreForwardDesignResult(occView, nodeValues, frameIndex);
+					APISetNodeValue::SetPreForwardDesignResult(occView, nodeValues, 0);
+					toolsAnimationWidget->UpdateUI(0);
 
-					// 颜色标尺（从原 comboBox 槽搬过来）
-					Handle(AIS_InteractiveContext) context = occView->getContext();
-					Handle(V3d_View) view = occView->getView();
-					view->SetProj(V3d_Zneg);
-					view->SetTwist(-M_PI / 2.0);
+					// 更新曲线图
+					view();
 
-					double min_value = 0;
-					double max_value = 10;
-					TCollection_ExtendedString tostr("温度云图", true);
-					Handle(AIS_ColorScale) aColorScale = new AIS_ColorScale();
-					aColorScale->SetFormat(TCollection_AsciiString("%.2f"));
-					aColorScale->SetSize(50, 200);
-					aColorScale->SetRange(min_value, max_value);
-					aColorScale->SetNumberOfIntervals(9);
-					aColorScale->SetLabelPosition(Aspect_TOCSP_RIGHT);
-					aColorScale->SetTextHeight(14);
-					aColorScale->SetColor(Quantity_Color(Quantity_NOC_BLACK));
-					aColorScale->SetTitle(tostr);
-					aColorScale->SetColorRange(Quantity_Color(Quantity_NOC_BLUE1), Quantity_Color(Quantity_NOC_RED));
-					aColorScale->SetLabelType(Aspect_TOCSD_AUTO);
-					aColorScale->SetZLayer(Graphic3d_ZLayerId_TopOSD);
-					Graphic3d_Vec2i anoffset(0, Standard_Integer(200));
-					context->SetTransformPersistence(aColorScale, new Graphic3d_TransformPers(Graphic3d_TMF_2d, Aspect_TOTP_LEFT_UPPER, anoffset));
-					context->SetDisplayMode(aColorScale, 1, Standard_False);
-					context->Display(aColorScale, Standard_True);
-					});
-
-				// 初始化第 0 帧
-				auto occView = gfParent->GetOccView();
-				std::vector<double> nodeValues;
-				APISetNodeValue::SetPreForwardDesignResult(occView, nodeValues, 0);
-				toolsAnimationWidget->UpdateUI(0);
-
-				// 更新曲线图
-				view();
-
-				if (!success)
-				{
-					//QMessageBox::warning(this, "计算失败", msg);
-				}
-				//QMessageBox::information(this, "计算", "计算成功");
-				QString newTimeStr = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss");
-				QString newText = newTimeStr + "[信息]>注药工艺正向计算完成";
-				textEdit->appendPlainText(newText);
-				logWidget->update();
-				QApplication::processEvents();
+					if (!success)
+					{
+						//QMessageBox::warning(this, "计算失败", msg);
+					}
+					//QMessageBox::information(this, "计算", "计算成功");
+					QString newTimeStr = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss");
+					QString newText = newTimeStr + "[信息]>注药工艺正向计算完成";
+					textEdit->appendPlainText(newText);
+					logWidget->update();
+					QApplication::processEvents();
 
 
 
 
-				// 清理资源
-				progressDialog->close();
-				calculateThread->quit();
-				calculateThread->wait();
-				calculateWorker->deleteLater();
-				calculateThread->deleteLater();
-				progressDialog->deleteLater();
+					// 清理资源
+					progressDialog->close();
+					calculateThread->quit();
+					calculateThread->wait();
+					calculateWorker->deleteLater();
+					calculateThread->deleteLater();
+					progressDialog->deleteLater();
 				});
 
-				// 启动线程
-				calculateThread->start();
+			// 启动线程
+			calculateThread->start();
 
 
 
-				break;
+			break;
 		}
 		else
 		{
-		parent = parent->parentWidget();
+			parent = parent->parentWidget();
 		}
 	}
 
@@ -664,12 +832,12 @@ void InForwardDesignPropertyWidget::reset()
 	insulationTemperatureValueItem->setBackground(QBrush(QColor(255, 254, 195)));
 	m_tableWidget->setItem(2, 2, insulationTemperatureValueItem);
 
-	m_valveOpeningValue = "13";
+	m_valveOpeningValue = "15";
 	QTableWidgetItem* valveOpeningValueItem = new QTableWidgetItem(m_valveOpeningValue);
 	valveOpeningValueItem->setBackground(QBrush(QColor(255, 254, 195)));
 	m_tableWidget->setItem(4, 2, valveOpeningValueItem);
 
-	m_vacuumDegreeValue = "0.02";
+	m_vacuumDegreeValue = "0.05";
 	QTableWidgetItem* vacuumDegreeValueItem = new QTableWidgetItem(m_vacuumDegreeValue);
 	vacuumDegreeValueItem->setBackground(QBrush(QColor(255, 254, 195)));
 	m_tableWidget->setItem(5, 2, vacuumDegreeValueItem);
@@ -694,7 +862,7 @@ void InForwardDesignPropertyWidget::view()
 	auto steelPropertyInfo = ins->GetSteelPropertyInfo();
 	auto calculationPropertyInfo = ins->GetCalculationPropertyInfo();
 
-	auto A = m_valveOpeningValue.toDouble()/2.0; // 阀门开度（mm）
+	auto A = m_valveOpeningValue.toDouble() / 2.0; // 阀门开度（mm）
 	auto B = modelGeometryInfo.gasketLayerThickness; // 胶层厚度(mm)
 	auto C = modelGeometryInfo.shellThickness; // 壳体厚度 (mm)
 	auto D = m_vacuumDegreeValue.toDouble() * 1000; // 真空度(KPa)
@@ -710,7 +878,7 @@ void InForwardDesignPropertyWidget::view()
 			auto* modelComboBox = gfParent->GetGeomPropertyWidget()->GetModelComboBox();
 			model = modelComboBox->currentText();
 
-			
+
 			QVector<double> densityTempX;
 			QVector<double> densityTempY;
 
@@ -732,18 +900,60 @@ void InForwardDesignPropertyWidget::view()
 
 			if (model == "产品一")
 			{
+				if (A < 6.740741)
+				{
+					A = 6.740741;
+				}
+				else if (A > 18.296296)
+				{
+					A = 18.296296;
+				}
+				if (B < 1.074074)
+				{
+					B = 1.074074;
+				}
+				else if (B > 4.9259266)
+				{
+					B = 4.925926;
+				}
+				if (C < 20.185185)
+				{
+					C = 20.185185;
+				}
+				else if (C > 29.814815)
+				{
+					C = 29.814815;
+				}
+				if (D < 21.111111)
+				{
+					D = 21.111111;
+				}
+				else if (D > 78.888889)
+				{
+					D = 78.888889;
+				}
+				if (E < 53.000000)
+				{
+					E = 53.000000;
+				}
+				else if (E > 69.629630)
+				{
+					E = 69.629630;
+				}
+
 				//温度密度曲线
 				double densityTempXStart = 50.0;  // 弹体保温温度(50～70)
 				double densityTempXEnd = 70.0; // 弹体目标温度（℃）
-				double densityTempStep = (densityTempXEnd - densityTempXStart) / 10;
+				double densityTempStep = (densityTempXEnd - densityTempXStart) / 30;
 
 				for (double i = densityTempXStart; i <= densityTempXEnd; i += densityTempStep) {
-
-					auto tempA = (A - 6.740741) / 11.555556;
-					auto tempB = (B - 1.074074) / 3.851852;
-					auto tempC = (C - 20.185185) / 9.629630;
-					auto tempD = (D - 21.111111) / 57.777778;
-					auto tempE = (i - 50.370370) / 19.259259;
+					
+					
+					auto tempA = (A - 12.509291) / 2.218704;
+					auto tempB = (B - 3.01888) / 0.702157;
+					auto tempC = (C - 25.076659) / 1.740173;
+					auto tempD = (D - 50.037481) / 10.504812;
+					auto tempE = (i - 60.043506) / 3.582356;
 					double gasRateValue = inForwardCalculateForm(calculationPropertyInfo.oneGasRateCalculateFormula, tempA, tempB, tempC, tempD, tempE);
 					double density = ins->GetSteelPropertyInfo().density;
 					double gas = 1.205 * gasRateValue; // 气体质量
@@ -753,12 +963,12 @@ void InForwardDesignPropertyWidget::view()
 					{
 						relativeDensity = 0;
 					}
-					if (relativeDensity > 1.0)
+					if (relativeDensity < 1.0)
 					{
-						relativeDensity = 1.0;
+						densityTempX.push_back(i);
+						densityTempY.push_back(relativeDensity * 100.0);
 					}
-					densityTempX.push_back(i);
-					densityTempY.push_back(relativeDensity * 100.0);
+					
 
 				}
 
@@ -766,14 +976,14 @@ void InForwardDesignPropertyWidget::view()
 				///阀门开度密度曲线
 				double densityValveXStart = 13.0;  // 阀门开度(13～39)
 				double densityValveXEnd = 39.0; // 阀门开度(13～39)
-				double densityValveStep = (densityValveXEnd - densityValveXStart) / 10;
+				double densityValveStep = (densityValveXEnd - densityValveXStart) / 30;
 				for (double i = densityValveXStart; i <= densityValveXEnd; i += densityValveStep) {
 
-					auto tempA = ((i/2.0) - 6.740741) / 11.555556;
-					auto tempB = (B - 1.074074) / 3.851852;
-					auto tempC = (C - 20.185185) / 9.629630;
-					auto tempD = (D - 21.111111) / 57.777778;
-					auto tempE = (E - 50.370370) / 19.259259;
+					auto tempA = ((i / 2.0) - 12.509291) / 2.218704;
+					auto tempB = (B - 3.01888) / 0.702157;
+					auto tempC = (C - 25.076659) / 1.740173;
+					auto tempD = (D - 50.037481) / 10.504812;
+					auto tempE = (E - 60.043506) / 3.582356;
 					double gasRateValue = inForwardCalculateForm(calculationPropertyInfo.oneGasRateCalculateFormula, tempA, tempB, tempC, tempD, tempE);
 					double density = ins->GetSteelPropertyInfo().density;
 					double gas = 1.205 * gasRateValue; // 气体质量
@@ -783,26 +993,26 @@ void InForwardDesignPropertyWidget::view()
 					{
 						relativeDensity = 0;
 					}
-					if (relativeDensity > 1.0)
+					if (relativeDensity < 1.0)
 					{
-						relativeDensity = 1.0;
+						densityValveX.push_back(i);
+						densityValveY.push_back(relativeDensity * 100.0);
 					}
-					densityValveX.push_back(i);
-					densityValveY.push_back(relativeDensity * 100.0);
+					
 
 				}
 
 				//真空度密度曲线
 				double densityVacuumXStart = 20.0;  // 真空度(20～80)
 				double densityVacuumXEnd = 80.0; // 真空度(20～80)
-				double densityVacuumStep = (densityVacuumXEnd - densityVacuumXStart) / 10;
+				double densityVacuumStep = (densityVacuumXEnd - densityVacuumXStart) / 30;
 				for (double i = densityVacuumXStart; i <= densityVacuumXEnd; i += densityVacuumStep) {
 
-					auto tempA = (A - 6.740741) / 11.555556;
-					auto tempB = (B - 1.074074) / 3.851852;
-					auto tempC = (C - 20.185185) / 9.629630;
-					auto tempD = (i - 21.111111) / 57.777778;
-					auto tempE = (E - 50.370370) / 19.259259;
+					auto tempA = (A - 12.509291) / 2.218704;
+					auto tempB = (B - 3.01888) / 0.702157;
+					auto tempC = (C - 25.076659) / 1.740173;
+					auto tempD = (i - 50.037481) / 10.504812;
+					auto tempE = (E - 60.043506) / 3.582356;
 					double gasRateValue = inForwardCalculateForm(calculationPropertyInfo.oneGasRateCalculateFormula, tempA, tempB, tempC, tempD, tempE);
 					double density = ins->GetSteelPropertyInfo().density;
 					double gas = 1.205 * gasRateValue; // 气体质量
@@ -812,12 +1022,12 @@ void InForwardDesignPropertyWidget::view()
 					{
 						relativeDensity = 0;
 					}
-					if (relativeDensity > 1.0)
+					if (relativeDensity < 1.0)
 					{
-						relativeDensity = 1.0;
+						densityVacuumX.push_back(i / 1000.0);
+						densityVacuumY.push_back(relativeDensity * 100.0);
 					}
-					densityVacuumX.push_back(i/1000.0);
-					densityVacuumY.push_back(relativeDensity * 100.0);
+					
 
 				}
 
@@ -825,15 +1035,15 @@ void InForwardDesignPropertyWidget::view()
 				//温度注药时间曲线
 				double timeTempXStart = 50.0;  // 弹体保温温度(50～70)
 				double timeTempXEnd = 70.0; // 弹体目标温度（℃）
-				double timeTempStep = (timeTempXEnd - timeTempXStart) / 10;
+				double timeTempStep = (timeTempXEnd - timeTempXStart) / 30;
 
 				for (double i = timeTempXStart; i <= timeTempXEnd; i += timeTempStep) {
 
-					auto tempA = (A - 6.740741) / 11.555556;
-					auto tempB = (B - 1.074074) / 3.851852;
-					auto tempC = (C - 20.185185) / 9.629630;
-					auto tempD = (D - 21.111111) / 57.777778;
-					auto tempE = (i - 50.370370) / 19.259259;
+					auto tempA = (A - 12.518519) / 2.177802;
+					auto tempB = (B - 2.999897) / 0.725859;
+					auto tempC = (C - 25.001792) / 1.8102640;
+					auto tempD = (D - 50.000000) / 10.889012;
+					auto tempE = (i - 60.005435) / 3.621028;
 					double injectionTimeValue = inForwardCalculateForm(calculationPropertyInfo.oneInjectionTimeCalculateFormula, tempA, tempB, tempC, tempD, tempE);
 					injectionTimeValue = injectionTimeValue * 21.33;
 					if (injectionTimeValue < 0.0)
@@ -849,14 +1059,14 @@ void InForwardDesignPropertyWidget::view()
 				///阀门开度注药时间曲线
 				double timeValveXStart = 13.0;  // 阀门开度(13～39)
 				double timeValveXEnd = 39.0; // 阀门开度(13～39)
-				double timeValveStep = (timeValveXEnd - timeValveXStart) / 10;
+				double timeValveStep = (timeValveXEnd - timeValveXStart) / 30;
 				for (double i = timeValveXStart; i <= timeValveXEnd; i += timeValveStep) {
 
-					auto tempA = ((i / 2.0) - 6.740741) / 11.555556;
-					auto tempB = (B - 1.074074) / 3.851852;
-					auto tempC = (C - 20.185185) / 9.629630;
-					auto tempD = (D - 21.111111) / 57.777778;
-					auto tempE = (E - 50.370370) / 19.259259;
+					auto tempA = ((i / 2.0) - 12.518519) / 2.177802;
+					auto tempB = (B - 2.999897) / 0.725859;
+					auto tempC = (C - 25.001792) / 1.8102640;
+					auto tempD = (D - 50.000000) / 10.889012;
+					auto tempE = (E - 60.005435) / 3.621028;
 					double injectionTimeValue = inForwardCalculateForm(calculationPropertyInfo.oneInjectionTimeCalculateFormula, tempA, tempB, tempC, tempD, tempE);
 					injectionTimeValue = injectionTimeValue * 21.33;
 					if (injectionTimeValue < 0.0)
@@ -871,14 +1081,14 @@ void InForwardDesignPropertyWidget::view()
 				//真空度注药时间曲线
 				double timeVacuumXStart = 20.0;  // 真空度(20～80)
 				double timeVacuumXEnd = 80.0; // 真空度(20～80)
-				double timeVacuumStep = (timeVacuumXEnd - timeVacuumXStart) / 10;
+				double timeVacuumStep = (timeVacuumXEnd - timeVacuumXStart) / 30;
 				for (double i = timeVacuumXStart; i <= timeVacuumXEnd; i += timeVacuumStep) {
 
-					auto tempA = (A - 6.740741) / 11.555556;
-					auto tempB = (B - 1.074074) / 3.851852;
-					auto tempC = (C - 20.185185) / 9.629630;
-					auto tempD = (i - 21.111111) / 57.777778;
-					auto tempE = (E - 50.370370) / 19.259259;
+					auto tempA = (A - 12.518519) / 2.177802;
+					auto tempB = (B - 2.999897) / 0.725859;
+					auto tempC = (C - 25.001792) / 1.8102640;
+					auto tempD = (i - 50.000000) / 10.889012;
+					auto tempE = (E - 60.005435) / 3.621028;
 					double injectionTimeValue = inForwardCalculateForm(calculationPropertyInfo.oneInjectionTimeCalculateFormula, tempA, tempB, tempC, tempD, tempE);
 					injectionTimeValue = injectionTimeValue * 21.33;
 					if (injectionTimeValue < 0.0)
@@ -892,18 +1102,58 @@ void InForwardDesignPropertyWidget::view()
 			}
 			else if (model == "产品二")
 			{
+				if (A < 6.500000)
+				{
+					A = 6.500000;
+				}
+				else if (A > 19.500000)
+				{
+					A = 19.500000;
+				}
+				if (B < 1.000000)
+				{
+					B = 1.000000;
+				}
+				else if (B > 5.000000)
+				{
+					B = 5.000000;
+				}
+				if (C < 20.000000)
+				{
+					C = 20.000000;
+				}
+				else if (C > 30.000000)
+				{
+					C = 30.000000;
+				}
+				if (D < 20.000000)
+				{
+					D = 20.000000;
+				}
+				else if (D > 80.000000)
+				{
+					D = 80.000000;
+				}
+				if (E < 50.000000)
+				{
+					E = 50.000000;
+				}
+				else if (E > 70.000000)
+				{
+					E = 70.000000;
+				}
 				//温度密度曲线
 				double densityTempXStart = 50.0;  // 弹体保温温度(50～70)
 				double densityTempXEnd = 70.0; // 弹体目标温度（℃）
-				double densityTempStep = (densityTempXEnd - densityTempXStart) / 10;
+				double densityTempStep = (densityTempXEnd - densityTempXStart) / 30;
 
 				for (double i = densityTempXStart; i <= densityTempXEnd; i += densityTempStep) {
 
-					auto tempA = (A - 6.500000) / 13.000000;
-					auto tempB = (B - 1.000000) / 4.000000;
-					auto tempC = (C - 20.000000) / 10.000000;
-					auto tempD = (D - 20.000000) / 60.000000;
-					auto tempE = (i - 50.000000) / 20.000000;
+					auto tempA = (A - 13.000000) / 2.44883;
+					auto tempB = (B - 3.000000) / 0.753487;
+					auto tempC = (C - 25.000000) / 1.883716;
+					auto tempD = (D - 50.000000) / 11.302298;
+					auto tempE = (i - 60.000000) / 3.767433;
 
 					double gasRateValue = inForwardCalculateForm(calculationPropertyInfo.twoGasRateCalculateFormula, tempA, tempB, tempC, tempD, tempE);
 					double density = ins->GetSteelPropertyInfo().density;
@@ -914,12 +1164,12 @@ void InForwardDesignPropertyWidget::view()
 					{
 						relativeDensity = 0;
 					}
-					if (relativeDensity > 1.0)
+					if (relativeDensity < 1.0)
 					{
-						relativeDensity = 1.0;
+						densityTempX.push_back(i);
+						densityTempY.push_back(relativeDensity * 100.0);
 					}
-					densityTempX.push_back(i);
-					densityTempY.push_back(relativeDensity * 100.0);
+					
 
 				}
 
@@ -927,14 +1177,14 @@ void InForwardDesignPropertyWidget::view()
 				///阀门开度密度曲线
 				double densityValveXStart = 13.0;  // 阀门开度(13～39)
 				double densityValveXEnd = 39.0; // 阀门开度(5～39)
-				double densityValveStep = (densityValveXEnd - densityValveXStart) / 10;
+				double densityValveStep = (densityValveXEnd - densityValveXStart) / 30;
 				for (double i = densityValveXStart; i <= densityValveXEnd; i += densityValveStep) {
 
-					auto tempA = ((i / 2.0) - 6.500000) / 13.000000;
-					auto tempB = (B - 1.000000) / 4.000000;
-					auto tempC = (C - 20.000000) / 10.000000;
-					auto tempD = (D - 20.000000) / 60.000000;
-					auto tempE = (E - 50.000000) / 20.000000;
+					auto tempA = ((i / 2.0) - 13.000000) / 2.44883;
+					auto tempB = (B - 3.000000) / 0.753487;
+					auto tempC = (C - 25.000000) / 1.883716;
+					auto tempD = (D - 50.000000) / 11.302298;
+					auto tempE = (E - 60.000000) / 3.767433;
 					double gasRateValue = inForwardCalculateForm(calculationPropertyInfo.twoGasRateCalculateFormula, tempA, tempB, tempC, tempD, tempE);
 					double density = ins->GetSteelPropertyInfo().density;
 					double gas = 1.205 * gasRateValue; // 气体质量
@@ -944,26 +1194,26 @@ void InForwardDesignPropertyWidget::view()
 					{
 						relativeDensity = 0;
 					}
-					if (relativeDensity > 1.0)
+					if (relativeDensity < 1.0)
 					{
-						relativeDensity = 1.0;
+						densityValveX.push_back(i);
+						densityValveY.push_back(relativeDensity * 100.0);
 					}
-					densityValveX.push_back(i);
-					densityValveY.push_back(relativeDensity * 100.0);
+					
 
 				}
 
 				//真空度密度曲线
 				double densityVacuumXStart = 20.0;  // 真空度(20～80)
 				double densityVacuumXEnd = 80.0; // 真空度(20～80)
-				double densityVacuumStep = (densityVacuumXEnd - densityVacuumXStart) / 10;
+				double densityVacuumStep = (densityVacuumXEnd - densityVacuumXStart) / 30;
 				for (double i = densityVacuumXStart; i <= densityVacuumXEnd; i += densityVacuumStep) {
 
-					auto tempA = (A - 6.500000) / 13.000000;
-					auto tempB = (B - 1.000000) / 4.000000;
-					auto tempC = (C - 20.000000) / 10.000000;
-					auto tempD = (i - 20.000000) / 60.000000;
-					auto tempE = (E - 50.000000) / 20.000000;
+					auto tempA = (A - 13.000000) / 2.44883;
+					auto tempB = (B - 3.000000) / 0.753487;
+					auto tempC = (C - 25.000000) / 1.883716;
+					auto tempD = (i - 50.000000) / 11.302298;
+					auto tempE = (E - 60.000000) / 3.767433;
 					double gasRateValue = inForwardCalculateForm(calculationPropertyInfo.twoGasRateCalculateFormula, tempA, tempB, tempC, tempD, tempE);
 					double density = ins->GetSteelPropertyInfo().density;
 					double gas = 1.205 * gasRateValue; // 气体质量
@@ -973,12 +1223,12 @@ void InForwardDesignPropertyWidget::view()
 					{
 						relativeDensity = 0;
 					}
-					if (relativeDensity > 1.0)
+					if (relativeDensity < 1.0)
 					{
-						relativeDensity = 1.0;
+						densityVacuumX.push_back(i / 1000.0);
+						densityVacuumY.push_back(relativeDensity * 100.0);
 					}
-					densityVacuumX.push_back(i / 1000.0);
-					densityVacuumY.push_back(relativeDensity * 100.0);
+					
 
 				}
 
@@ -986,15 +1236,15 @@ void InForwardDesignPropertyWidget::view()
 				//温度注药时间曲线
 				double timeTempXStart = 50.0;  // 弹体保温温度(50～70)
 				double timeTempXEnd = 70.0; // 弹体目标温度（℃）
-				double timeTempStep = (timeTempXEnd - timeTempXStart) / 10;
+				double timeTempStep = (timeTempXEnd - timeTempXStart) / 30;
 
 				for (double i = timeTempXStart; i <= timeTempXEnd; i += timeTempStep) {
 
-					auto tempA = (A - 6.500000) / 13.000000;
-					auto tempB = (B - 1.000000) / 4.000000;
-					auto tempC = (C - 20.000000) / 10.000000;
-					auto tempD = (D - 20.000000) / 60.000000;
-					auto tempE = (i - 50.000000) / 20.000000;
+					auto tempA = (A - 13.000000) / 2.44883;
+					auto tempB = (B - 3.000000) / 0.753487;
+					auto tempC = (C - 25.000000) / 1.883716;
+					auto tempD = (D - 50.000000) / 11.302298;
+					auto tempE = (i - 60.000000) / 3.767433;
 					double injectionTimeValue = inForwardCalculateForm(calculationPropertyInfo.twoInjectionTimeCalculateFormula, tempA, tempB, tempC, tempD, tempE);
 					injectionTimeValue = injectionTimeValue * 26.33;
 					if (injectionTimeValue < 0.0)
@@ -1010,14 +1260,14 @@ void InForwardDesignPropertyWidget::view()
 				///阀门开度注药时间曲线
 				double timeValveXStart = 13.0;  // 阀门开度(13～39)
 				double timeValveXEnd = 39.0; // 阀门开度(5～39)
-				double timeValveStep = (timeValveXEnd - timeValveXStart) / 10;
+				double timeValveStep = (timeValveXEnd - timeValveXStart) / 30;
 				for (double i = timeValveXStart; i <= timeValveXEnd; i += timeValveStep) {
 
-					auto tempA = ((i / 2.0) - 6.500000) / 13.000000;
-					auto tempB = (B - 1.000000) / 4.000000;
-					auto tempC = (C - 20.000000) / 10.000000;
-					auto tempD = (D - 20.000000) / 60.000000;
-					auto tempE = (E - 50.000000) / 20.000000;
+					auto tempA = ((i / 2.0) - 13.000000) / 2.44883;
+					auto tempB = (B - 3.000000) / 0.753487;
+					auto tempC = (C - 25.000000) / 1.883716;
+					auto tempD = (D - 50.000000) / 11.302298;
+					auto tempE = (E - 60.000000) / 3.767433;
 					double injectionTimeValue = inForwardCalculateForm(calculationPropertyInfo.twoInjectionTimeCalculateFormula, tempA, tempB, tempC, tempD, tempE);
 					injectionTimeValue = injectionTimeValue * 26.33;
 					if (injectionTimeValue < 0.0)
@@ -1032,14 +1282,14 @@ void InForwardDesignPropertyWidget::view()
 				//真空度注药时间曲线
 				double timeVacuumXStart = 20.0;  // 真空度(20～80)
 				double timeVacuumXEnd = 80.0; // 真空度(20～80)
-				double timeVacuumStep = (timeVacuumXEnd - timeVacuumXStart) / 10;
+				double timeVacuumStep = (timeVacuumXEnd - timeVacuumXStart) / 30;
 				for (double i = timeVacuumXStart; i <= timeVacuumXEnd; i += timeVacuumStep) {
 
-					auto tempA = (A - 6.500000) / 13.000000;
-					auto tempB = (B - 1.000000) / 4.000000;
-					auto tempC = (C - 20.000000) / 10.000000;
-					auto tempD = (i - 20.000000) / 60.000000;
-					auto tempE = (E - 50.000000) / 20.000000;
+					auto tempA = (A - 13.000000) / 2.44883;
+					auto tempB = (B - 3.000000) / 0.753487;
+					auto tempC = (C - 25.000000) / 1.883716;
+					auto tempD = (i - 50.000000) / 11.302298;
+					auto tempE = (E - 60.000000) / 3.767433;
 					double injectionTimeValue = inForwardCalculateForm(calculationPropertyInfo.twoInjectionTimeCalculateFormula, tempA, tempB, tempC, tempD, tempE);
 					injectionTimeValue = injectionTimeValue * 26.33;
 					if (injectionTimeValue < 0.0)
@@ -1053,18 +1303,58 @@ void InForwardDesignPropertyWidget::view()
 			}
 			else if (model == "产品三")
 			{
+				if (A < 6.500000)
+				{
+					A = 6.500000;
+				}
+				else if (A > 18.777778)
+				{
+					A = 18.777778;
+				}
+				if (B < 1.000000)
+				{
+					B = 1.000000;
+				}
+				else if (B > 5.000000)
+				{
+					B = 5.000000;
+				}
+				if (C < 20.000000)
+				{
+					C = 20.000000;
+				}
+				else if (C > 30.000000)
+				{
+					C = 30.000000;
+				}
+				if (D < 20.000000)
+				{
+					D = 20.000000;
+				}
+				else if (D > 80.000000)
+				{
+					D = 80.000000;
+				}
+				if (E < 50.000000)
+				{
+					E = 50.000000;
+				}
+				else if (E > 70.000000)
+				{
+					E = 70.000000;
+				}
 				//温度密度曲线
 				double densityTempXStart = 50.0;  // 弹体保温温度(50～70)
 				double densityTempXEnd = 70.0; // 弹体目标温度（℃）
-				double densityTempStep = (densityTempXEnd - densityTempXStart) / 10;
+				double densityTempStep = (densityTempXEnd - densityTempXStart) / 30;
 
 				for (double i = densityTempXStart; i <= densityTempXEnd; i += densityTempStep) {
 
-					auto tempA = (A - 6.500000) / 12.277778;
-					auto tempB = (B - 1.000000) / 4.000000;
-					auto tempC = (C - 20.000000) / 10.000000;
-					auto tempD = (D - 20.000000) / 60.000000;
-					auto tempE = (i - 50.000000) / 20.000000;
+					auto tempA = (A - 12.638889) / 2.312785;
+					auto tempB = (B - 3.000000) / 0.753487;
+					auto tempC = (C - 25.000000) / 1.883716;
+					auto tempD = (D - 50.000000) / 11.302298;
+					auto tempE = (i - 60.000000) / 3.767433;
 
 					double gasRateValue = inForwardCalculateForm(calculationPropertyInfo.threeGasRateCalculateFormula, tempA, tempB, tempC, tempD, tempE);
 					double density = ins->GetSteelPropertyInfo().density;
@@ -1075,12 +1365,12 @@ void InForwardDesignPropertyWidget::view()
 					{
 						relativeDensity = 0;
 					}
-					if (relativeDensity > 1.0)
+					if (relativeDensity < 1.0)
 					{
-						relativeDensity = 1.0;
+						densityTempX.push_back(i);
+						densityTempY.push_back(relativeDensity * 100.0);
 					}
-					densityTempX.push_back(i);
-					densityTempY.push_back(relativeDensity * 100.0);
+					
 
 				}
 
@@ -1088,14 +1378,14 @@ void InForwardDesignPropertyWidget::view()
 				///阀门开度密度曲线
 				double densityValveXStart = 13.0;  // 阀门开度(13～39)
 				double densityValveXEnd = 39.0; // 阀门开度(39～39)
-				double densityValveStep = (densityValveXEnd - densityValveXStart) / 10;
+				double densityValveStep = (densityValveXEnd - densityValveXStart) / 30;
 				for (double i = densityValveXStart; i <= densityValveXEnd; i += densityValveStep) {
 
-					auto tempA = ((i / 2.0) - 6.500000) / 12.277778;
-					auto tempB = (B - 1.000000) / 4.000000;
-					auto tempC = (C - 20.000000) / 10.000000;
-					auto tempD = (D - 20.000000) / 60.000000;
-					auto tempE = (E - 50.000000) / 20.000000;
+					auto tempA = ((i / 2.0) - 12.638889) / 2.312785;
+					auto tempB = (B - 3.000000) / 0.753487;
+					auto tempC = (C - 25.000000) / 1.883716;
+					auto tempD = (D - 50.000000) / 11.302298;
+					auto tempE = (E - 60.000000) / 3.767433;
 					double gasRateValue = inForwardCalculateForm(calculationPropertyInfo.threeGasRateCalculateFormula, tempA, tempB, tempC, tempD, tempE);
 					double density = ins->GetSteelPropertyInfo().density;
 					double gas = 1.205 * gasRateValue; // 气体质量
@@ -1105,26 +1395,26 @@ void InForwardDesignPropertyWidget::view()
 					{
 						relativeDensity = 0;
 					}
-					if (relativeDensity > 1.0)
+					if (relativeDensity < 1.0)
 					{
-						relativeDensity = 1.0;
+						densityValveX.push_back(i);
+						densityValveY.push_back(relativeDensity * 100.0);
 					}
-					densityValveX.push_back(i);
-					densityValveY.push_back(relativeDensity * 100.0);
+					
 
 				}
 
 				//真空度密度曲线
 				double densityVacuumXStart = 20.0;  // 真空度(20～80)
 				double densityVacuumXEnd = 80.0; // 真空度(20～80)
-				double densityVacuumStep = (densityVacuumXEnd - densityVacuumXStart) / 10;
+				double densityVacuumStep = (densityVacuumXEnd - densityVacuumXStart) / 30;
 				for (double i = densityVacuumXStart; i <= densityVacuumXEnd; i += densityVacuumStep) {
 
-					auto tempA = (A - 6.500000) / 12.277778;
-					auto tempB = (B - 1.000000) / 4.000000;
-					auto tempC = (C - 20.000000) / 10.000000;
-					auto tempD = (i - 20.000000) / 60.000000;
-					auto tempE = (E - 50.000000) / 20.000000;
+					auto tempA = (A - 12.638889) / 2.312785;
+					auto tempB = (B - 3.000000) / 0.753487;
+					auto tempC = (C - 25.000000) / 1.883716;
+					auto tempD = (i - 50.000000) / 11.302298;
+					auto tempE = (E - 60.000000) / 3.767433;
 					double gasRateValue = inForwardCalculateForm(calculationPropertyInfo.threeGasRateCalculateFormula, tempA, tempB, tempC, tempD, tempE);
 					double density = ins->GetSteelPropertyInfo().density;
 					double gas = 1.205 * gasRateValue; // 气体质量
@@ -1134,12 +1424,12 @@ void InForwardDesignPropertyWidget::view()
 					{
 						relativeDensity = 0;
 					}
-					if (relativeDensity > 1.0)
+					if (relativeDensity < 1.0)
 					{
-						relativeDensity = 1.0;
+						densityVacuumX.push_back(i / 1000.0);
+						densityVacuumY.push_back(relativeDensity * 100.0);
 					}
-					densityVacuumX.push_back(i / 1000.0);
-					densityVacuumY.push_back(relativeDensity * 100.0);
+					
 
 				}
 
@@ -1147,15 +1437,15 @@ void InForwardDesignPropertyWidget::view()
 				//温度注药时间曲线
 				double timeTempXStart = 50.0;  // 弹体保温温度(50～70)
 				double timeTempXEnd = 70.0; // 弹体目标温度（℃）
-				double timeTempStep = (timeTempXEnd - timeTempXStart) / 10;
+				double timeTempStep = (timeTempXEnd - timeTempXStart) / 30;
 
 				for (double i = timeTempXStart; i <= timeTempXEnd; i += timeTempStep) {
 
-					auto tempA = (A - 6.500000) / 12.277778;
-					auto tempB = (B - 1.000000) / 4.000000;
-					auto tempC = (C - 20.000000) / 10.000000;
-					auto tempD = (D - 20.000000) / 60.000000;
-					auto tempE = (i - 50.000000) / 20.000000;
+					auto tempA = (A - 12.638889) / 2.312785;
+					auto tempB = (B - 3.000000) / 0.753487;
+					auto tempC = (C - 25.000000) / 1.883716;
+					auto tempD = (D - 50.000000) / 11.302298;
+					auto tempE = (i - 60.000000) / 3.767433;
 					double injectionTimeValue = inForwardCalculateForm(calculationPropertyInfo.threeInjectionTimeCalculateFormula, tempA, tempB, tempC, tempD, tempE);
 					injectionTimeValue = injectionTimeValue * 26.33;
 					if (injectionTimeValue < 0.0)
@@ -1171,14 +1461,14 @@ void InForwardDesignPropertyWidget::view()
 				///阀门开度注药时间曲线
 				double timeValveXStart = 13.0;  // 阀门开度(13～39)
 				double timeValveXEnd = 39.0; // 阀门开度(13～39)
-				double timeValveStep = (timeValveXEnd - timeValveXStart) / 10;
+				double timeValveStep = (timeValveXEnd - timeValveXStart) / 30;
 				for (double i = timeValveXStart; i <= timeValveXEnd; i += timeValveStep) {
 
-					auto tempA = ((i / 2.0) - 6.500000) / 12.277778;
-					auto tempB = (B - 1.000000) / 4.000000;
-					auto tempC = (C - 20.000000) / 10.000000;
-					auto tempD = (D - 20.000000) / 60.000000;
-					auto tempE = (E - 50.000000) / 20.000000;
+					auto tempA = ((i / 2.0) - 12.638889) / 2.312785;
+					auto tempB = (B - 3.000000) / 0.753487;
+					auto tempC = (C - 25.000000) / 1.883716;
+					auto tempD = (D - 50.000000) / 11.302298;
+					auto tempE = (E - 60.000000) / 3.767433;
 					double injectionTimeValue = inForwardCalculateForm(calculationPropertyInfo.threeInjectionTimeCalculateFormula, tempA, tempB, tempC, tempD, tempE);
 					injectionTimeValue = injectionTimeValue * 26.33;
 					if (injectionTimeValue < 0.0)
@@ -1193,14 +1483,14 @@ void InForwardDesignPropertyWidget::view()
 				//真空度注药时间曲线
 				double timeVacuumXStart = 20.0;  // 真空度(20～80)
 				double timeVacuumXEnd = 80.0; // 真空度(20～80)
-				double timeVacuumStep = (timeVacuumXEnd - timeVacuumXStart) / 10;
-				for (double i = timeVacuumXStart; i <= timeVacuumXEnd; i += timeVacuumStep) 
+				double timeVacuumStep = (timeVacuumXEnd - timeVacuumXStart) / 30;
+				for (double i = timeVacuumXStart; i <= timeVacuumXEnd; i += timeVacuumStep)
 				{
-					auto tempA = (A - 6.500000) / 12.277778;
-					auto tempB = (B - 1.000000) / 4.000000;
-					auto tempC = (C - 20.000000) / 10.000000;
-					auto tempD = (i - 20.000000) / 60.000000;
-					auto tempE = (E - 50.000000) / 20.000000;
+					auto tempA = (A - 12.638889) / 2.312785;
+					auto tempB = (B - 3.000000) / 0.753487;
+					auto tempC = (C - 25.000000) / 1.883716;
+					auto tempD = (i - 50.000000) / 11.302298;
+					auto tempE = (E - 60.000000) / 3.767433;
 					double injectionTimeValue = inForwardCalculateForm(calculationPropertyInfo.threeInjectionTimeCalculateFormula, tempA, tempB, tempC, tempD, tempE);
 					injectionTimeValue = injectionTimeValue * 26.33;
 					if (injectionTimeValue < 0.0)
@@ -1214,18 +1504,58 @@ void InForwardDesignPropertyWidget::view()
 			}
 			else if (model == "产品四")
 			{
+				if (A < 8.500000)
+				{
+					A = 8.500000;
+				}
+				else if (A > 18.296296)
+				{
+					A = 18.296296;
+				}
+				if (B < 1.000000)
+				{
+					B = 1.000000;
+				}
+				else if (B > 5.000000)
+				{
+					B = 5.000000;
+				}
+				if (C < 20.000000)
+				{
+					C = 20.000000;
+				}
+				else if (C > 30.000000)
+				{
+					C = 30.000000;
+				}
+				if (D < 20.000000)
+				{
+					D = 20.000000;
+				}
+				else if (D > 80.000000)
+				{
+					D = 80.000000;
+				}
+				if (E < 50.000000)
+				{
+					E = 50.000000;
+				}
+				else if (E > 70.000000)
+				{
+					E = 70.000000;
+				}
 				//温度密度曲线
 				double densityTempXStart = 50.0;  // 弹体保温温度(50～70)
 				double densityTempXEnd = 70.0; // 弹体目标温度（℃）
-				double densityTempStep = (densityTempXEnd - densityTempXStart) / 10;
+				double densityTempStep = (densityTempXEnd - densityTempXStart) / 30;
 
 				for (double i = densityTempXStart; i <= densityTempXEnd; i += densityTempStep) {
 
-					auto tempA = (A - 8.500000) / 9.796296;
-					auto tempB = (B - 1.000000) / 4.000000;
-					auto tempC = (C - 20.000000) / 10.000000;
-					auto tempD = (D - 20.000000) / 60.000000;
-					auto tempE = (i - 50.000000) / 20.000000;
+					auto tempA = (A - 13.398148) / 1.845344;
+					auto tempB = (B - 3.000000) / 0.753487;
+					auto tempC = (C - 25.000000) / 1.883716;
+					auto tempD = (D - 50.000000) / 11.302298;
+					auto tempE = (i - 60.000000) / 3.767433;
 
 					double gasRateValue = inForwardCalculateForm(calculationPropertyInfo.fourGasRateCalculateFormula, tempA, tempB, tempC, tempD, tempE);
 					double density = ins->GetSteelPropertyInfo().density;
@@ -1236,12 +1566,12 @@ void InForwardDesignPropertyWidget::view()
 					{
 						relativeDensity = 0;
 					}
-					if (relativeDensity > 1.0)
+					if (relativeDensity < 1.0)
 					{
-						relativeDensity = 1.0;
+						densityTempX.push_back(i);
+						densityTempY.push_back(relativeDensity * 100.0);
 					}
-					densityTempX.push_back(i);
-					densityTempY.push_back(relativeDensity * 100.0);
+					
 
 				}
 
@@ -1249,14 +1579,14 @@ void InForwardDesignPropertyWidget::view()
 				///阀门开度密度曲线
 				double densityValveXStart = 13.0;  // 阀门开度(13～39)
 				double densityValveXEnd = 39.0; // 阀门开度(39～39)
-				double densityValveStep = (densityValveXEnd - densityValveXStart) / 10;
+				double densityValveStep = (densityValveXEnd - densityValveXStart) / 30;
 				for (double i = densityValveXStart; i <= densityValveXEnd; i += densityValveStep) {
 
-					auto tempA = ((i / 2.0) - 8.500000) / 9.796296;
-					auto tempB = (B - 1.000000) / 4.000000;
-					auto tempC = (C - 20.000000) / 10.000000;
-					auto tempD = (D - 20.000000) / 60.000000;
-					auto tempE = (E - 50.000000) / 20.000000;
+					auto tempA = ((i / 2.0) - 13.398148) / 1.845344;
+					auto tempB = (B - 3.000000) / 0.753487;
+					auto tempC = (C - 25.000000) / 1.883716;
+					auto tempD = (D - 50.000000) / 11.302298;
+					auto tempE = (E - 60.000000) / 3.767433;
 					double gasRateValue = inForwardCalculateForm(calculationPropertyInfo.fourGasRateCalculateFormula, tempA, tempB, tempC, tempD, tempE);
 					double density = ins->GetSteelPropertyInfo().density;
 					double gas = 1.205 * gasRateValue; // 气体质量
@@ -1266,19 +1596,19 @@ void InForwardDesignPropertyWidget::view()
 					{
 						relativeDensity = 0;
 					}
-					if (relativeDensity > 1.0)
+					if (relativeDensity < 1.0)
 					{
-						relativeDensity = 1.0;
+						densityValveX.push_back(i);
+						densityValveY.push_back(relativeDensity * 100.0);
 					}
-					densityValveX.push_back(i);
-					densityValveY.push_back(relativeDensity * 100.0);
+					
 
 				}
 
 				//真空度密度曲线
 				double densityVacuumXStart = 20.0;  // 真空度(20～80)
 				double densityVacuumXEnd = 80.0; // 真空度(20～80)
-				double densityVacuumStep = (densityVacuumXEnd - densityVacuumXStart) / 10;
+				double densityVacuumStep = (densityVacuumXEnd - densityVacuumXStart) / 30;
 				for (double i = densityVacuumXStart; i <= densityVacuumXEnd; i += densityVacuumStep) {
 
 					auto tempA = (A - 8.500000) / 9.796296;
@@ -1297,10 +1627,10 @@ void InForwardDesignPropertyWidget::view()
 					}
 					if (relativeDensity > 1.0)
 					{
-						relativeDensity = 1.0;
+						densityVacuumX.push_back(i / 1000.0);
+						densityVacuumY.push_back(relativeDensity * 100.0);
 					}
-					densityVacuumX.push_back(i / 1000.0);
-					densityVacuumY.push_back(relativeDensity * 100.0);
+					
 
 				}
 
@@ -1308,15 +1638,15 @@ void InForwardDesignPropertyWidget::view()
 				//温度注药时间曲线
 				double timeTempXStart = 50.0;  // 弹体保温温度(50～70)
 				double timeTempXEnd = 70.0; // 弹体目标温度（℃）
-				double timeTempStep = (timeTempXEnd - timeTempXStart) / 10;
+				double timeTempStep = (timeTempXEnd - timeTempXStart) / 30;
 
 				for (double i = timeTempXStart; i <= timeTempXEnd; i += timeTempStep) {
 
-					auto tempA = (A - 8.500000) / 9.796296;
-					auto tempB = (B - 1.000000) / 4.000000;
-					auto tempC = (C - 20.000000) / 10.000000;
-					auto tempD = (D - 20.000000) / 60.000000;
-					auto tempE = (i - 50.000000) / 20.000000;
+					auto tempA = (A - 13.398148) / 1.845344;
+					auto tempB = (B - 3.000000) / 0.753487;
+					auto tempC = (C - 25.000000) / 1.883716;
+					auto tempD = (D - 50.000000) / 11.302298;
+					auto tempE = (i - 60.000000) / 3.767433;
 					double injectionTimeValue = inForwardCalculateForm(calculationPropertyInfo.fourInjectionTimeCalculateFormula, tempA, tempB, tempC, tempD, tempE);
 					injectionTimeValue = injectionTimeValue * 27.33;
 					if (injectionTimeValue < 0.0)
@@ -1332,14 +1662,14 @@ void InForwardDesignPropertyWidget::view()
 				///阀门开度注药时间曲线
 				double timeValveXStart = 13.0;  // 阀门开度(13～39)
 				double timeValveXEnd = 39.0; // 阀门开度(5～39)
-				double timeValveStep = (timeValveXEnd - timeValveXStart) / 10;
+				double timeValveStep = (timeValveXEnd - timeValveXStart) / 30;
 				for (double i = timeValveXStart; i <= timeValveXEnd; i += timeValveStep) {
 
-					auto tempA = ((i / 2.0) - 8.500000) / 9.796296;
-					auto tempB = (B - 1.000000) / 4.000000;
-					auto tempC = (C - 20.000000) / 10.000000;
-					auto tempD = (D - 20.000000) / 60.000000;
-					auto tempE = (E - 50.000000) / 20.000000;
+					auto tempA = ((i / 2.0) - 13.398148) / 1.845344;
+					auto tempB = (B - 3.000000) / 0.753487;
+					auto tempC = (C - 25.000000) / 1.883716;
+					auto tempD = (D - 50.000000) / 11.302298;
+					auto tempE = (E - 60.000000) / 3.767433;
 					double injectionTimeValue = inForwardCalculateForm(calculationPropertyInfo.fourInjectionTimeCalculateFormula, tempA, tempB, tempC, tempD, tempE);
 					injectionTimeValue = injectionTimeValue * 27.33;
 					if (injectionTimeValue < 0.0)
@@ -1348,13 +1678,13 @@ void InForwardDesignPropertyWidget::view()
 					}
 					timeValveX.push_back(i);
 					timeValveY.push_back(injectionTimeValue);
-
+					 
 				}
 
 				//真空度注药时间曲线
 				double timeVacuumXStart = 20.0;  // 真空度(20～80)
 				double timeVacuumXEnd = 80.0; // 真空度(20～80)
-				double timeVacuumStep = (timeVacuumXEnd - timeVacuumXStart) / 10;
+				double timeVacuumStep = (timeVacuumXEnd - timeVacuumXStart) / 30;
 				for (double i = timeVacuumXStart; i <= timeVacuumXEnd; i += timeVacuumStep)
 				{
 					auto tempA = (A - 8.500000) / 9.796296;
@@ -1398,6 +1728,6 @@ void InForwardDesignPropertyWidget::view()
 		}
 	}
 
-	
-		
+
+
 }

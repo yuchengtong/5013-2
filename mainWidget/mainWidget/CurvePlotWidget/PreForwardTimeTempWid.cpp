@@ -10,6 +10,6 @@ PreForwardTimeTempWid::PreForwardTimeTempWid(QWidget* parent) : BaseCurvePlotWid
 void PreForwardTimeTempWid::init()
 {
 	SetTitleName("预热工艺正向设计时间温度");
-	SetXName("时间（s）");
-	SetYName("温度（℃）");
+	SetXName("温度（℃）");
+	SetYName("时间（s）");
 }

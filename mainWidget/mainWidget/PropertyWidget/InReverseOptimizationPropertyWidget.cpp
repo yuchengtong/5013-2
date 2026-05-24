@@ -146,7 +146,7 @@ void InReverseOptimizationPropertyWidget::initWidget()
 			m_tableWidget->setItem(row, 0, serialItem);
 		}
 
-		QStringList labels = { "","工艺输入参数",  "弹体保温温度(50～70)", "药液浇注温度", "阀门开度(5～39)","真空度(0.02～0.08)","工艺输出参数","相对密度","弹体注药时间","弹体温度云图与温升曲线" };
+		QStringList labels = { "","工艺输入参数",  "弹体保温温度(50～70)", "药液浇注温度", "阀门开度(13～39)","真空度(0.02～0.08)","工艺输出参数","相对密度","弹体注药时间","弹体温度云图与温升曲线" };
 		for (int row = 0; row < labels.size(); ++row)
 		{
 			QTableWidgetItem* labelItem = new QTableWidgetItem(labels[row]);
@@ -163,46 +163,46 @@ void InReverseOptimizationPropertyWidget::initWidget()
 		connect(m_calButton, &QPushButton::clicked, this, &InReverseOptimizationPropertyWidget::calculate);
 		connect(m_resetButton, &QPushButton::clicked, this, &InReverseOptimizationPropertyWidget::reset);
 		
-		QTableWidgetItem* insulationTemperatureValueItem = new QTableWidgetItem(m_insulationTemperatureValue);
-		insulationTemperatureValueItem->setTextAlignment(Qt::AlignCenter); // 文本居中
-		insulationTemperatureValueItem->setBackground(QBrush(QColor(255, 254, 195)));
+		m_insulationTemperatureValueItem = new QTableWidgetItem(m_insulationTemperatureValue);
+		m_insulationTemperatureValueItem->setTextAlignment(Qt::AlignCenter); // 文本居中
+		m_insulationTemperatureValueItem->setBackground(QBrush(QColor(255, 254, 195)));
 
-		QTableWidgetItem* pouringTemperatureValueItem = new QTableWidgetItem(m_pouringTemperatureValue);
-		pouringTemperatureValueItem->setTextAlignment(Qt::AlignCenter); // 文本居中
-		pouringTemperatureValueItem->setFlags(pouringTemperatureValueItem->flags() & ~Qt::ItemIsEditable); // 不可编辑
-		pouringTemperatureValueItem->setBackground(QBrush(QColor(230, 230, 230)));
+		m_pouringTemperatureValueItem = new QTableWidgetItem(m_pouringTemperatureValue);
+		m_pouringTemperatureValueItem->setTextAlignment(Qt::AlignCenter); // 文本居中
+		m_pouringTemperatureValueItem->setFlags(m_pouringTemperatureValueItem->flags() & ~Qt::ItemIsEditable); // 不可编辑
+		m_pouringTemperatureValueItem->setBackground(QBrush(QColor(230, 230, 230)));
 
-		QTableWidgetItem* valveOpeningValueItem = new QTableWidgetItem(m_valveOpeningValue);
-		valveOpeningValueItem->setTextAlignment(Qt::AlignCenter); // 文本居中
-		valveOpeningValueItem->setBackground(QBrush(QColor(2, 253, 254)));
+		m_valveOpeningValueItem = new QTableWidgetItem(m_valveOpeningValue);
+		m_valveOpeningValueItem->setTextAlignment(Qt::AlignCenter); // 文本居中
+		m_valveOpeningValueItem->setBackground(QBrush(QColor(2, 253, 254)));
 
-		QTableWidgetItem* vacuumDegreeValueItem = new QTableWidgetItem(m_vacuumDegreeValue);
-		vacuumDegreeValueItem->setTextAlignment(Qt::AlignCenter); // 文本居中
-		vacuumDegreeValueItem->setBackground(QBrush(QColor(2, 253, 254)));
+		m_vacuumDegreeValueItem = new QTableWidgetItem(m_vacuumDegreeValue);
+		m_vacuumDegreeValueItem->setTextAlignment(Qt::AlignCenter); // 文本居中
+		m_vacuumDegreeValueItem->setBackground(QBrush(QColor(2, 253, 254)));
 
-		QTableWidgetItem* relativeDensityValueItem = new QTableWidgetItem(m_relativeDensityValue);
-		relativeDensityValueItem->setTextAlignment(Qt::AlignCenter); // 文本居中
-		relativeDensityValueItem->setBackground(QBrush(QColor(255, 254, 195)));
+		m_relativeDensityValueItem = new QTableWidgetItem(m_relativeDensityValue);
+		m_relativeDensityValueItem->setTextAlignment(Qt::AlignCenter); // 文本居中
+		m_relativeDensityValueItem->setBackground(QBrush(QColor(255, 254, 195)));
 
-		QTableWidgetItem* injectionTimeValueItem = new QTableWidgetItem(m_injectionTimeValue);
-		injectionTimeValueItem->setTextAlignment(Qt::AlignCenter); // 文本居中
-		injectionTimeValueItem->setBackground(QBrush(QColor(255, 254, 195)));
+		m_injectionTimeValueItem = new QTableWidgetItem(m_injectionTimeValue);
+		m_injectionTimeValueItem->setTextAlignment(Qt::AlignCenter); // 文本居中
+		m_injectionTimeValueItem->setBackground(QBrush(QColor(255, 254, 195)));
 
-		m_tableWidget->setItem(2, 2, insulationTemperatureValueItem);
-		m_tableWidget->setItem(3, 2, pouringTemperatureValueItem);
-		m_tableWidget->setItem(4, 2, valveOpeningValueItem);
-		m_tableWidget->setItem(5, 2, vacuumDegreeValueItem);
-		m_tableWidget->setItem(7, 2, relativeDensityValueItem);
-		m_tableWidget->setItem(8, 2, injectionTimeValueItem);
+		m_tableWidget->setItem(2, 2, m_insulationTemperatureValueItem);
+		m_tableWidget->setItem(3, 2, m_pouringTemperatureValueItem);
+		m_tableWidget->setItem(4, 2, m_valveOpeningValueItem);
+		m_tableWidget->setItem(5, 2, m_vacuumDegreeValueItem);
+		m_tableWidget->setItem(7, 2, m_relativeDensityValueItem);
+		m_tableWidget->setItem(8, 2, m_injectionTimeValueItem);
 
 
-		connect(m_tableWidget, &QTableWidget::itemChanged, this, [this, insulationTemperatureValueItem, pouringTemperatureValueItem, valveOpeningValueItem, vacuumDegreeValueItem, relativeDensityValueItem, injectionTimeValueItem](QTableWidgetItem* item) {
+		connect(m_tableWidget, &QTableWidget::itemChanged, this, [this](QTableWidgetItem* item) {
 
-			if (item == insulationTemperatureValueItem)
+			if (item == m_insulationTemperatureValueItem)
 			{
 				auto text = item->text();
 				auto value = text.toDouble();
-				if (value >= 0 && value <= 110)
+				if (value >= 50 && value <= 70)
 				{
 					m_insulationTemperatureValue = text;
 				}
@@ -214,7 +214,7 @@ void InReverseOptimizationPropertyWidget::initWidget()
 				}
 			}
 
-			if (item == pouringTemperatureValueItem)
+			if (item == m_pouringTemperatureValueItem)
 			{
 				auto text = item->text();
 				auto value = text.toDouble();
@@ -230,11 +230,11 @@ void InReverseOptimizationPropertyWidget::initWidget()
 				}
 			}
 
-			if (item == valveOpeningValueItem)
+			if (item == m_valveOpeningValueItem)
 			{
 				auto text = item->text();
 				auto value = text.toDouble();
-				if (value >= 0 && value <= 30)
+				if (value >= 13 && value <= 39)
 				{
 					m_valveOpeningValue = text;
 				}
@@ -246,25 +246,55 @@ void InReverseOptimizationPropertyWidget::initWidget()
 				}
 			}
 
-			if (item == vacuumDegreeValueItem)
+			if (item == m_vacuumDegreeValueItem)
 			{
 				auto text = item->text();
 				auto value = text.toDouble();
-				m_vacuumDegreeValue = text;
+
+				if (value >= 0.02 && value <= 0.08)
+				{
+					m_vacuumDegreeValue = text;
+				}
+				else
+				{
+					m_tableWidget->blockSignals(true);
+					item->setText(m_vacuumDegreeValue);
+					m_tableWidget->blockSignals(false);
+				}
 			}
 
-			if (item == relativeDensityValueItem)
+			if (item == m_relativeDensityValueItem)
 			{
 				auto text = item->text();
 				auto value = text.toDouble();
-				m_relativeDensityValue = text;
+
+				if (value > 0 && value <= 100)
+				{
+					m_relativeDensityValue = text;
+				}
+				else
+				{
+					m_tableWidget->blockSignals(true);
+					item->setText(m_relativeDensityValue);
+					m_tableWidget->blockSignals(false);
+				}
 			}
 
-			if (item == injectionTimeValueItem)
+			if (item == m_injectionTimeValueItem)
 			{
 				auto text = item->text();
 				auto value = text.toDouble();
-				m_injectionTimeValue = text;
+				if (value > 0)
+				{
+					m_injectionTimeValue = text;
+				}
+				else
+				{
+					m_tableWidget->blockSignals(true);
+					item->setText(m_injectionTimeValue);
+					m_tableWidget->blockSignals(false);
+				}
+
 			}
 		});
 
@@ -455,7 +485,7 @@ void InReverseOptimizationPropertyWidget::calculate()
 					auto steelPropertyInfo = ins->GetSteelPropertyInfo();
 					auto calculationPropertyInfo = ins->GetCalculationPropertyInfo();
 
-					auto A = m_valveOpeningValue.toDouble(); // 阀门开度（mm）
+					auto A = m_valveOpeningValue.toDouble() / 2.0; // 阀门开度（mm）
 					auto B = modelGeometryInfo.gasketLayerThickness; // 胶层厚度(mm)
 					auto C = modelGeometryInfo.shellThickness; // 壳体厚度 (mm)
 					auto D = m_vacuumDegreeValue.toDouble() * 1000; // 真空度(KPa)
@@ -490,17 +520,18 @@ void InReverseOptimizationPropertyWidget::calculate()
 
 					if (model == "产品一")
 					{
-						known['A'] = (A - 6.740741) / 11.555556;
-						known['B'] = (B - 1.074074) / 3.851852;
-						known['C'] = (C - 20.185185) / 9.629630;
-						known['D'] = (D - 21.111111) / 57.777778;
-						known['E'] = (E - 50.370370) / 19.259259;
+						
 
 						double target = 0;
 
 						if (relativeDensityBool)
 						{
 							///////////////////////////// 已知相对密度/////////////////////////////////////
+							known['A'] = (A - 12.509291) / 2.218704;
+							known['B'] = (B - 3.01888) / 0.702157;
+							known['C'] = (C - 25.076659) / 1.740173;
+							known['D'] = (D - 50.037481) / 10.504812;
+							known['E'] = (E - 60.043506) / 3.582356;
 							// 相对密度转为气含率
 							auto relativeDensity = m_relativeDensityValue.toDouble();
 							auto gasRateValue = ((1 - relativeDensity / 100) * density) / (density - 1.205);
@@ -518,12 +549,12 @@ void InReverseOptimizationPropertyWidget::calculate()
 									{
 										// 对阀门开度寻优
 										double value = v;
-										value = 11.555556 * v + 6.740741;
+											value = 2.218704 * v + 12.509291;
 										if (value >= 0 && value <= 100) {
 											m_valveOpeningValue = QString::number(value * 2.0, 'f', 2);
-											QTableWidgetItem* item = new QTableWidgetItem(m_valveOpeningValue);
-											item->setBackground(QBrush(QColor(2, 253, 254)));
-											m_tableWidget->setItem(4, 2, item);
+											m_valveOpeningValueItem = new QTableWidgetItem(m_valveOpeningValue);
+											m_valveOpeningValueItem->setBackground(QBrush(QColor(2, 253, 254)));
+											m_tableWidget->setItem(4, 2, m_valveOpeningValueItem);
 											//QMessageBox::information(this, "成功", "计算完成");
 											return;
 										}
@@ -532,13 +563,13 @@ void InReverseOptimizationPropertyWidget::calculate()
 									{
 										// 对真空度寻优
 										double value = v;
-										value = (57.777778 * v + 21.111111) / 1000;
+										value = (10.504812 * v + 50.037481) / 1000;
 
 										if (value >= 0 && value <= 100) {
 											m_vacuumDegreeValue = QString::number(value, 'f', 2);
-											QTableWidgetItem* item = new QTableWidgetItem(m_vacuumDegreeValue);
-											item->setBackground(QBrush(QColor(2, 253, 254)));
-											m_tableWidget->setItem(5, 2, item);
+											m_vacuumDegreeValueItem = new QTableWidgetItem(m_vacuumDegreeValue);
+											m_vacuumDegreeValueItem->setBackground(QBrush(QColor(2, 253, 254)));
+											m_tableWidget->setItem(5, 2, m_vacuumDegreeValueItem);
 											//QMessageBox::information(this, "成功", "计算完成");
 											return;
 										}
@@ -563,6 +594,12 @@ void InReverseOptimizationPropertyWidget::calculate()
 						}
 						else
 						{
+							known['A'] = (A - 12.518519) / 2.177802;
+							known['B'] = (B - 2.999897) / 0.725859;
+							known['C'] = (C - 25.001792) / 1.8102640;
+							known['D'] = (D - 50.000000) / 10.889012;
+							known['E'] = (E - 60.005435) / 3.621028;
+
 							//////////////////////////// 已知弹体注药时间//////////////////////////////////////////
 
 							auto injectionTimeValue = m_injectionTimeValue.toDouble() / 21.33;
@@ -580,12 +617,12 @@ void InReverseOptimizationPropertyWidget::calculate()
 									{
 										// 对阀门开度寻优
 										double value = v;
-										value = 11.555556 * v + 6.740741;
+										value = 2.177802 * v + 12.518519;
 										if (value >= 0 && value <= 100) {
 											m_valveOpeningValue = QString::number(value * 2.0, 'f', 2);
-											QTableWidgetItem* item = new QTableWidgetItem(m_valveOpeningValue);
-											item->setBackground(QBrush(QColor(2, 253, 254)));
-											m_tableWidget->setItem(4, 2, item);
+											m_valveOpeningValueItem = new QTableWidgetItem(m_valveOpeningValue);
+											m_valveOpeningValueItem->setBackground(QBrush(QColor(2, 253, 254)));
+											m_tableWidget->setItem(4, 2, m_valveOpeningValueItem);
 											//QMessageBox::information(this, "成功", "计算完成");
 											return;
 										}
@@ -594,13 +631,13 @@ void InReverseOptimizationPropertyWidget::calculate()
 									{
 										// 对真空度寻优
 										double value = v;
-										value = (57.777778 * v + 21.111111) / 1000;
+										value = (10.889012 * v + 50.000000) / 1000;
 
 										if (value >= 0 && value <= 100) {
 											m_vacuumDegreeValue = QString::number(value, 'f', 2);
-											QTableWidgetItem* item = new QTableWidgetItem(m_vacuumDegreeValue);
-											item->setBackground(QBrush(QColor(2, 253, 254)));
-											m_tableWidget->setItem(5, 2, item);
+											m_vacuumDegreeValueItem = new QTableWidgetItem(m_vacuumDegreeValue);
+											m_vacuumDegreeValueItem->setBackground(QBrush(QColor(2, 253, 254)));
+											m_tableWidget->setItem(5, 2, m_vacuumDegreeValueItem);
 											//QMessageBox::information(this, "成功", "计算完成");
 											return;
 										}
@@ -626,11 +663,11 @@ void InReverseOptimizationPropertyWidget::calculate()
 					}
 					else if (model == "产品二")
 					{
-						known['A'] = (A - 6.500000) / 13.000000;
-						known['B'] = (B - 1.000000) / 4.000000;
-						known['C'] = (C - 20.000000) / 10.000000;
-						known['D'] = (D - 20.000000) / 60.000000;
-						known['E'] = (E - 50.000000) / 20.000000;
+						known['A'] = (A - 13.000000) / 2.44883;
+						known['B'] = (B - 3.000000) / 0.753487;
+						known['C'] = (C - 25.000000) / 1.883716;
+						known['D'] = (D - 50.000000) / 11.302298;
+						known['E'] = (E - 60.000000) / 3.767433;
 
 						double target = 0;
 
@@ -654,12 +691,12 @@ void InReverseOptimizationPropertyWidget::calculate()
 									{
 										// 对阀门开度寻优
 										double value = v;
-										value = 13.000000 * v + 6.500000;
+										value = 2.44883 * v + 13.000000;
 										if (value >= 0 && value <= 100) {
 											m_valveOpeningValue = QString::number(value * 2.0, 'f', 2);
-											QTableWidgetItem* item = new QTableWidgetItem(m_valveOpeningValue);
-											item->setBackground(QBrush(QColor(2, 253, 254)));
-											m_tableWidget->setItem(4, 2, item);
+											m_valveOpeningValueItem = new QTableWidgetItem(m_valveOpeningValue);
+											m_valveOpeningValueItem->setBackground(QBrush(QColor(2, 253, 254)));
+											m_tableWidget->setItem(4, 2, m_valveOpeningValueItem);
 											//QMessageBox::information(this, "成功", "计算完成");
 											return;
 										}
@@ -668,13 +705,13 @@ void InReverseOptimizationPropertyWidget::calculate()
 									{
 										// 对真空度寻优
 										double value = v;
-										value = (60.000000 * v + 20.000000) / 1000;
+										value = (11.302298 * v + 50.000000) / 1000;
 
 										if (value >= 0 && value <= 100) {
 											m_vacuumDegreeValue = QString::number(value, 'f', 2);
-											QTableWidgetItem* item = new QTableWidgetItem(m_vacuumDegreeValue);
-											item->setBackground(QBrush(QColor(2, 253, 254)));
-											m_tableWidget->setItem(5, 2, item);
+											m_vacuumDegreeValueItem = new QTableWidgetItem(m_vacuumDegreeValue);
+											m_vacuumDegreeValueItem->setBackground(QBrush(QColor(2, 253, 254)));
+											m_tableWidget->setItem(5, 2, m_vacuumDegreeValueItem);
 											//QMessageBox::information(this, "成功", "计算完成");
 											return;
 										}
@@ -717,12 +754,12 @@ void InReverseOptimizationPropertyWidget::calculate()
 									{
 										// 对阀门开度寻优
 										double value = v;
-										value = 13.000000 * v + 6.500000;
+										value = 2.44883 * v + 13.000000;
 										if (value >= 0 && value <= 100) {
 											m_valveOpeningValue = QString::number(value * 2.0, 'f', 2);
-											QTableWidgetItem* item = new QTableWidgetItem(m_valveOpeningValue);
-											item->setBackground(QBrush(QColor(2, 253, 254)));
-											m_tableWidget->setItem(4, 2, item);
+											m_valveOpeningValueItem = new QTableWidgetItem(m_valveOpeningValue);
+											m_valveOpeningValueItem->setBackground(QBrush(QColor(2, 253, 254)));
+											m_tableWidget->setItem(4, 2, m_valveOpeningValueItem);
 											//QMessageBox::information(this, "成功", "计算完成");
 											return;
 										}
@@ -731,13 +768,13 @@ void InReverseOptimizationPropertyWidget::calculate()
 									{
 										// 对真空度寻优
 										double value = v;
-										value = (60.000000 * v + 20.000000) / 1000;
+										value = (11.302298 * v + 50.000000) / 1000;
 
 										if (value >= 0 && value <= 100) {
 											m_vacuumDegreeValue = QString::number(value, 'f', 2);
-											QTableWidgetItem* item = new QTableWidgetItem(m_vacuumDegreeValue);
-											item->setBackground(QBrush(QColor(2, 253, 254)));
-											m_tableWidget->setItem(5, 2, item);
+											m_vacuumDegreeValueItem = new QTableWidgetItem(m_vacuumDegreeValue);
+											m_vacuumDegreeValueItem->setBackground(QBrush(QColor(2, 253, 254)));
+											m_tableWidget->setItem(5, 2, m_vacuumDegreeValueItem);
 											//QMessageBox::information(this, "成功", "计算完成");
 											return;
 										}
@@ -763,11 +800,11 @@ void InReverseOptimizationPropertyWidget::calculate()
 					}
 					else if (model == "产品三")
 					{
-						known['A'] = (A - 6.500000) / 12.277778;
-						known['B'] = (B - 1.000000) / 4.000000;
-						known['C'] = (C - 20.000000) / 10.000000;
-						known['D'] = (D - 20.000000) / 60.000000;
-						known['E'] = (E - 50.000000) / 20.000000;
+						known['A'] = (A - 12.638889) / 2.312785;
+						known['B'] = (B - 3.000000) / 0.753487;
+						known['C'] = (C - 25.000000) / 1.883716;
+						known['D'] = (D - 50.000000) / 11.302298;
+						known['E'] = (E - 60.000000) / 3.767433;
 
 						double target = 0;
 
@@ -791,12 +828,12 @@ void InReverseOptimizationPropertyWidget::calculate()
 									{
 										// 对阀门开度寻优
 										double value = v;
-										value = 2.277778 * v + 6.500000;
+										value = 2.312785 * v + 12.638889;
 										if (value >= 0 && value <= 100) {
 											m_valveOpeningValue = QString::number(value * 2.0, 'f', 2);
-											QTableWidgetItem* item = new QTableWidgetItem(m_valveOpeningValue);
-											item->setBackground(QBrush(QColor(2, 253, 254)));
-											m_tableWidget->setItem(4, 2, item);
+											m_valveOpeningValueItem = new QTableWidgetItem(m_valveOpeningValue);
+											m_valveOpeningValueItem->setBackground(QBrush(QColor(2, 253, 254)));
+											m_tableWidget->setItem(4, 2, m_valveOpeningValueItem);
 											//QMessageBox::information(this, "成功", "计算完成");
 											return;
 										}
@@ -805,13 +842,13 @@ void InReverseOptimizationPropertyWidget::calculate()
 									{
 										// 对真空度寻优
 										double value = v;
-										value = (60.000000 * v + 20.000000) / 1000;
+										value = (11.302298 * v + 50.000000) / 1000;
 
 										if (value >= 0 && value <= 100) {
 											m_vacuumDegreeValue = QString::number(value, 'f', 2);
-											QTableWidgetItem* item = new QTableWidgetItem(m_vacuumDegreeValue);
-											item->setBackground(QBrush(QColor(2, 253, 254)));
-											m_tableWidget->setItem(5, 2, item);
+											m_vacuumDegreeValueItem = new QTableWidgetItem(m_vacuumDegreeValue);
+											m_vacuumDegreeValueItem->setBackground(QBrush(QColor(2, 253, 254)));
+											m_tableWidget->setItem(5, 2, m_vacuumDegreeValueItem);
 											//QMessageBox::information(this, "成功", "计算完成");
 											return;
 										}
@@ -854,12 +891,12 @@ void InReverseOptimizationPropertyWidget::calculate()
 									{
 										// 对阀门开度寻优
 										double value = v;
-										value = 2.277778 * v + 6.500000;
+										value = 2.312785 * v + 12.638889;
 										if (value >= 0 && value <= 100) {
 											m_valveOpeningValue = QString::number(value * 2.0, 'f', 2);
-											QTableWidgetItem* item = new QTableWidgetItem(m_valveOpeningValue);
-											item->setBackground(QBrush(QColor(2, 253, 254)));
-											m_tableWidget->setItem(4, 2, item);
+											m_valveOpeningValueItem = new QTableWidgetItem(m_valveOpeningValue);
+											m_valveOpeningValueItem->setBackground(QBrush(QColor(2, 253, 254)));
+											m_tableWidget->setItem(4, 2, m_valveOpeningValueItem);
 											//QMessageBox::information(this, "成功", "计算完成");
 											return;
 										}
@@ -868,13 +905,13 @@ void InReverseOptimizationPropertyWidget::calculate()
 									{
 										// 对真空度寻优
 										double value = v;
-										value = (60.000000 * v + 20.000000) / 1000;
+										value = (11.302298 * v + 50.000000) / 1000;
 
 										if (value >= 0 && value <= 100) {
 											m_vacuumDegreeValue = QString::number(value, 'f', 2);
-											QTableWidgetItem* item = new QTableWidgetItem(m_vacuumDegreeValue);
-											item->setBackground(QBrush(QColor(2, 253, 254)));
-											m_tableWidget->setItem(5, 2, item);
+											m_vacuumDegreeValueItem = new QTableWidgetItem(m_vacuumDegreeValue);
+											m_vacuumDegreeValueItem->setBackground(QBrush(QColor(2, 253, 254)));
+											m_tableWidget->setItem(5, 2, m_vacuumDegreeValueItem);
 											//QMessageBox::information(this, "成功", "计算完成");
 											return;
 										}
@@ -900,11 +937,11 @@ void InReverseOptimizationPropertyWidget::calculate()
 					}
 					else
 					{
-						known['A'] = (A - 8.500000) / 9.796296;
-						known['B'] = (B - 1.000000) / 4.000000;
-						known['C'] = (C - 20.000000) / 10.000000;
-						known['D'] = (D - 20.000000) / 60.000000;
-						known['E'] = (E - 50.000000) / 20.000000;
+						known['A'] = (A - 13.398148) / 1.845344;
+						known['B'] = (B - 3.000000) / 0.753487;
+						known['C'] = (C - 25.000000) / 1.883716;
+						known['D'] = (D - 50.000000) / 11.302298;
+						known['E'] = (E - 60.000000) / 3.767433;
 
 						double target = 0;
 
@@ -929,12 +966,12 @@ void InReverseOptimizationPropertyWidget::calculate()
 									{
 										// 对阀门开度寻优
 										double value = v;
-										value = 9.796296 * v + 8.500000;
+										value = 1.845344 * v + 13.398148;
 										if (value >= 0 && value <= 100) {
 											m_valveOpeningValue = QString::number(value * 2.0, 'f', 2);
-											QTableWidgetItem* item = new QTableWidgetItem(m_valveOpeningValue);
-											item->setBackground(QBrush(QColor(2, 253, 254)));
-											m_tableWidget->setItem(4, 2, item);
+											m_valveOpeningValueItem = new QTableWidgetItem(m_valveOpeningValue);
+											m_valveOpeningValueItem->setBackground(QBrush(QColor(2, 253, 254)));
+											m_tableWidget->setItem(4, 2, m_valveOpeningValueItem);
 											//QMessageBox::information(this, "成功", "计算完成");
 											return;
 										}
@@ -943,13 +980,13 @@ void InReverseOptimizationPropertyWidget::calculate()
 									{
 										// 对真空度寻优
 										double value = v;
-										value = (60.000000 * v + 20.000000) / 1000;
+										value = (11.302298 * v + 50.000000) / 1000;
 
 										if (value >= 0 && value <= 100) {
 											m_vacuumDegreeValue = QString::number(value, 'f', 2);
-											QTableWidgetItem* item = new QTableWidgetItem(m_vacuumDegreeValue);
-											item->setBackground(QBrush(QColor(2, 253, 254)));
-											m_tableWidget->setItem(5, 2, item);
+											m_vacuumDegreeValueItem = new QTableWidgetItem(m_vacuumDegreeValue);
+											m_vacuumDegreeValueItem->setBackground(QBrush(QColor(2, 253, 254)));
+											m_tableWidget->setItem(5, 2, m_vacuumDegreeValueItem);
 											//QMessageBox::information(this, "成功", "计算完成");
 											return;
 										}
@@ -992,12 +1029,12 @@ void InReverseOptimizationPropertyWidget::calculate()
 									{
 										// 对阀门开度寻优
 										double value = v;
-										value = 9.796296 * v + 8.500000;
+										value = 1.845344 * v + 13.398148;
 										if (value >= 0 && value <= 100) {
 											m_valveOpeningValue = QString::number(value * 2.0, 'f', 2);
-											QTableWidgetItem* item = new QTableWidgetItem(m_valveOpeningValue);
-											item->setBackground(QBrush(QColor(2, 253, 254)));
-											m_tableWidget->setItem(4, 2, item);
+											m_valveOpeningValueItem = new QTableWidgetItem(m_valveOpeningValue);
+											m_valveOpeningValueItem->setBackground(QBrush(QColor(2, 253, 254)));
+											m_tableWidget->setItem(4, 2, m_valveOpeningValueItem);
 											//QMessageBox::information(this, "成功", "计算完成");
 											return;
 										}
@@ -1006,13 +1043,13 @@ void InReverseOptimizationPropertyWidget::calculate()
 									{
 										// 对真空度寻优
 										double value = v;
-										value = (60.000000 * v + 20.000000) / 1000;
+										value = (11.302298 * v + 50.000000) / 1000;
 
 										if (value >= 0 && value <= 100) {
 											m_vacuumDegreeValue = QString::number(value, 'f', 2);
-											QTableWidgetItem* item = new QTableWidgetItem(m_vacuumDegreeValue);
-											item->setBackground(QBrush(QColor(2, 253, 254)));
-											m_tableWidget->setItem(5, 2, item);
+											m_vacuumDegreeValueItem = new QTableWidgetItem(m_vacuumDegreeValue);
+											m_vacuumDegreeValueItem->setBackground(QBrush(QColor(2, 253, 254)));
+											m_tableWidget->setItem(5, 2, m_vacuumDegreeValueItem);
 											//QMessageBox::information(this, "成功", "计算完成");
 											return;
 										}
@@ -1076,31 +1113,31 @@ void InReverseOptimizationPropertyWidget::calculate()
 void InReverseOptimizationPropertyWidget::reset()
 {
 	m_insulationTemperatureValue = "60";
-	QTableWidgetItem* insulationTemperatureValueItem = new QTableWidgetItem(m_insulationTemperatureValue);
-	insulationTemperatureValueItem->setBackground(QBrush(QColor(2, 253, 254)));
-	m_tableWidget->setItem(2, 2, insulationTemperatureValueItem);
+	m_insulationTemperatureValueItem = new QTableWidgetItem(m_insulationTemperatureValue);
+	m_insulationTemperatureValueItem->setBackground(QBrush(QColor(2, 253, 254)));
+	m_tableWidget->setItem(2, 2, m_insulationTemperatureValueItem);
 
-	m_valveOpeningValue = "5";
-	QTableWidgetItem* valveOpeningValueItem = new QTableWidgetItem(m_valveOpeningValue);
-	valveOpeningValueItem->setBackground(QBrush(QColor(2, 253, 254)));
-	m_tableWidget->setItem(4, 2, valveOpeningValueItem);
+	m_valveOpeningValue = "15";
+	m_valveOpeningValueItem = new QTableWidgetItem(m_valveOpeningValue);
+	m_valveOpeningValueItem->setBackground(QBrush(QColor(2, 253, 254)));
+	m_tableWidget->setItem(4, 2, m_valveOpeningValueItem);
 
-	m_vacuumDegreeValue = "0.02";
-	QTableWidgetItem* vacuumDegreeValueItem = new QTableWidgetItem(m_vacuumDegreeValue);
-	vacuumDegreeValueItem->setBackground(QBrush(QColor(2, 253, 254)));
-	m_tableWidget->setItem(5, 2, vacuumDegreeValueItem);
+	m_vacuumDegreeValue = "0.05";
+	m_vacuumDegreeValueItem = new QTableWidgetItem(m_vacuumDegreeValue);
+	m_vacuumDegreeValueItem->setBackground(QBrush(QColor(2, 253, 254)));
+	m_tableWidget->setItem(5, 2, m_vacuumDegreeValueItem);
 
 
 
 	m_relativeDensityValue = "";
-	QTableWidgetItem* relativeDensityItem = new QTableWidgetItem(m_relativeDensityValue);
-	relativeDensityItem->setBackground(QBrush(QColor(255, 254, 195)));
-	m_tableWidget->setItem(7, 2, relativeDensityItem);
+	m_relativeDensityValueItem = new QTableWidgetItem(m_relativeDensityValue);
+	m_relativeDensityValueItem->setBackground(QBrush(QColor(255, 254, 195)));
+	m_tableWidget->setItem(7, 2, m_relativeDensityValueItem);
 
 	m_injectionTimeValue = "";
-	QTableWidgetItem* injectionTimeItem = new QTableWidgetItem(m_injectionTimeValue);
-	injectionTimeItem->setBackground(QBrush(QColor(255, 254, 195)));
-	m_tableWidget->setItem(8, 2, injectionTimeItem);
+	m_injectionTimeValueItem = new QTableWidgetItem(m_injectionTimeValue);
+	m_injectionTimeValueItem->setBackground(QBrush(QColor(255, 254, 195)));
+	m_tableWidget->setItem(8, 2, m_injectionTimeValueItem);
 }
 
 
@@ -1141,28 +1178,33 @@ void InReverseOptimizationPropertyWidget::forwardCalculate()
 	QString formula = "";
 	if (model == "产品一" )
 	{
-		A = (A - 6.740741) / 11.555556;
-		B = (B - 1.074074) / 3.851852;
-		C = (C - 20.185185) / 9.629630;
-		D = (D - 21.111111) / 57.777778;
-		E = (E - 50.370370) / 19.259259;
 		if (!relativeDensityBool)
 		{
+			A = (A - 12.509291) / 2.218704;
+			B = (B - 3.01888) / 0.702157;
+			C = (C - 25.076659) / 1.740173;
+			D = (D - 50.037481) / 10.504812;
+			E = (E - 60.043506) / 3.582356;
 			// 气含率
 			formula = calculationPropertyInfo.oneGasRateCalculateFormula;
 		}
 		else
 		{
+			A = (A - 12.518519) / 2.177802;
+			B = (B - 2.999897) / 0.725859;
+			C = (C - 25.001792) / 1.8102640;
+			D = (D - 50.000000) / 10.889012;
+			E = (E - 60.005435) / 3.621028;
 			formula = calculationPropertyInfo.oneInjectionTimeCalculateFormula;
 		}
 	}
 	else if (model == "产品二")
 	{
-		A = (A - 6.500000) / 13.000000;
-		B = (B - 1.000000) / 4.000000;
-		C = (C - 20.000000) / 10.000000;
-		D = (D - 20.000000) / 60.000000;
-		E = (E - 50.000000) / 20.000000;
+		A = (A - 13.000000) / 2.44883;
+		B = (B - 3.000000) / 0.753487;
+		C = (C - 25.000000) / 1.883716;
+		D = (D - 50.000000) / 11.302298;
+		E = (E - 60.000000) / 3.767433;
 		
 		if (!relativeDensityBool)
 		{
@@ -1176,11 +1218,11 @@ void InReverseOptimizationPropertyWidget::forwardCalculate()
 	}
 	else if (model == "产品三")
 	{
-		A = (A - 6.500000) / 12.277778;
-		B = (B - 1.000000) / 4.000000;
-		C = (C - 20.000000) / 10.000000;
-		D = (D - 20.000000) / 60.000000;
-		E = (E - 50.000000) / 20.000000;
+		A = (A - 12.638889) / 2.312785;
+		B = (B - 3.000000) / 0.753487;
+		C = (C - 25.000000) / 1.883716;
+		D = (D - 50.000000) / 11.302298;
+		E = (E - 60.000000) / 3.767433;
 
 		if (!relativeDensityBool)
 		{
@@ -1195,11 +1237,11 @@ void InReverseOptimizationPropertyWidget::forwardCalculate()
 	else
 	{
 
-		A = (A - 8.500000) / 9.796296;
-		B = (B - 1.000000) / 4.000000;
-		C = (C - 20.000000) / 10.000000;
-		D = (D - 20.000000) / 60.000000;
-		E = (E - 50.000000) / 20.000000;
+		A = (A - 13.398148) / 1.845344;
+		B = (B - 3.000000) / 0.753487;
+		C = (C - 25.000000) / 1.883716;
+		D = (D - 50.000000) / 11.302298;
+		E = (E - 60.000000) / 3.767433;
 
 		if (!relativeDensityBool)
 		{
@@ -1223,9 +1265,10 @@ void InReverseOptimizationPropertyWidget::forwardCalculate()
 		double relativeDensity = (gas + solid) / density;
 
 		QString relativeDensityResult = QString::number(relativeDensity * 100, 'f', 2);
-		QTableWidgetItem* relativeDensityItem = new QTableWidgetItem(relativeDensityResult);
-		relativeDensityItem->setBackground(QBrush(QColor(255, 254, 195)));
-		m_tableWidget->setItem(7, 2, relativeDensityItem);
+		m_relativeDensityValueItem = new QTableWidgetItem(relativeDensityResult);
+		m_relativeDensityValueItem->setBackground(QBrush(QColor(255, 254, 195)));
+		m_tableWidget->setItem(7, 2, m_relativeDensityValueItem);
+		m_relativeDensityValue = relativeDensityResult;
 	}
 	else
 	{
@@ -1247,9 +1290,10 @@ void InReverseOptimizationPropertyWidget::forwardCalculate()
 		}
 
 		QString injectionTimeResult = QString::number(qRound(value));
-		QTableWidgetItem* injectionTimeItem = new QTableWidgetItem(injectionTimeResult);
-		injectionTimeItem->setBackground(QBrush(QColor(255, 254, 195)));
-		m_tableWidget->setItem(8, 2, injectionTimeItem);
+		m_injectionTimeValueItem = new QTableWidgetItem(injectionTimeResult);
+		m_injectionTimeValueItem->setBackground(QBrush(QColor(255, 254, 195)));
+		m_tableWidget->setItem(8, 2, m_injectionTimeValueItem);
+		m_injectionTimeValue = injectionTimeResult;
 	}
 
 	

@@ -32,10 +32,18 @@ private:
 
 	QString m_insulationTemperatureValue = "60"; // 弹体保温温度
 	QString m_pouringTemperatureValue = "102"; // 药液浇注温度
-	QString m_valveOpeningValue = "5"; // 阀门开度
-	QString m_vacuumDegreeValue = "0.02"; // 真空度
+	QString m_valveOpeningValue = "15"; // 阀门开度
+	QString m_vacuumDegreeValue = "0.05"; // 真空度
 	QString m_relativeDensityValue = ""; // 相对密度
 	QString m_injectionTimeValue = ""; // 弹体注药时间
+
+	QTableWidgetItem* m_insulationTemperatureValueItem = nullptr;
+	QTableWidgetItem* m_pouringTemperatureValueItem = nullptr;
+	QTableWidgetItem* m_valveOpeningValueItem = nullptr;
+	QTableWidgetItem* m_vacuumDegreeValueItem = nullptr;
+	QTableWidgetItem* m_relativeDensityValueItem = nullptr;
+	QTableWidgetItem* m_injectionTimeValueItem = nullptr;
+	
 
 	
 	QRadioButton* m_insulationTempeRadioBtn = nullptr;
