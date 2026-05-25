@@ -13,6 +13,8 @@
 #include <Aspect_Handle.hxx>
 #include <Aspect_DisplayConnection.hxx>
 #include <WNT_Window.hxx>
+#include <V3d_DirectionalLight.hxx>
+#include <V3d_AmbientLight.hxx>
 
 static Handle(Graphic3d_GraphicDriver)& GetGraphicDriver()
 {
@@ -38,6 +40,9 @@ OccView::OccView(QWidget* parent)
     setAttribute(Qt::WA_NativeWindow, true);
     setAttribute(Qt::WA_PaintOnScreen, true);
     setAttribute(Qt::WA_NoSystemBackground, true);
+
+
+
 
     setMouseTracking(true);
 }
@@ -126,6 +131,25 @@ void OccView::init()
         myContext = new AIS_InteractiveContext(myViewer);
 
         myViewer->SetDefaultLights();
+
+        Handle(V3d_DirectionalLight) aDir = new V3d_DirectionalLight(
+            V3d_XnegYnegZpos,
+            Quantity_Color(1.0, 1.0, 1.0, Quantity_TOC_RGB),
+            Standard_False
+        );
+        aDir->SetIntensity(0.8f);
+        myViewer->AddLight(aDir);
+        myViewer->SetLightOn(aDir);  // 单独开启，确保生效
+
+        // 补一个环境光，避免背光面死黑
+        Handle(V3d_AmbientLight) aAmb = new V3d_AmbientLight(
+            Quantity_Color(0.6, 0.6, 0.6, Quantity_TOC_RGB)
+        );
+        aAmb->SetIntensity(0.4f);
+        myViewer->AddLight(aAmb);
+        myViewer->SetLightOn(aAmb);
+
+
         myViewer->SetLightOn();
 
         Quantity_Color a(45.0 / 255, 86.0 / 255, 126.0 / 255, Quantity_TOC_RGB);
@@ -141,6 +165,12 @@ void OccView::init()
 
         // 强制立即重绘
         myView->Redraw();
+
+        SetCameraRotationState(false);
+        myView->SetProj(V3d_Zneg);
+        myView->SetTwist(-M_PI / 2.0);
+
+
         update();
 
     }

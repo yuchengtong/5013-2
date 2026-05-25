@@ -336,7 +336,7 @@ bool APISetNodeValue::SetPreForwardDesignResult(OccView* occView, std::vector<do
 
 	const double WALL_THICKNESS = 10.0;
 	const double WALL_VALUE = -1.0;
-	const double max_value = 10.0;
+	const double max_value = ModelDataManager::GetInstance()->GetInForwardPropertyInfo().m_relativeDensityValue;
 	const double min_value = 0.0;
 
 	auto& boundaryEdges = meshInfo.preForwardBoundaryEdges;
@@ -461,7 +461,8 @@ bool APISetNodeValue::SetPreForwardDesignResult(OccView* occView, std::vector<do
 			nodeValues.push_back(value);
 		}
 
-		if (!meshInfo.preForwardDisplayCreated) {
+		if (!meshInfo.preForwardDisplayCreated)
+		{
 			context->EraseAll(true);
 			meshInfo.preForwardMesh = new MeshVS_Mesh();
 			meshInfo.preForwardMesh->SetDataSource(&meshInfo.triangleStructure);
@@ -475,7 +476,7 @@ bool APISetNodeValue::SetPreForwardDesignResult(OccView* occView, std::vector<do
 		MeshVS_DataMapOfIntegerColor colormap = GetMeshDataMap(nodeValues, min_value, max_value);
 		meshInfo.preForwardNodalBuilder->SetColors(colormap);
 		context->Redisplay(meshInfo.preForwardMesh, Standard_True);
-		occView->fitAll();
+		//occView->fitAll();
 		meshInfo.preForwardViewInitialized = true;
 	}
 

@@ -177,7 +177,6 @@ GFImportModelWidget::GFImportModelWidget(QWidget*parent)
 	setLayout(layout);
 
 	
-
 	// 连接信号和槽
 	connect(m_treeModelWidget, &GFTreeModelWidget::itemClicked, this, &GFImportModelWidget::onTreeItemClicked);
 }
@@ -192,7 +191,7 @@ void GFImportModelWidget::onTreeItemClicked(const QString& itemData)
 	auto occView = GetOccView();
 	if (itemData == "Geometry")
 	{
-		occView->SetCameraRotationState(true);
+		//occView->SetCameraRotationState(true);
 
 		m_PropertyStackWidget->setCurrentWidget(m_geomPropertyWidget);
 		auto modelInfo = ModelDataManager::GetInstance()->GetModelGeometryInfo();
@@ -210,50 +209,50 @@ void GFImportModelWidget::onTreeItemClicked(const QString& itemData)
 	}
 	else if (itemData == "PhysicalProperty")
 	{
-		occView->SetCameraRotationState(true);
+		//occView->SetCameraRotationState(true);
 
 		m_PropertyStackWidget->setCurrentWidget(m_materialPropertyWidget);
 	}
 	else if (itemData == "Steel")
 	{
-		occView->SetCameraRotationState(true);
+		//occView->SetCameraRotationState(true);
 		m_PropertyStackWidget->setCurrentWidget(m_steelPropertyWidgett);
 	}
 	else if (itemData == "Propellant")
 	{
-		occView->SetCameraRotationState(true);
+		//occView->SetCameraRotationState(true);
 		m_PropertyStackWidget->setCurrentWidget(m_propellantPropertyWidget);
 	}
 	else if (itemData == "ComputationalModel")
 	{
-		occView->SetCameraRotationState(true);
+		//occView->SetCameraRotationState(true);
 		m_PropertyStackWidget->setCurrentWidget(m_calculationPropertyWidget);
 	}
 	else if (itemData == "Project")
 	{
-		occView->SetCameraRotationState(true);
+		//occView->SetCameraRotationState(true);
 		m_PropertyStackWidget->setCurrentWidget(m_projectPropertyWidge);
 	}
 	else if (itemData == "Gelatin")
 	{
-		occView->SetCameraRotationState(true);
+		//occView->SetCameraRotationState(true);
 		m_PropertyStackWidget->setCurrentWidget(m_insulatingheatPropertyWidget);
 	}
 	else if (itemData == "DataBase")
 	{
-		occView->SetCameraRotationState(true);
+		//occView->SetCameraRotationState(true);
 
 		m_PropertyStackWidget->setCurrentWidget(m_databasePropertyWidget);
 	}
 	else if (itemData == "Calculation")
 	{
-		occView->SetCameraRotationState(true);
+		//occView->SetCameraRotationState(true);
 
 		m_PropertyStackWidget->setCurrentWidget(m_calculationPropertyWidget);
 	}
 	else if (itemData == "Mesh")
 	{
-		occView->SetCameraRotationState(true);
+		//occView->SetCameraRotationState(true);
 
 		m_PropertyStackWidget->setCurrentWidget(m_meshPropertyWidget);
 
@@ -302,7 +301,7 @@ void GFImportModelWidget::onTreeItemClicked(const QString& itemData)
 	}
 	else if (itemData == "PreForwardDesign")
 	{
-		occView->SetCameraRotationState(true);
+		//occView->SetCameraRotationState(true);
 
 		auto modelInfo = ModelDataManager::GetInstance()->GetModelGeometryInfo();
 		if (!modelInfo.shape.IsNull())
@@ -321,7 +320,7 @@ void GFImportModelWidget::onTreeItemClicked(const QString& itemData)
 	}
 	else if (itemData == "PreReverseOptimization")
 	{
-		occView->SetCameraRotationState(true);
+		//occView->SetCameraRotationState(true);
 
 		auto modelInfo = ModelDataManager::GetInstance()->GetModelGeometryInfo();
 		if (!modelInfo.shape.IsNull())
@@ -339,12 +338,54 @@ void GFImportModelWidget::onTreeItemClicked(const QString& itemData)
 	}
 	else if (itemData == "InForwardDesign")
 	{
-		occView->SetCameraRotationState(true);
+		//occView->SetCameraRotationState(true);
+
+		auto meshInfo = ModelDataManager::GetInstance()->GetModelMeshInfo();
+		auto inFoewardInfo=ModelDataManager::GetInstance()->GetInForwardPropertyInfo();
+		
+		if (inFoewardInfo.isChecked)
+		{
+			auto toolsAnimationWidget=GetToolsAnimationWidget();
+
+			auto occView = GetOccView();
+			std::vector<double> nodeValues;
+			APISetNodeValue::SetPreForwardDesignResult(occView, nodeValues, toolsAnimationWidget->GetCurrentFrameIndex());
+
+			Handle(AIS_InteractiveContext) context = occView->getContext();
+			Handle(V3d_View) view = occView->getView();
+			//view->SetProj(V3d_Zneg);
+			//view->SetTwist(-M_PI / 2.0);
+
+			double min_value = 0;
+			double max_value = ModelDataManager::GetInstance()->GetInForwardPropertyInfo().m_relativeDensityValue;
+			TCollection_ExtendedString tostr("体积分数", true);
+			Handle(AIS_ColorScale) aColorScale = new AIS_ColorScale();
+			aColorScale->SetFormat(TCollection_AsciiString("%.2f"));
+			aColorScale->SetSize(50, 200);
+			aColorScale->SetRange(min_value, max_value);
+			aColorScale->SetNumberOfIntervals(9);
+			aColorScale->SetLabelPosition(Aspect_TOCSP_RIGHT);
+			aColorScale->SetTextHeight(14);
+			aColorScale->SetColor(Quantity_Color(Quantity_NOC_BLACK));
+			aColorScale->SetTitle(tostr);
+			aColorScale->SetColorRange(Quantity_Color(Quantity_NOC_BLUE1), Quantity_Color(Quantity_NOC_RED));
+			aColorScale->SetLabelType(Aspect_TOCSD_AUTO);
+			aColorScale->SetZLayer(Graphic3d_ZLayerId_TopOSD);
+
+			Graphic3d_Vec2i anoffset(0, Standard_Integer(200));
+			context->SetTransformPersistence(aColorScale, new Graphic3d_TransformPers(Graphic3d_TMF_2d, Aspect_TOTP_LEFT_UPPER, anoffset));
+			context->SetDisplayMode(aColorScale, 1, Standard_False);
+			context->Display(aColorScale, Standard_True);
+
+			//view->FitAll();
+		}
+
+
 		m_PropertyStackWidget->setCurrentWidget(m_inForwardDesignPropertyWidget);
 	}
 	else if (itemData == "InReverseOptimization")
 	{
-		occView->SetCameraRotationState(true);
+		//occView->SetCameraRotationState(true);
 
 		auto modelInfo = ModelDataManager::GetInstance()->GetModelGeometryInfo();
 		if (!modelInfo.shape.IsNull())
