@@ -463,7 +463,7 @@ bool APISetNodeValue::SetPreForwardDesignResult(OccView* occView, std::vector<do
 
 		if (!meshInfo.preForwardDisplayCreated)
 		{
-			context->EraseAll(true);
+			//context->EraseAll(true);
 			meshInfo.preForwardMesh = new MeshVS_Mesh();
 			meshInfo.preForwardMesh->SetDataSource(&meshInfo.triangleStructure);
 			meshInfo.preForwardNodalBuilder = new MeshVS_NodalColorPrsBuilder(

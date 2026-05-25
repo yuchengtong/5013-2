@@ -150,7 +150,7 @@ struct InForwardPropertyInfo {
 	bool isChecked = false;
 
 
-
+	Handle(AIS_ColorScale) m_ColorScale;
 
 
 
