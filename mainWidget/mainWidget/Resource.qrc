@@ -64,4 +64,19 @@
         <file alias="Animation/last_frame_disable.svg">src/icon/Animation/last_frame_disable.svg</file>
         <file alias="Animation/last_frame_press.svg">src/icon/Animation/last_frame_press.svg</file>
     </qresource>
+    <qresource prefix="/tree">
+        <file alias="Tree/calculation.svg">src/icon/Tree/calculation.svg</file>
+        <file alias="Tree/data_base.svg">src/icon/Tree/data_base.svg</file>
+        <file alias="Tree/forward_design.svg">src/icon/Tree/forward_design.svg</file>
+        <file alias="Tree/gelatin.svg">src/icon/Tree/gelatin.svg</file>
+        <file alias="Tree/geometry.svg">src/icon/Tree/geometry.svg</file>
+        <file alias="Tree/injection_process.svg">src/icon/Tree/injection_process.svg</file>
+        <file alias="Tree/mesh.svg">src/icon/Tree/mesh.svg</file>
+        <file alias="Tree/physical.svg">src/icon/Tree/physical.svg</file>
+        <file alias="Tree/preheating_process.svg">src/icon/Tree/preheating_process.svg</file>
+        <file alias="Tree/project.svg">src/icon/Tree/project.svg</file>
+        <file alias="Tree/propellant.svg">src/icon/Tree/propellant.svg</file>
+        <file alias="Tree/reverse_optimization.svg">src/icon/Tree/reverse_optimization.svg</file>
+        <file alias="Tree/steel.svg">src/icon/Tree/steel.svg</file>
+    </qresource>
 </RCC>

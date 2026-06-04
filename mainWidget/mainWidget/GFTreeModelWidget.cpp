@@ -104,8 +104,7 @@ GFTreeModelWidget::~GFTreeModelWidget()
 
 void GFTreeModelWidget::init()
 {
-	QIcon error_icon(":/src/Error.svg");
-	QIcon checked_icon(":/src/Checked.svg");
+	
 
 	m_TreeWidget = new GFTreeWidget(this);
 	{
@@ -119,20 +118,20 @@ void GFTreeModelWidget::init()
 	rootItem->setText(0, "工程文件");
 	rootItem->setData(0, Qt::UserRole, "Project");
 	rootItem->setExpanded(true);
-	//rootItem->setIcon(0, icon);
+	rootItem->setIcon(0, QIcon(":/tree/Tree/project.svg"));
 
 	// 几何模型节点
 	QTreeWidgetItem* geometryNode = new QTreeWidgetItem(rootItem);
 	geometryNode->setText(0, "几何模型");
 	geometryNode->setData(0, Qt::UserRole, "Geometry");
-	geometryNode->setIcon(0, error_icon);
+	geometryNode->setIcon(0, QIcon(":/tree/Tree/geometry.svg"));
 
 	// 数据库
 	QTreeWidgetItem* dataBase = new QTreeWidgetItem(rootItem);
 	{
 		dataBase->setText(0, "数据库");
 		dataBase->setData(0, Qt::UserRole, "DataBase");
-		dataBase->setIcon(0, error_icon);
+		dataBase->setIcon(0, QIcon(":/tree/Tree/data_base.svg"));
 		dataBase->setExpanded(true);
 	}
 
@@ -140,7 +139,7 @@ void GFTreeModelWidget::init()
 	{
 		phyProperty->setText(0, "物性数据库");
 		phyProperty->setData(0, Qt::UserRole, "PhysicalProperty");
-		phyProperty->setIcon(0, error_icon);
+		phyProperty->setIcon(0, QIcon(":/tree/Tree/physical.svg"));
 		phyProperty->setExpanded(true);
 	}
 	dataBase->addChild(phyProperty);
@@ -149,19 +148,19 @@ void GFTreeModelWidget::init()
 	{
 		steel->setText(0, "壳体物性");
 		steel->setData(0, Qt::UserRole, "Steel");
-		steel->setIcon(0, error_icon);
+		steel->setIcon(0, QIcon(":/tree/Tree/steel.svg"));
 	}
 	QTreeWidgetItem* propellant = new QTreeWidgetItem();
 	{
 		propellant->setText(0, "药液物性");
 		propellant->setData(0, Qt::UserRole, "Propellant");
-		propellant->setIcon(0, error_icon);
+		propellant->setIcon(0, QIcon(":/tree/Tree/propellant.svg"));
 	}
 	QTreeWidgetItem* gelatin = new QTreeWidgetItem();
 	{
 		gelatin->setText(0, "明胶物性");
 		gelatin->setData(0, Qt::UserRole, "Gelatin");
-		gelatin->setIcon(0, error_icon);
+		gelatin->setIcon(0, QIcon(":/tree/Tree/gelatin.svg"));
 	}
 	phyProperty->setExpanded(true);
 	phyProperty->addChild(steel);
@@ -173,7 +172,7 @@ void GFTreeModelWidget::init()
 	{
 		calculationItem->setText(0, "计算模型数据库");
 		calculationItem->setData(0, Qt::UserRole, "Calculation");
-		calculationItem->setIcon(0, checked_icon);
+		calculationItem->setIcon(0, QIcon(":/tree/Tree/calculation.svg"));
 	}
 
 	//网格节点
@@ -181,7 +180,7 @@ void GFTreeModelWidget::init()
 	{
 		meshItem->setText(0, "网格");
 		meshItem->setData(0, Qt::UserRole, "Mesh");
-		meshItem->setIcon(0, error_icon);
+		meshItem->setIcon(0, QIcon(":/tree/Tree/mesh.svg"));
 	}
 
 	// 预热工艺工程计算
@@ -189,7 +188,7 @@ void GFTreeModelWidget::init()
 	{
 		preheatingProcessCal->setText(0, "预热工艺工程计算");
 		preheatingProcessCal->setData(0, Qt::UserRole, "PreheatingProcessCal");
-		preheatingProcessCal->setIcon(0, error_icon);
+		preheatingProcessCal->setIcon(0, QIcon(":/tree/Tree/preheating_process.svg"));
 		preheatingProcessCal->setExpanded(true);
 	}
 
@@ -197,13 +196,13 @@ void GFTreeModelWidget::init()
 	{
 		preForwardDesign->setText(0, "正向设计");
 		preForwardDesign->setData(0, Qt::UserRole, "PreForwardDesign");
-		preForwardDesign->setIcon(0, error_icon);
+		preForwardDesign->setIcon(0, QIcon(":/tree/Tree/forward_design.svg"));
 	}
 	QTreeWidgetItem* preReverseOptimization = new QTreeWidgetItem();
 	{
 		preReverseOptimization->setText(0, "逆向寻优");
 		preReverseOptimization->setData(0, Qt::UserRole, "PreReverseOptimization");
-		preReverseOptimization->setIcon(0, error_icon);
+		preReverseOptimization->setIcon(0, QIcon(":/tree/Tree/reverse_optimization.svg"));
 	}
 	preheatingProcessCal->addChild(preForwardDesign);
 	preheatingProcessCal->addChild(preReverseOptimization);
@@ -213,7 +212,7 @@ void GFTreeModelWidget::init()
 	{
 		injectionProcessCal->setText(0, "注药工艺工程计算");
 		injectionProcessCal->setData(0, Qt::UserRole, "InjectionProcessCal");
-		injectionProcessCal->setIcon(0, error_icon);
+		injectionProcessCal->setIcon(0, QIcon(":/tree/Tree/injection_process.svg"));
 		injectionProcessCal->setExpanded(true);
 	}
 
@@ -221,13 +220,13 @@ void GFTreeModelWidget::init()
 	{
 		inForwardDesign->setText(0, "正向设计");
 		inForwardDesign->setData(0, Qt::UserRole, "InForwardDesign");
-		inForwardDesign->setIcon(0, error_icon);
+		inForwardDesign->setIcon(0, QIcon(":/tree/Tree/forward_design.svg"));
 	}
 	QTreeWidgetItem* inReverseOptimization = new QTreeWidgetItem();
 	{
 		inReverseOptimization->setText(0, "逆向寻优");
 		inReverseOptimization->setData(0, Qt::UserRole, "InReverseOptimization");
-		inReverseOptimization->setIcon(0, error_icon);
+		inReverseOptimization->setIcon(0, QIcon(":/tree/Tree/reverse_optimization.svg"));
 	}
 	injectionProcessCal->addChild(inForwardDesign);
 	injectionProcessCal->addChild(inReverseOptimization);
@@ -384,7 +383,7 @@ void GFTreeModelWidget::onTreeItemClicked(QTreeWidgetItem* item, int column)
 
 void GFTreeModelWidget::updataIcon()
 {
-	QIcon error_icon(":/src/Error.svg");
+	/*QIcon error_icon(":/src/Error.svg");
 	QIcon checked_icon(":/src/Checked.svg");
 
 	auto ins=ModelDataManager::GetInstance();
@@ -526,7 +525,7 @@ void GFTreeModelWidget::updataIcon()
 				
 			}
 		}
-	}
+	}*/
 }
 
 void GFTreeModelWidget::contextMenuEvent(QContextMenuEvent *event)
