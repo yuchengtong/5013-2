@@ -443,25 +443,11 @@ void InForwardDesignPropertyWidget::inForwardCalculate() {
 					auto E = m_insulationTemperatureValue.toDouble(); // 保温温度（℃）
 
 					// 获取模型类型
-					QString model = "产品一";
-					QWidget* parent = parentWidget();
-					while (parent) {
-						GFImportModelWidget* gfParent = dynamic_cast<GFImportModelWidget*>(parent);
-						if (gfParent)
-						{
-							auto* modelComboBox = gfParent->GetGeomPropertyWidget()->GetModelComboBox();
-							model = modelComboBox->currentText();
-							break;
-						}
-						else
-						{
-							parent = parent->parentWidget();
-						}
-					}
-
+					QString model = ModelDataManager::GetInstance()->GetModelGeometryInfo().model;;
+					
 					double gasRateValue = 0.0;
 					double injectionTimeValue = 0.0;
-					if (model == "产品一")
+					if (model == "HQ-9B")
 					{
 						if (A < 6.740741)
 						{
@@ -521,7 +507,7 @@ void InForwardDesignPropertyWidget::inForwardCalculate() {
 						injectionTimeValue = inForwardCalculateForm(calculationPropertyInfo.oneInjectionTimeCalculateFormula, injectionTimeA, injectionTimeB, injectionTimeC, injectionTimeD, injectionTimeE);
 						injectionTimeValue = injectionTimeValue * 21.33;
 					}
-					else if (model == "产品二")
+					else if (model == "YJ-20")
 					{
 						if (A < 6.500000)
 						{
@@ -581,7 +567,7 @@ void InForwardDesignPropertyWidget::inForwardCalculate() {
 						injectionTimeValue = inForwardCalculateForm(calculationPropertyInfo.twoInjectionTimeCalculateFormula, injectionTimeA, injectionTimeB, injectionTimeC, injectionTimeD, injectionTimeE);
 						injectionTimeValue = injectionTimeValue * 26.67;
 					}
-					else if (model == "产品三")
+					else if (model == "YJ-91A")
 					{
 						if (A < 6.500000)
 						{
@@ -873,15 +859,14 @@ void InForwardDesignPropertyWidget::view()
 	auto E = m_insulationTemperatureValue.toDouble(); // 保温温度（℃）
 
 	// 获取模型类型
-	QString model = "产品一";
+	QString model = "HQ-9B";
 	QWidget* parent = parentWidget();
 	while (parent) {
 		GFImportModelWidget* gfParent = dynamic_cast<GFImportModelWidget*>(parent);
 		if (gfParent)
 		{
-			auto* modelComboBox = gfParent->GetGeomPropertyWidget()->GetModelComboBox();
-			model = modelComboBox->currentText();
-
+			
+			model = ModelDataManager::GetInstance()->GetModelGeometryInfo().model;
 
 			QVector<double> densityTempX;
 			QVector<double> densityTempY;
@@ -902,7 +887,7 @@ void InForwardDesignPropertyWidget::view()
 			QVector<double> timeVacuumY;
 
 
-			if (model == "产品一")
+			if (model == "HQ-9B")
 			{
 				if (A < 6.740741)
 				{
@@ -1104,7 +1089,7 @@ void InForwardDesignPropertyWidget::view()
 
 				}
 			}
-			else if (model == "产品二")
+			else if (model == "YJ-20")
 			{
 				if (A < 6.500000)
 				{
@@ -1305,7 +1290,7 @@ void InForwardDesignPropertyWidget::view()
 
 				}
 			}
-			else if (model == "产品三")
+			else if (model == "YJ-91A")
 			{
 				if (A < 6.500000)
 				{
@@ -1506,7 +1491,7 @@ void InForwardDesignPropertyWidget::view()
 
 				}
 			}
-			else if (model == "产品四")
+			else if (model == "CJ-20A")
 			{
 				if (A < 8.500000)
 				{

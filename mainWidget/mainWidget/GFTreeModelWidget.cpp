@@ -13,6 +13,7 @@
 #include <QValidator>
 #include <QThread>
 #include <algorithm>
+#include <QFileInfo>
 
 #include <AIS_Shape.hxx>
 #include <AIS_ColorScale.hxx>
@@ -667,14 +668,29 @@ void GFTreeModelWidget::contextMenuEvent(QContextMenuEvent *event)
 				GFImportModelWidget* gfParent = dynamic_cast<GFImportModelWidget*>(parent);
 				if (gfParent)
 				{
-					QString filePath = QFileDialog::getOpenFileName(this, "Open File", QDir::homePath(),
+					QDir privateDir("src/model");
+					QString filePath = QFileDialog::getOpenFileName(this, "Open File", privateDir.path(),
 						"STEP Files (*.stp *.step);;IGES Files (*.iges *.igs);;VTK Files (*.vtk);;X_T Files (*.x_t);;All Files (*.*)");
 
 					if (filePath.isEmpty())
 					{
 						return;
 					}
-				
+					QFileInfo fileInfo(filePath);
+					QString model = fileInfo.baseName();
+					if (model != "HQ-9B" && model != "YJ-20" && model != "YJ-91A" && model != "CJ-20A")
+					{
+						QMessageBox::warning(this, "导入失败", "导入文件错误！");
+						return;
+					}
+					auto* tableWid = gfParent->GetGeomPropertyWidget()->GetQTableWidget();
+					QTableWidgetItem* modelValueItem = new QTableWidgetItem(model);
+					modelValueItem->setTextAlignment(Qt::AlignCenter); // 文本居中
+					modelValueItem->setFlags(modelValueItem->flags() & ~Qt::ItemIsEditable); // 不可编辑
+					modelValueItem->setBackground(QBrush(QColor(230, 230, 230)));
+					tableWid->setItem(1, 2, modelValueItem);
+
+					
 					QDateTime currentTime = QDateTime::currentDateTime();
 					QString timeStr = currentTime.toString("yyyy-MM-dd hh:mm:ss");
 					auto logWidget = gfParent->GetLogWidget();
@@ -776,7 +792,7 @@ void GFTreeModelWidget::contextMenuEvent(QContextMenuEvent *event)
 									}
 								}
 
-
+								info.model = model;
 								// 保存模型信息
 								ModelDataManager::GetInstance()->SetModelGeometryInfo(info);
 								updataIcon();

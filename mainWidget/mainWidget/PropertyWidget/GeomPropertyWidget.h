@@ -15,7 +15,7 @@ public:
 
 	QTableWidget* GetQTableWidget() { return m_tableWidget; }
 
-	QComboBox* GetModelComboBox() { return m_modelComboBox; }
+	//QComboBox* GetModelComboBox() { return m_modelComboBox; }
 
 private:
 	void initWidget() override;
@@ -26,8 +26,7 @@ private slots:
 private:
 	QTableWidget* m_tableWidget = nullptr;
 
-	QComboBox* m_modelComboBox = nullptr;
-
+	QString m_modelValue = "HQ-9B";
 	QString m_boreDiameterValue = "391";
 	QString m_equaldiameterSectionHeightValue = "560";
 	QString m_boreRadiusValue = "0";

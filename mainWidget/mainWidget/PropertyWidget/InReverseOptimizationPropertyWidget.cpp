@@ -492,24 +492,7 @@ void InReverseOptimizationPropertyWidget::calculate()
 					auto E = m_insulationTemperatureValue.toDouble(); // 保温温度（℃）
 
 					// 获取模型类型
-					QString model = "产品一";
-					QWidget* parent = parentWidget();
-					while (parent) {
-						GFImportModelWidget* gfParent = dynamic_cast<GFImportModelWidget*>(parent);
-						if (gfParent)
-						{
-							auto* modelComboBox = gfParent->GetGeomPropertyWidget()->GetModelComboBox();
-							model = modelComboBox->currentText();
-							break;
-						}
-						else
-						{
-							parent = parent->parentWidget();
-						}
-					}
-
-					
-
+					QString model = ModelDataManager::GetInstance()->GetModelGeometryInfo().model;
 					m_solver = new InReverseFormulaSolver(this);
 
 					double density = ins->GetSteelPropertyInfo().density;
@@ -518,7 +501,7 @@ void InReverseOptimizationPropertyWidget::calculate()
 					QMap<char, double> known; // 计算入参值
 
 
-					if (model == "产品一")
+					if (model == "HQ-9B")
 					{
 						
 
@@ -661,7 +644,7 @@ void InReverseOptimizationPropertyWidget::calculate()
 							}
 						}
 					}
-					else if (model == "产品二")
+					else if (model == "YJ-20")
 					{
 						known['A'] = (A - 13.000000) / 2.44883;
 						known['B'] = (B - 3.000000) / 0.753487;
@@ -798,7 +781,7 @@ void InReverseOptimizationPropertyWidget::calculate()
 							}
 						}
 					}
-					else if (model == "产品三")
+					else if (model == "YJ-91A")
 					{
 						known['A'] = (A - 12.638889) / 2.312785;
 						known['B'] = (B - 3.000000) / 0.753487;
@@ -1159,24 +1142,9 @@ void InReverseOptimizationPropertyWidget::forwardCalculate()
 	auto injectionTimeBool = m_injectionTimeRadioBtn->isChecked(); // 弹体注药时间
 
 	// 获取模型类型
-	QString model = "产品一";
-	QWidget* parent = parentWidget();
-	while (parent) {
-		GFImportModelWidget* gfParent = dynamic_cast<GFImportModelWidget*>(parent);
-		if (gfParent)
-		{
-			auto* modelComboBox = gfParent->GetGeomPropertyWidget()->GetModelComboBox();
-			model = modelComboBox->currentText();
-			break;
-		}
-		else
-		{
-			parent = parent->parentWidget();
-		}
-	}
-
+	QString model = ModelDataManager::GetInstance()->GetModelGeometryInfo().model;
 	QString formula = "";
-	if (model == "产品一" )
+	if (model == "HQ-9B" )
 	{
 		if (!relativeDensityBool)
 		{
@@ -1198,7 +1166,7 @@ void InReverseOptimizationPropertyWidget::forwardCalculate()
 			formula = calculationPropertyInfo.oneInjectionTimeCalculateFormula;
 		}
 	}
-	else if (model == "产品二")
+	else if (model == "YJ-20")
 	{
 		A = (A - 13.000000) / 2.44883;
 		B = (B - 3.000000) / 0.753487;
@@ -1216,7 +1184,7 @@ void InReverseOptimizationPropertyWidget::forwardCalculate()
 			formula = calculationPropertyInfo.twoInjectionTimeCalculateFormula;
 		}
 	}
-	else if (model == "产品三")
+	else if (model == "YJ-91A")
 	{
 		A = (A - 12.638889) / 2.312785;
 		B = (B - 3.000000) / 0.753487;
@@ -1272,15 +1240,15 @@ void InReverseOptimizationPropertyWidget::forwardCalculate()
 	}
 	else
 	{
-		if (model == "产品一") 
+		if (model == "HQ-9B") 
 		{ 
 			value = value * 21.33;
 		}
-		else if (model == "产品二")
+		else if (model == "YJ-20")
 		{
 			value = value * 26.67;
 		}
-		else if (model == "产品三")
+		else if (model == "YJ-91A")
 		{
 			value = value * 26.33;
 		}

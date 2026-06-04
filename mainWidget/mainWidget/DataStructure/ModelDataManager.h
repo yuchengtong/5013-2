@@ -24,7 +24,7 @@ struct UserInfo {
 struct ModelGeometryInfo {
 	TopoDS_Shape shape;
 	TopoDS_Shape symmetricalShape;
-
+	QString model = "HQ-9B";
 	QString path = "";
 
 

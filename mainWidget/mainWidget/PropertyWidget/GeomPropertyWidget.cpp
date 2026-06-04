@@ -96,8 +96,14 @@ void GeomPropertyWidget::initWidget()
 	}
 	
 
-	m_modelComboBox = new QComboBox();
-	m_modelComboBox->addItems({ "产品一", "产品二", "产品三", "产品四"});
+	/*m_modelComboBox = new QComboBox();
+	m_modelComboBox->addItems({ "HQ-9B", "YJ-20", "YJ-91A", "CJ-20A"});
+	m_modelComboBox->setEditable(false);*/
+
+	QTableWidgetItem* modelValueItem = new QTableWidgetItem(m_modelValue);
+	modelValueItem->setTextAlignment(Qt::AlignCenter); // 文本居中
+	modelValueItem->setFlags(modelValueItem->flags() & ~Qt::ItemIsEditable); // 不可编辑
+	modelValueItem->setBackground(QBrush(QColor(230, 230, 230)));
 
 	QTableWidgetItem* sourceValueItem = new QTableWidgetItem("");
 	sourceValueItem->setTextAlignment(Qt::AlignCenter); // 文本居中
@@ -141,7 +147,8 @@ void GeomPropertyWidget::initWidget()
 
 
 
-	m_tableWidget->setCellWidget(1, 2, m_modelComboBox);
+	//m_tableWidget->setCellWidget(1, 2, m_modelComboBox);
+	m_tableWidget->setItem(1, 2, modelValueItem);
 	m_tableWidget->setItem(2, 2, sourceValueItem);
 	m_tableWidget->setItem(3, 2, boreDiameterValueItem);
 	m_tableWidget->setItem(4, 2, equaldiameterSectionHeightValueItem);
@@ -152,8 +159,8 @@ void GeomPropertyWidget::initWidget()
 	m_tableWidget->setItem(9, 2, injectionHoleDiameterValueItem);
 	m_tableWidget->setItem(10, 2, vacuumHoleDiameterValueItem);
 
-	connect(m_modelComboBox, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged),
-		this, &GeomPropertyWidget::onComboBoxChanged);
+	/*connect(m_modelComboBox, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged),
+		this, &GeomPropertyWidget::onComboBoxChanged);*/
 
 	QStringList unitLabels = { " "," ","", "mm", "mm", "mm", "mm", "mm", "mm", "mm", "mm" };
 	for (int row = 0; row < unitLabels.size(); ++row) {
@@ -308,7 +315,7 @@ void GeomPropertyWidget::initWidget()
 }
 
 void GeomPropertyWidget::onComboBoxChanged(int index) {
-	QWidget* parent = parentWidget();
+	/*QWidget* parent = parentWidget();
 	while (parent)
 	{
 		GFImportModelWidget* gfParent = dynamic_cast<GFImportModelWidget*>(parent);
@@ -322,5 +329,5 @@ void GeomPropertyWidget::onComboBoxChanged(int index) {
 		{
 			parent = parent->parentWidget();
 		}
-	}
+	}*/
 }
