@@ -325,7 +325,6 @@ void PreForwardDesignPropertyWidget::initWidget()
 
 void PreForwardDesignPropertyWidget::preForwardCalculate() 
 {
-
 	QWidget* parent = parentWidget();
 	while (parent) {
 		GFImportModelWidget* gfParent = dynamic_cast<GFImportModelWidget*>(parent);
@@ -360,7 +359,6 @@ void PreForwardDesignPropertyWidget::preForwardCalculate()
 			// 处理导入结果
 			connect(calculateWorker, &ForwardDesignWorker::WorkFinished, this,
 				[=](bool success, const QString& msg) {
-
 					auto ins = ModelDataManager::GetInstance();
 					auto modelGeometryInfo = ins->GetModelGeometryInfo();
 					auto steelPropertyInfo = ins->GetSteelPropertyInfo();
@@ -373,7 +371,6 @@ void PreForwardDesignPropertyWidget::preForwardCalculate()
 					auto E = steelPropertyInfo.specificHeatCapacity; // 壳体比热容 (J kg^-1 K^-1)
 					auto F = steelPropertyInfo.thermalConductivity; // 壳体导热系数 (W m^-1 K^-1)
 
-
 					double value = preForwardCalculateForm(calculationPropertyInfo.preForwardCalculateFormula, A, B, C, D, E, F);
 					QString result = QString::number(qRound(value));
 					m_preheatingTimeValue = result;
@@ -383,12 +380,6 @@ void PreForwardDesignPropertyWidget::preForwardCalculate()
 
 					// 更新曲线图
 					view();
-
-					if (!success)
-					{
-						//QMessageBox::warning(this, "计算失败", msg);
-					}
-					//QMessageBox::information(this, "计算", "计算成功");
 
 					QString newTimeStr = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss");
 					QString newText = newTimeStr + "[信息]>预热工艺正向计算完成";
@@ -403,6 +394,7 @@ void PreForwardDesignPropertyWidget::preForwardCalculate()
 					calculateWorker->deleteLater();
 					calculateThread->deleteLater();
 					progressDialog->deleteLater();
+
 				});
 
 			// 启动线程

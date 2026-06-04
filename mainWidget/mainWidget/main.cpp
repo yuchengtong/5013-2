@@ -2,7 +2,6 @@
 #include "mainWidget.h"
 #include <QtWidgets/QApplication>
 #include "ModelDataManager.h"
-#include "LoginDialog.h"
 
 
 //用于生成netgen网格
@@ -175,25 +174,35 @@ namespace nglib {
 //#pragma comment(lib,"glfw3.lib")
 #endif
 
-
+#include "LoginWindow.h"
+#include "SoftwareSelectionWidget.h"
 
 int main(int argc, char *argv[])
 {
-	QApplication a(argc, argv);
-	// 设置全局字体大小
-	QFont font = QFont("Arial", 9);
-	QApplication::setFont(font);
+	QApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+	QApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
+	QApplication::setHighDpiScaleFactorRoundingPolicy(Qt::HighDpiScaleFactorRoundingPolicy::PassThrough);
+
+	QApplication app(argc, argv);
+	QCoreApplication::setOrganizationName("");
+	QCoreApplication::setApplicationName("");
+
+	LoginWindow login;
+	login.resize(1200, 600);
+
+	SoftwareSelectionWidget select;
+	select.resize(1200, 600);
+
+	QObject::connect(&login, &LoginWindow::loginSuccess, [&]() {
+		login.close();
+		select.show();
+		});
+
+	//login.show();
+
 	mainWidget w;
-	QCoreApplication::setApplicationName(QStringLiteral("注装工艺参数设计软件V1.0"));
-	/*w.hide();
-	LoginDialog loginDialog;
-	if (loginDialog.exec() == QDialog::Accepted) {
-		w.show();
-		return a.exec();
-	}*/
+	w.resize(1200, 600);
 	w.show();
-	return a.exec();
 
-
-
+	return app.exec();
 }

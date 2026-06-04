@@ -6,64 +6,90 @@
 #include <QTabWidget>
 #include <QLabel>
 #include <QTimer>
-#include <Windows.h>
+#include <QPushButton>
 
-QT_BEGIN_NAMESPACE
-namespace Ui { class mainWidgetClass; };
-QT_END_NAMESPACE
+#include <Windows.h>
+#include <functional>
+
+#include "GFImportModelWidget.h"
+#include "DatabaseWidget.h"
+
 
 class mainWidget : public QMainWindow
 {
-    Q_OBJECT
-
+	Q_OBJECT
 public:
-    mainWidget(QWidget *parent = nullptr);
-    ~mainWidget();
-
-	void deleteWidget(QLayout * layout);
-
-
-
-	void refreshMemoryUsage(QLabel *m_statusLabel);
-
-	void getMemoryUsage(QLabel *m_statusLabel);
+	mainWidget(QWidget* parent = nullptr);
+	~mainWidget();
 
 private:
-    Ui::mainWidgetClass *ui;
+	void init();
+	void bindConnect();
+	void refreshMemoryUsage(QLabel* statusLabel);
+	void getMemoryUsage(QLabel* statusLabel);
 
+	// 工具栏设置
+	void setupGeomWidget();
+	void setupOperationWidget();
+	void setupViewWidget();
+
+	// 视图方向设置
+	enum ViewDirection {
+		View_Xpos, View_Ypos, View_Zpos,
+		View_Xneg, View_Yneg, View_Zneg
+	};
+	void setViewDirection(ViewDirection dir);
+
+	// 文件导入处理
+	void handleModelImport();
+	void handleExcelImport();
+	bool loadStepFile(const QString& filePath, TopoDS_Shape& outShape, ModelGeometryInfo& outInfo);
+	bool loadStlFile(const QString& filePath, TopoDS_Shape& outShape, ModelGeometryInfo& outInfo);
+	bool computeBBox(const TopoDS_Shape& shape, const QString& filePath, ModelGeometryInfo& outInfo);
+
+	// 辅助函数
+	ULONGLONG fileTimeToULL(const FILETIME& ft);
+
+private:
+	// 由 setupUi 创建的 UI 元素（保存为成员以便访问）
+	QMenuBar* m_menuBar = nullptr;
+	QToolBar* m_mainToolBar = nullptr;
+
+	// Tab页面指针（保存为成员变量，避免生命周期问题）
+	GFImportModelWidget* m_importModelWid = nullptr;
+	DatabaseWidget* m_dataBaseWid = nullptr;
+
+	// 工具栏按钮（保存为成员变量，确保lambda捕获安全）
+	QPushButton* m_importBtn = nullptr;
+	QPushButton* m_saveBtn = nullptr;
+	QPushButton* m_saveAsBtn = nullptr;
+	QPushButton* m_exportBtn = nullptr;
+	QPushButton* m_moveBtn = nullptr;
+	QPushButton* m_rotateBtn = nullptr;
+	QPushButton* m_zoomBtn = nullptr;
+	QPushButton* m_fitAllBtn = nullptr;
+	QPushButton* m_resetBtn = nullptr;
+	QPushButton* m_xBtn = nullptr;
+	QPushButton* m_yBtn = nullptr;
+	QPushButton* m_zBtn = nullptr;
+	QPushButton* m_xNegBtn = nullptr;
+	QPushButton* m_yNegBtn = nullptr;
+	QPushButton* m_zNegBtn = nullptr;
+
+	// 菜单动作
 	QAction* m_ImportModelWidAct = nullptr;
 	QAction* m_DataBaseWidAct = nullptr;
 	QAction* m_HelpAct = nullptr;
-	
-	QTabWidget*m_TabWidget = nullptr;
 
+	QTabWidget* m_pMainTabWidget = nullptr;
 
-	QAction* m_ImportAct = nullptr;
-	QAction* m_SaveAct = nullptr;
-	QAction* m_SaveAsAct = nullptr;
-	QAction*m_Export = nullptr;
-	QAction* m_SettingAct = nullptr;
-	QAction* XAct = nullptr;
-	QAction* YAct = nullptr;
-	QAction* ZAct = nullptr;
-	QAction* _XAct = nullptr;
-	QAction* _YAct = nullptr;
-	QAction* _ZAct = nullptr;
-	//QAction* m_IntelligentAnalyWidAct = nullptr;
-	//QAction* m_AuxiliaryAnalyWidAct = nullptr;
-	//QAction* m_AnalyEvalWidAct = nullptr;
-	//QAction* m_HelpAct = nullptr;
+	// 状态栏
+	QLabel* m_statusLabel = nullptr;
 
-
-	QTimer* timer = nullptr; // 定时器指针（初始化为空）
-	// 存储上一次采样的系统时间（类成员变量，跨函数保留基准）
-	FILETIME prevIdleTime = { 0 };
-	FILETIME prevKernelTime = { 0 };
-	FILETIME prevUserTime = { 0 };
-	bool isFirstSample = true; // 标记是否为首次采样
-
-	// 辅助函数：将 FILETIME 转换为 64 位整数（100纳秒为单位）
-	ULONGLONG fileTimeToULL(const FILETIME& ft);
-
-
+	// 定时器和系统时间
+	QTimer* m_timer = nullptr;
+	FILETIME m_prevIdleTime = { 0 };
+	FILETIME m_prevKernelTime = { 0 };
+	FILETIME m_prevUserTime = { 0 };
+	bool m_isFirstSample = true;
 };

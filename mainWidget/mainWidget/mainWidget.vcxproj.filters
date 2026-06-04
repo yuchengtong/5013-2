@@ -82,9 +82,6 @@
     <ClCompile Include="DataStructure\ModelDataManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="LoginDialog.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="PropertyWidget\CalculationPropertyWidget.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -190,6 +187,12 @@
     <ClCompile Include="ForwardDesignWorker.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="LoginWindow.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SoftwareSelectionWidget.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="occView.h">
@@ -226,9 +229,6 @@
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="DataStructure\ModelDataManager.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
-    <QtMoc Include="LoginDialog.h">
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="PropertyWidget\CalculationPropertyWidget.h">
@@ -322,6 +322,12 @@
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="ForwardDesignWorker.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="LoginWindow.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="SoftwareSelectionWidget.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>

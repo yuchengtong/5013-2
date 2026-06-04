@@ -79,4 +79,7 @@
         <file alias="Tree/reverse_optimization.svg">src/icon/Tree/reverse_optimization.svg</file>
         <file alias="Tree/steel.svg">src/icon/Tree/steel.svg</file>
     </qresource>
+    <qresource prefix="/plot">
+        <file>src/icon/Plot/reset.svg</file>
+    </qresource>
 </RCC>

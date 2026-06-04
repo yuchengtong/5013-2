@@ -1,4 +1,3 @@
-#pragma execution_character_set("utf-8")
 #include "mainWidget.h"
 #include <QLabel>
 #include <QVBoxLayout>
@@ -17,8 +16,13 @@
 #include <QtCharts>
 #include <QLineSeries>
 #include <QBarSeries>
-#include <QtCharts\qchartview.h>
+#include <QtCharts/qchartview.h>
 #include <QFileDialog>
+#include <QTreeWidget>
+#include <QTreeWidgetItem>
+#include <QDebug>
+#include <QMenuBar>
+#include <QToolBar>
 #include "xlsxdocument.h"
 
 #include <AIS_Shape.hxx>
@@ -29,717 +33,713 @@
 #include <BRepMesh_Context.hxx>  
 #include <BRepBndLib.hxx>
 #include <StlAPI_Reader.hxx>
+#include <Bnd_Box.hxx>
+#include <gp_Pnt.hxx>
+#include <Quantity_Color.hxx>
 
 #include "GFImportModelWidget.h"
 #include "GFLogWidget.h"
 #include "DatabaseWidget.h"
 #include "OccView.h"
 #include "GFTreeModelWidget.h"
+#include "ModelDataManager.h"
 
-
-
-mainWidget::mainWidget(QWidget *parent)
-    : QMainWindow(parent)
-    , ui(new Ui::mainWidgetClass())
+// ============================================================
+// 构造函数 / 析构函数
+// ============================================================
+mainWidget::mainWidget(QWidget* parent)
+	: QMainWindow(parent)
 {
-	setWindowIcon(QIcon(":/src/engine.svg"));
-	setStyleSheet("QPushButton {"
-                           "background-color:  rgba(0, 0, 0, 0);"
-                           "}"
-                           "QPushButton:hover {"
-                           "background-color: white;"
-		"}");
-
-    ui->setupUi(this);
-	setWindowTitle("TNT基/DNAN基熔铸炸药注装工艺参数匹配设计工具软件");
-	//showMaximized();
-	setMinimumSize(1900, 1300);
-
-	// 状态栏
-	QStatusBar* statusbar = this->statusBar();
-	this->setStatusBar(statusbar);
-	QLabel *m_statusLabel = new QLabel("内存使用：0%，CPU使用：0%");
-	statusbar->addPermanentWidget(m_statusLabel);
-	refreshMemoryUsage(m_statusLabel);
-
-	m_ImportModelWidAct = new QAction("预热与注药工艺", ui->menuBar);
-	m_DataBaseWidAct = new QAction("数据库", ui->menuBar);
-	m_HelpAct = new QAction("帮助", ui->menuBar);
-
-	ui->menuBar->addAction(m_DataBaseWidAct);
-	ui->menuBar->addAction(m_ImportModelWidAct);
-	ui->menuBar->addAction(m_HelpAct);
-
-
-	ui->mainToolBar->setMovable(false);
-	ui->mainToolBar->setFloatable(false);
-//////////////////////////////////////////////////////////ToolBar
-	auto ImportBtn = new QPushButton();
-	auto SaveBtn = new QPushButton();
-	auto SaveAsBtn = new QPushButton();
-	auto ExportBtn= new QPushButton();
-	ImportBtn->setIcon(QIcon(":/src/Import.svg"));
-	SaveBtn->setIcon(QIcon(":/src/Save.svg"));
-	SaveAsBtn->setIcon(QIcon(":/src/Save_as.svg"));
-	ExportBtn->setIcon(QIcon(":/src/Export.svg"));
-	ImportBtn->setFixedSize(32,32);
-	SaveBtn->setFixedSize(32, 32);
-	SaveAsBtn->setFixedSize(32, 32);
-	ExportBtn->setFixedSize(32, 32);
-
-	auto ImportLabel = new QLabel("导入文件");
-	auto SaveLabel = new QLabel("保存文件");
-	auto SaveAsLabel= new QLabel("另存为...");
-	auto ExportLabel= new QLabel("导出文件");
-	auto bottomTitleLab1 = new QLabel("几何");
-
-	auto geomWidget = new QWidget();
-	geomWidget->setFixedWidth(172);
-	auto hLayout1 = new QHBoxLayout();
-	auto hLayout2 = new QHBoxLayout();
-	auto hLayout3 = new QHBoxLayout();
-	hLayout1->addWidget(ImportBtn);
-	hLayout1->addWidget(ImportLabel);
-	hLayout1->setSpacing(0);
-	hLayout1->addWidget(SaveAsBtn);
-	hLayout1->addWidget(SaveAsLabel);
-	hLayout1->setContentsMargins(0, 0, 0, 0);
-	hLayout2->addWidget(SaveBtn);
-	hLayout2->addWidget(SaveLabel);
-	hLayout2->setSpacing(0);
-	hLayout2->addWidget(ExportBtn);
-	hLayout2->addWidget(ExportLabel);
-	hLayout2->setContentsMargins(0, 0, 0, 0);
-	hLayout3->addStretch();
-	hLayout3->addWidget(bottomTitleLab1);
-	hLayout3->addStretch();
-	hLayout3->setContentsMargins(0, 0, 0, 0);
-	auto vLayout = new QVBoxLayout();
-	vLayout->addLayout(hLayout1);
-	vLayout->addLayout(hLayout2);
-	vLayout->addLayout(hLayout3);
-	vLayout->setContentsMargins(0, 0, 0, 0);
-	geomWidget->setLayout(vLayout);
-
-
-
-	auto MoveBtn = new QPushButton();
-	auto RotateBtn = new QPushButton();
-	auto ZoomBtn = new QPushButton();
-	auto FitAllBtn = new QPushButton();
-	auto ResetBtn= new QPushButton();
-	auto nullBtn= new QPushButton();
-	nullBtn->setEnabled(false);
-	MoveBtn->setIcon(QIcon(":/src/Move.svg"));
-	RotateBtn->setIcon(QIcon(":/src/Rotate.svg"));
-	ZoomBtn->setIcon(QIcon(":/src/Zoom.png"));
-	FitAllBtn->setIcon(QIcon(":/src/FitAll.png"));
-	ResetBtn->setIcon(QIcon(":/src/Reset.svg"));
-	MoveBtn->setFixedSize(32, 32);
-	RotateBtn->setFixedSize(32, 32);
-	ZoomBtn->setFixedSize(32, 32);
-	FitAllBtn->setFixedSize(32, 32);
-	ResetBtn->setFixedSize(32, 32);
-	auto MoveLabel = new QLabel("移动");
-	auto RotateLabel = new QLabel("旋转");
-	auto ZoomLabel = new QLabel("缩放");
-	auto FitAllLabel = new QLabel("聚焦");
-	auto ResetLabel= new QLabel("重置");
-	auto nullLabel = new QLabel("");
-
-	auto bottomTitleLab_o = new QLabel("操作");
-
-	auto operationWidget = new QWidget();
-	operationWidget->setFixedWidth(184);
-	auto hLayout_o1 = new QHBoxLayout();
-	auto hLayout_o2 = new QHBoxLayout();
-	auto hLayout_o3 = new QHBoxLayout();
-	hLayout_o1->addWidget(MoveBtn);
-	hLayout_o1->addWidget(MoveLabel);
-	hLayout_o1->setSpacing(0);
-	hLayout_o1->addWidget(ZoomBtn);
-	hLayout_o1->addWidget(ZoomLabel);
-	hLayout_o1->setSpacing(0);
-	hLayout_o1->addWidget(ResetBtn);
-	hLayout_o1->addWidget(ResetLabel);
-	hLayout_o1->setContentsMargins(0, 0, 0, 0);
-	hLayout_o2->addWidget(RotateBtn);
-	hLayout_o2->addWidget(RotateLabel);
-	hLayout_o2->setSpacing(0);
-	hLayout_o2->addWidget(FitAllBtn);
-	hLayout_o2->addWidget(FitAllLabel);
-	hLayout_o2->setSpacing(0);
-	hLayout_o2->addWidget(nullBtn);
-	hLayout_o2->addWidget(nullLabel);
-
-	hLayout_o2->setContentsMargins(0, 0, 0, 0);
-	hLayout_o3->addStretch();
-	hLayout_o3->addWidget(bottomTitleLab_o);
-	hLayout_o3->addStretch();
-	hLayout_o3->setContentsMargins(0, 0, 0, 0);
-	auto vLayout_o = new QVBoxLayout();
-	vLayout_o->addLayout(hLayout_o1);
-	vLayout_o->addLayout(hLayout_o2);
-	vLayout_o->addLayout(hLayout_o3);
-	vLayout_o->setContentsMargins(0, 0, 0, 0);
-	operationWidget->setLayout(vLayout_o);
-
-	auto XBtn = new QPushButton();
-	auto YBtn = new QPushButton();
-	auto ZBtn = new QPushButton();
-	auto _XBtn = new QPushButton();
-	auto _YBtn = new QPushButton();
-	auto _ZBtn = new QPushButton();
-	XBtn->setFixedSize(32, 32);
-	YBtn->setFixedSize(32, 32);
-	ZBtn->setFixedSize(32, 32);
-	_XBtn->setFixedSize(32, 32);
-	_YBtn->setFixedSize(32, 32);
-	_ZBtn->setFixedSize(32, 32);
-
-	XBtn->setIcon(QIcon(":/src/View all From +X.png"));
-	YBtn->setIcon(QIcon(":/src/View all From +Y.png"));
-	ZBtn->setIcon(QIcon(":/src/View all From +Z.png"));
-	_XBtn->setIcon(QIcon(":/src/View all From -X.png"));
-	_YBtn->setIcon(QIcon(":/src/View all From -Y.png"));
-	_ZBtn->setIcon(QIcon(":/src/View all From -Z.png"));
-	auto XLabel = new QLabel("X轴方向");
-	auto YLabel = new QLabel("Y轴方向");
-	auto ZLabel = new QLabel("Z轴方向");
-	auto _XLabel = new QLabel("负X轴方向");
-	auto _YLabel = new QLabel("负Y轴方向");
-	auto _ZLabel = new QLabel("负Z轴方向");
-	auto bottomTitleLab2 = new QLabel("视图");
-
-	auto viewWidget = new QWidget();
-	viewWidget->setFixedWidth(265);
-	auto hLayout_v1 = new QHBoxLayout();
-	auto hLayout_v2 = new QHBoxLayout();
-	auto hLayout_v3 = new QHBoxLayout();
-	hLayout_v1->addWidget(XBtn);
-	hLayout_v1->addWidget(XLabel);
-	hLayout_v1->setSpacing(0);
-	hLayout_v1->addWidget(YBtn);
-	hLayout_v1->addWidget(YLabel);
-	hLayout_v1->setSpacing(0);
-	hLayout_v1->addWidget(ZBtn);
-	hLayout_v1->addWidget(ZLabel);
-	hLayout_v1->setContentsMargins(0,0,0,0);
-	hLayout_v2->addWidget(_XBtn);
-	hLayout_v2->addWidget(_XLabel);
-	hLayout_v2->setSpacing(0);
-	hLayout_v2->addWidget(_YBtn);
-	hLayout_v2->addWidget(_YLabel);
-	hLayout_v2->setSpacing(0);
-	hLayout_v2->addWidget(_ZBtn);
-	hLayout_v2->addWidget(_ZLabel);
-	hLayout_v2->setContentsMargins(0, 0, 0, 0);
-	hLayout_v3->addStretch();
-	hLayout_v3->addWidget(bottomTitleLab2);
-	hLayout_v3->addStretch();
-	auto vLayout_v = new QVBoxLayout();
-	vLayout_v->addLayout(hLayout_v1);
-	vLayout_v->addLayout(hLayout_v2);
-	vLayout_v->addLayout(hLayout_v3);
-	vLayout_v->setContentsMargins(0, 0, 0, 0);
-	viewWidget->setLayout(vLayout_v);
-
-
-	/*auto SettingBtn = new QPushButton();
-	SettingBtn->setFixedSize(67, 67);
-	SettingBtn->setIcon(QIcon(":/src/Setting.svg"));
-	SettingBtn->setIconSize(QSize(50, 50));
-	auto SettingLabel = new QLabel("设置");
-
-	auto settingWidget = new QWidget();
-	settingWidget->setFixedWidth(69);
-	auto hLayout_s = new QHBoxLayout();
-	hLayout_s->addStretch();
-	hLayout_s->addWidget(SettingLabel);
-	hLayout_s->addStretch();
-
-	auto vLayout_s = new QVBoxLayout();
-	vLayout_s->addWidget(SettingBtn);
-	vLayout_s->addLayout(hLayout_s);
-	vLayout_s->setContentsMargins(0, 0, 0, 0);
-	settingWidget->setLayout(vLayout_s);*/
-
-	ui->mainToolBar->addWidget(geomWidget);
-	ui->mainToolBar->addSeparator();
-	ui->mainToolBar->addWidget(operationWidget);
-	ui->mainToolBar->addSeparator();
-	ui->mainToolBar->addWidget(viewWidget);
-	ui->mainToolBar->addSeparator();
-	//ui->mainToolBar->addWidget(settingWidget);
-	//ui->mainToolBar->addSeparator();
-
-
-	m_TabWidget = new QTabWidget(this);
-
-	GFImportModelWidget*importModelWid = new GFImportModelWidget(m_TabWidget);
-	{
-	}
-
-	DatabaseWidget*dataBaseWid = new DatabaseWidget(m_TabWidget);
-	{
-	}
-
-	
-
-
-	m_TabWidget->addTab(importModelWid, "importModelWid");
-	m_TabWidget->addTab(dataBaseWid, "dataBaseWid");
-	m_TabWidget->tabBar()->setVisible(false);
-
-
-	setCentralWidget(m_TabWidget);
-
-
-	QObject::connect(m_ImportModelWidAct, &QAction::triggered, [=]() {
-		m_TabWidget->setCurrentIndex(0);
-		// 显示工具栏
-		ui->mainToolBar->setVisible(true);
-	});
-		
-	QObject::connect(m_DataBaseWidAct, &QAction::triggered, [=]() {
-		m_TabWidget->setCurrentIndex(1);
-		// 隐藏工具栏
-		ui->mainToolBar->setVisible(false);
-		// 非admin用户，隐藏用户数据库
-		QTreeWidget* treeWidget = dataBaseWid->getQTreeWid();
-		auto ins = ModelDataManager::GetInstance();
-		UserInfo info = ins->GetUserInfo();
-		if (info.username != "admin")
-		{
-			QTreeWidgetItem *child;
-			int size = treeWidget->topLevelItemCount();
-			for (int i = 0; i < size; i++)
-			{
-				child = treeWidget->topLevelItem(i);
-				if (child->text(0).contains("用户数据库"))
-				{
-					child->setHidden(true);
-				}
-			}
-		}
-	});
-
-	
-
-
-	QObject::connect(m_HelpAct, &QAction::triggered, [=]() {
-		QString aboutText = "软件名称：TNT基/DNAN基熔铸炸药注装工艺参数匹配设计工具软件\n"
-			"软件版本：V1.0.0\n"
-			"版权所有：南京理工大学\n"
-			"开发团队：南京理工大学\n"
-			"电子邮件：wuxingliang94@njust.edu.cn\n"
-			"官方网站：https://www.njust.edu.cn\n"
-			"版权声明：\n"
-			"    本软件受版权法和国际条约的保护。未经版权所有者的明确书面许可，严禁对本软件进行任何形式的复制、分发、修改或逆向工程。本软件的部分组件可能使用了第三方的开源软件，这些软件遵循各自的开源许可协议，具体信息可在相应组件的文档中找到。\n"
-			"    如果您对本软件有任何问题、建议或反馈，请随时联系我们！\n";
-		QMessageBox::about(nullptr, "TNT基/DNAN基熔铸炸药注装工艺参数匹配设计工具软件", aboutText);
-
-	
-	});
-	
-
-
-	QObject::connect(ImportBtn, &QPushButton::clicked, [this,importModelWid]() {
-		if (m_TabWidget->currentIndex() == 0) {
-			// 打开文件对话框
-			QString filePath = QFileDialog::getOpenFileName(this, "Open File", QDir::homePath(),
-				"STEP Files (*.stp *.step);;IGES Files (*.iges *.igs);;VTK Files (*.vtk);;X_T Files (*.x_t);;All Files (*.*)");
-
-			if (filePath.isEmpty()) 
-				return;
-			QDateTime currentTime = QDateTime::currentDateTime();
-			QString timeStr = currentTime.toString("yyyy-MM-dd hh:mm:ss");
-			auto logWidget = importModelWid->GetLogWidget();
-			auto textEdit = logWidget->GetTextEdit();
-			textEdit->appendPlainText(timeStr + "[信息]>开始导入几何模型");
-			logWidget->update();
-
-			TopoDS_Shape aShape;
-
-			bool loadSuccess = false;
-
-			ModelGeometryInfo info;
-
-			// 根据文件扩展名选择适当的读取器
-			if (filePath.endsWith(".stp", Qt::CaseInsensitive) || filePath.endsWith(".step", Qt::CaseInsensitive))
-			{
-				STEPControl_Reader aReader_Step;
-				if (aReader_Step.ReadFile(filePath.toStdString().c_str()) == IFSelect_RetDone) {
-					aReader_Step.PrintCheckLoad(Standard_False, IFSelect_ItemsByEntity);
-					Standard_Integer NbRoots = aReader_Step.NbRootsForTransfer();
-					Standard_Integer num = aReader_Step.TransferRoots();
-					aShape = aReader_Step.OneShape();
-
-					Bnd_Box bbox;
-					BRepBndLib::Add(aShape, bbox);
-					bbox.SetGap(0.0); // 消除间隙
-
-					gp_Pnt bboxMin, bboxMax;
-					Standard_Real theXmin, theYmin, theZmin, theXmax, theYmax, theZmax;
-					bbox.Get(theXmin, theYmin, theZmin, theXmax, theYmax, theZmax); // 获取边界盒最小/最大点(包围盒)
-					auto length = double(theXmax - theXmin);
-					auto width = double(theYmax - theYmin);
-					auto height = double(theZmax - theZmin);
-
-					info.shape = aShape;
-					info.path = filePath;
-					info.theXmin = theXmin;
-					info.theYmin = theYmin;
-					info.theZmin = theZmin;
-					info.theXmax = theXmax;
-					info.theYmax = theYmax;
-					info.theZmax = theZmax;
-
-					info.length = length;
-					info.width = width;
-					info.height = height;
-					ModelDataManager::GetInstance()->SetModelGeometryInfo(info);
-
-					importModelWid->GetGFTreeModelWidget()->updataIcon();
-
-					loadSuccess = true;
-				}
-			}
-			else if (filePath.endsWith(".stl", Qt::CaseInsensitive)) {
-				StlAPI_Reader aReader_Stl;
-				// 读取STL文件
-				if (aReader_Stl.Read(aShape, filePath.toStdString().c_str()))
-				{
-					// 计算边界盒（与STEP处理方式一致）
-					Bnd_Box bbox;
-					BRepBndLib::Add(aShape, bbox);
-					bbox.SetGap(0.0); // 消除间隙
-
-					Standard_Real theXmin, theYmin, theZmin, theXmax, theYmax, theZmax;
-					bbox.Get(theXmin, theYmin, theZmin, theXmax, theYmax, theZmax);
-
-					// 计算尺寸（与STEP处理方式一致）
-					auto length = double(theXmax - theXmin);
-					auto width = double(theYmax - theYmin);
-					auto height = double(theZmax - theZmin);
-
-					// 统一的信息存储（与STEP使用相同的数据结构）
-					info.shape = aShape;
-					info.path = filePath;
-					info.length = length;
-					info.width = width;
-					info.height = height;
-					ModelDataManager::GetInstance()->SetModelGeometryInfo(info);
-
-					importModelWid->GetGFTreeModelWidget()->updataIcon();
-
-					loadSuccess = true;
-				}
-			}
-		//	else if (filePath.endsWith(".vtk", Qt::CaseInsensitive)) {
-		//		vtkSmartPointer<vtkPolyDataReader> reader = vtkSmartPointer<vtkPolyDataReader>::New();
-		//		reader->SetFileName(filePath.toStdString().c_str());
-		//		reader->Update();
-
-		//		vtkPolyData* polyData = reader->GetOutput();
-		//		if (!polyData || polyData->GetNumberOfPoints() == 0) {
-		//			QMessageBox::warning(this, "Error", "Failed to read VTK file or empty data.");
-		//			return;
-		//		}
-
-		//		aShape = VtkPolyDataToOCCShape(polyData);
-		//		if (aShape.IsNull()) {
-		//			QMessageBox::warning(this, "Error", "Failed to convert VTK to OCC shape.");
-		//			return;
-		//		}
-
-		//		// 计算包围盒等（同前）
-		//		Bnd_Box bbox;
-		//		BRepBndLib::Add(aShape, bbox);
-		//		bbox.SetGap(0.0);
-		//		Standard_Real theXmin, theYmin, theZmin, theXmax, theYmax, theZmax;
-		//		bbox.Get(theXmin, theYmin, theZmin, theXmax, theYmax, theZmax);
-
-		//		info.shape = aShape;
-		//		info.path = filePath;
-		//		info.theXmin = theXmin; info.theYmin = theYmin; info.theZmin = theZmin;
-		//		info.theXmax = theXmax; info.theYmax = theYmax; info.theZmax = theZmax;
-		//		info.length = theXmax - theXmin;
-		//		info.width = theYmax - theYmin;
-		//		info.height = theZmax - theZmin;
-
-		//		ModelDataManager::GetInstance()->SetModelGeometryInfo(info);
-		//		importModelWid->GetGFTreeModelWidget()->updataIcon();
-		//		loadSuccess = true;
-		//	}
-		//	else if (filePath.endsWith(".x_t", Qt::CaseInsensitive)) {
-		//	XSControl_Reader aReader_XT;
-		//	// 设置为 Parasolid 模式（关键！）
-		//	aReader_XT.SetMode("XSTEP"); // 或尝试 "DEFAULT"
-
-		//	IFSelect_ReturnStatus status = aReader_XT.ReadFile(filePath.toStdString().c_str());
-		//	if (status == IFSelect_RetDone) {
-		//		aReader_XT.PrintCheckLoad(Standard_False, IFSelect_ItemsByEntity);
-		//		Standard_Integer nbRoots = aReader_XT.NbRootsForTransfer();
-		//		if (nbRoots > 0) {
-		//			aReader_XT.TransferRoots();
-		//			aShape = aReader_XT.OneShape();
-
-		//			if (!aShape.IsNull()) {
-		//				// 计算包围盒
-		//				Bnd_Box bbox;
-		//				BRepBndLib::Add(aShape, bbox);
-		//				bbox.SetGap(0.0);
-
-		//				Standard_Real theXmin, theYmin, theZmin, theXmax, theYmax, theZmax;
-		//				bbox.Get(theXmin, theYmin, theZmin, theXmax, theYmax, theZmax);
-
-		//				info.shape = aShape;
-		//				info.path = filePath;
-		//				info.theXmin = theXmin; info.theYmin = theYmin; info.theZmin = theZmin;
-		//				info.theXmax = theXmax; info.theYmax = theYmax; info.theZmax = theZmax;
-		//				info.length = double(theXmax - theXmin);
-		//				info.width = double(theYmax - theYmin);
-		//				info.height = double(theZmax - theZmin);
-
-		//				ModelDataManager::GetInstance()->SetModelGeometryInfo(info);
-		//				importModelWid->GetGFTreeModelWidget()->updataIcon();
-		//				loadSuccess = true;
-		//			}
-		//		}
-		//	}
-		//	if (!loadSuccess || aShape.IsNull()) {
-		//		QMessageBox::warning(this, "Error", "Failed to load model");
-		//		return;
-		//	}
-
-		//	// 获取OCC视图和上下文
-		//	auto occView = importModelWid->GetOccView();
-		//	Handle(AIS_InteractiveContext) context = occView->getContext();
-
-		//	// 清除之前的显示
-		//	context->EraseAll(true);
-
-		//	// 创建模型的AIS表示
-		//	Handle(AIS_Shape) modelPresentation = new AIS_Shape(aShape);
-
-		//	// 设置模型显示属性
-		//	context->SetDisplayMode(modelPresentation, AIS_Shaded, true);
-		//	context->SetColor(modelPresentation, Quantity_Color(0.0, 1.0, 1.0, Quantity_TOC_RGB), true);
-		//	context->Display(modelPresentation, false);
-
-		//			
-		//	// 调整视图以适应模型
-		//	occView->fitAll();
-
-
-		//	currentTime = QDateTime::currentDateTime();
-		//	timeStr = currentTime.toString("yyyy-MM-dd hh:mm:ss");
-		//	QString text = timeStr + "[信息]>导入几何模型,路径为：" + filePath;
-		//	textEdit->appendPlainText(text);
-		}
-		else if (m_TabWidget->currentIndex() == 1)
-		{
-			QString filter = "Image files (*.xlsx *.xlx )";
-			QString filePath = QFileDialog::getOpenFileName(nullptr, QObject::tr("Open Excle"),
-				QDir::currentPath(), filter);
-		}
-
-	});
-
-	auto occView = importModelWid->GetOccView();
-	connect(MoveBtn, &QPushButton::clicked, occView, &OccView::pan);
-	connect(RotateBtn, &QPushButton::clicked, occView, &OccView::rotate);
-	connect(ZoomBtn, &QPushButton::clicked, occView, &OccView::zoom);
-	connect(FitAllBtn, &QPushButton::clicked, occView, &OccView::fitAll);
-	connect(ResetBtn, &QPushButton::clicked, occView, &OccView::reset);
-
-	QObject::connect(XBtn, &QPushButton::clicked, [occView]() {		
-		auto state=occView->GetCameraRotationState();
-		if (state)
-		{
-			Handle(V3d_View) view = occView->getView();
-			view->SetProj(V3d_Xpos);
-			occView->fitAll();
-		}
-		});
-	QObject::connect(YBtn, &QPushButton::clicked, [occView]() {
-		auto state = occView->GetCameraRotationState();
-		if (state)
-		{
-			Handle(V3d_View) view = occView->getView();
-			view->SetProj(V3d_Ypos);
-			occView->fitAll();
-		}
-		});
-	QObject::connect(ZBtn, &QPushButton::clicked, [occView]() {
-		auto state = occView->GetCameraRotationState();
-		if (state)
-		{
-			Handle(V3d_View) view = occView->getView();
-			view->SetProj(V3d_Zpos);
-			occView->fitAll();
-		}
-		});
-	QObject::connect(_XBtn, &QPushButton::clicked, [occView]() {
-		auto state = occView->GetCameraRotationState();
-		if (state)
-		{
-			Handle(V3d_View) view = occView->getView();
-			view->SetProj(V3d_Xneg);
-			occView->fitAll();
-		}
-		});
-	QObject::connect(_YBtn, &QPushButton::clicked, [occView]() {
-		auto state = occView->GetCameraRotationState();
-		if (state)
-		{
-			Handle(V3d_View) view = occView->getView();
-			view->SetProj(V3d_Yneg);
-			occView->fitAll();
-		}
-		});
-	QObject::connect(_ZBtn, &QPushButton::clicked, [occView]() {
-		auto state = occView->GetCameraRotationState();
-		if (state)
-		{
-			Handle(V3d_View) view = occView->getView();
-			view->SetProj(V3d_Zneg);
-			occView->fitAll();
-		}
-		});
+	// 使用临时 UI 对象初始化界面，然后释放
+	Ui::mainWidgetClass uiSetup;
+	uiSetup.setupUi(this);
+
+	// 保存需要后续访问的 UI 元素指针
+	m_menuBar = uiSetup.menuBar;
+	m_mainToolBar = uiSetup.mainToolBar;
+
+	init();
+	bindConnect();
 }
 
 mainWidget::~mainWidget()
 {
-    delete ui;
+	// 停止并清理定时器
+	if (m_timer) {
+		m_timer->stop();
+		delete m_timer;
+		m_timer = nullptr;
+	}
 }
 
-
-void deleteWidget(QLayout *layout)
+// ============================================================
+// 初始化界面
+// ============================================================
+void mainWidget::init()
 {
-	if (layout) {
-		for (int i = layout->count() - 1; i >= 0; --i) {
-			QLayoutItem *item = layout->itemAt(i);
-			QWidget *widget = item->widget();
-			if (widget) {
-				delete widget;
-			}
-			else {
-				delete item;
-			}
-		}
-	}
+	setWindowIcon(QIcon(":/src/engine.svg"));
+	setWindowTitle(QString::fromLocal8Bit("TNT弹/DNAN粒状工业炸药注装药型罩参数匹配设计软件"));
+
+	// 状态栏
+	QStatusBar* statusbar = statusBar();
+	m_statusLabel = new QLabel(QString::fromLocal8Bit("内存使用：0%，CPU使用：0%"));
+	statusbar->addPermanentWidget(m_statusLabel);
+	refreshMemoryUsage(m_statusLabel);
+
+	// 菜单栏
+	m_ImportModelWidAct = new QAction(QString::fromLocal8Bit("预置装注药模型"), m_menuBar);
+	m_DataBaseWidAct = new QAction(QString::fromLocal8Bit("数据库"), m_menuBar);
+	m_HelpAct = new QAction(QString::fromLocal8Bit("帮助"), m_menuBar);
+
+	m_menuBar->addAction(m_DataBaseWidAct);
+	m_menuBar->addAction(m_ImportModelWidAct);
+	m_menuBar->addAction(m_HelpAct);
+
+	// 工具栏设置
+	m_mainToolBar->setMovable(false);
+	m_mainToolBar->setFloatable(false);
+
+	// 设置工具栏各区域
+	setupGeomWidget();
+	setupOperationWidget();
+	setupViewWidget();
+
+	// TabWidget
+	m_pMainTabWidget = new QTabWidget(this);
+	m_importModelWid = new GFImportModelWidget(m_pMainTabWidget);
+	m_dataBaseWid = new DatabaseWidget(m_pMainTabWidget);
+
+	m_pMainTabWidget->addTab(m_importModelWid, "importModelWid");
+	m_pMainTabWidget->addTab(m_dataBaseWid, "dataBaseWid");
+	m_pMainTabWidget->tabBar()->setVisible(false);
+
+	setCentralWidget(m_pMainTabWidget);
 }
 
-void mainWidget::deleteWidget(QLayout *layout)
+// ============================================================
+// 设置几何操作工具栏
+// ============================================================
+void mainWidget::setupGeomWidget()
 {
-	if (layout) {
-		for (int i = layout->count() - 1; i >= 0; --i) {
-			QLayoutItem *item = layout->itemAt(i);
-			QWidget *widget = item->widget();
-			if (widget) {
-				delete widget;
-			}
-			else {
-				delete item;
-			}
-		}
-	}
+	m_importBtn = new QPushButton();
+	m_saveBtn = new QPushButton();
+	m_saveAsBtn = new QPushButton();
+	m_exportBtn = new QPushButton();
+
+	m_importBtn->setIcon(QIcon(":/src/Import.svg"));
+	m_saveBtn->setIcon(QIcon(":/src/Save.svg"));
+	m_saveAsBtn->setIcon(QIcon(":/src/Save_as.svg"));
+	m_exportBtn->setIcon(QIcon(":/src/Export.svg"));
+
+	const int btnSize = 32;
+	m_importBtn->setFixedSize(btnSize, btnSize);
+	m_saveBtn->setFixedSize(btnSize, btnSize);
+	m_saveAsBtn->setFixedSize(btnSize, btnSize);
+	m_exportBtn->setFixedSize(btnSize, btnSize);
+
+	auto importLabel = new QLabel(QString::fromLocal8Bit("导入文件"));
+	auto saveLabel = new QLabel(QString::fromLocal8Bit("保存文件"));
+	auto saveAsLabel = new QLabel(QString::fromLocal8Bit("另存为..."));
+	auto exportLabel = new QLabel(QString::fromLocal8Bit("导出文件"));
+
+	// 图标在上，文字在下的纵向布局
+	auto importVBox = new QVBoxLayout();
+	importVBox->addWidget(m_importBtn, 0, Qt::AlignHCenter);
+	importVBox->addWidget(importLabel, 0, Qt::AlignHCenter);
+	importVBox->setSpacing(2);
+	importVBox->setContentsMargins(4, 2, 4, 2);
+
+	auto saveAsVBox = new QVBoxLayout();
+	saveAsVBox->addWidget(m_saveAsBtn, 0, Qt::AlignHCenter);
+	saveAsVBox->addWidget(saveAsLabel, 0, Qt::AlignHCenter);
+	saveAsVBox->setSpacing(2);
+	saveAsVBox->setContentsMargins(4, 2, 4, 2);
+
+	auto saveVBox = new QVBoxLayout();
+	saveVBox->addWidget(m_saveBtn, 0, Qt::AlignHCenter);
+	saveVBox->addWidget(saveLabel, 0, Qt::AlignHCenter);
+	saveVBox->setSpacing(2);
+	saveVBox->setContentsMargins(4, 2, 4, 2);
+
+	auto exportVBox = new QVBoxLayout();
+	exportVBox->addWidget(m_exportBtn, 0, Qt::AlignHCenter);
+	exportVBox->addWidget(exportLabel, 0, Qt::AlignHCenter);
+	exportVBox->setSpacing(2);
+	exportVBox->setContentsMargins(4, 2, 4, 2);
+
+	// 横向排列各功能组
+	auto hLayout = new QHBoxLayout();
+	hLayout->addLayout(importVBox);
+	hLayout->addLayout(saveAsVBox);
+	hLayout->addLayout(saveVBox);
+	hLayout->addLayout(exportVBox);
+	hLayout->addStretch();
+	hLayout->setSpacing(4);
+	hLayout->setContentsMargins(4, 2, 4, 2);
+
+	auto vLayout = new QVBoxLayout();
+	vLayout->addLayout(hLayout);
+	vLayout->setContentsMargins(0, 0, 0, 0);
+	vLayout->setSpacing(2);
+
+	auto geomWidget = new QWidget();
+	geomWidget->setFixedWidth(280);
+	geomWidget->setLayout(vLayout);
+
+	m_mainToolBar->addWidget(geomWidget);
+	m_mainToolBar->addSeparator();
 }
 
-void mainWidget::refreshMemoryUsage(QLabel *m_statusLabel) {
-	// 避免重复创建定时器（防止内存泄漏和多次触发）
-	if (timer) {
-		timer->stop();
-		delete timer;
-	}
 
-	timer = new QTimer(this);
-	timer->setInterval(5000); // 5秒采样一次（合理间隔，平衡实时性和性能）
-	connect(timer, &QTimer::timeout, [this, m_statusLabel]() {
-		getMemoryUsage(m_statusLabel);
+void mainWidget::setupOperationWidget()
+{
+	m_moveBtn = new QPushButton();
+	m_rotateBtn = new QPushButton();
+	m_zoomBtn = new QPushButton();
+	m_fitAllBtn = new QPushButton();
+	m_resetBtn = new QPushButton();
+
+	m_moveBtn->setIcon(QIcon(":/src/Move.svg"));
+	m_rotateBtn->setIcon(QIcon(":/src/Rotate.svg"));
+	m_zoomBtn->setIcon(QIcon(":/src/Zoom.png"));
+	m_fitAllBtn->setIcon(QIcon(":/src/FitAll.png"));
+	m_resetBtn->setIcon(QIcon(":/src/Reset.svg"));
+
+	const int btnSize = 32;
+	m_moveBtn->setFixedSize(btnSize, btnSize);
+	m_rotateBtn->setFixedSize(btnSize, btnSize);
+	m_zoomBtn->setFixedSize(btnSize, btnSize);
+	m_fitAllBtn->setFixedSize(btnSize, btnSize);
+	m_resetBtn->setFixedSize(btnSize, btnSize);
+
+	auto moveLabel = new QLabel(QString::fromLocal8Bit("移动"));
+	auto rotateLabel = new QLabel(QString::fromLocal8Bit("旋转"));
+	auto zoomLabel = new QLabel(QString::fromLocal8Bit("缩放"));
+	auto fitAllLabel = new QLabel(QString::fromLocal8Bit("聚焦"));
+	auto resetLabel = new QLabel(QString::fromLocal8Bit("重置"));
+
+	// 图标在上，文字在下的纵向布局
+	auto moveVBox = new QVBoxLayout();
+	moveVBox->addWidget(m_moveBtn, 0, Qt::AlignHCenter);
+	moveVBox->addWidget(moveLabel, 0, Qt::AlignHCenter);
+	moveVBox->setSpacing(2);
+	moveVBox->setContentsMargins(4, 2, 4, 2);
+
+	auto rotateVBox = new QVBoxLayout();
+	rotateVBox->addWidget(m_rotateBtn, 0, Qt::AlignHCenter);
+	rotateVBox->addWidget(rotateLabel, 0, Qt::AlignHCenter);
+	rotateVBox->setSpacing(2);
+	rotateVBox->setContentsMargins(4, 2, 4, 2);
+
+	auto zoomVBox = new QVBoxLayout();
+	zoomVBox->addWidget(m_zoomBtn, 0, Qt::AlignHCenter);
+	zoomVBox->addWidget(zoomLabel, 0, Qt::AlignHCenter);
+	zoomVBox->setSpacing(2);
+	zoomVBox->setContentsMargins(4, 2, 4, 2);
+
+	auto fitAllVBox = new QVBoxLayout();
+	fitAllVBox->addWidget(m_fitAllBtn, 0, Qt::AlignHCenter);
+	fitAllVBox->addWidget(fitAllLabel, 0, Qt::AlignHCenter);
+	fitAllVBox->setSpacing(2);
+	fitAllVBox->setContentsMargins(4, 2, 4, 2);
+
+	auto resetVBox = new QVBoxLayout();
+	resetVBox->addWidget(m_resetBtn, 0, Qt::AlignHCenter);
+	resetVBox->addWidget(resetLabel, 0, Qt::AlignHCenter);
+	resetVBox->setSpacing(2);
+	resetVBox->setContentsMargins(4, 2, 4, 2);
+
+	// 横向排列各功能组
+	auto hLayout = new QHBoxLayout();
+	hLayout->addLayout(moveVBox);
+	hLayout->addLayout(rotateVBox);
+	hLayout->addLayout(zoomVBox);
+	hLayout->addLayout(fitAllVBox);
+	hLayout->addLayout(resetVBox);
+	hLayout->addStretch();
+	hLayout->setSpacing(4);
+	hLayout->setContentsMargins(4, 2, 4, 2);
+
+	auto vLayout = new QVBoxLayout();
+	vLayout->addLayout(hLayout);
+	vLayout->setContentsMargins(0, 0, 0, 0);
+	vLayout->setSpacing(2);
+
+	auto operationWidget = new QWidget();
+	operationWidget->setFixedWidth(260);
+	operationWidget->setLayout(vLayout);
+
+	m_mainToolBar->addWidget(operationWidget);
+	m_mainToolBar->addSeparator();
+}
+
+
+void mainWidget::setupViewWidget()
+{
+	m_xBtn = new QPushButton();
+	m_yBtn = new QPushButton();
+	m_zBtn = new QPushButton();
+	m_xNegBtn = new QPushButton();
+	m_yNegBtn = new QPushButton();
+	m_zNegBtn = new QPushButton();
+
+	const int btnSize = 32;
+	m_xBtn->setFixedSize(btnSize, btnSize);
+	m_yBtn->setFixedSize(btnSize, btnSize);
+	m_zBtn->setFixedSize(btnSize, btnSize);
+	m_xNegBtn->setFixedSize(btnSize, btnSize);
+	m_yNegBtn->setFixedSize(btnSize, btnSize);
+	m_zNegBtn->setFixedSize(btnSize, btnSize);
+
+	m_xBtn->setIcon(QIcon(":/src/View all From +X.png"));
+	m_yBtn->setIcon(QIcon(":/src/View all From +Y.png"));
+	m_zBtn->setIcon(QIcon(":/src/View all From +Z.png"));
+	m_xNegBtn->setIcon(QIcon(":/src/View all From -X.png"));
+	m_yNegBtn->setIcon(QIcon(":/src/View all From -Y.png"));
+	m_zNegBtn->setIcon(QIcon(":/src/View all From -Z.png"));
+
+	auto xLabel = new QLabel(QString::fromLocal8Bit("+X"));
+	auto yLabel = new QLabel(QString::fromLocal8Bit("+Y"));
+	auto zLabel = new QLabel(QString::fromLocal8Bit("+Z"));
+	auto xNegLabel = new QLabel(QString::fromLocal8Bit("-X"));
+	auto yNegLabel = new QLabel(QString::fromLocal8Bit("-Y"));
+	auto zNegLabel = new QLabel(QString::fromLocal8Bit("-Z"));
+
+	// 图标在上，文字在下的纵向布局
+	auto xVBox = new QVBoxLayout();
+	xVBox->addWidget(m_xBtn, 0, Qt::AlignHCenter);
+	xVBox->addWidget(xLabel, 0, Qt::AlignHCenter);
+	xVBox->setSpacing(2);
+	xVBox->setContentsMargins(4, 2, 4, 2);
+
+	auto yVBox = new QVBoxLayout();
+	yVBox->addWidget(m_yBtn, 0, Qt::AlignHCenter);
+	yVBox->addWidget(yLabel, 0, Qt::AlignHCenter);
+	yVBox->setSpacing(2);
+	yVBox->setContentsMargins(4, 2, 4, 2);
+
+	auto zVBox = new QVBoxLayout();
+	zVBox->addWidget(m_zBtn, 0, Qt::AlignHCenter);
+	zVBox->addWidget(zLabel, 0, Qt::AlignHCenter);
+	zVBox->setSpacing(2);
+	zVBox->setContentsMargins(4, 2, 4, 2);
+
+	auto xNegVBox = new QVBoxLayout();
+	xNegVBox->addWidget(m_xNegBtn, 0, Qt::AlignHCenter);
+	xNegVBox->addWidget(xNegLabel, 0, Qt::AlignHCenter);
+	xNegVBox->setSpacing(2);
+	xNegVBox->setContentsMargins(4, 2, 4, 2);
+
+	auto yNegVBox = new QVBoxLayout();
+	yNegVBox->addWidget(m_yNegBtn, 0, Qt::AlignHCenter);
+	yNegVBox->addWidget(yNegLabel, 0, Qt::AlignHCenter);
+	yNegVBox->setSpacing(2);
+	yNegVBox->setContentsMargins(4, 2, 4, 2);
+
+	auto zNegVBox = new QVBoxLayout();
+	zNegVBox->addWidget(m_zNegBtn, 0, Qt::AlignHCenter);
+	zNegVBox->addWidget(zNegLabel, 0, Qt::AlignHCenter);
+	zNegVBox->setSpacing(2);
+	zNegVBox->setContentsMargins(4, 2, 4, 2);
+
+	// 第一行：+X, +Y, +Z
+	auto hLayout1 = new QHBoxLayout();
+	hLayout1->addLayout(xVBox);
+	hLayout1->addLayout(yVBox);
+	hLayout1->addLayout(zVBox);
+	hLayout1->addLayout(xNegVBox);
+	hLayout1->addLayout(yNegVBox);
+	hLayout1->addLayout(zNegVBox);
+	hLayout1->addStretch();
+	hLayout1->setSpacing(4);
+	hLayout1->setContentsMargins(4, 2, 4, 2);
+
+	auto vLayout = new QVBoxLayout();
+	vLayout->addLayout(hLayout1);
+	vLayout->setContentsMargins(0, 0, 0, 0);
+	vLayout->setSpacing(2);
+
+	auto viewWidget = new QWidget();
+	viewWidget->setFixedWidth(280);
+	viewWidget->setLayout(vLayout);
+
+	m_mainToolBar->addWidget(viewWidget);
+	m_mainToolBar->addSeparator();
+}
+
+
+void mainWidget::setViewDirection(ViewDirection dir)
+{
+	if (!m_importModelWid) 
+		return;
+
+	auto occView = m_importModelWid->GetOccView();
+	if (!occView) 
+		return;
+
+	auto state = occView->GetCameraRotationState();
+	if (!state) 
+		return;
+
+	Handle(V3d_View) view = occView->getView();
+	if (view.IsNull()) 
+		return;
+
+	switch (dir) 
+	{
+	case View_Xpos: view->SetProj(V3d_Xpos); break;
+	case View_Ypos: view->SetProj(V3d_Ypos); break;
+	case View_Zpos: view->SetProj(V3d_Zpos); break;
+	case View_Xneg: view->SetProj(V3d_Xneg); break;
+	case View_Yneg: view->SetProj(V3d_Yneg); break;
+	case View_Zneg: view->SetProj(V3d_Zneg); break;
+	}
+	occView->fitAll();
+}
+
+
+void mainWidget::bindConnect()
+{
+	connect(m_ImportModelWidAct, &QAction::triggered, [this]() {
+		m_pMainTabWidget->setCurrentIndex(0);
+		m_mainToolBar->setVisible(true);
 		});
 
-	// 初始化首次采样的基准时间（关键：提前获取初始时间，避免首次计算异常）
-	GetSystemTimes(&prevIdleTime, &prevKernelTime, &prevUserTime);
-	isFirstSample = true; // 标记首次采样
-	timer->start();
-	getMemoryUsage(m_statusLabel); // 首次调用（此时CPU显示为0%，避免异常值）
+	connect(m_DataBaseWidAct, &QAction::triggered, [this]() {
+		m_pMainTabWidget->setCurrentIndex(1);
+		m_mainToolBar->setVisible(false);
+
+		// 非admin用户隐藏用户数据库
+		if (!m_dataBaseWid) return;
+
+		QTreeWidget* treeWidget = m_dataBaseWid->getQTreeWid();
+		if (!treeWidget) return;
+
+		auto ins = ModelDataManager::GetInstance();
+		if (!ins) return;
+
+		UserInfo info = ins->GetUserInfo();
+		if (info.username != "admin") {
+			int size = treeWidget->topLevelItemCount();
+			for (int i = 0; i < size; ++i) {
+				QTreeWidgetItem* child = treeWidget->topLevelItem(i);
+				if (child && child->text(0).contains(QString::fromLocal8Bit("用户数据库"))) {
+					child->setHidden(true);
+				}
+			}
+		}
+		});
+
+	connect(m_HelpAct, &QAction::triggered, [this]() {
+		QString aboutText = QString::fromLocal8Bit(
+			"软件名称：TNT弹/DNAN粒状工业炸药注装药型罩参数匹配设计软件\n"
+			"软件版本：V1.0.0\n"
+			"版权所有：南京理工大学\n"
+			"开发团队：南京理工大学\n"
+			"联系邮箱：wuxingliang94@njust.edu.cn\n"
+			"官方网站：https://www.njust.edu.cn\n"
+			"版权声明：\n"
+			"    本软件受版权法保护，未经明确授权，严禁以任何形式复制、分发、修改或用于工程目的。\n"
+			"    如需帮助，请随时联系我们。"
+		);
+		QMessageBox::about(this,
+			QString::fromLocal8Bit("TNT弹/DNAN粒状工业炸药注装药型罩参数匹配设计软件"),
+			aboutText);
+		});
+
+	connect(m_importBtn, &QPushButton::clicked, [this]() {
+		if (m_pMainTabWidget->currentIndex() == 0)
+		{
+			handleModelImport();
+		}
+		else if (m_pMainTabWidget->currentIndex() == 1)
+		{
+			handleExcelImport();
+		}
+		});
+
+	if (m_importModelWid) 
+	{
+		auto occView = m_importModelWid->GetOccView();
+		if (occView) {
+			connect(m_moveBtn, &QPushButton::clicked, occView, &OccView::pan);
+			connect(m_rotateBtn, &QPushButton::clicked, occView, &OccView::rotate);
+			connect(m_zoomBtn, &QPushButton::clicked, occView, &OccView::zoom);
+			connect(m_fitAllBtn, &QPushButton::clicked, occView, &OccView::fitAll);
+			connect(m_resetBtn, &QPushButton::clicked, occView, &OccView::reset);
+		}
+	}
+
+	connect(m_xBtn, &QPushButton::clicked, [this]() { setViewDirection(View_Xpos); });
+	connect(m_yBtn, &QPushButton::clicked, [this]() { setViewDirection(View_Ypos); });
+	connect(m_zBtn, &QPushButton::clicked, [this]() { setViewDirection(View_Zpos); });
+	connect(m_xNegBtn, &QPushButton::clicked, [this]() { setViewDirection(View_Xneg); });
+	connect(m_yNegBtn, &QPushButton::clicked, [this]() { setViewDirection(View_Yneg); });
+	connect(m_zNegBtn, &QPushButton::clicked, [this]() { setViewDirection(View_Zneg); });
 }
 
-void mainWidget::getMemoryUsage(QLabel *m_statusLabel) {
+// ============================================================
+// 处理模型导入
+// ============================================================
+void mainWidget::handleModelImport()
+{
+	if (!m_importModelWid) return;
+
+	QString filePath = QFileDialog::getOpenFileName(this,
+		QString::fromLocal8Bit("打开文件"),
+		QDir::homePath(),
+		QString::fromLocal8Bit("STEP Files (*.stp *.step);;IGES Files (*.iges *.igs);;STL Files (*.stl);;All Files (*.*)"));
+
+	if (filePath.isEmpty()) return;
+
+	// 记录日志
+	auto logWidget = m_importModelWid->GetLogWidget();
+	if (!logWidget) return;
+
+	auto textEdit = logWidget->GetTextEdit();
+	if (!textEdit) return;
+
+	QDateTime currentTime = QDateTime::currentDateTime();
+	QString timeStr = currentTime.toString("yyyy-MM-dd hh:mm:ss");
+	textEdit->appendPlainText(timeStr + QString::fromLocal8Bit("[信息]>开始导入几何模型"));
+	logWidget->update();
+
+	TopoDS_Shape aShape;
+	bool loadSuccess = false;
+	ModelGeometryInfo info;
+
+	try {
+		if (filePath.endsWith(".stp", Qt::CaseInsensitive) ||
+			filePath.endsWith(".step", Qt::CaseInsensitive)) {
+			loadSuccess = loadStepFile(filePath, aShape, info);
+		}
+		else if (filePath.endsWith(".stl", Qt::CaseInsensitive)) {
+			loadSuccess = loadStlFile(filePath, aShape, info);
+		}
+		else {
+			QMessageBox::warning(this, QString::fromLocal8Bit("错误"),
+				QString::fromLocal8Bit("不支持的文件格式"));
+			return;
+		}
+	}
+	catch (const Standard_Failure& e) {
+		QMessageBox::critical(this, QString::fromLocal8Bit("导入错误"),
+			QString::fromLocal8Bit("导入失败：") + QString(e.GetMessageString()));
+		return;
+	}
+	catch (...) {
+		QMessageBox::critical(this, QString::fromLocal8Bit("导入错误"),
+			QString::fromLocal8Bit("导入过程中发生未知错误"));
+		return;
+	}
+
+	if (!loadSuccess || aShape.IsNull()) {
+		QMessageBox::warning(this, QString::fromLocal8Bit("错误"),
+			QString::fromLocal8Bit("加载模型失败"));
+		return;
+	}
+
+	// 保存模型信息
+	auto manager = ModelDataManager::GetInstance();
+	if (manager) {
+		manager->SetModelGeometryInfo(info);
+	}
+
+	auto treeWidget = m_importModelWid->GetGFTreeModelWidget();
+	if (treeWidget) {
+		treeWidget->updataIcon();
+	}
+
+	// 显示到OCC视图
+	auto occView = m_importModelWid->GetOccView();
+	if (occView) {
+		Handle(AIS_InteractiveContext) context = occView->getContext();
+		if (!context.IsNull()) {
+			context->EraseAll(true);
+			Handle(AIS_Shape) modelPresentation = new AIS_Shape(aShape);
+			context->SetDisplayMode(modelPresentation, AIS_Shaded, true);
+			context->SetColor(modelPresentation, Quantity_Color(0.0, 1.0, 1.0, Quantity_TOC_RGB), true);
+			context->Display(modelPresentation, false);
+			occView->fitAll();
+		}
+	}
+
+	// 记录成功日志
+	currentTime = QDateTime::currentDateTime();
+	timeStr = currentTime.toString("yyyy-MM-dd hh:mm:ss");
+	QString text = timeStr + QString::fromLocal8Bit("[信息]>导入几何模型,路径为：") + filePath;
+	textEdit->appendPlainText(text);
+}
+
+// ============================================================
+// 加载STEP文件
+// ============================================================
+bool mainWidget::loadStepFile(const QString& filePath, TopoDS_Shape& outShape, ModelGeometryInfo& outInfo)
+{
+	STEPControl_Reader reader;
+	if (reader.ReadFile(filePath.toStdString().c_str()) != IFSelect_RetDone) {
+		return false;
+	}
+
+	reader.PrintCheckLoad(Standard_False, IFSelect_ItemsByEntity);
+	Standard_Integer nbRoots = reader.NbRootsForTransfer();
+	if (nbRoots <= 0) return false;
+
+	reader.TransferRoots();
+	outShape = reader.OneShape();
+
+	if (outShape.IsNull()) return false;
+
+	return computeBBox(outShape, filePath, outInfo);
+}
+
+// ============================================================
+// 加载STL文件
+// ============================================================
+bool mainWidget::loadStlFile(const QString& filePath, TopoDS_Shape& outShape, ModelGeometryInfo& outInfo)
+{
+	StlAPI_Reader reader;
+	if (!reader.Read(outShape, filePath.toStdString().c_str())) {
+		return false;
+	}
+
+	if (outShape.IsNull()) return false;
+
+	return computeBBox(outShape, filePath, outInfo);
+}
+
+// ============================================================
+// 计算边界框（消除重复代码）
+// ============================================================
+bool mainWidget::computeBBox(const TopoDS_Shape& shape, const QString& filePath, ModelGeometryInfo& outInfo)
+{
+	Bnd_Box bbox;
+	BRepBndLib::Add(shape, bbox);
+	bbox.SetGap(0.0);
+
+	Standard_Real xmin, ymin, zmin, xmax, ymax, zmax;
+	bbox.Get(xmin, ymin, zmin, xmax, ymax, zmax);
+
+	outInfo.shape = shape;
+	outInfo.path = filePath;
+	outInfo.theXmin = xmin;
+	outInfo.theYmin = ymin;
+	outInfo.theZmin = zmin;
+	outInfo.theXmax = xmax;
+	outInfo.theYmax = ymax;
+	outInfo.theZmax = zmax;
+	outInfo.length = static_cast<double>(xmax - xmin);
+	outInfo.width = static_cast<double>(ymax - ymin);
+	outInfo.height = static_cast<double>(zmax - zmin);
+
+	return true;
+}
+
+// ============================================================
+// 处理Excel导入
+// ============================================================
+void mainWidget::handleExcelImport()
+{
+	QString filter = "Excel files (*.xlsx *.xls)";
+	QString filePath = QFileDialog::getOpenFileName(this,
+		QString::fromLocal8Bit("打开Excel"),
+		QDir::currentPath(), filter);
+
+	if (filePath.isEmpty()) return;
+
+	// TODO: 实现Excel导入逻辑
+	qDebug() << "Excel file selected:" << filePath;
+}
+
+// ============================================================
+// 内存和CPU监控
+// ============================================================
+void mainWidget::refreshMemoryUsage(QLabel* statusLabel)
+{
+	// 安全地重置定时器
+	if (m_timer) {
+		m_timer->stop();
+		disconnect(m_timer, nullptr, nullptr, nullptr);
+		delete m_timer;
+	}
+
+	m_timer = new QTimer(this);
+	m_timer->setInterval(5000); // 5秒刷新
+	connect(m_timer, &QTimer::timeout, [this, statusLabel]() {
+		getMemoryUsage(statusLabel);
+		});
+
+	GetSystemTimes(&m_prevIdleTime, &m_prevKernelTime, &m_prevUserTime);
+	m_isFirstSample = true;
+	m_timer->start();
+	getMemoryUsage(statusLabel);
+}
+
+void mainWidget::getMemoryUsage(QLabel* statusLabel)
+{
 	QString memoryText = "0.00";
 	QString cpuText = "0.00";
 
-	// 内存
+	// 内存使用率
 	MEMORYSTATUSEX statex;
 	statex.dwLength = sizeof(statex);
 	if (GlobalMemoryStatusEx(&statex)) {
 		ULONGLONG totalPhys = statex.ullTotalPhys;
 		ULONGLONG availPhys = statex.ullAvailPhys;
-		double memoryUsage = ((totalPhys - availPhys) / static_cast<double>(totalPhys)) * 100.0;
-		memoryText = QString::number(memoryUsage, 'f', 2);
+		if (totalPhys > 0) {
+			double memoryUsage = ((totalPhys - availPhys) / static_cast<double>(totalPhys)) * 100.0;
+			memoryText = QString::number(memoryUsage, 'f', 2);
+		}
 	}
 	else {
-		qWarning() << "获取内存信息失败，错误码：" << GetLastError();
-		memoryText = "获取失败";
+		qWarning() << "Failed to get memory info, error:" << GetLastError();
+		memoryText = QString::fromLocal8Bit("获取失败");
 	}
 
-	// CPU
+	// CPU使用率
 	FILETIME currIdleTime, currKernelTime, currUserTime;
 	if (!GetSystemTimes(&currIdleTime, &currKernelTime, &currUserTime)) {
-		qWarning() << "获取系统时间失败，错误码：" << GetLastError();
-		cpuText = "获取失败";
+		qWarning() << "Failed to get system times, error:" << GetLastError();
+		cpuText = QString::fromLocal8Bit("获取失败");
 	}
 	else {
-		// 首次采样：仅更新基准时间，不计算使用率（避免异常值）
-		if (isFirstSample) {
-			prevIdleTime = currIdleTime;
-			prevKernelTime = currKernelTime;
-			prevUserTime = currUserTime;
-			isFirstSample = false;
-			cpuText = "0.00"; // 首次显示0%
+		if (m_isFirstSample) {
+			m_prevIdleTime = currIdleTime;
+			m_prevKernelTime = currKernelTime;
+			m_prevUserTime = currUserTime;
+			m_isFirstSample = false;
+			cpuText = "0.00";
 		}
 		else {
-			// 计算时间差（64位整数，无溢出）
-			ULONGLONG idleDiff = fileTimeToULL(currIdleTime) - fileTimeToULL(prevIdleTime);
-			ULONGLONG kernelDiff = fileTimeToULL(currKernelTime) - fileTimeToULL(prevKernelTime);
-			ULONGLONG userDiff = fileTimeToULL(currUserTime) - fileTimeToULL(prevUserTime);
+			ULONGLONG idleDiff = fileTimeToULL(currIdleTime) - fileTimeToULL(m_prevIdleTime);
+			ULONGLONG kernelDiff = fileTimeToULL(currKernelTime) - fileTimeToULL(m_prevKernelTime);
+			ULONGLONG userDiff = fileTimeToULL(currUserTime) - fileTimeToULL(m_prevUserTime);
 
-			// 总系统时间 = 内核时间 + 用户时间（所有CPU核心的总运行时间）
 			ULONGLONG totalSysDiff = kernelDiff + userDiff;
 
-			// 避免除零（极端情况，如系统无任何操作）
 			if (totalSysDiff == 0) {
 				cpuText = "0.00";
 			}
 			else {
-				// 计算CPU使用率：(总时间 - 空闲时间) / 总时间 × 100%
 				double cpuUsage = (1.0 - static_cast<double>(idleDiff) / totalSysDiff) * 100.0;
-				// 边界限制：确保数值在0%~100%之间（避免计算误差导致的超界）
 				cpuUsage = qBound(0.0, cpuUsage, 100.0);
 				cpuText = QString::number(cpuUsage, 'f', 2);
 			}
 
-			// 更新基准时间（为下一次计算做准备）
-			prevIdleTime = currIdleTime;
-			prevKernelTime = currKernelTime;
-			prevUserTime = currUserTime;
+			m_prevIdleTime = currIdleTime;
+			m_prevKernelTime = currKernelTime;
+			m_prevUserTime = currUserTime;
 		}
 	}
 
-	// 更新QLabel显示
-	m_statusLabel->setText(QString("内存使用：%1%, CPU使用：%2%").arg(memoryText).arg(cpuText));
-
+	statusLabel->setText(QString::fromLocal8Bit("内存使用：%1%，CPU使用：%2%")
+		.arg(memoryText).arg(cpuText));
 }
 
-
-// 辅助函数：FILETIME 转 64位整数（核心修复：正确合并高低位）
 ULONGLONG mainWidget::fileTimeToULL(const FILETIME& ft)
 {
 	ULARGE_INTEGER ul;
 	ul.LowPart = ft.dwLowDateTime;
 	ul.HighPart = ft.dwHighDateTime;
-	return ul.QuadPart; // 返回完整的64位时间戳（100纳秒为单位）
+	return ul.QuadPart;
 }
