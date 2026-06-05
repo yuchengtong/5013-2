@@ -124,6 +124,8 @@ struct PreForwardPropertyInfo {
 	double environmentalEmissivityValue = 0.5; // 环境发射率
 	double preheatingTimeValue = 0.0; // 弹体预热时间
 	bool isChecked = false;
+
+	Handle(AIS_ColorScale) m_ColorScale;
 };
 
 // 预热逆向寻优
@@ -149,12 +151,7 @@ struct InForwardPropertyInfo {
 	double m_injectionTimeValue = 0.0; // 弹体注药时间
 	bool isChecked = false;
 
-
 	Handle(AIS_ColorScale) m_ColorScale;
-
-
-
-
 };
 
 // 注药逆向寻优

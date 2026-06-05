@@ -26,7 +26,10 @@ public:
 	~GFTreeModelWidget();
 
 	void init();
+
 	void bindConnect();
+
+	GFTreeWidget* GetGFTreeWidget() {return m_TreeWidget;}
 
 public:
 	void updataIcon();
@@ -43,9 +46,6 @@ private slots:
 	void onTreeItemClicked(QTreeWidgetItem* item, int column);
 
 	void exportWord(const QString& directory, QTreeWidgetItem* item);
-
-	
-
 
 private:
 	QMenu* m_ContextMenu = nullptr;

@@ -198,11 +198,11 @@ int main(int argc, char *argv[])
 		select.show();
 		});
 
-	//login.show();
+	login.show();
 
-	mainWidget w;
-	w.resize(1200, 600);
-	w.show();
+	//mainWidget w;
+	//w.resize(1200, 600);
+	//w.show();
 
 	return app.exec();
 }

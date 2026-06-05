@@ -44,19 +44,17 @@
 #include "GFTreeModelWidget.h"
 #include "ModelDataManager.h"
 
-// ============================================================
-// 构造函数 / 析构函数
-// ============================================================
 mainWidget::mainWidget(QWidget* parent)
 	: QMainWindow(parent)
 {
-	// 使用临时 UI 对象初始化界面，然后释放
 	Ui::mainWidgetClass uiSetup;
 	uiSetup.setupUi(this);
 
-	// 保存需要后续访问的 UI 元素指针
 	m_menuBar = uiSetup.menuBar;
 	m_mainToolBar = uiSetup.mainToolBar;
+
+	// 隐藏原来的菜单栏，用自定义TabWidget替代
+	m_menuBar->setVisible(false);
 
 	init();
 	bindConnect();
@@ -64,7 +62,6 @@ mainWidget::mainWidget(QWidget* parent)
 
 mainWidget::~mainWidget()
 {
-	// 停止并清理定时器
 	if (m_timer) {
 		m_timer->stop();
 		delete m_timer;
@@ -72,13 +69,94 @@ mainWidget::~mainWidget()
 	}
 }
 
-// ============================================================
-// 初始化界面
-// ============================================================
 void mainWidget::init()
 {
 	setWindowIcon(QIcon(":/src/engine.svg"));
-	setWindowTitle(QString::fromLocal8Bit("TNT弹/DNAN粒状工业炸药注装药型罩参数匹配设计软件"));
+	setWindowTitle(QString::fromLocal8Bit("TNT基/DNAN基熔铸炸药注装工艺参数匹配设计工具软件"));
+
+	// ========== 创建顶部导航TabWidget（替代MenuBar）==========
+	m_navTabWidget = new QTabWidget(this);
+	m_navTabWidget->setDocumentMode(true);
+	m_navTabWidget->setTabPosition(QTabWidget::North);
+	// 关键：去掉边框和pane背景，让它看起来像菜单栏
+	m_navTabWidget->setStyleSheet(R"(
+		QTabWidget::pane {
+			border: none;
+			background-color: transparent;
+			top: 0px;
+		}
+		QTabBar::tab {
+			background-color: #E4E7E9;
+			border: none;
+			border-bottom: 2px solid #E4E7E9;
+			padding: 8px 24px;
+			margin: 0px;
+			font-size: 13px;
+			font-family: "Microsoft YaHei";
+			color: #333333;
+		}
+		QTabBar::tab:selected {
+			background-color: #ffffff;
+			color: #0066cc;
+			border-bottom: 2px solid #0066cc;
+		}
+		QTabBar::tab:hover:!selected {
+			background-color: #d0d4d8;
+		}
+	)");
+
+	// 添加两个导航项（预置装注药模型、数据库）
+	// 用空白widget作为tab页面，实际内容在下方的主TabWidget中
+	auto* dummyWidget1 = new QWidget();
+	auto* dummyWidget2 = new QWidget();
+	auto* dummyWidget3 = new QWidget();  // 帮助
+	m_navTabWidget->addTab(dummyWidget1, QString::fromLocal8Bit("数据库"));
+	m_navTabWidget->addTab(dummyWidget2, QString::fromLocal8Bit("预置装注药模型"));
+	m_navTabWidget->addTab(dummyWidget3, QString::fromLocal8Bit("帮助"));
+
+	// 设置导航TabWidget高度
+	m_navTabWidget->setFixedHeight(35);
+
+
+	// ========== 全局样式设置 ==========
+	this->setStyleSheet(R"(
+		/* 工具栏背景白色 */
+		QToolBar {
+			background-color: #ffffff;
+			border: none;
+			border-bottom: 1px solid #E4E7E9;
+			spacing: 2px;
+			padding: 4px;
+		}
+		QToolBar::separator {
+			background-color: #E4E7E9;
+			width: 1px;
+			margin: 4px 2px;
+		}
+		/* 工具栏按钮 */
+		QToolButton {
+			background-color: transparent;
+			border: 1px solid transparent;
+			border-radius: 3px;
+			padding: 4px;
+			color: #333333;
+		}
+		QToolButton:hover {
+			background-color: #f5f5f5;
+			border: 1px solid #d0d0d0;
+		}
+		QToolButton:pressed {
+			background-color: #e8e8e8;
+		}
+
+		/* 状态栏 */
+		QStatusBar {
+			background-color: #f0f0f0;
+			border-top: 1px solid #E4E7E9;
+			color: #333333;
+			font-size: 12px;
+		}
+	)");
 
 	// 状态栏
 	QStatusBar* statusbar = statusBar();
@@ -86,25 +164,16 @@ void mainWidget::init()
 	statusbar->addPermanentWidget(m_statusLabel);
 	refreshMemoryUsage(m_statusLabel);
 
-	// 菜单栏
-	m_ImportModelWidAct = new QAction(QString::fromLocal8Bit("预置装注药模型"), m_menuBar);
-	m_DataBaseWidAct = new QAction(QString::fromLocal8Bit("数据库"), m_menuBar);
-	m_HelpAct = new QAction(QString::fromLocal8Bit("帮助"), m_menuBar);
-
-	m_menuBar->addAction(m_DataBaseWidAct);
-	m_menuBar->addAction(m_ImportModelWidAct);
-	m_menuBar->addAction(m_HelpAct);
-
 	// 工具栏设置
 	m_mainToolBar->setMovable(false);
 	m_mainToolBar->setFloatable(false);
 
-	// 设置工具栏各区域
+	// 设置工具栏各组件
 	setupGeomWidget();
 	setupOperationWidget();
 	setupViewWidget();
 
-	// TabWidget
+	// ========== 主内容TabWidget ==========
 	m_pMainTabWidget = new QTabWidget(this);
 	m_importModelWid = new GFImportModelWidget(m_pMainTabWidget);
 	m_dataBaseWid = new DatabaseWidget(m_pMainTabWidget);
@@ -113,11 +182,37 @@ void mainWidget::init()
 	m_pMainTabWidget->addTab(m_dataBaseWid, "dataBaseWid");
 	m_pMainTabWidget->tabBar()->setVisible(false);
 
-	setCentralWidget(m_pMainTabWidget);
+	// ========== 总布局 ==========
+	// 创建中心widget来容纳导航Tab + 工具栏 + 内容
+	auto* centralWidget = new QWidget(this);
+	auto* centralLayout = new QVBoxLayout(centralWidget);
+	centralLayout->setContentsMargins(0, 0, 0, 0);
+	centralLayout->setSpacing(0);
+
+	// 1. 顶部导航Tab
+	centralLayout->addWidget(m_navTabWidget);
+
+	// 2. 工具栏（放在导航下方）
+	// 注意：QMainWindow的toolBar是独立的，这里需要把它移到布局中
+	// 或者保持QMainWindow的toolBar，但设置其位置
+	// 方案：移除QMainWindow的toolBar，手动添加到布局
+	removeToolBar(m_mainToolBar);
+	centralLayout->addWidget(m_mainToolBar);
+
+	// 3. 主内容区
+	centralLayout->addWidget(m_pMainTabWidget, 1);
+
+	setCentralWidget(centralWidget);
+
+	m_navTabWidget->setCurrentIndex(1);
+	// 主内容显示模型页面（索引0）
+	m_pMainTabWidget->setCurrentIndex(0);
+	// 工具栏可见
+	m_mainToolBar->setVisible(true);
 }
 
 // ============================================================
-// 设置几何操作工具栏
+// 工具栏设置函数（setupGeomWidget, setupOperationWidget, setupViewWidget 不变）
 // ============================================================
 void mainWidget::setupGeomWidget()
 {
@@ -142,32 +237,30 @@ void mainWidget::setupGeomWidget()
 	auto saveAsLabel = new QLabel(QString::fromLocal8Bit("另存为..."));
 	auto exportLabel = new QLabel(QString::fromLocal8Bit("导出文件"));
 
-	// 图标在上，文字在下的纵向布局
 	auto importVBox = new QVBoxLayout();
 	importVBox->addWidget(m_importBtn, 0, Qt::AlignHCenter);
 	importVBox->addWidget(importLabel, 0, Qt::AlignHCenter);
 	importVBox->setSpacing(2);
-	importVBox->setContentsMargins(4, 2, 4, 2);
+	importVBox->setContentsMargins(4, 0, 4, 0);
 
 	auto saveAsVBox = new QVBoxLayout();
 	saveAsVBox->addWidget(m_saveAsBtn, 0, Qt::AlignHCenter);
 	saveAsVBox->addWidget(saveAsLabel, 0, Qt::AlignHCenter);
 	saveAsVBox->setSpacing(2);
-	saveAsVBox->setContentsMargins(4, 2, 4, 2);
+	saveAsVBox->setContentsMargins(4, 0, 4, 0);
 
 	auto saveVBox = new QVBoxLayout();
 	saveVBox->addWidget(m_saveBtn, 0, Qt::AlignHCenter);
 	saveVBox->addWidget(saveLabel, 0, Qt::AlignHCenter);
 	saveVBox->setSpacing(2);
-	saveVBox->setContentsMargins(4, 2, 4, 2);
+	saveVBox->setContentsMargins(4, 0, 4, 0);
 
 	auto exportVBox = new QVBoxLayout();
 	exportVBox->addWidget(m_exportBtn, 0, Qt::AlignHCenter);
 	exportVBox->addWidget(exportLabel, 0, Qt::AlignHCenter);
 	exportVBox->setSpacing(2);
-	exportVBox->setContentsMargins(4, 2, 4, 2);
+	exportVBox->setContentsMargins(4, 0, 4, 0);
 
-	// 横向排列各功能组
 	auto hLayout = new QHBoxLayout();
 	hLayout->addLayout(importVBox);
 	hLayout->addLayout(saveAsVBox);
@@ -175,7 +268,7 @@ void mainWidget::setupGeomWidget()
 	hLayout->addLayout(exportVBox);
 	hLayout->addStretch();
 	hLayout->setSpacing(4);
-	hLayout->setContentsMargins(4, 2, 4, 2);
+	hLayout->setContentsMargins(4, 0, 4, 0);
 
 	auto vLayout = new QVBoxLayout();
 	vLayout->addLayout(hLayout);
@@ -189,7 +282,6 @@ void mainWidget::setupGeomWidget()
 	m_mainToolBar->addWidget(geomWidget);
 	m_mainToolBar->addSeparator();
 }
-
 
 void mainWidget::setupOperationWidget()
 {
@@ -218,7 +310,6 @@ void mainWidget::setupOperationWidget()
 	auto fitAllLabel = new QLabel(QString::fromLocal8Bit("聚焦"));
 	auto resetLabel = new QLabel(QString::fromLocal8Bit("重置"));
 
-	// 图标在上，文字在下的纵向布局
 	auto moveVBox = new QVBoxLayout();
 	moveVBox->addWidget(m_moveBtn, 0, Qt::AlignHCenter);
 	moveVBox->addWidget(moveLabel, 0, Qt::AlignHCenter);
@@ -249,7 +340,6 @@ void mainWidget::setupOperationWidget()
 	resetVBox->setSpacing(2);
 	resetVBox->setContentsMargins(4, 2, 4, 2);
 
-	// 横向排列各功能组
 	auto hLayout = new QHBoxLayout();
 	hLayout->addLayout(moveVBox);
 	hLayout->addLayout(rotateVBox);
@@ -272,7 +362,6 @@ void mainWidget::setupOperationWidget()
 	m_mainToolBar->addWidget(operationWidget);
 	m_mainToolBar->addSeparator();
 }
-
 
 void mainWidget::setupViewWidget()
 {
@@ -305,7 +394,6 @@ void mainWidget::setupViewWidget()
 	auto yNegLabel = new QLabel(QString::fromLocal8Bit("-Y"));
 	auto zNegLabel = new QLabel(QString::fromLocal8Bit("-Z"));
 
-	// 图标在上，文字在下的纵向布局
 	auto xVBox = new QVBoxLayout();
 	xVBox->addWidget(m_xBtn, 0, Qt::AlignHCenter);
 	xVBox->addWidget(xLabel, 0, Qt::AlignHCenter);
@@ -342,7 +430,6 @@ void mainWidget::setupViewWidget()
 	zNegVBox->setSpacing(2);
 	zNegVBox->setContentsMargins(4, 2, 4, 2);
 
-	// 第一行：+X, +Y, +Z
 	auto hLayout1 = new QHBoxLayout();
 	hLayout1->addLayout(xVBox);
 	hLayout1->addLayout(yVBox);
@@ -367,25 +454,24 @@ void mainWidget::setupViewWidget()
 	m_mainToolBar->addSeparator();
 }
 
-
 void mainWidget::setViewDirection(ViewDirection dir)
 {
-	if (!m_importModelWid) 
+	if (!m_importModelWid)
 		return;
 
 	auto occView = m_importModelWid->GetOccView();
-	if (!occView) 
+	if (!occView)
 		return;
 
 	auto state = occView->GetCameraRotationState();
-	if (!state) 
+	if (!state)
 		return;
 
 	Handle(V3d_View) view = occView->getView();
-	if (view.IsNull()) 
+	if (view.IsNull())
 		return;
 
-	switch (dir) 
+	switch (dir)
 	{
 	case View_Xpos: view->SetProj(V3d_Xpos); break;
 	case View_Ypos: view->SetProj(V3d_Ypos); break;
@@ -397,54 +483,62 @@ void mainWidget::setViewDirection(ViewDirection dir)
 	occView->fitAll();
 }
 
-
 void mainWidget::bindConnect()
 {
-	connect(m_ImportModelWidAct, &QAction::triggered, [this]() {
-		m_pMainTabWidget->setCurrentIndex(0);
-		m_mainToolBar->setVisible(true);
-		});
+	// 导航Tab切换
+	// 记录上一个有效的页面索引（排除帮助页）
+	int m_prevValidIndex = 0;
 
-	connect(m_DataBaseWidAct, &QAction::triggered, [this]() {
-		m_pMainTabWidget->setCurrentIndex(1);
-		m_mainToolBar->setVisible(false);
+	connect(m_navTabWidget, &QTabWidget::currentChanged, [this, &m_prevValidIndex](int index) {
+		if (index == 0) {
+			// 数据库
+			m_pMainTabWidget->setCurrentIndex(1);
+			m_mainToolBar->setVisible(false);
+			m_prevValidIndex = 0;
 
-		// 非admin用户隐藏用户数据库
-		if (!m_dataBaseWid) return;
-
-		QTreeWidget* treeWidget = m_dataBaseWid->getQTreeWid();
-		if (!treeWidget) return;
-
-		auto ins = ModelDataManager::GetInstance();
-		if (!ins) return;
-
-		UserInfo info = ins->GetUserInfo();
-		if (info.username != "admin") {
-			int size = treeWidget->topLevelItemCount();
-			for (int i = 0; i < size; ++i) {
-				QTreeWidgetItem* child = treeWidget->topLevelItem(i);
-				if (child && child->text(0).contains(QString::fromLocal8Bit("用户数据库"))) {
-					child->setHidden(true);
+			// 非admin用户隐藏用户数据库
+			if (!m_dataBaseWid) return;
+			QTreeWidget* treeWidget = m_dataBaseWid->getQTreeWid();
+			if (!treeWidget) return;
+			auto ins = ModelDataManager::GetInstance();
+			if (!ins) return;
+			UserInfo info = ins->GetUserInfo();
+			if (info.username != "admin") {
+				int size = treeWidget->topLevelItemCount();
+				for (int i = 0; i < size; ++i) {
+					QTreeWidgetItem* child = treeWidget->topLevelItem(i);
+					if (child && child->text(0).contains(QString::fromLocal8Bit("用户数据库"))) {
+						child->setHidden(true);
+					}
 				}
 			}
 		}
-		});
+		else if (index == 1) {
+			// 预置装注药模型
+			m_pMainTabWidget->setCurrentIndex(0);
+			m_mainToolBar->setVisible(true);
+			m_prevValidIndex = 1;
+		}
+		else if (index == 2) {
+			// 帮助 - 只弹出对话框，不改变当前界面
+			QString aboutText = QString::fromLocal8Bit(
+				"软件名称：TNT弹/DNAN粒状工业炸药注装药型罩参数匹配设计软件\n"
+				"软件版本：V1.0.0\n"
+				"版权所有：南京理工大学\n"
+				"开发团队：南京理工大学\n"
+				"联系邮箱：wuxingliang94@njust.edu.cn\n"
+				"官方网站：https://www.njust.edu.cn\n"
+				"版权声明：\n"
+				"    本软件受版权保护，未经明确授权不得以任何形式复制、分发、修改或用于商业目的。\n"
+				"    如有任何问题，请联系我们。"
+			);
+			QMessageBox::about(this,
+				QString::fromLocal8Bit("TNT弹/DNAN粒状工业炸药注装药型罩参数匹配设计软件"),
+				aboutText);
 
-	connect(m_HelpAct, &QAction::triggered, [this]() {
-		QString aboutText = QString::fromLocal8Bit(
-			"软件名称：TNT弹/DNAN粒状工业炸药注装药型罩参数匹配设计软件\n"
-			"软件版本：V1.0.0\n"
-			"版权所有：南京理工大学\n"
-			"开发团队：南京理工大学\n"
-			"联系邮箱：wuxingliang94@njust.edu.cn\n"
-			"官方网站：https://www.njust.edu.cn\n"
-			"版权声明：\n"
-			"    本软件受版权法保护，未经明确授权，严禁以任何形式复制、分发、修改或用于工程目的。\n"
-			"    如需帮助，请随时联系我们。"
-		);
-		QMessageBox::about(this,
-			QString::fromLocal8Bit("TNT弹/DNAN粒状工业炸药注装药型罩参数匹配设计软件"),
-			aboutText);
+			// 帮助弹窗后，切回之前有效的页面，不改变主内容
+			m_navTabWidget->setCurrentIndex(m_prevValidIndex);
+		}
 		});
 
 	connect(m_importBtn, &QPushButton::clicked, [this]() {
@@ -458,7 +552,7 @@ void mainWidget::bindConnect()
 		}
 		});
 
-	if (m_importModelWid) 
+	if (m_importModelWid)
 	{
 		auto occView = m_importModelWid->GetOccView();
 		if (occView) {

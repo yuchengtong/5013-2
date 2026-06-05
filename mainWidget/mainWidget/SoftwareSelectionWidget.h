@@ -1,3 +1,4 @@
+#pragma execution_character_set("utf-8")
 #pragma once
 #include "Fluent/FluentMainWindow.h"
 #include "Fluent/FluentMenuBar.h"
@@ -23,14 +24,16 @@ private:
 	Fluent::FluentLabel* m_pTitleLabel = nullptr;
 	Fluent::FluentWidget* m_pCentralWidget = nullptr;
 
-	// 两个软件卡片
+	// 平台卡片
 	Fluent::FluentWidget* m_pWorkbenchCard = nullptr;
 	Fluent::FluentWidget* m_pCustomCard = nullptr;
 
-	// Workbench 参数输入
-	Fluent::FluentLineEdit* m_pDensityEdit = nullptr;
-	Fluent::FluentLineEdit* m_pLengthEdit = nullptr;
-	Fluent::FluentLineEdit* m_pWidthEdit = nullptr;
-	Fluent::FluentLineEdit* m_pHeightEdit = nullptr;
-	Fluent::FluentLineEdit* m_pVolumeEdit = nullptr;
+	// Workbench 输入控件
+	Fluent::FluentLineEdit* m_pSoftwarePathEdit = nullptr;
+	Fluent::FluentLineEdit* m_pValveOpeningEdit = nullptr;
+	Fluent::FluentLineEdit* m_pWallThicknessEdit = nullptr;
+	Fluent::FluentLineEdit* m_pBondlineThicknessEdit = nullptr;
+	Fluent::FluentLineEdit* m_pInsulationTempEdit = nullptr;
+
+	Fluent::FluentButton* m_pCustomBtn = nullptr;
 };

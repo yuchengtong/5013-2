@@ -75,7 +75,8 @@ private:
 	// 模型显示辅助函数
 	void displayModelShape(OccView* occView);
 	void displayMeshEdges(OccView* occView);
-	void displayInForwardDesignResult(OccView* occView);
+	bool displayPreForwardDesignResult(OccView* occView);
+	bool displayInForwardDesignResult(OccView* occView);
 
 	// 使用映射表管理属性页切换
 	void setupPropertyMapping();

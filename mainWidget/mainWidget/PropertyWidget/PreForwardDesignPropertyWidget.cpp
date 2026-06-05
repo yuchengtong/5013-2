@@ -7,6 +7,17 @@
 #include <QDir>
 #include <QPushButton>
 #include <QDialog>
+#include <QDateTime>
+#include <QApplication>
+#include <QString>
+#include <QMap>
+#include <QRegExp>
+#include <stdexcept>
+#include <cmath>
+
+#include <V3d_TypeOfOrientation.hxx>
+#include <V3d_View.hxx>
+
 #include "ModelDataManager.h"
 #include "../GFTreeModelWidget.h"
 #include "../GFImportModelWidget.h"
@@ -15,15 +26,7 @@
 #include "../ProgressDialog.h"
 
 
-#include <QDateTime>
-#include <QApplication>
 
-
-#include <QString>
-#include <QMap>
-#include <QRegExp>
-#include <stdexcept>
-#include <cmath>
 
 // 计算
 double preForwardCalculateForm(const QString& formula,
@@ -320,10 +323,9 @@ void PreForwardDesignPropertyWidget::initWidget()
 
 		}
 	});
-
 }
 
-void PreForwardDesignPropertyWidget::preForwardCalculate() 
+void PreForwardDesignPropertyWidget::preForwardCalculate()
 {
 	QWidget* parent = parentWidget();
 	while (parent) {
@@ -339,7 +341,6 @@ void PreForwardDesignPropertyWidget::preForwardCalculate()
 			logWidget->update();
 
 			QApplication::processEvents();
-
 
 			// 创建进度对话框
 			ProgressDialog* progressDialog = new ProgressDialog("预热工艺正向计算", this);
@@ -378,6 +379,105 @@ void PreForwardDesignPropertyWidget::preForwardCalculate()
 					resultItem->setBackground(QBrush(QColor(2, 253, 254)));
 					m_tableWidget->setItem(9, 2, resultItem);
 
+					// 保存结果
+					auto preForwardPropertyInfo = ins->GetPreForwardPropertyInfo();
+					preForwardPropertyInfo.isChecked = true;
+					ins->SetPreForwardPropertyInfo(preForwardPropertyInfo);
+
+					
+					auto toolsAnimationWidget = gfParent->GetToolsAnimationWidget();
+					QStringList names = { "第一帧" ,"第二帧" ,"第三帧" ,"第四帧" ,"第五帧" ,"第六帧" ,
+					"第七帧" ,"第八帧" ,"第九帧" ,"第十帧" ,"第十一帧" ,"第十二帧" };
+					toolsAnimationWidget->SetAnimationSteps(names);
+
+					connect(toolsAnimationWidget, &ToolsAnimationWidget::animationFrameChanged, this, [=](int frameIndex) {
+						auto treeModelWidget=gfParent->GetGFTreeModelWidget();
+						auto item=treeModelWidget->GetGFTreeWidget()->currentItem();
+						auto name=item->text(0);
+						bool isForwardDesign = (item->data(0, Qt::UserRole).toString() == "PreForwardDesign");
+						if (isForwardDesign)
+						{
+							auto occView = gfParent->GetOccView();
+							std::vector<double> nodeValues;
+							APISetNodeValue::SetPreForwardDesignResult(occView, nodeValues, frameIndex);
+
+							Handle(AIS_InteractiveContext) context = occView->getContext();
+							Handle(V3d_View) view = occView->getView();
+
+							auto ins = ModelDataManager::GetInstance();
+							auto preForwardPropertyInfo = ins->GetPreForwardPropertyInfo();
+
+							if (!preForwardPropertyInfo.m_ColorScale.IsNull())
+							{
+								double timeValue = frameIndex * 5.0;
+								QString titleStr = QString("时间: %1s\n体积分数").arg(timeValue, 0, 'f', 0);
+								TCollection_ExtendedString newTitle(titleStr.toUtf8().constData(), true);
+								preForwardPropertyInfo.m_ColorScale->SetTitle(newTitle);
+
+								// 关键：必须调用 Redisplay 才能刷新显示
+								context->Redisplay(preForwardPropertyInfo.m_ColorScale, true);
+							}
+
+							Graphic3d_Vec2i anoffset(0, Standard_Integer(550));
+							context->SetTransformPersistence(preForwardPropertyInfo.m_ColorScale, new Graphic3d_TransformPers(Graphic3d_TMF_2d, Aspect_TOTP_LEFT_UPPER, anoffset));
+							context->SetDisplayMode(preForwardPropertyInfo.m_ColorScale, 1, Standard_False);
+							context->Display(preForwardPropertyInfo.m_ColorScale, Standard_True);
+
+							// 强制更新视图
+							view->Invalidate();
+							view->Redraw();
+						}
+						});
+
+					// 初始化第 0 帧
+					auto occView = gfParent->GetOccView();
+					Handle(AIS_InteractiveContext) context = occView->getContext();
+					context->EraseAll(true);
+
+					std::vector<double> nodeValues;
+					APISetNodeValue::SetPreForwardDesignResult(occView, nodeValues, 0);
+
+					double min_value = 0;
+					double max_value = 100;
+
+					// 初始化标题包含时间（第0帧 = 0s）
+					TCollection_ExtendedString tostr("时间: 0s\n体积分数", true);
+
+					Handle(AIS_ColorScale) aColorScale = new AIS_ColorScale();
+					{
+						aColorScale->SetFormat(TCollection_AsciiString("%.2f"));
+						aColorScale->SetSize(200, 500);
+						aColorScale->SetRange(min_value, max_value);
+						aColorScale->SetNumberOfIntervals(9);
+						aColorScale->SetLabelPosition(Aspect_TOCSP_RIGHT);
+						aColorScale->SetTextHeight(30);
+						aColorScale->SetColor(Quantity_Color(Quantity_NOC_BLACK));
+						aColorScale->SetTitle(tostr);
+						aColorScale->SetColorRange(Quantity_Color(Quantity_NOC_BLUE1), Quantity_Color(Quantity_NOC_RED));
+						aColorScale->SetLabelType(Aspect_TOCSD_AUTO);
+						aColorScale->SetZLayer(Graphic3d_ZLayerId_TopOSD);
+					}
+					preForwardPropertyInfo.m_ColorScale = aColorScale;
+					ins->SetPreForwardPropertyInfo(preForwardPropertyInfo);
+
+					Graphic3d_Vec2i anoffset(0, Standard_Integer(550));
+					context->SetTransformPersistence(preForwardPropertyInfo.m_ColorScale, new Graphic3d_TransformPers(Graphic3d_TMF_2d, Aspect_TOTP_LEFT_UPPER, anoffset));
+					context->SetDisplayMode(preForwardPropertyInfo.m_ColorScale, 1, Standard_False);
+					context->Display(preForwardPropertyInfo.m_ColorScale, Standard_True);
+					
+
+
+
+
+
+
+
+
+
+
+
+
+
 					// 更新曲线图
 					view();
 
@@ -400,8 +500,6 @@ void PreForwardDesignPropertyWidget::preForwardCalculate()
 			// 启动线程
 			calculateThread->start();
 
-
-
 			break;
 		}
 		else
@@ -409,8 +507,6 @@ void PreForwardDesignPropertyWidget::preForwardCalculate()
 			parent = parent->parentWidget();
 		}
 	}
-
-	
 }
 
 void PreForwardDesignPropertyWidget::reset()

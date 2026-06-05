@@ -727,23 +727,43 @@ void InForwardDesignPropertyWidget::inForwardCalculate() {
 					toolsAnimationWidget->SetAnimationSteps(names);
 
 					connect(toolsAnimationWidget, &ToolsAnimationWidget::animationFrameChanged, this, [=](int frameIndex) {
-						auto occView = gfParent->GetOccView();
-						std::vector<double> nodeValues;
-						APISetNodeValue::SetPreForwardDesignResult(occView, nodeValues, frameIndex);
+						auto treeModelWidget = gfParent->GetGFTreeModelWidget();
+						auto item = treeModelWidget->GetGFTreeWidget()->currentItem();
+						auto name = item->text(0);
+						bool isForwardDesign = (item->data(0, Qt::UserRole).toString() == "InForwardDesign");
+						if (isForwardDesign)
+						{
+							auto occView = gfParent->GetOccView();
+							std::vector<double> nodeValues;
+							APISetNodeValue::SetInForwardDesignResult(occView, nodeValues, frameIndex);
 
-						Handle(AIS_InteractiveContext) context = occView->getContext();
-						Handle(V3d_View) view = occView->getView();
+							Handle(AIS_InteractiveContext) context = occView->getContext();
+							Handle(V3d_View) view = occView->getView();
 
-						//view->SetProj(V3d_Zneg);
-						//view->SetTwist(-M_PI / 2.0);
+							auto ins = ModelDataManager::GetInstance();
+							auto inForwardPropertyInfo = ins->GetInForwardPropertyInfo();
 
-						auto ins = ModelDataManager::GetInstance();
-						auto inForwardPropertyInfo = ins->GetInForwardPropertyInfo();
+							// 更新色条标题（两行显示：时间 + 体积分数）
+							if (!inForwardPropertyInfo.m_ColorScale.IsNull()) {
+								double timeValue = frameIndex * 5.0;
+								// 使用换行符实现两行显示
+								QString titleStr = QString("时间: %1s\n体积分数").arg(timeValue, 0, 'f', 0);
+								TCollection_ExtendedString newTitle(titleStr.toUtf8().constData(), true);
+								inForwardPropertyInfo.m_ColorScale->SetTitle(newTitle);
 
-						Graphic3d_Vec2i anoffset(0, Standard_Integer(200));
-						context->SetTransformPersistence(inForwardPropertyInfo.m_ColorScale, new Graphic3d_TransformPers(Graphic3d_TMF_2d, Aspect_TOTP_LEFT_UPPER, anoffset));
-						context->SetDisplayMode(inForwardPropertyInfo.m_ColorScale, 1, Standard_False);
-						context->Display(inForwardPropertyInfo.m_ColorScale, Standard_True);
+								// 关键：必须调用 Redisplay 才能刷新显示
+								context->Redisplay(inForwardPropertyInfo.m_ColorScale, true);
+							}
+
+							Graphic3d_Vec2i anoffset(0, Standard_Integer(550));
+							context->SetTransformPersistence(inForwardPropertyInfo.m_ColorScale, new Graphic3d_TransformPers(Graphic3d_TMF_2d, Aspect_TOTP_LEFT_UPPER, anoffset));
+							context->SetDisplayMode(inForwardPropertyInfo.m_ColorScale, 1, Standard_False);
+							context->Display(inForwardPropertyInfo.m_ColorScale, Standard_True);
+
+							// 强制更新视图
+							view->Invalidate();
+							view->Redraw();
+						}
 						});
 
 					// 初始化第 0 帧
@@ -752,19 +772,22 @@ void InForwardDesignPropertyWidget::inForwardCalculate() {
 					context->EraseAll(true);
 
 					std::vector<double> nodeValues;
-					APISetNodeValue::SetPreForwardDesignResult(occView, nodeValues, 0);
-				
+					APISetNodeValue::SetInForwardDesignResult(occView, nodeValues, 0);
+
 					double min_value = 0;
 					double max_value = ModelDataManager::GetInstance()->GetInForwardPropertyInfo().m_relativeDensityValue;
-					TCollection_ExtendedString tostr("体积分数", true);
+
+					// 初始化标题包含时间（第0帧 = 0s）
+					TCollection_ExtendedString tostr("时间: 0s\n体积分数", true);
+
 					Handle(AIS_ColorScale) aColorScale = new AIS_ColorScale();
 					{
 						aColorScale->SetFormat(TCollection_AsciiString("%.2f"));
-						aColorScale->SetSize(50, 200);
+						aColorScale->SetSize(200, 500);
 						aColorScale->SetRange(min_value, max_value);
 						aColorScale->SetNumberOfIntervals(9);
 						aColorScale->SetLabelPosition(Aspect_TOCSP_RIGHT);
-						aColorScale->SetTextHeight(14);
+						aColorScale->SetTextHeight(30);
 						aColorScale->SetColor(Quantity_Color(Quantity_NOC_BLACK));
 						aColorScale->SetTitle(tostr);
 						aColorScale->SetColorRange(Quantity_Color(Quantity_NOC_BLUE1), Quantity_Color(Quantity_NOC_RED));
@@ -774,7 +797,7 @@ void InForwardDesignPropertyWidget::inForwardCalculate() {
 					inForwardPropertyInfo.m_ColorScale = aColorScale;
 					ins->SetInForwardPropertyInfo(inForwardPropertyInfo);
 
-					Graphic3d_Vec2i anoffset(0, Standard_Integer(200));
+					Graphic3d_Vec2i anoffset(0, Standard_Integer(550));
 					context->SetTransformPersistence(inForwardPropertyInfo.m_ColorScale, new Graphic3d_TransformPers(Graphic3d_TMF_2d, Aspect_TOTP_LEFT_UPPER, anoffset));
 					context->SetDisplayMode(inForwardPropertyInfo.m_ColorScale, 1, Standard_False);
 					context->Display(inForwardPropertyInfo.m_ColorScale, Standard_True);
@@ -814,7 +837,6 @@ void InForwardDesignPropertyWidget::inForwardCalculate() {
 	}
 }
 
-
 void InForwardDesignPropertyWidget::reset()
 {
 	m_insulationTemperatureValue = "60";
@@ -846,7 +868,6 @@ void InForwardDesignPropertyWidget::reset()
 
 void InForwardDesignPropertyWidget::view()
 {
-
 	auto ins = ModelDataManager::GetInstance();
 	auto modelGeometryInfo = ins->GetModelGeometryInfo();
 	auto steelPropertyInfo = ins->GetSteelPropertyInfo();
@@ -1216,9 +1237,7 @@ void InForwardDesignPropertyWidget::view()
 					{
 						densityVacuumX.push_back(i / 1000.0);
 						densityVacuumY.push_back(relativeDensity * 100.0);
-					}
-					
-
+					}				
 				}
 
 
@@ -1701,7 +1720,6 @@ void InForwardDesignPropertyWidget::view()
 			auto inForwardTimeVacuumWid = gfParent->GetInForwardTimeVacuumWid();
 
 
-
 			inForwardDensityTempWid->AddDataPoint(densityTempX, densityTempY);
 			inForwardDensityValveWid->AddDataPoint(densityValveX, densityValveY);
 			inForwardDensityVacuumWid->AddDataPoint(densityVacuumX, densityVacuumY);
@@ -1716,7 +1734,4 @@ void InForwardDesignPropertyWidget::view()
 			parent = parent->parentWidget();
 		}
 	}
-
-
-
 }

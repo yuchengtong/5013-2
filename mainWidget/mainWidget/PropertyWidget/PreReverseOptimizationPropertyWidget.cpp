@@ -167,14 +167,11 @@ void PreReverseOptimizationPropertyWidget::initWidget()
 			m_targetempeRadioBtn->setChecked(true);
 			m_environmentalTempeRadioBtn = new QRadioButton();
 			
-
 			m_tableWidget->setCellWidget(2, 4, createCenteredRadioWidget(m_targetempeRadioBtn));
 			//m_tableWidget->setCellWidget(3, 4, createCenteredRadioWidget(m_environmentalTempeRadioBtn));
 			
-
 			firRadioButtonGroup->addButton(m_targetempeRadioBtn);
-			firRadioButtonGroup->addButton(m_environmentalTempeRadioBtn);
-			
+			firRadioButtonGroup->addButton(m_environmentalTempeRadioBtn);		
 		}
 		firRadioButtonGroup->setExclusive(true);
 
@@ -207,7 +204,6 @@ void PreReverseOptimizationPropertyWidget::initWidget()
 	}
 
 	
-
 	//文本左对齐
 	for (int row = 0; row < m_tableWidget->rowCount(); ++row) {
 		for (int col = 0; col < m_tableWidget->columnCount(); ++col) {
@@ -245,10 +241,8 @@ void PreReverseOptimizationPropertyWidget::initWidget()
 }
 
 
-
 void PreReverseOptimizationPropertyWidget::calculate() 
 {
-
 	if (m_preheatingTimeValue == "")
 	{
 		QMessageBox::information(this, "提示", "弹体预热时间不能为空！");

@@ -328,7 +328,7 @@ MeshVS_DataMapOfIntegerColor APISetNodeValue::GetMeshDataMap(std::vector<double>
 	return colormap;
 }
 
-bool APISetNodeValue::SetPreForwardDesignResult(OccView* occView, std::vector<double>& nodeValues, int frame)
+bool APISetNodeValue::SetInForwardDesignResult(OccView* occView, std::vector<double>& nodeValues, int frame)
 {
 	Handle(AIS_InteractiveContext) context = occView->getContext();
 	auto modelGeometryInfo = ModelDataManager::GetInstance()->GetModelGeometryInfo();
@@ -477,6 +477,138 @@ bool APISetNodeValue::SetPreForwardDesignResult(OccView* occView, std::vector<do
 		meshInfo.preForwardNodalBuilder->SetColors(colormap);
 		context->Redisplay(meshInfo.preForwardMesh, Standard_True);
 		//occView->fitAll();
+		meshInfo.preForwardViewInitialized = true;
+	}
+
+	return true;
+}
+
+bool APISetNodeValue::SetPreForwardDesignResult(OccView* occView, std::vector<double>& nodeValues, int frame)
+{
+	Handle(AIS_InteractiveContext) context = occView->getContext();
+	auto modelGeometryInfo = ModelDataManager::GetInstance()->GetModelGeometryInfo();
+	auto meshInfo = ModelDataManager::GetInstance()->GetModelMeshInfo();
+
+	const double WALL_THICKNESS = 10.0;
+	const double WALL_VALUE = -1.0;
+	const double max_value = 100;
+	const double min_value = 0.0;
+
+	auto& boundaryEdges = meshInfo.preForwardBoundaryEdges;
+	const double x_min = meshInfo.x_min;
+	const double x_max = meshInfo.x_max;
+	const double y_min = meshInfo.y_min;
+	const double y_max = meshInfo.y_max;
+
+
+	{
+		TColStd_PackedMapOfInteger allnode;
+		Handle(TColStd_HArray2OfReal) nodecoords;
+		Handle(MeshVS_Mesh) aMesh = nullptr;
+
+		allnode = meshInfo.triangleStructure.GetAllNodes();
+		nodecoords = meshInfo.triangleStructure.GetmyNodeCoords();
+
+		aMesh = new MeshVS_Mesh();
+		aMesh->SetDataSource(&meshInfo.triangleStructure);
+
+		for (TColStd_PackedMapOfInteger::Iterator it(allnode); it.More(); it.Next())
+		{
+			int nodeID = it.Key();
+			double x = nodecoords->Value(nodeID, 1);
+			double y = nodecoords->Value(nodeID, 2);
+
+			// 1. 先处理强制边界（右侧、底部），直接给 WALL_VALUE，不参与渐变
+			bool isRightForce = (x > x_max - 15.0);
+			bool isBottomWall = (y < y_min + 15.0) || (y > y_max - 15.0);
+
+			// 2. 判断是否在壁厚区
+			bool isWall = IsInWallRegion(x, y, boundaryEdges, WALL_THICKNESS);
+
+			if (isWall || isRightForce || isBottomWall)
+			{
+				// 1. 计算到最近边界距离
+				double min_wall_dist = 1e9;
+				for (auto& e : boundaryEdges)
+				{
+					if (e.isTopEdge || e.isRightEdge || e.isBottomEdge)
+					{
+						double d = PointToSegmentDistance(x, y, e.p1, e.p2);
+						if (d < min_wall_dist) min_wall_dist = d;
+					}
+				}
+
+				// 2. 分层参数
+				const int TOTAL_LAYERS = 12;
+				double layerThick = WALL_THICKNESS / TOTAL_LAYERS;  // ~0.833
+
+				// 当前节点在第几层（0~11，0最靠近壁面）
+				int layer = static_cast<int>(min_wall_dist / layerThick);
+				if (layer < 0) layer = 0;
+				if (layer >= TOTAL_LAYERS) layer = TOTAL_LAYERS - 1;
+
+				// 3. 按帧分配
+				// frame=0: 第0层=100, 第1~10层=渐变, 第11层=0
+				// frame=1: 第0~1层=100, 第2~10层=渐变, 第11层=0
+				// ...
+				// frame=10: 第0~10层=100, 第11层=0
+				// frame=11: 第0~11层=100（全满）
+
+				double value;
+
+				if (layer <= frame)
+				{
+					// 红色区：已渗透到的层
+					value = max_value;  // 100
+				}
+				else if (layer == TOTAL_LAYERS - 1)
+				{
+					// 最内层固定为 0
+					value = min_value;  // 0
+				}
+				else
+				{
+					// 渐变区：从 100 线性降到 0
+					// 渐变区范围：frame+1 ~ TOTAL_LAYERS-2
+					int gradStart = frame + 1;           // 渐变起始层
+					int gradEnd = TOTAL_LAYERS - 2;      // 渐变结束层
+					int gradCount = gradEnd - gradStart + 1;
+
+					if (gradCount <= 0 || layer < gradStart || layer > gradEnd)
+					{
+						value = min_value;
+					}
+					else
+					{
+						// 在渐变区内线性插值：gradStart=100, gradEnd=0
+						double frac = static_cast<double>(gradEnd - layer) / gradCount;
+						value = max_value * frac;
+					}
+				}
+
+				nodeValues.push_back(value);
+			}
+			else
+			{
+				nodeValues.push_back(WALL_VALUE);
+			}
+		}
+
+		// ========== 可视化部分 ==========
+		if (!meshInfo.preForwardDisplayCreated)
+		{
+			meshInfo.preForwardMesh = new MeshVS_Mesh();
+			meshInfo.preForwardMesh->SetDataSource(&meshInfo.triangleStructure);
+			meshInfo.preForwardNodalBuilder = new MeshVS_NodalColorPrsBuilder(
+				meshInfo.preForwardMesh, MeshVS_DMF_NodalColorDataPrs | MeshVS_DMF_OCCMask);
+			meshInfo.preForwardMesh->AddBuilder(meshInfo.preForwardNodalBuilder);
+			meshInfo.preForwardMesh->GetDrawer()->SetBoolean(MeshVS_DA_ShowEdges, false);
+			context->Display(meshInfo.preForwardMesh, Standard_True);
+			meshInfo.preForwardDisplayCreated = true;
+		}
+		MeshVS_DataMapOfIntegerColor colormap = GetMeshDataMap(nodeValues, min_value, max_value);
+		meshInfo.preForwardNodalBuilder->SetColors(colormap);
+		context->Redisplay(meshInfo.preForwardMesh, Standard_True);
 		meshInfo.preForwardViewInitialized = true;
 	}
 

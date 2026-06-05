@@ -21,10 +21,10 @@ void SoftwareSelectionWidget::init()
 	m_pMenuBar = new Fluent::FluentMenuBar();
 	this->setFluentMenuBar(m_pMenuBar);
 
-
 	QHBoxLayout* titleLayout = new QHBoxLayout();
 	titleLayout->setSpacing(4);
 	titleLayout->setContentsMargins(0, 0, 0, 0);
+
 	// Logo 图标
 	Fluent::FluentLabel* logoIcon = new Fluent::FluentLabel();
 	logoIcon->setPixmap(QPixmap("C:/Users/yu_ch/Desktop/AllProject/TestCase/QtWidgetsApplication1/QtWidgetsApplication1/src/icon.jpg").scaled(32, 32, Qt::KeepAspectRatio, Qt::SmoothTransformation));
@@ -111,64 +111,53 @@ void SoftwareSelectionWidget::init()
 	paramBox->setFixedWidth(230);
 	QVBoxLayout* paramLayout = new QVBoxLayout(paramBox);
 	paramLayout->setContentsMargins(0, 0, 0, 0);
-	paramLayout->setSpacing(3);
+	paramLayout->setSpacing(6);
 
-	// 参数标题
-	Fluent::FluentLabel* paramTitle = new Fluent::FluentLabel("模型参数");
-	paramTitle->setAlignment(Qt::AlignCenter);
-	paramTitle->setStyleSheet("font-size: 12px; font-weight: bold; color: #555; background: transparent;");
-	paramLayout->addWidget(paramTitle);
+	// 软件路径
+	Fluent::FluentLabel* pathLabel = new Fluent::FluentLabel("软件路径");
+	pathLabel->setStyleSheet("font-size: 11px; color: #666; background: transparent;");
+	paramLayout->addWidget(pathLabel);
+	m_pSoftwarePathEdit = new Fluent::FluentLineEdit();
+	m_pSoftwarePathEdit->setPlaceholderText("请输入软件路径");
+	m_pSoftwarePathEdit->setFixedHeight(26);
+	paramLayout->addWidget(m_pSoftwarePathEdit);
 
-	// 密度
-	Fluent::FluentLabel* densityLabel = new Fluent::FluentLabel("密度 (kg/m³)");
-	densityLabel->setStyleSheet("font-size: 11px; color: #666; background: transparent;");
-	paramLayout->addWidget(densityLabel);
-	m_pDensityEdit = new Fluent::FluentLineEdit();
-	m_pDensityEdit->setPlaceholderText("请输入密度");
-	m_pDensityEdit->setFixedHeight(26);
-	paramLayout->addWidget(m_pDensityEdit);
+	// 阀门开度
+	Fluent::FluentLabel* valveLabel = new Fluent::FluentLabel("阀门开度");
+	valveLabel->setStyleSheet("font-size: 11px; color: #666; background: transparent;");
+	paramLayout->addWidget(valveLabel);
+	m_pValveOpeningEdit = new Fluent::FluentLineEdit();
+	m_pValveOpeningEdit->setPlaceholderText("请输入阀门开度");
+	m_pValveOpeningEdit->setFixedHeight(26);
+	paramLayout->addWidget(m_pValveOpeningEdit);
 
-	// 尺寸
-	Fluent::FluentLabel* sizeLabel = new Fluent::FluentLabel("尺寸 (mm)");
-	sizeLabel->setStyleSheet("font-size: 11px; color: #666; background: transparent;");
-	paramLayout->addWidget(sizeLabel);
-	QHBoxLayout* sizeLayout = new QHBoxLayout();
-	sizeLayout->setSpacing(4);
-	m_pLengthEdit = new Fluent::FluentLineEdit(); m_pLengthEdit->setPlaceholderText("长"); m_pLengthEdit->setFixedHeight(26);
-	m_pWidthEdit = new Fluent::FluentLineEdit(); m_pWidthEdit->setPlaceholderText("宽");  m_pWidthEdit->setFixedHeight(26);
-	m_pHeightEdit = new Fluent::FluentLineEdit(); m_pHeightEdit->setPlaceholderText("高"); m_pHeightEdit->setFixedHeight(26);
-	sizeLayout->addWidget(m_pLengthEdit);
-	sizeLayout->addWidget(m_pWidthEdit);
-	sizeLayout->addWidget(m_pHeightEdit);
-	paramLayout->addLayout(sizeLayout);
+	// 壁厚
+	Fluent::FluentLabel* wallLabel = new Fluent::FluentLabel("壁厚");
+	wallLabel->setStyleSheet("font-size: 11px; color: #666; background: transparent;");
+	paramLayout->addWidget(wallLabel);
+	m_pWallThicknessEdit = new Fluent::FluentLineEdit();
+	m_pWallThicknessEdit->setPlaceholderText("请输入壁厚");
+	m_pWallThicknessEdit->setFixedHeight(26);
+	paramLayout->addWidget(m_pWallThicknessEdit);
 
-	// 体积
-	Fluent::FluentLabel* volumeLabel = new Fluent::FluentLabel("体积 (m³)");
-	volumeLabel->setStyleSheet("font-size: 11px; color: #666; background: transparent;");
-	paramLayout->addWidget(volumeLabel);
-	m_pVolumeEdit = new Fluent::FluentLineEdit();
-	m_pVolumeEdit->setPlaceholderText("自动计算");
-	m_pVolumeEdit->setFixedHeight(26);
-	m_pVolumeEdit->setReadOnly(true);
-	paramLayout->addWidget(m_pVolumeEdit);
+	// 胶层厚度
+	Fluent::FluentLabel* bondLabel = new Fluent::FluentLabel("胶层厚度");
+	bondLabel->setStyleSheet("font-size: 11px; color: #666; background: transparent;");
+	paramLayout->addWidget(bondLabel);
+	m_pBondlineThicknessEdit = new Fluent::FluentLineEdit();
+	m_pBondlineThicknessEdit->setPlaceholderText("请输入胶层厚度");
+	m_pBondlineThicknessEdit->setFixedHeight(26);
+	paramLayout->addWidget(m_pBondlineThicknessEdit);
 
-	// 自动计算体积
-	auto calcVolume = [&]() {
-		double l = m_pLengthEdit->text().toDouble();
-		double w = m_pWidthEdit->text().toDouble();
-		double h = m_pHeightEdit->text().toDouble();
-		if (l > 0 && w > 0 && h > 0) {
-			m_pVolumeEdit->setText(QString::number(l * w * h * 1e-9, 'f', 6));
-		}
-		else {
-			m_pVolumeEdit->clear();
-		}
-	};
-	connect(m_pLengthEdit, &Fluent::FluentLineEdit::textChanged, this, calcVolume);
-	connect(m_pWidthEdit, &Fluent::FluentLineEdit::textChanged, this, calcVolume);
-	connect(m_pHeightEdit, &Fluent::FluentLineEdit::textChanged, this, calcVolume);
+	// 保温温度
+	Fluent::FluentLabel* tempLabel = new Fluent::FluentLabel("保温温度");
+	tempLabel->setStyleSheet("font-size: 11px; color: #666; background: transparent;");
+	paramLayout->addWidget(tempLabel);
+	m_pInsulationTempEdit = new Fluent::FluentLineEdit();
+	m_pInsulationTempEdit->setPlaceholderText("请输入保温温度");
+	m_pInsulationTempEdit->setFixedHeight(26);
+	paramLayout->addWidget(m_pInsulationTempEdit);
 
-	// 参数容器整体水平居中
 	wbLayout->addWidget(paramBox, 0, Qt::AlignHCenter);
 	// ==============================================
 
@@ -208,7 +197,7 @@ void SoftwareSelectionWidget::init()
 			"  border: 2px solid #00d4aa;"
 			"  background-color: #f0fff9;"
 			"}"
-		)
+			)
 	);
 
 	QVBoxLayout* customLayout = new QVBoxLayout(m_pCustomCard);
@@ -238,9 +227,9 @@ void SoftwareSelectionWidget::init()
 	customLayout->addStretch();
 
 	// 启动按钮
-	Fluent::FluentButton* customBtn = new Fluent::FluentButton(("启动"));
-	customBtn->setFixedHeight(42);
-	customBtn->setStyleSheet(
+	m_pCustomBtn = new Fluent::FluentButton(("启动"));
+	m_pCustomBtn->setFixedHeight(42);
+	m_pCustomBtn->setStyleSheet(
 		(
 			"Fluent::FluentButton {"
 			"  background-color: #00a86b;"
@@ -252,20 +241,18 @@ void SoftwareSelectionWidget::init()
 			"}"
 			"Fluent::FluentButton:hover { background-color: #00995e; }"
 			"Fluent::FluentButton:pressed { background-color: #008a52; }"
-		)
+			)
 	);
-	customLayout->addWidget(customBtn);
-	connect(customBtn, &Fluent::FluentButton::clicked, this, [customBtn]() {
-		// 禁用按钮，防止重复点击
-		customBtn->setEnabled(false);
+	customLayout->addWidget(m_pCustomBtn);
+	connect(m_pCustomBtn, &Fluent::FluentButton::clicked, this, [this]() {
+		m_pCustomBtn->setEnabled(false);
 
-		// 堆上创建，关闭时自动销毁
 		mainWidget* w = new mainWidget();
+		w->resize(1200, 600);
 		w->setAttribute(Qt::WA_DeleteOnClose);
 
-		// 窗口关闭后恢复按钮
-		QObject::connect(w, &QObject::destroyed, customBtn, [customBtn]() {
-			customBtn->setEnabled(true);
+		QObject::connect(w, &QObject::destroyed, m_pCustomBtn, [this]() {
+			m_pCustomBtn->setEnabled(true);
 			});
 
 		w->show();

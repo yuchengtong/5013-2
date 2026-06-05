@@ -51,15 +51,15 @@ private:
 	ULONGLONG fileTimeToULL(const FILETIME& ft);
 
 private:
-	// 由 setupUi 创建的 UI 元素（保存为成员以便访问）
+	// 由 setupUi 创建的 UI 元素
 	QMenuBar* m_menuBar = nullptr;
 	QToolBar* m_mainToolBar = nullptr;
 
-	// Tab页面指针（保存为成员变量，避免生命周期问题）
+	// Tab页面指针
 	GFImportModelWidget* m_importModelWid = nullptr;
 	DatabaseWidget* m_dataBaseWid = nullptr;
 
-	// 工具栏按钮（保存为成员变量，确保lambda捕获安全）
+	// 工具栏按钮
 	QPushButton* m_importBtn = nullptr;
 	QPushButton* m_saveBtn = nullptr;
 	QPushButton* m_saveAsBtn = nullptr;
@@ -76,10 +76,8 @@ private:
 	QPushButton* m_yNegBtn = nullptr;
 	QPushButton* m_zNegBtn = nullptr;
 
-	// 菜单动作
-	QAction* m_ImportModelWidAct = nullptr;
-	QAction* m_DataBaseWidAct = nullptr;
-	QAction* m_HelpAct = nullptr;
+	// 顶部导航TabWidget（替代MenuBar）
+	QTabWidget* m_navTabWidget = nullptr;
 
 	QTabWidget* m_pMainTabWidget = nullptr;
 

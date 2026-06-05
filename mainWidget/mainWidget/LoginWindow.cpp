@@ -25,7 +25,7 @@ void LoginWindow::init()
 		titleLayout->setContentsMargins(0, 0, 0, 0);
 		// Logo 图标
 		Fluent::FluentLabel* logoIcon = new Fluent::FluentLabel();
-		logoIcon->setPixmap(QPixmap("C:/Users/yu_ch/Desktop/AllProject/TestCase/QtWidgetsApplication1/QtWidgetsApplication1/src/icon.jpg").scaled(32, 32, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+		logoIcon->setPixmap(QPixmap(":/src/HongYuLogo.jpg").scaled(32, 32, Qt::KeepAspectRatio, Qt::SmoothTransformation));
 		logoIcon->setFixedSize(32, 32);
 		titleLayout->addWidget(logoIcon);
 
@@ -50,9 +50,9 @@ void LoginWindow::init()
 	m_pLeftImageLabel->setScaledContents(true);
 	m_pLeftImageLabel->setMinimumWidth(400);  // 最小宽度，避免过窄
 
-	QPixmap bg("C:/Users/yu_ch/Desktop/AllProject/TestCase/QtWidgetsApplication1/QtWidgetsApplication1/src/login_bg.jpg");
+	QPixmap bg(":/src/HongYuBg.jpg");
 	m_pLeftImageLabel->setPixmap(bg);
-	
+
 
 
 	// 右侧登录面板
@@ -67,7 +67,7 @@ void LoginWindow::init()
 
 	// Logo
 	m_pLogoLabel = new Fluent::FluentLabel();
-	m_pLogoLabel->setPixmap(QPixmap("C:/Users/yu_ch/Desktop/AllProject/TestCase/QtWidgetsApplication1/QtWidgetsApplication1/src/icon.jpg").scaled(64, 64, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+	m_pLogoLabel->setPixmap(QPixmap(":/src/HongYuLogo.jpg").scaled(64, 64, Qt::KeepAspectRatio, Qt::SmoothTransformation));
 	m_pLogoLabel->setFixedSize(64, 64);
 	m_pLogoLabel->setAlignment(Qt::AlignCenter);
 	rightLayout->addWidget(m_pLogoLabel, 0, Qt::AlignHCenter);

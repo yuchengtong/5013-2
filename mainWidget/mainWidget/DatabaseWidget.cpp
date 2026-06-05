@@ -70,7 +70,7 @@ DatabaseWidget::DatabaseWidget(QWidget* parent)
 	material->addChild(shell);
 	material->addChild(medicine);
 	material->addChild(gelatin);
-
+	material->setExpanded(true);
 	
 
 	QTreeWidgetItem* calculation = new QTreeWidgetItem(treeWidget);
@@ -85,7 +85,7 @@ DatabaseWidget::DatabaseWidget(QWidget* parent)
 
 	calculation->addChild(preheating);
 	calculation->addChild(intravenousInjection);
-	
+	calculation->setExpanded(true);
 
 	QPushButton* addBtn = ui.addBtn;
 	addBtn->setIcon(QIcon(":/src/data_add.svg"));

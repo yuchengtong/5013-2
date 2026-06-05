@@ -104,8 +104,6 @@ GFTreeModelWidget::~GFTreeModelWidget()
 
 void GFTreeModelWidget::init()
 {
-	
-
 	m_TreeWidget = new GFTreeWidget(this);
 	{
 		m_TreeWidget->setColumnCount(1);

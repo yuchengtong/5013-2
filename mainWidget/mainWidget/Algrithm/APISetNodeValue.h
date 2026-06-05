@@ -29,6 +29,9 @@ public:
     static double PointToSegmentDistance(double x, double y, const gp_Pnt& a, const gp_Pnt& b);
     static void HSVtoRGB(double h, double s, double v, double& r, double& g, double& b);
     static MeshVS_DataMapOfIntegerColor GetMeshDataMap(std::vector<double> tt, double min, double max);
-
+    
+    //注药正向设计
+    static bool SetInForwardDesignResult(OccView* occView, std::vector<double>& nodeValues, int frame);
+    //预热正向设计
     static bool SetPreForwardDesignResult(OccView* occView, std::vector<double>& nodeValues, int frame);
 };

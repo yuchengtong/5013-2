@@ -42,6 +42,9 @@
         <file>src/treeclose.svg</file>
         <file>src/treeopen.svg</file>
         <file>src/chart_view.png</file>
+        <file>src/HongYuBg.jpg</file>
+        <file>src/HongYuLogo.jpg</file>
+        <file>src/Workbench.bmp</file>
     </qresource>
     <qresource prefix="/animation">
         <file alias="Animation/first_frame.svg">src/icon/Animation/first_frame.svg</file>

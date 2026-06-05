@@ -136,6 +136,33 @@ void GFImportModelWidget::initLayout()
 	// ========== TabWidget ==========
 	m_pMainTabWidget = new QTabWidget();
 	m_pMainTabWidget->setDocumentMode(true);
+	m_pMainTabWidget->setStyleSheet(R"(
+    QTabWidget::pane {
+        border: 1px solid #cccccc;
+        background-color: #ffffff;
+        top: -1px;
+    }
+    QTabBar::tab {
+        background-color: #87CEEB;        /* 浅蓝色 */
+        border: 1px solid #5DADE2;
+        border-bottom: none;
+        border-top-left-radius: 4px;
+        border-top-right-radius: 4px;
+        padding: 6px 16px;
+        margin-right: 2px;
+        font-size: 12px;
+        font-family: "Microsoft YaHei";
+        color: #ffffff;                  /* 白色字体 */
+    }
+    QTabBar::tab:selected {
+        background-color: #1E90FF;       /* 深蓝色 */
+        color: #ffffff;
+        border-bottom: 2px solid #0066cc;
+    }
+    QTabBar::tab:hover:!selected {
+        background-color: #5DADE2;       /* 中蓝色 */
+    }
+)");
 
 	// ----- 主场景 -----
 	auto mainSceneWidget = new QWidget();
@@ -167,11 +194,21 @@ void GFImportModelWidget::initLayout()
 
 	m_pMainTabWidget->addTab(preForwardWidget, QString::fromLocal8Bit("预热工艺"));
 
-	// ----- 注药工艺（6 图表网格） -----
-	auto inForwardWidget = new QWidget(this);
-	auto inForwardGridLayout = new QGridLayout(inForwardWidget);
-	inForwardGridLayout->setSpacing(10);           // 增大间距
-	inForwardGridLayout->setContentsMargins(10, 10, 10, 10); // 增大边距
+	// ----- 注药工艺（6 图表网格，带滚动） -----
+	// 创建滚动区域
+	auto* scrollArea = new QScrollArea(this);
+	scrollArea->setWidgetResizable(true);
+	scrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff); // 禁用水平滚动
+	scrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);     // 按需垂直滚动
+	scrollArea->setFrameShape(QFrame::NoFrame);
+	scrollArea->setStyleSheet("QScrollArea { background-color: #ffffff; border: none; }");
+
+	// 滚动区域内的widget
+	auto* scrollContent = new QWidget();
+	auto* inForwardGridLayout = new QGridLayout(scrollContent);
+	inForwardGridLayout->setSpacing(2);                    // 减小间距从5到2
+	inForwardGridLayout->setContentsMargins(4, 4, 4, 4);   // 减小边距从10,5到4,4
+
 
 	m_InForwardDensityTempWid = new InForwardDensityTempWid(this);
 	m_InForwardDensityValveWid = new InForwardDensityValveWid(this);
@@ -198,7 +235,8 @@ void GFImportModelWidget::initLayout()
 	inForwardGridLayout->setRowStretch(1, 1);
 	inForwardGridLayout->setRowStretch(2, 1);
 
-	m_pMainTabWidget->addTab(inForwardWidget, QString::fromLocal8Bit("注药工艺"));
+	scrollArea->setWidget(scrollContent);
+	m_pMainTabWidget->addTab(scrollArea, QString::fromLocal8Bit("注药工艺"));
 
 	// ========== 日志窗口 ==========
 	m_LogWidget = new GFLogWidget(this);
@@ -317,30 +355,84 @@ void GFImportModelWidget::displayMeshEdges(OccView* occView)
 // ============================================================
 // 显示正向设计结果
 // ============================================================
-void GFImportModelWidget::displayInForwardDesignResult(OccView* occView)
+bool GFImportModelWidget::displayPreForwardDesignResult(OccView* occView)
 {
-	if (!occView) return;
+	if (!occView)
+	{
+		return false;
+	}
 
-	auto inForwardInfo = ModelDataManager::GetInstance()->GetInForwardPropertyInfo();
-	if (!inForwardInfo.isChecked) return;
+	auto preForwardInfo = ModelDataManager::GetInstance()->GetPreForwardPropertyInfo();
+	if (!preForwardInfo.isChecked)
+	{
+		return false;
+	}
 
 	auto toolsAnimationWidget = GetToolsAnimationWidget();
-	if (!toolsAnimationWidget) return;
+	if (!toolsAnimationWidget)
+	{
+		return false;
+	}
 
 	std::vector<double> nodeValues;
 	APISetNodeValue::SetPreForwardDesignResult(occView, nodeValues, toolsAnimationWidget->GetCurrentFrameIndex());
 
 	Handle(AIS_InteractiveContext) context = occView->getContext();
-	if (context.IsNull()) return;
+	if (context.IsNull())
+	{
+		return false;
+	}
+
+	if (!preForwardInfo.m_ColorScale.IsNull())
+	{
+		Graphic3d_Vec2i offset(0, Standard_Integer(550));
+		context->SetTransformPersistence(preForwardInfo.m_ColorScale,
+			new Graphic3d_TransformPers(Graphic3d_TMF_2d, Aspect_TOTP_LEFT_UPPER, offset));
+		context->SetDisplayMode(preForwardInfo.m_ColorScale, 1, Standard_False);
+		context->Display(preForwardInfo.m_ColorScale, Standard_True);
+		return true;
+	}
+	return false;
+}
+
+bool GFImportModelWidget::displayInForwardDesignResult(OccView* occView)
+{
+	if (!occView)
+	{
+		return false;
+	}
+
+	auto inForwardInfo = ModelDataManager::GetInstance()->GetInForwardPropertyInfo();
+	if (!inForwardInfo.isChecked) 
+	{
+		return false;
+	}
+
+	auto toolsAnimationWidget = GetToolsAnimationWidget();
+	if (!toolsAnimationWidget) 
+	{
+		return false;
+	}
+
+	std::vector<double> nodeValues;
+	APISetNodeValue::SetInForwardDesignResult(occView, nodeValues, toolsAnimationWidget->GetCurrentFrameIndex());
+
+	Handle(AIS_InteractiveContext) context = occView->getContext();
+	if (context.IsNull()) 
+	{
+		return false;
+	}
 
 	if (!inForwardInfo.m_ColorScale.IsNull())
 	{
-		Graphic3d_Vec2i offset(0, Standard_Integer(200));
+		Graphic3d_Vec2i offset(0, Standard_Integer(550));
 		context->SetTransformPersistence(inForwardInfo.m_ColorScale,
 			new Graphic3d_TransformPers(Graphic3d_TMF_2d, Aspect_TOTP_LEFT_UPPER, offset));
 		context->SetDisplayMode(inForwardInfo.m_ColorScale, 1, Standard_False);
 		context->Display(inForwardInfo.m_ColorScale, Standard_True);
+		return true;
 	}
+	return false;
 }
 
 // ============================================================
@@ -366,7 +458,6 @@ void GFImportModelWidget::onTreeItemClicked(const QString& itemData)
 
 	// 根据节点类型执行特定的显示逻辑
 	if (itemData == "Geometry" ||
-		itemData == "PreForwardDesign" ||
 		itemData == "PreReverseOptimization" ||
 		itemData == "InReverseOptimization")
 	{
@@ -377,9 +468,19 @@ void GFImportModelWidget::onTreeItemClicked(const QString& itemData)
 		displayMeshEdges(occView);
 		m_meshPropertyWidget->UpdataPropertyInfo();
 	}
+	else if (itemData == "PreForwardDesign")
+	{
+		if (!displayPreForwardDesignResult(occView))
+		{
+			displayModelShape(occView);
+		}
+	}
 	else if (itemData == "InForwardDesign")
 	{
-		displayInForwardDesignResult(occView);
+		if (!displayInForwardDesignResult(occView))
+		{
+			displayModelShape(occView);
+		}
 	}
 
 	if (itemData == "Geometry")
