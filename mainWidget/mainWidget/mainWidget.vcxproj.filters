@@ -187,10 +187,16 @@
     <ClCompile Include="ForwardDesignWorker.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="LoginWindow.cpp">
+    <ClCompile Include="InitWidget\LoginWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SoftwareSelectionWidget.cpp">
+    <ClCompile Include="InitWidget\SoftwareSelectionWidget.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="InitWidget\InjectionParamWidget.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="InitWidget\PreheatingParamWidget.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -324,10 +330,13 @@
     <QtMoc Include="ForwardDesignWorker.h">
       <Filter>Header Files</Filter>
     </QtMoc>
-    <QtMoc Include="LoginWindow.h">
+    <QtMoc Include="InitWidget\LoginWindow.h">
       <Filter>Header Files</Filter>
     </QtMoc>
-    <QtMoc Include="SoftwareSelectionWidget.h">
+    <QtMoc Include="InitWidget\SoftwareSelectionWidget.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="InitWidget\PreheatingParamWidget.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>
@@ -353,6 +362,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Algrithm\APISetNodeValue.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="InitWidget\InjectionParamWidget.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

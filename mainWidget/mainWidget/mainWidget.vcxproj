@@ -138,7 +138,10 @@
     <ClCompile Include="GFTreeModelWidget.cpp" />
     <ClCompile Include="GFTreeWidget.cpp" />
     <ClCompile Include="GFTreeWidgetItemDelegate.cpp" />
-    <ClCompile Include="LoginWindow.cpp" />
+    <ClCompile Include="InitWidget\InjectionParamWidget.cpp" />
+    <ClCompile Include="InitWidget\LoginWindow.cpp" />
+    <ClCompile Include="InitWidget\PreheatingParamWidget.cpp" />
+    <ClCompile Include="InitWidget\SoftwareSelectionWidget.cpp" />
     <ClCompile Include="occView.cpp" />
     <ClCompile Include="ProgressDialog.cpp" />
     <ClCompile Include="PropertyWidget\BasePropertyWidget.cpp" />
@@ -157,7 +160,6 @@
     <ClCompile Include="PropertyWidget\ShellPropertyWidget.cpp" />
     <ClCompile Include="QCustomPlot\qcustomplot.cpp" />
     <ClCompile Include="ReverseOptimizationWorker.cpp" />
-    <ClCompile Include="SoftwareSelectionWidget.cpp" />
     <ClCompile Include="ToolsAnimationWidget.cpp" />
     <ClCompile Include="TriangulationWorker.cpp" />
     <ClCompile Include="WordExporter.cpp" />
@@ -203,8 +205,10 @@
     <QtMoc Include="PropertyWidget\ProjectPropertyWidge.h" />
   </ItemGroup>
   <ItemGroup>
-    <QtMoc Include="SoftwareSelectionWidget.h" />
-    <QtMoc Include="LoginWindow.h" />
+    <ClInclude Include="InitWidget\InjectionParamWidget.h" />
+    <QtMoc Include="InitWidget\PreheatingParamWidget.h" />
+    <QtMoc Include="InitWidget\SoftwareSelectionWidget.h" />
+    <QtMoc Include="InitWidget\LoginWindow.h" />
     <QtMoc Include="ForwardDesignWorker.h" />
     <QtMoc Include="ReverseOptimizationWorker.h" />
     <QtMoc Include="ToolsAnimationWidget.h" />

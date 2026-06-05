@@ -174,8 +174,8 @@ namespace nglib {
 //#pragma comment(lib,"glfw3.lib")
 #endif
 
-#include "LoginWindow.h"
-#include "SoftwareSelectionWidget.h"
+#include "InitWidget/LoginWindow.h"
+#include "InitWidget/SoftwareSelectionWidget.h"
 
 int main(int argc, char *argv[])
 {

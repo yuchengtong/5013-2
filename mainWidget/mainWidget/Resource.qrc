@@ -85,4 +85,9 @@
     <qresource prefix="/plot">
         <file>src/icon/Plot/reset.svg</file>
     </qresource>
+    <qresource prefix="/selectWidget">
+        <file>src/selectWidget/Custom.png</file>
+        <file>src/selectWidget/InjectionProcess.jpg</file>
+        <file>src/selectWidget/PreheatingProcess.jpg</file>
+    </qresource>
 </RCC>
