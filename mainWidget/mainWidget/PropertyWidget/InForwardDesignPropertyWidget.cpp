@@ -907,6 +907,10 @@ void InForwardDesignPropertyWidget::view()
 			QVector<double> timeVacuumX;
 			QVector<double> timeVacuumY;
 
+			//质量时间
+			QVector<double> timeQualityX;
+			QVector<double> timeQualityY;
+
 
 			if (model == "HQ-9B")
 			{
@@ -1633,7 +1637,7 @@ void InForwardDesignPropertyWidget::view()
 					{
 						relativeDensity = 0;
 					}
-					if (relativeDensity > 1.0)
+					if (relativeDensity < 1.0)
 					{
 						densityVacuumX.push_back(i / 1000.0);
 						densityVacuumY.push_back(relativeDensity * 100.0);
@@ -1712,6 +1716,38 @@ void InForwardDesignPropertyWidget::view()
 				}
 			}
 
+			// 质量温度
+			double injectionTime = 0.0;
+			if (m_tableWidget->item(8, 2)->text() != "")
+			{
+				injectionTime = m_tableWidget->item(8, 2)->text().toDouble();
+			}
+			double quality = 64;
+			if (model == "HQ-9B")
+			{
+				quality = 64;
+			}
+			else if (model == "YJ-20")
+			{
+				quality = 80;
+			}
+			else if (model == "YJ-91A")
+			{
+				quality = 79;
+			}
+			else 
+			{
+				quality = 82;
+			}
+			double timeQualityXStart = 0.0;  
+			double timeQualityXEnd = injectionTime;
+			double timeQualityStep = (timeQualityXEnd - timeQualityXStart) / 30;
+			for (double i = timeQualityXStart; i <= timeQualityXEnd; i += timeQualityStep)
+			{
+				timeQualityX.push_back(i);
+				timeQualityY.push_back(quality/30*i);
+			}
+
 			auto inForwardDensityTempWid = gfParent->GetInForwardDensityTempWid();
 			auto inForwardDensityValveWid = gfParent->GetInForwardDensityValveWid();
 			auto inForwardDensityVacuumWid = gfParent->GetInForwardDensityVacuumWid();
@@ -1726,6 +1762,29 @@ void InForwardDesignPropertyWidget::view()
 			inForwardTimeTempWid->AddDataPoint(timeTempX, timeTempY);
 			inForwardTimeValveWid->AddDataPoint(timeValveX, timeValveY);
 			inForwardTimeVacuumWid->AddDataPoint(timeVacuumX, timeVacuumY);
+
+			auto inForwardPropertyInfo = ins->GetInForwardPropertyInfo();
+			inForwardPropertyInfo.densityTempX = densityTempX;
+			inForwardPropertyInfo.densityTempY = densityTempY;
+
+			inForwardPropertyInfo.densityValveX = densityValveX;
+			inForwardPropertyInfo.densityValveY = densityValveY;
+
+			inForwardPropertyInfo.densityVacuumX = densityVacuumX;
+			inForwardPropertyInfo.densityVacuumY = densityVacuumY;
+
+			inForwardPropertyInfo.timeTempX = timeTempX;
+			inForwardPropertyInfo.timeTempY = timeTempY;
+
+			inForwardPropertyInfo.timeValveX = timeValveX;
+			inForwardPropertyInfo.timeValveY = timeValveY;
+
+			inForwardPropertyInfo.timeVacuumX = timeVacuumX;
+			inForwardPropertyInfo.timeVacuumY = timeVacuumY;
+
+			inForwardPropertyInfo.timeQualityX = timeQualityX;
+			inForwardPropertyInfo.timeQualityY = timeQualityY;
+			ins->SetInForwardPropertyInfo(inForwardPropertyInfo);
 
 			break;
 		}

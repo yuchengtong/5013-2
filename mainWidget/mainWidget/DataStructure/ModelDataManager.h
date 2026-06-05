@@ -125,6 +125,9 @@ struct PreForwardPropertyInfo {
 	double preheatingTimeValue = 0.0; // 弹体预热时间
 	bool isChecked = false;
 
+	QVector<double> x;
+	QVector<double> y;
+
 	Handle(AIS_ColorScale) m_ColorScale;
 };
 
@@ -138,6 +141,8 @@ struct PreReversePropertyInfo {
 	double environmentalEmissivityValue = 0.5; // 环境发射率
 	double preheatingTimeValue = 0.0; // 弹体预热时间
 	bool isChecked = false;
+
+	
 };
 
 
@@ -152,6 +157,34 @@ struct InForwardPropertyInfo {
 	bool isChecked = false;
 
 	Handle(AIS_ColorScale) m_ColorScale;
+
+	//温度密度
+	QVector<double> densityTempX; 
+	QVector<double> densityTempY;
+
+	//阀门密度
+	QVector<double> densityValveX;
+	QVector<double> densityValveY;
+
+	//真空度密度
+	QVector<double> densityVacuumX;
+	QVector<double> densityVacuumY;
+
+	//温度注药时间
+	QVector<double> timeTempX;
+	QVector<double> timeTempY;
+
+	//阀门开度注药时间
+	QVector<double> timeValveX;
+	QVector<double> timeValveY;
+
+	//真空度注药时间
+	QVector<double> timeVacuumX;
+	QVector<double> timeVacuumY;
+
+	//质量时间
+	QVector<double> timeQualityX;
+	QVector<double> timeQualityY;
 };
 
 // 注药逆向寻优

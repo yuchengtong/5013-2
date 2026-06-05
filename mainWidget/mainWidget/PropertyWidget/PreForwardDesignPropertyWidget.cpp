@@ -529,7 +529,7 @@ void PreForwardDesignPropertyWidget::view()
 
 	double start = 50.0;  // 初始温度
 	double end = 90.0; // 弹体目标温度（℃）
-	double step = (end-start)/10;
+	double step = (end-start)/30;
 
 	auto ins = ModelDataManager::GetInstance();
 	auto modelGeometryInfo = ins->GetModelGeometryInfo();
@@ -544,7 +544,9 @@ void PreForwardDesignPropertyWidget::view()
 	auto F = steelPropertyInfo.thermalConductivity; // 壳体导热系数 (W m^-1 K^-1)
 
 	QVector<double> x;
+	x.push_back(22);
 	QVector<double> y;
+	y.push_back(0.0);
 	for (double i = start; i <= end; i += step) {
 		x.push_back(i);
 		double value = preForwardCalculateForm(calculationPropertyInfo.preForwardCalculateFormula, i, B, C, D, E, F);
@@ -557,7 +559,10 @@ void PreForwardDesignPropertyWidget::view()
 	QString result = QString::number(qRound(value));
 	y.push_back(result.toDouble());
 
-
+	auto preForwardPropertyInfo = ins->GetPreForwardPropertyInfo();
+	preForwardPropertyInfo.x = x;
+	preForwardPropertyInfo.y = y;
+	ins->SetPreForwardPropertyInfo(preForwardPropertyInfo);
 	
 	// 更新曲线图
 	QWidget* parent = parentWidget();
