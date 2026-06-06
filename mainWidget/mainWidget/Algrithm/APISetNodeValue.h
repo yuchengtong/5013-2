@@ -23,7 +23,7 @@ public:
         bool has_liquid_fill;         //  «∑Ò”–“∫œ‡ÃÓ≥‰
     };
 
-    static FrameParams frames[12];
+    static FrameParams frames[30];
     static std::vector<ModelEdge> ExtractAndClassifyEdges(const TopoDS_Shape& shape);
     static bool IsInWallRegion(double x, double y, const std::vector<ModelEdge>& edges, double wallThickness);
     static double PointToSegmentDistance(double x, double y, const gp_Pnt& a, const gp_Pnt& b);

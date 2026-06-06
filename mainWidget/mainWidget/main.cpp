@@ -195,11 +195,11 @@ int main(int argc, char *argv[])
 		select.show();
 		});
 
-	//login.show();
+	login.show();
 
-	mainWidget w;
-	w.show();
-	w.showMaximized();
+	//mainWidget w;
+	//w.show();
+	//w.showMaximized();
 
 	return app.exec();
 }

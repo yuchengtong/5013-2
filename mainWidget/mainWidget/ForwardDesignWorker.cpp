@@ -6,134 +6,64 @@
 
 void ForwardDesignWorker::DoWork()
 {
-    bool success = false;
-    QString msg;
+	bool success = false;
+	QString msg;
 
-    try
-    {
-        emit StatusUpdated("开始计算...");
-        emit ProgressUpdated(5);
+	try
+	{
+		emit StatusUpdated("开始计算...");
+		emit ProgressUpdated(0);
 
-        if (m_interrupted)
-        {
-            emit WorkFinished(false, "计算已取消");
-            return;
-        }
+		if (m_interrupted)
+		{
+			emit WorkFinished(false, "计算已取消");
+			return;
+		}
 
+		const int totalFrames = 30;
 
-        emit StatusUpdated("正在计算");
-        emit ProgressUpdated(20);
+		for (int i = 1; i <= totalFrames; ++i)
+		{
+			if (m_interrupted)
+			{
+				emit WorkFinished(false, "计算已取消");
+				return;
+			}
 
-        for (int i = 0; i < 1000; ++i)
-        {
-            if (m_interrupted)
-            {
-                emit WorkFinished(false, "计算已取消");
-                return;
-            }
-            QThread::msleep(5);
-        }
+			// 模拟每帧计算耗时（如有真实计算可替换）
+			QThread::msleep(500);
 
-        if (m_interrupted)
-        {
-            emit WorkFinished(false, "计算已取消");
-            return;
-        }
+			emit StatusUpdated(QString("正在计算第 %1 / %2 帧...").arg(i).arg(totalFrames));
+			emit ProgressUpdated(i * 100 / totalFrames);
+			emit FrameCalculated(i);  // 通知主线程第 i 帧已完成
+		}
 
-        
+		if (m_interrupted)
+		{
+			emit WorkFinished(false, "计算已取消");
+			return;
+		}
 
-        emit StatusUpdated("正在计算");
-        emit ProgressUpdated(50);
+		success = true;
+		msg = QString("%1").arg(totalFrames);  // 返回总帧数
+	}
+	catch (...)
+	{
+		msg = "计算时发生未知错误";
+		success = false;
+	}
 
-        for (int i = 0; i < 1000; ++i)
-        {
-            if (m_interrupted)
-            {
-                emit WorkFinished(false, "计算已取消");
-                return;
-            }
-            QThread::msleep(5);
-        }
-
-        if (m_interrupted)
-        {
-            emit WorkFinished(false, "计算已取消");
-            return;
-        }
-
-      
-       
-
-        emit StatusUpdated("正在计算");
-        emit ProgressUpdated(80);
-
-        for (int i = 0; i < 1000; ++i)
-        {
-            if (m_interrupted)
-            {
-                emit WorkFinished(false, "计算已取消");
-                return;
-            }
-            QThread::msleep(5);
-        }
-
-        if (m_interrupted)
-        {
-            emit WorkFinished(false, "计算已取消");
-            return;
-        }
-
-        
-
-        emit StatusUpdated("正在计算");
-        emit ProgressUpdated(90);
-
-        for (int i = 0; i < 1000; ++i)
-        {
-            if (m_interrupted)
-            {
-                emit WorkFinished(false, "计算已取消");
-                return;
-            }
-            QThread::msleep(5 );
-        }
-
-        if (m_interrupted)
-        {
-            emit WorkFinished(false, "计算已取消");
-            return;
-        }
-
-        success = true;
-        msg = "计算完成";
-        emit ProgressUpdated(100);
-    }
-    catch (const Standard_Failure& e)
-    {
-        msg = QString("计算错误: %1").arg(e.GetMessageString());
-        success = false;
-    }
-    catch (...)
-    {
-        msg = "计算时发生未知错误";
-        success = false;
-    }
-
-    // 最终检查：如果在中途被取消，覆盖之前的成功状态
-    if (m_interrupted)
-    {
-        emit WorkFinished(false, "计算已取消");
-    }
-    else
-    {
-        emit WorkFinished(success, msg);
-    }
+	if (!m_interrupted)
+	{
+		emit WorkFinished(success, msg);
+	}
+	else
+	{
+		emit WorkFinished(false, "计算已取消");
+	}
 }
-
 
 void ForwardDesignWorker::RequestInterruption()
 {
-    m_interrupted = true;
+	m_interrupted = true;
 }
-
-

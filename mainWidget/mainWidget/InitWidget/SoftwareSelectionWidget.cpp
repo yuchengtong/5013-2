@@ -144,7 +144,7 @@ void SoftwareSelectionWidget::bindConnect()
 		m_pCustomBtn->setEnabled(false);
 
 		mainWidget* w = new mainWidget();
-		w->resize(1200, 600);
+		w->showMaximized();
 		w->setAttribute(Qt::WA_DeleteOnClose);
 
 		connect(w, &QObject::destroyed, m_pCustomBtn, [this]() {

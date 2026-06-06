@@ -243,7 +243,7 @@ void PreForwardDesignPropertyWidget::initWidget()
 	QPushButton* viewButton = new QPushButton("显示");
 	m_tableWidget->setCellWidget(10, 2, viewButton);
 	m_tableWidget->setSpan(10, 2, 1, 2);
-	connect(viewButton, &QPushButton::clicked, this, &PreForwardDesignPropertyWidget::view);
+	//connect(viewButton, &QPushButton::clicked, this, &PreForwardDesignPropertyWidget::view);
 
 	// 单位列
 	QStringList unitLabels = { " "," ","℃","℃","℃", "W/㎡·k", "1/m"," "," ","s","" };
@@ -350,6 +350,41 @@ void PreForwardDesignPropertyWidget::preForwardCalculate()
 		return;
 	}
 
+	// ==================== 预计算全部30帧的x,y数据 ====================
+	auto A = m_targetTemperatureValue.toDouble(); // 弹体目标温度（℃）
+	auto B = modelGeometryInfo.shellThickness; // 壳体厚度 (mm)
+	auto C = modelGeometryInfo.gasketLayerThickness; // 胶层厚度(mm)
+	auto D = steelPropertyInfo.density; // 壳体密度 (kg m^-3)
+	auto E = steelPropertyInfo.specificHeatCapacity; // 壳体比热容 (J kg^-1 K^-1)
+	auto F = steelPropertyInfo.thermalConductivity; // 壳体导热系数 (W m^-1 K^-1)
+
+	//计算曲线图数据
+	double start = 50.0;  // 初始温度
+	double end = 90.0; // 弹体目标温度（℃）
+	double step = (end - start) / 28;
+
+	QVector<double> x;
+	x.push_back(22);
+	QVector<double> y;
+	y.push_back(0.0);
+	for (double i = start; i <= end; i += step)
+	{
+		x.push_back(i);
+		double value = preForwardCalculateForm(calculationPropertyInfo.preForwardCalculateFormula, i, B, C, D, E, F);
+		QString result = QString::number(qRound(value));
+		y.push_back(result.toDouble());
+	}
+	x.push_back(end);
+	double value = preForwardCalculateForm(calculationPropertyInfo.preForwardCalculateFormula, end, B, C, D, E, F);
+	QString result = QString::number(qRound(value));
+	y.push_back(result.toDouble());
+
+	auto preForwardPropertyInfo = ins->GetPreForwardPropertyInfo();
+	preForwardPropertyInfo.x = x;
+	preForwardPropertyInfo.y = y;
+	ins->SetPreForwardPropertyInfo(preForwardPropertyInfo);
+
+
 	QWidget* parent = parentWidget();
 	while (parent) {
 		GFImportModelWidget* gfParent = dynamic_cast<GFImportModelWidget*>(parent);
@@ -372,7 +407,83 @@ void PreForwardDesignPropertyWidget::preForwardCalculate()
 			// 创建工作线程和工作对象
 			ForwardDesignWorker* calculateWorker = new ForwardDesignWorker();
 			QThread* calculateThread = new QThread();
-			calculateWorker->moveToThread(calculateThread);
+			calculateWorker->moveToThread(calculateThread);			
+
+			connect(calculateWorker, &ForwardDesignWorker::FrameCalculated, this,
+				[=](int frameIndex) {
+					auto toolsAnimationWidget = gfParent->GetToolsAnimationWidget();
+
+					QStringList frameNames;
+					for (int i = 1; i <= frameIndex; ++i)
+					{
+						frameNames.append(QString::number(i));
+					}
+					toolsAnimationWidget->SetAnimationSteps(frameNames);
+
+					auto preForwardTimeTempWid = gfParent->GetPreForwardTimeTempWid();
+					QVector<double> x_value, y_value;
+					auto preForwardPropertyInfo = ins->GetPreForwardPropertyInfo();
+					for (int j = 0; j < preForwardPropertyInfo.x.size() && j < frameIndex; ++j)
+					{
+						x_value.push_back(preForwardPropertyInfo.x.at(j));
+						y_value.push_back(preForwardPropertyInfo.y.at(j));
+					}
+					preForwardTimeTempWid->AddDataPoint(x_value, y_value);
+
+					// 实时更新3D视图
+					auto occView = gfParent->GetOccView();
+					Handle(AIS_InteractiveContext) context = occView->getContext();
+					Handle(V3d_View) view = occView->getView();
+
+					std::vector<double> nodeValues;
+					APISetNodeValue::SetPreForwardDesignResult(occView, nodeValues, frameIndex - 1);
+
+
+					auto preForwardPropertyInfo2 = ins->GetPreForwardPropertyInfo();
+					double temperature = preForwardPropertyInfo2.x.at(frameIndex - 1);
+					double time = preForwardPropertyInfo2.y.at(frameIndex - 1);
+					QString titleStr = QString("时间: %1s\n温度: %2 ℃")
+						.arg(time, 0, 'f', 0)
+						.arg(temperature, 0, 'f', 0);
+					TCollection_ExtendedString newTitle(titleStr.toUtf8().constData(), true);
+					
+					// 第一帧时创建色条，后续帧只更新标题
+					if (preForwardPropertyInfo2.m_ColorScale.IsNull())
+					{
+						double min_value = 22;
+						double max_value = 90;
+
+						Handle(AIS_ColorScale) aColorScale = new AIS_ColorScale();
+						{
+							aColorScale->SetFormat(TCollection_AsciiString("%.2f"));
+							aColorScale->SetSize(200, 500);
+							aColorScale->SetRange(min_value, max_value);
+							aColorScale->SetNumberOfIntervals(9);
+							aColorScale->SetLabelPosition(Aspect_TOCSP_RIGHT);
+							aColorScale->SetTextHeight(30);
+							aColorScale->SetColor(Quantity_Color(Quantity_NOC_BLACK));
+							aColorScale->SetTitle(newTitle);
+							aColorScale->SetColorRange(Quantity_Color(Quantity_NOC_BLUE1), Quantity_Color(Quantity_NOC_RED));
+							aColorScale->SetLabelType(Aspect_TOCSD_AUTO);
+							aColorScale->SetZLayer(Graphic3d_ZLayerId_TopOSD);
+						}
+						preForwardPropertyInfo2.m_ColorScale = aColorScale;
+						ins->SetPreForwardPropertyInfo(preForwardPropertyInfo2);
+
+						Graphic3d_Vec2i anoffset(0, Standard_Integer(550));
+						context->SetTransformPersistence(preForwardPropertyInfo2.m_ColorScale, new Graphic3d_TransformPers(Graphic3d_TMF_2d, Aspect_TOTP_LEFT_UPPER, anoffset));
+						context->SetDisplayMode(preForwardPropertyInfo2.m_ColorScale, 1, Standard_False);
+						context->Display(preForwardPropertyInfo2.m_ColorScale, Standard_True);
+					}
+					else
+					{
+						preForwardPropertyInfo2.m_ColorScale->SetTitle(newTitle);
+						context->Redisplay(preForwardPropertyInfo2.m_ColorScale, true);
+					}
+
+					view->Invalidate();
+					view->Redraw();
+				});
 
 			// 连接信号槽
 			connect(calculateThread, &QThread::started, calculateWorker, &ForwardDesignWorker::DoWork);
@@ -383,130 +494,126 @@ void PreForwardDesignPropertyWidget::preForwardCalculate()
 			// 处理导入结果
 			connect(calculateWorker, &ForwardDesignWorker::WorkFinished, this,
 				[=](bool success, const QString& msg) {
-					
-
-					auto A = m_targetTemperatureValue.toDouble(); // 弹体目标温度（℃）
-					auto B = modelGeometryInfo.shellThickness; // 壳体厚度 (mm)
-					auto C = modelGeometryInfo.gasketLayerThickness; // 胶层厚度(mm)
-					auto D = steelPropertyInfo.density; // 壳体密度 (kg m^-3)
-					auto E = steelPropertyInfo.specificHeatCapacity; // 壳体比热容 (J kg^-1 K^-1)
-					auto F = steelPropertyInfo.thermalConductivity; // 壳体导热系数 (W m^-1 K^-1)
-
-					double value = preForwardCalculateForm(calculationPropertyInfo.preForwardCalculateFormula, A, B, C, D, E, F);
-					QString result = QString::number(qRound(value));
-					m_preheatingTimeValue = result;
-					QTableWidgetItem* resultItem = new QTableWidgetItem(m_preheatingTimeValue);
-					resultItem->setBackground(QBrush(QColor(2, 253, 254)));
-					m_tableWidget->setItem(9, 2, resultItem);
-
-					// 保存结果
-					auto preForwardPropertyInfo = ins->GetPreForwardPropertyInfo();
-					preForwardPropertyInfo.isChecked = true;
-					ins->SetPreForwardPropertyInfo(preForwardPropertyInfo);
-
-					
-					auto toolsAnimationWidget = gfParent->GetToolsAnimationWidget();
-					QStringList names = { "第一帧" ,"第二帧" ,"第三帧" ,"第四帧" ,"第五帧" ,"第六帧" ,
-					"第七帧" ,"第八帧" ,"第九帧" ,"第十帧" ,"第十一帧" ,"第十二帧" };
-					toolsAnimationWidget->SetAnimationSteps(names);
-
-					connect(toolsAnimationWidget, &ToolsAnimationWidget::animationFrameChanged, this, [=](int frameIndex) {
-						auto treeModelWidget=gfParent->GetGFTreeModelWidget();
-						auto item=treeModelWidget->GetGFTreeWidget()->currentItem();
-						auto name=item->text(0);
-						bool isForwardDesign = (item->data(0, Qt::UserRole).toString() == "PreForwardDesign");
-						if (isForwardDesign)
-						{
-							auto occView = gfParent->GetOccView();
-							std::vector<double> nodeValues;
-							APISetNodeValue::SetPreForwardDesignResult(occView, nodeValues, frameIndex);
-
-							Handle(AIS_InteractiveContext) context = occView->getContext();
-							Handle(V3d_View) view = occView->getView();
-
-							auto ins = ModelDataManager::GetInstance();
-							auto preForwardPropertyInfo = ins->GetPreForwardPropertyInfo();
-
-							if (!preForwardPropertyInfo.m_ColorScale.IsNull())
-							{
-								double timeValue = frameIndex * 5.0;
-								QString titleStr = QString("时间: %1s\n体积分数").arg(timeValue, 0, 'f', 0);
-								TCollection_ExtendedString newTitle(titleStr.toUtf8().constData(), true);
-								preForwardPropertyInfo.m_ColorScale->SetTitle(newTitle);
-
-								// 关键：必须调用 Redisplay 才能刷新显示
-								context->Redisplay(preForwardPropertyInfo.m_ColorScale, true);
-							}
-
-							Graphic3d_Vec2i anoffset(0, Standard_Integer(550));
-							context->SetTransformPersistence(preForwardPropertyInfo.m_ColorScale, new Graphic3d_TransformPers(Graphic3d_TMF_2d, Aspect_TOTP_LEFT_UPPER, anoffset));
-							context->SetDisplayMode(preForwardPropertyInfo.m_ColorScale, 1, Standard_False);
-							context->Display(preForwardPropertyInfo.m_ColorScale, Standard_True);
-
-							// 强制更新视图
-							view->Invalidate();
-							view->Redraw();
-						}
-						});
-
-					// 初始化第 0 帧
-					auto occView = gfParent->GetOccView();
-					Handle(AIS_InteractiveContext) context = occView->getContext();
-					context->EraseAll(true);
-
-					std::vector<double> nodeValues;
-					APISetNodeValue::SetPreForwardDesignResult(occView, nodeValues, 0);
-
-					double min_value = 0;
-					double max_value = 100;
-
-					// 初始化标题包含时间（第0帧 = 0s）
-					TCollection_ExtendedString tostr("时间: 0s\n体积分数", true);
-
-					Handle(AIS_ColorScale) aColorScale = new AIS_ColorScale();
+					if (success)
 					{
-						aColorScale->SetFormat(TCollection_AsciiString("%.2f"));
-						aColorScale->SetSize(200, 500);
-						aColorScale->SetRange(min_value, max_value);
-						aColorScale->SetNumberOfIntervals(9);
-						aColorScale->SetLabelPosition(Aspect_TOCSP_RIGHT);
-						aColorScale->SetTextHeight(30);
-						aColorScale->SetColor(Quantity_Color(Quantity_NOC_BLACK));
-						aColorScale->SetTitle(tostr);
-						aColorScale->SetColorRange(Quantity_Color(Quantity_NOC_BLUE1), Quantity_Color(Quantity_NOC_RED));
-						aColorScale->SetLabelType(Aspect_TOCSD_AUTO);
-						aColorScale->SetZLayer(Graphic3d_ZLayerId_TopOSD);
+						int maxFrame = msg.toInt();
+
+						// 设置最终结果到表格
+						double finalValue = preForwardCalculateForm(calculationPropertyInfo.preForwardCalculateFormula, A, B, C, D, E, F);
+						QString result = QString::number(qRound(finalValue));
+						m_preheatingTimeValue = result;
+						QTableWidgetItem* resultItem = new QTableWidgetItem(m_preheatingTimeValue);
+						resultItem->setBackground(QBrush(QColor(2, 253, 254)));
+						m_tableWidget->setItem(9, 2, resultItem);
+
+						// 设置计算完成标志
+						auto preForwardPropertyInfo = ins->GetPreForwardPropertyInfo();
+						preForwardPropertyInfo.isChecked = true;
+						ins->SetPreForwardPropertyInfo(preForwardPropertyInfo);
+
+						// 连接动画帧变化信号（使用UniqueConnection防止重复连接）
+						auto toolsAnimationWidget = gfParent->GetToolsAnimationWidget();
+						connect(toolsAnimationWidget, &ToolsAnimationWidget::animationFrameChanged, this,
+							[=](int frameIndex) {
+								auto treeModelWidget = gfParent->GetGFTreeModelWidget();
+								auto item = treeModelWidget->GetGFTreeWidget()->currentItem();
+								if (!item) return;
+								auto name = item->text(0);
+								bool isForwardDesign = (item->data(0, Qt::UserRole).toString() == "PreForwardDesign");
+								if (isForwardDesign)
+								{
+									auto occView = gfParent->GetOccView();
+									std::vector<double> nodeValues;
+									APISetNodeValue::SetPreForwardDesignResult(occView, nodeValues, frameIndex);
+
+									Handle(AIS_InteractiveContext) context = occView->getContext();
+									Handle(V3d_View) view = occView->getView();
+
+									auto preForwardPropertyInfo = ins->GetPreForwardPropertyInfo();
+
+									if (!preForwardPropertyInfo.m_ColorScale.IsNull())
+									{
+										double temperature = preForwardPropertyInfo.x.at(frameIndex);
+										double time = preForwardPropertyInfo.y.at(frameIndex);
+										QString titleStr = QString("时间: %1s\n温度: %2 ℃")
+											.arg(time, 0, 'f', 0)
+											.arg(temperature, 0, 'f', 0);
+										TCollection_ExtendedString newTitle(titleStr.toUtf8().constData(), true);
+										preForwardPropertyInfo.m_ColorScale->SetTitle(newTitle);
+
+										context->Redisplay(preForwardPropertyInfo.m_ColorScale, true);
+									}
+
+									Graphic3d_Vec2i anoffset(0, Standard_Integer(550));
+									context->SetTransformPersistence(preForwardPropertyInfo.m_ColorScale, new Graphic3d_TransformPers(Graphic3d_TMF_2d, Aspect_TOTP_LEFT_UPPER, anoffset));
+									context->SetDisplayMode(preForwardPropertyInfo.m_ColorScale, 1, Standard_False);
+									context->Display(preForwardPropertyInfo.m_ColorScale, Standard_True);
+
+									// 强制刷新视图
+									view->Invalidate();
+									view->Redraw();
+								}
+							}, Qt::UniqueConnection);
+
+						// 初始化3D显示（显示最后一帧）
+						auto occView = gfParent->GetOccView();
+						Handle(AIS_InteractiveContext) context = occView->getContext();
+						context->EraseAll(true);
+
+						std::vector<double> nodeValues;
+						APISetNodeValue::SetPreForwardDesignResult(occView, nodeValues, maxFrame - 1);
+
+						double min_value = 22;
+						double max_value = 90;
+
+						double temperature = preForwardPropertyInfo.x.at(maxFrame - 1);
+						double time = preForwardPropertyInfo.y.at(maxFrame - 1);
+						QString titleStr = QString("时间: %1s\n温度: %2 ℃")
+							.arg(time, 0, 'f', 0)
+							.arg(temperature, 0, 'f', 0);
+						TCollection_ExtendedString newTitle(titleStr.toUtf8().constData(), true);
+
+						Handle(AIS_ColorScale) aColorScale = new AIS_ColorScale();
+						{
+							aColorScale->SetFormat(TCollection_AsciiString("%.2f"));
+							aColorScale->SetSize(200, 500);
+							aColorScale->SetRange(min_value, max_value);
+							aColorScale->SetNumberOfIntervals(9);
+							aColorScale->SetLabelPosition(Aspect_TOCSP_RIGHT);
+							aColorScale->SetTextHeight(30);
+							aColorScale->SetColor(Quantity_Color(Quantity_NOC_BLACK));
+							aColorScale->SetTitle(newTitle);
+							aColorScale->SetColorRange(Quantity_Color(Quantity_NOC_BLUE1), Quantity_Color(Quantity_NOC_RED));
+							aColorScale->SetLabelType(Aspect_TOCSD_AUTO);
+							aColorScale->SetZLayer(Graphic3d_ZLayerId_TopOSD);
+						}
+						preForwardPropertyInfo.m_ColorScale = aColorScale;
+						ins->SetPreForwardPropertyInfo(preForwardPropertyInfo);
+
+						Graphic3d_Vec2i anoffset(0, Standard_Integer(550));
+						context->SetTransformPersistence(preForwardPropertyInfo.m_ColorScale, new Graphic3d_TransformPers(Graphic3d_TMF_2d, Aspect_TOTP_LEFT_UPPER, anoffset));
+						context->SetDisplayMode(preForwardPropertyInfo.m_ColorScale, 1, Standard_False);
+						context->Display(preForwardPropertyInfo.m_ColorScale, Standard_True);
+
+						//日志输出
+						QString newTimeStr = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss");
+						QString newText = newTimeStr + "[信息]>预热工艺正向设计计算完成";
+						textEdit->appendPlainText(newText);
+						logWidget->update();
+						QApplication::processEvents();
 					}
-					preForwardPropertyInfo.m_ColorScale = aColorScale;
-					ins->SetPreForwardPropertyInfo(preForwardPropertyInfo);
+					else
+					{
+						// 失败或取消：清空数据
+						auto preForwardPropertyInfo = ins->GetPreForwardPropertyInfo();
+						preForwardPropertyInfo.x.clear();
+						preForwardPropertyInfo.y.clear();
+						ins->SetPreForwardPropertyInfo(preForwardPropertyInfo);
 
-					Graphic3d_Vec2i anoffset(0, Standard_Integer(550));
-					context->SetTransformPersistence(preForwardPropertyInfo.m_ColorScale, new Graphic3d_TransformPers(Graphic3d_TMF_2d, Aspect_TOTP_LEFT_UPPER, anoffset));
-					context->SetDisplayMode(preForwardPropertyInfo.m_ColorScale, 1, Standard_False);
-					context->Display(preForwardPropertyInfo.m_ColorScale, Standard_True);
-					
-
-
-
-
-
-
-
-
-
-
-
-
-
-					// 更新曲线图
-					view();
-
-					QString newTimeStr = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss");
-					QString newText = newTimeStr + "[信息]>预热工艺正向计算完成";
-					textEdit->appendPlainText(newText);
-					logWidget->update();
-					QApplication::processEvents();
-
+						auto occView = gfParent->GetOccView();
+						Handle(AIS_InteractiveContext) context = occView->getContext();
+						context->EraseAll(true);
+					}
 					// 清理资源
 					progressDialog->close();
 					calculateThread->quit();
@@ -514,9 +621,7 @@ void PreForwardDesignPropertyWidget::preForwardCalculate()
 					calculateWorker->deleteLater();
 					calculateThread->deleteLater();
 					progressDialog->deleteLater();
-
 				});
-
 			// 启动线程
 			calculateThread->start();
 
@@ -544,63 +649,3 @@ void PreForwardDesignPropertyWidget::reset()
 
 
 
-void PreForwardDesignPropertyWidget::view()
-{
-	double start = 50.0;  // 初始温度
-	double end = 90.0; // 弹体目标温度（℃）
-	double step = (end-start)/28;
-
-	auto ins = ModelDataManager::GetInstance();
-	auto modelGeometryInfo = ins->GetModelGeometryInfo();
-	auto steelPropertyInfo = ins->GetSteelPropertyInfo();
-	auto calculationPropertyInfo = ins->GetCalculationPropertyInfo();
-
-	auto A = m_targetTemperatureValue.toDouble(); // 弹体目标温度（℃）
-	auto B = modelGeometryInfo.shellThickness; // 壳体厚度 (mm)
-	auto C = modelGeometryInfo.gasketLayerThickness; // 胶层厚度(mm)
-	auto D = steelPropertyInfo.density; // 壳体密度 (kg m^-3)
-	auto E = steelPropertyInfo.specificHeatCapacity; // 壳体比热容 (J kg^-1 K^-1)
-	auto F = steelPropertyInfo.thermalConductivity; // 壳体导热系数 (W m^-1 K^-1)
-
-	QVector<double> x;
-	x.push_back(22);
-	QVector<double> y;
-	y.push_back(0.0);
-	for (double i = start; i <= end; i += step) {
-		x.push_back(i);
-		double value = preForwardCalculateForm(calculationPropertyInfo.preForwardCalculateFormula, i, B, C, D, E, F);
-		QString result = QString::number(qRound(value));
-		y.push_back(result.toDouble());
-	}
-	x.push_back(end);
-	double value = preForwardCalculateForm(calculationPropertyInfo.preForwardCalculateFormula, end, B, C, D, E, F);
-	QString result = QString::number(qRound(value));
-	y.push_back(result.toDouble());
-
-	auto preForwardPropertyInfo = ins->GetPreForwardPropertyInfo();
-	preForwardPropertyInfo.x = x;
-	preForwardPropertyInfo.y = y;
-	ins->SetPreForwardPropertyInfo(preForwardPropertyInfo);
-	
-	// 更新曲线图
-	QWidget* parent = parentWidget();
-	while (parent)
-	{
-		GFImportModelWidget* gfParent = dynamic_cast<GFImportModelWidget*>(parent);
-		if (gfParent)
-		{
-			QDateTime currentTime = QDateTime::currentDateTime();
-			QString timeStr = currentTime.toString("yyyy-MM-dd hh:mm:ss");
-			auto logWidget = gfParent->GetLogWidget();
-			auto textEdit = logWidget->GetTextEdit();
-			auto preForwardTimeTempWid = gfParent->GetPreForwardTimeTempWid();
-			preForwardTimeTempWid->AddDataPoint(x, y);
-
-			break;
-		}
-		else
-		{
-			parent = parent->parentWidget();
-		}
-	}
-}

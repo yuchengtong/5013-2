@@ -387,7 +387,8 @@ void InForwardDesignPropertyWidget::initWidget()
 
 }
 
-void InForwardDesignPropertyWidget::inForwardCalculate() {
+void InForwardDesignPropertyWidget::inForwardCalculate()
+{
 
 	auto ins = ModelDataManager::GetInstance();
 	auto modelGeometryInfo = ins->GetModelGeometryInfo();
@@ -759,11 +760,14 @@ void InForwardDesignPropertyWidget::inForwardCalculate() {
 							auto ins = ModelDataManager::GetInstance();
 							auto inForwardPropertyInfo = ins->GetInForwardPropertyInfo();
 
-							// 更新色条标题（两行显示：时间 + 体积分数）
 							if (!inForwardPropertyInfo.m_ColorScale.IsNull()) {
 								double timeValue = frameIndex * 5.0;
-								// 使用换行符实现两行显示
-								QString titleStr = QString("时间: %1s\n体积分数").arg(timeValue, 0, 'f', 0);
+								double injectedMass = 1.5; // 假设当前已注药质量为 1.5 Kg
+
+								QString titleStr = QString("时间: %1s\n体积分数\n当前已注药质量: %2 Kg")
+									.arg(timeValue, 0, 'f', 0)
+									.arg(injectedMass, 0, 'f', 2); // 保留两位小数
+
 								TCollection_ExtendedString newTitle(titleStr.toUtf8().constData(), true);
 								inForwardPropertyInfo.m_ColorScale->SetTitle(newTitle);
 
@@ -791,10 +795,10 @@ void InForwardDesignPropertyWidget::inForwardCalculate() {
 					APISetNodeValue::SetInForwardDesignResult(occView, nodeValues, 0);
 
 					double min_value = 0;
-					double max_value = ModelDataManager::GetInstance()->GetInForwardPropertyInfo().m_relativeDensityValue;
+					double max_value = 100;
 
 					// 初始化标题包含时间（第0帧 = 0s）
-					TCollection_ExtendedString tostr("时间: 0s\n体积分数", true);
+					TCollection_ExtendedString tostr("时间: 0s\n当前已注药质量：0Kg\n体积分数", true);
 
 					Handle(AIS_ColorScale) aColorScale = new AIS_ColorScale();
 					{

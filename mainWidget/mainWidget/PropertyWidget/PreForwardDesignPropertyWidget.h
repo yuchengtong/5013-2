@@ -15,9 +15,6 @@ private slots:
 	void preForwardCalculate();
 
 	void reset();
-
-	void view();
-
 private:
 	QTableWidget* m_tableWidget = nullptr;
 

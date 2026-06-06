@@ -56,20 +56,40 @@
 
 
 
-APISetNodeValue::FrameParams APISetNodeValue::frames[12] = {
-	{0.20, 0.008, 0.025, false, 0.00, 0.00, 0.00, false},
-	{0.35, 0.008, 0.025, false, 0.00, 0.00, 0.00, false},
-	{0.50, 0.010, 0.025, false, 0.00, 0.00, 0.00, false},
-	{0.65, 0.010, 0.025, false, 0.00, 0.00, 0.00, false},
-	{0.80, 0.010, 0.025, false, 0.00, 0.00, 0.00, false},
-	{0.95, 0.010, 0.025, false, 0.00, 0.00, 0.00, false},
+APISetNodeValue::FrameParams APISetNodeValue::frames[30] = {
+	// ========== 射流阶段 (0 ~ 14 帧) ==========
+{0.200, 0.0080, 0.025, false, 0.00, 0.00, 0.00, false}, // 0
+{0.250, 0.0081, 0.025, false, 0.00, 0.00, 0.00, false}, // 1
+{0.300, 0.0083, 0.025, false, 0.00, 0.00, 0.00, false}, // 2
+{0.350, 0.0085, 0.025, false, 0.00, 0.00, 0.00, false}, // 3
+{0.400, 0.0086, 0.025, false, 0.00, 0.00, 0.00, false}, // 4
+{0.450, 0.0088, 0.025, false, 0.00, 0.00, 0.00, false}, // 5
+{0.500, 0.0090, 0.025, false, 0.00, 0.00, 0.00, false}, // 6
+{0.550, 0.0091, 0.025, false, 0.00, 0.00, 0.00, false}, // 7
+{0.600, 0.0093, 0.025, false, 0.00, 0.00, 0.00, false}, // 8
+{0.650, 0.0095, 0.025, false, 0.00, 0.00, 0.00, false}, // 9
+{0.700, 0.0096, 0.025, false, 0.00, 0.00, 0.00, false}, // 10
+{0.750, 0.0098, 0.025, false, 0.00, 0.00, 0.00, false}, // 11
+{0.800, 0.0100, 0.025, false, 0.00, 0.00, 0.00, false}, // 12
+{0.875, 0.0100, 0.025, false, 0.00, 0.00, 0.00, false}, // 13
+{0.950, 0.0100, 0.025, false, 0.00, 0.00, 0.00, false}, // 14
 
-	{0.95, 0.022, 0.055, true,  0.18, 0.80, 1.00, true},
-	{0.95, 0.020, 0.050, true,  0.14, 0.70, 0.98, true},
-	{0.95, 0.018, 0.045, true,  0.10, 0.60, 0.96, true},
-	{0.95, 0.016, 0.040, true,  0.08, 0.50, 0.94, true},
-	{0.95, 0.014, 0.035, true,  0.06, 0.40, 0.92, true},
-	{0.95, 0.012, 0.030, true,  0.04, 0.30, 0.90, true},
+// ========== 液相填充阶段 (15 ~ 29 帧) ==========
+{0.95, 0.0220, 0.0550, true, 0.180, 0.800, 1.000, true}, // 15
+{0.95, 0.0213, 0.0533, true, 0.173, 0.767, 0.993, true}, // 16
+{0.95, 0.0207, 0.0517, true, 0.167, 0.733, 0.987, true}, // 17
+{0.95, 0.0200, 0.0500, true, 0.160, 0.700, 0.980, true}, // 18
+{0.95, 0.0193, 0.0483, true, 0.153, 0.667, 0.973, true}, // 19
+{0.95, 0.0187, 0.0467, true, 0.147, 0.633, 0.967, true}, // 20
+{0.95, 0.0180, 0.0450, true, 0.140, 0.600, 0.960, true}, // 21
+{0.95, 0.0173, 0.0433, true, 0.133, 0.567, 0.953, true}, // 22
+{0.95, 0.0167, 0.0417, true, 0.127, 0.533, 0.947, true}, // 23
+{0.95, 0.0160, 0.0400, true, 0.120, 0.500, 0.940, true}, // 24
+{0.95, 0.0153, 0.0383, true, 0.113, 0.467, 0.933, true}, // 25
+{0.95, 0.0147, 0.0367, true, 0.107, 0.433, 0.927, true}, // 26
+{0.95, 0.0140, 0.0350, true, 0.100, 0.400, 0.920, true}, // 27
+{0.95, 0.0130, 0.0325, true, 0.070, 0.350, 0.910, true}, // 28
+{0.95, 0.0120, 0.0300, true, 0.040, 0.300, 0.900, true}, // 29
 };
 
 // ==================== 提取并分类边线 ====================
@@ -518,60 +538,46 @@ bool APISetNodeValue::SetPreForwardDesignResult(OccView* occView, std::vector<do
 			double x = nodecoords->Value(nodeID, 1);
 			double y = nodecoords->Value(nodeID, 2);
 
-			// 1. 先处理强制边界（右侧、底部），直接给 WALL_VALUE，不参与渐变
 			bool isRightForce = (x > x_max - 15.0);
 			bool isBottomWall = (y < y_min + 15.0) || (y > y_max - 15.0);
 
-			// 2. 判断是否在壁厚区
 			bool isWall = IsInWallRegion(x, y, boundaryEdges, WALL_THICKNESS);
 
 			if (isWall || isRightForce || isBottomWall)
 			{
-				// 1. 计算到最近边界距离
 				double min_wall_dist = 1e9;
 				for (auto& e : boundaryEdges)
 				{
 					if (e.isTopEdge || e.isRightEdge || e.isBottomEdge)
 					{
 						double d = PointToSegmentDistance(x, y, e.p1, e.p2);
-						if (d < min_wall_dist) min_wall_dist = d;
+						if (d < min_wall_dist) 
+							min_wall_dist = d;
 					}
 				}
 
 				// 2. 分层参数
-				const int TOTAL_LAYERS = 12;
-				double layerThick = WALL_THICKNESS / TOTAL_LAYERS;  // ~0.833
+				const int TOTAL_LAYERS = 30;
+				double layerThick = WALL_THICKNESS / TOTAL_LAYERS;
 
 				// 当前节点在第几层（0~11，0最靠近壁面）
 				int layer = static_cast<int>(min_wall_dist / layerThick);
 				if (layer < 0) layer = 0;
 				if (layer >= TOTAL_LAYERS) layer = TOTAL_LAYERS - 1;
-
-				// 3. 按帧分配
-				// frame=0: 第0层=100, 第1~10层=渐变, 第11层=0
-				// frame=1: 第0~1层=100, 第2~10层=渐变, 第11层=0
-				// ...
-				// frame=10: 第0~10层=100, 第11层=0
-				// frame=11: 第0~11层=100（全满）
-
 				double value;
 
-				if (layer <= frame)
+				if (layer < frame)
 				{
-					// 红色区：已渗透到的层
 					value = max_value;  // 100
 				}
 				else if (layer == TOTAL_LAYERS - 1)
 				{
-					// 最内层固定为 0
-					value = min_value;  // 0
+					value = (frame == TOTAL_LAYERS - 1) ? max_value : min_value;
 				}
 				else
 				{
-					// 渐变区：从 100 线性降到 0
-					// 渐变区范围：frame+1 ~ TOTAL_LAYERS-2
-					int gradStart = frame + 1;           // 渐变起始层
-					int gradEnd = TOTAL_LAYERS - 2;      // 渐变结束层
+					int gradStart = frame + 1;
+					int gradEnd = TOTAL_LAYERS - 2; 
 					int gradCount = gradEnd - gradStart + 1;
 
 					if (gradCount <= 0 || layer < gradStart || layer > gradEnd)
@@ -580,7 +586,6 @@ bool APISetNodeValue::SetPreForwardDesignResult(OccView* occView, std::vector<do
 					}
 					else
 					{
-						// 在渐变区内线性插值：gradStart=100, gradEnd=0
 						double frac = static_cast<double>(gradEnd - layer) / gradCount;
 						value = max_value * frac;
 					}

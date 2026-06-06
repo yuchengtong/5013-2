@@ -393,6 +393,8 @@ bool GFImportModelWidget::displayPreForwardDesignResult(OccView* occView)
 		return false;
 	}
 
+	context->EraseAll(true);
+
 	if (!preForwardInfo.m_ColorScale.IsNull())
 	{
 		Graphic3d_Vec2i offset(0, Standard_Integer(550));
@@ -432,6 +434,8 @@ bool GFImportModelWidget::displayInForwardDesignResult(OccView* occView)
 	{
 		return false;
 	}
+
+	context->EraseAll(true);
 
 	if (!inForwardInfo.m_ColorScale.IsNull())
 	{

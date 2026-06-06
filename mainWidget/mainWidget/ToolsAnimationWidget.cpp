@@ -172,39 +172,45 @@ void ToolsAnimationWidget::bindConnect()
 
 void ToolsAnimationWidget::SetAnimationSteps(const QStringList& names)
 {
-    m_frameCount = names.count();
-    m_subSteps.clear();
+	m_frameCount = names.count();
+	m_subSteps.clear();
 
-    for (int i = 0; i < m_frameCount; ++i)
-    {
-        m_subSteps.push_back(i);
-    }
+	for (int i = 0; i < m_frameCount; ++i)
+	{
+		m_subSteps.push_back(i);
+	}
 
-    m_comboBox->blockSignals(true);
-    m_comboBox->clear();
+	m_comboBox->blockSignals(true);
+	m_comboBox->clear();
+	m_comboBox->blockSignals(false);
+
+	if (names.isEmpty()) return;
+
+	m_comboBox->blockSignals(true);
+	for (int i = 0; i < names.count(); ++i)
+	{
+		m_comboBox->addItem(names[i], i);
+	}
+
+
+	int lastIndex = m_frameCount - 1;
+
+	// comboBox 默认显示最后一项
+	m_comboBox->setCurrentIndex(lastIndex);
     m_comboBox->blockSignals(false);
 
-    if (names.isEmpty()) return;
+	// slider 也同步到最后一帧
+	m_slider->blockSignals(true);
+	m_slider->setRange(0, lastIndex);
+	m_slider->setSingleStep(1);
+	m_slider->setPageStep(1);
+	m_slider->setValue(lastIndex);
+	m_slider->blockSignals(false);
 
-    m_comboBox->blockSignals(true);
-    for (int i = 0; i < names.count(); ++i)
-    {
-        m_comboBox->addItem(names[i], i);
-    }
-    m_comboBox->blockSignals(false);
-
-    m_comboBox->setCurrentIndex(0);
-
-    m_slider->blockSignals(true);
-    m_slider->setRange(0, m_frameCount - 1);
-    m_slider->setSingleStep(1);
-    m_slider->setPageStep(1);
-    m_slider->setValue(0);
-    m_slider->blockSignals(false);
-
-    m_currentFrame = 0;
-    setButtonState(0);
-    m_slider->update();
+	// 内部状态同步为最后一帧
+	m_currentFrame = lastIndex;
+	setButtonState(lastIndex);
+	m_slider->update();
 }
 
 void ToolsAnimationWidget::goToFrame(int frameIndex)
