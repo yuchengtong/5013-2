@@ -188,21 +188,18 @@ int main(int argc, char *argv[])
 	QCoreApplication::setApplicationName("");
 
 	LoginWindow login;
-	login.resize(1200, 600);
-
 	SoftwareSelectionWidget select;
-	select.resize(1200, 600);
 
 	QObject::connect(&login, &LoginWindow::loginSuccess, [&]() {
 		login.close();
 		select.show();
 		});
 
-	login.show();
+	//login.show();
 
-	//mainWidget w;
-	//w.resize(1200, 600);
-	//w.show();
+	mainWidget w;
+	w.show();
+	w.showMaximized();
 
 	return app.exec();
 }

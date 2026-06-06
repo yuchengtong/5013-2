@@ -166,7 +166,13 @@ void GFImportModelWidget::initLayout()
 
 	// ----- 主场景 -----
 	auto mainSceneWidget = new QWidget();
-	auto vLayout = new QVBoxLayout();
+	auto hLayout = new QHBoxLayout(mainSceneWidget);
+	hLayout->setContentsMargins(0, 0, 0, 0);
+	hLayout->setSpacing(4);
+
+	// ---------- 左侧：OccView + 底部工具 ----------
+	auto leftWidget = new QWidget();
+	auto vLayout = new QVBoxLayout(leftWidget);
 	vLayout->setContentsMargins(0, 0, 0, 0);
 	vLayout->setSpacing(2);
 
@@ -179,20 +185,24 @@ void GFImportModelWidget::initLayout()
 
 	vLayout->addWidget(m_OccView, 1);
 	vLayout->addWidget(m_ToolsAnimationWidget);
-	mainSceneWidget->setLayout(vLayout);
-	m_pMainTabWidget->addTab(mainSceneWidget, QString::fromLocal8Bit("主场景"));
 
-	// ----- 预热工艺（单图表，用容器包裹） -----
-	auto preForwardWidget = new QWidget(this);
-	auto preForwardLayout = new QVBoxLayout(preForwardWidget);
-	preForwardLayout->setContentsMargins(10, 10, 10, 10);
-	preForwardLayout->setSpacing(0);
+	// ---------- 右侧：可切换的 QStackedWidget ----------
+	m_pRightStackedWidget = new QStackedWidget(this);
+	m_pRightStackedWidget->setFixedWidth(280);
 
 	m_PreForwardTimeTempWid = new PreForwardTimeTempWid(this);
-	m_PreForwardTimeTempWid->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-	preForwardLayout->addWidget(m_PreForwardTimeTempWid);
+	m_InForwardMassTimeWid = new InForwardMassTimeWid(this);
 
-	m_pMainTabWidget->addTab(preForwardWidget, QString::fromLocal8Bit("预热工艺"));
+	m_pRightStackedWidget->addWidget(m_PreForwardTimeTempWid);  // index 0
+	m_pRightStackedWidget->addWidget(m_InForwardMassTimeWid);   // index 1
+	m_pRightStackedWidget->setCurrentIndex(0);
+
+	// ---------- 组装 ----------
+	hLayout->addWidget(leftWidget, 1);              // 左侧拉伸
+	hLayout->addWidget(m_pRightStackedWidget, 0);  // 右侧固定
+	m_pRightStackedWidget->hide();
+
+	m_pMainTabWidget->addTab(mainSceneWidget, QString::fromLocal8Bit("主场景"));
 
 	// ----- 注药工艺（6 图表网格，带滚动） -----
 	// 创建滚动区域
@@ -456,20 +466,25 @@ void GFImportModelWidget::onTreeItemClicked(const QString& itemData)
 	// 切换到对应的属性页
 	m_PropertyStackWidget->setCurrentWidget(propertyWidget);
 
+	auto rightStackedWidget = GetRightStackedWidget();
 	// 根据节点类型执行特定的显示逻辑
 	if (itemData == "Geometry" ||
 		itemData == "PreReverseOptimization" ||
 		itemData == "InReverseOptimization")
 	{
 		displayModelShape(occView);
+		rightStackedWidget->hide();
 	}
 	else if (itemData == "Mesh")
 	{
 		displayMeshEdges(occView);
 		m_meshPropertyWidget->UpdataPropertyInfo();
+		rightStackedWidget->hide();
 	}
 	else if (itemData == "PreForwardDesign")
 	{
+		rightStackedWidget->show();
+		rightStackedWidget->setCurrentIndex(0);
 		if (!displayPreForwardDesignResult(occView))
 		{
 			displayModelShape(occView);
@@ -477,6 +492,8 @@ void GFImportModelWidget::onTreeItemClicked(const QString& itemData)
 	}
 	else if (itemData == "InForwardDesign")
 	{
+		rightStackedWidget->show();
+		rightStackedWidget->setCurrentIndex(1);
 		if (!displayInForwardDesignResult(occView))
 		{
 			displayModelShape(occView);

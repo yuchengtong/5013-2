@@ -31,7 +31,7 @@ private:
 	// 工具栏设置
 	void setupGeomWidget();
 	void setupOperationWidget();
-	void setupViewWidget();
+	//void setupViewWidget();
 
 	// 视图方向设置
 	enum ViewDirection {
@@ -64,17 +64,17 @@ private:
 	QPushButton* m_saveBtn = nullptr;
 	QPushButton* m_saveAsBtn = nullptr;
 	QPushButton* m_exportBtn = nullptr;
-	QPushButton* m_moveBtn = nullptr;
-	QPushButton* m_rotateBtn = nullptr;
+	//QPushButton* m_moveBtn = nullptr;
+	//QPushButton* m_rotateBtn = nullptr;
 	QPushButton* m_zoomBtn = nullptr;
 	QPushButton* m_fitAllBtn = nullptr;
-	QPushButton* m_resetBtn = nullptr;
-	QPushButton* m_xBtn = nullptr;
-	QPushButton* m_yBtn = nullptr;
-	QPushButton* m_zBtn = nullptr;
-	QPushButton* m_xNegBtn = nullptr;
-	QPushButton* m_yNegBtn = nullptr;
-	QPushButton* m_zNegBtn = nullptr;
+	//QPushButton* m_resetBtn = nullptr;
+	//QPushButton* m_xBtn = nullptr;
+	//QPushButton* m_yBtn = nullptr;
+	//QPushButton* m_zBtn = nullptr;
+	//QPushButton* m_xNegBtn = nullptr;
+	//QPushButton* m_yNegBtn = nullptr;
+	//QPushButton* m_zNegBtn = nullptr;
 
 	// 顶部导航TabWidget（替代MenuBar）
 	QTabWidget* m_navTabWidget = nullptr;

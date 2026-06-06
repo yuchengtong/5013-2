@@ -960,9 +960,8 @@ void InForwardDesignPropertyWidget::view()
 				double densityTempXEnd = 70.0; // 弹体目标温度（℃）
 				double densityTempStep = (densityTempXEnd - densityTempXStart) / 30;
 
-				for (double i = densityTempXStart; i <= densityTempXEnd; i += densityTempStep) {
-					
-					
+				for (double i = densityTempXStart; i <= densityTempXEnd; i += densityTempStep)
+				{							
 					auto tempA = (A - 12.509291) / 2.218704;
 					auto tempB = (B - 3.01888) / 0.702157;
 					auto tempC = (C - 25.076659) / 1.740173;
@@ -981,9 +980,7 @@ void InForwardDesignPropertyWidget::view()
 					{
 						densityTempX.push_back(i);
 						densityTempY.push_back(relativeDensity * 100.0);
-					}
-					
-
+					}				
 				}
 
 
@@ -1011,9 +1008,7 @@ void InForwardDesignPropertyWidget::view()
 					{
 						densityValveX.push_back(i);
 						densityValveY.push_back(relativeDensity * 100.0);
-					}
-					
-
+					}				
 				}
 
 				//真空度密度曲线
@@ -1040,9 +1035,7 @@ void InForwardDesignPropertyWidget::view()
 					{
 						densityVacuumX.push_back(i / 1000.0);
 						densityVacuumY.push_back(relativeDensity * 100.0);
-					}
-					
-
+					}			
 				}
 
 
@@ -1754,7 +1747,7 @@ void InForwardDesignPropertyWidget::view()
 			auto inForwardTimeTempWid = gfParent->GetInForwardTimeTempWid();
 			auto inForwardTimeValveWid = gfParent->GetInForwardTimeValveWid();
 			auto inForwardTimeVacuumWid = gfParent->GetInForwardTimeVacuumWid();
-
+			auto inForwardMassTimeWid = gfParent->GetInForwardMassTimeWid();
 
 			inForwardDensityTempWid->AddDataPoint(densityTempX, densityTempY);
 			inForwardDensityValveWid->AddDataPoint(densityValveX, densityValveY);
@@ -1762,6 +1755,7 @@ void InForwardDesignPropertyWidget::view()
 			inForwardTimeTempWid->AddDataPoint(timeTempX, timeTempY);
 			inForwardTimeValveWid->AddDataPoint(timeValveX, timeValveY);
 			inForwardTimeVacuumWid->AddDataPoint(timeVacuumX, timeVacuumY);
+			inForwardMassTimeWid->AddDataPoint(timeQualityX, timeQualityY);
 
 			auto inForwardPropertyInfo = ins->GetInForwardPropertyInfo();
 			inForwardPropertyInfo.densityTempX = densityTempX;

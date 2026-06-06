@@ -1,0 +1,4955 @@
+compound
+shell 1
+shell 2
+shell 3
+shell 4
+shell 5
+shell 6
+shell 1 +, +
+shell 2 +, +
+shell 3 +, +
+shell 4 +, +
+shell 5 +, +
+shell 6 +, +
+Bounding Box = [(-20, -235, -1e-07) - (1135, 235, 1e-07)]
+OCC CONTENTS
+============
+SOLIDS   : 0
+SHELLS   : 6
+FACES    : 6
+WIRES    : 6
+EDGES    : 54
+VERTICES : 108
+Compounds: 1
+CompSolids: 0
+
+edge meshing
+nvertices = 46
+nedges = 51
+different vertices = 34
+faces = 6
+edge nr 1
+add meshpoint (1097.13, 0, 0)
+add meshpoint (1094.12, 0, 0)
+add meshpoint (1091.12, 0, 0)
+add meshpoint (1088.12, 0, 0)
+add meshpoint (1085.11, 0, 0)
+add meshpoint (1082.11, 0, 0)
+add meshpoint (1079.11, 0, 0)
+add meshpoint (1076.11, 0, 0)
+add meshpoint (1073.1, 0, 0)
+add meshpoint (1070.1, 0, 0)
+add meshpoint (1067.1, 0, 0)
+add meshpoint (1064.09, 0, 0)
+add meshpoint (1061.09, 0, 0)
+add meshpoint (1058.09, 0, 0)
+add meshpoint (1055.08, 0, 0)
+add meshpoint (1052.08, 0, 0)
+add meshpoint (1049.08, 0, 0)
+add meshpoint (1046.08, 0, 0)
+add meshpoint (1043.07, 0, 0)
+add meshpoint (1040.07, 0, 0)
+add meshpoint (1037.07, 0, 0)
+add meshpoint (1034.06, 0, 0)
+add meshpoint (1031.06, 0, 0)
+add meshpoint (1028.06, 0, 0)
+add meshpoint (1025.05, 0, 0)
+add meshpoint (1022.05, 0, 0)
+add meshpoint (1019.05, 0, 0)
+add meshpoint (1016.05, 0, 0)
+add meshpoint (1013.04, 0, 0)
+add meshpoint (1010.04, 0, 0)
+add meshpoint (1007.04, 0, 0)
+add meshpoint (1004.03, 0, 0)
+add meshpoint (1001.03, 0, 0)
+add meshpoint (998.027, 0, 0)
+add meshpoint (995.024, 0, 0)
+add meshpoint (992.021, 0, 0)
+add meshpoint (989.018, 0, 0)
+add meshpoint (986.015, 0, 0)
+add meshpoint (983.012, 0, 0)
+add meshpoint (980.009, 0, 0)
+add meshpoint (977.006, 0, 0)
+add meshpoint (974.003, 0, 0)
+add meshpoint (971, 0, 0)
+add meshpoint (967.997, 0, 0)
+add meshpoint (964.994, 0, 0)
+add meshpoint (961.991, 0, 0)
+add meshpoint (958.988, 0, 0)
+add meshpoint (955.984, 0, 0)
+add meshpoint (952.981, 0, 0)
+add meshpoint (949.978, 0, 0)
+add meshpoint (946.975, 0, 0)
+add meshpoint (943.972, 0, 0)
+add meshpoint (940.969, 0, 0)
+add meshpoint (937.966, 0, 0)
+add meshpoint (934.963, 0, 0)
+add meshpoint (931.96, 0, 0)
+add meshpoint (928.957, 0, 0)
+add meshpoint (925.954, 0, 0)
+add meshpoint (922.951, 0, 0)
+add meshpoint (919.948, 0, 0)
+add meshpoint (916.945, 0, 0)
+add meshpoint (913.942, 0, 0)
+add meshpoint (910.939, 0, 0)
+add meshpoint (907.936, 0, 0)
+add meshpoint (904.933, 0, 0)
+add meshpoint (901.93, 0, 0)
+add meshpoint (898.927, 0, 0)
+add meshpoint (895.924, 0, 0)
+add meshpoint (892.921, 0, 0)
+add meshpoint (889.918, 0, 0)
+add meshpoint (886.915, 0, 0)
+add meshpoint (883.912, 0, 0)
+add meshpoint (880.909, 0, 0)
+add meshpoint (877.906, 0, 0)
+add meshpoint (874.903, 0, 0)
+add meshpoint (871.9, 0, 0)
+add meshpoint (868.897, 0, 0)
+add meshpoint (865.894, 0, 0)
+add meshpoint (862.891, 0, 0)
+add meshpoint (859.888, 0, 0)
+add meshpoint (856.885, 0, 0)
+add meshpoint (853.881, 0, 0)
+add meshpoint (850.878, 0, 0)
+add meshpoint (847.875, 0, 0)
+add meshpoint (844.872, 0, 0)
+add meshpoint (841.869, 0, 0)
+add meshpoint (838.866, 0, 0)
+add meshpoint (835.863, 0, 0)
+add meshpoint (832.86, 0, 0)
+add meshpoint (829.857, 0, 0)
+add meshpoint (826.854, 0, 0)
+add meshpoint (823.851, 0, 0)
+add meshpoint (820.848, 0, 0)
+add meshpoint (817.845, 0, 0)
+add meshpoint (814.842, 0, 0)
+add meshpoint (811.839, 0, 0)
+add meshpoint (808.836, 0, 0)
+add meshpoint (805.833, 0, 0)
+add meshpoint (802.83, 0, 0)
+add meshpoint (799.827, 0, 0)
+add meshpoint (796.824, 0, 0)
+add meshpoint (793.821, 0, 0)
+add meshpoint (790.818, 0, 0)
+add meshpoint (787.815, 0, 0)
+add meshpoint (784.812, 0, 0)
+add meshpoint (781.809, 0, 0)
+add meshpoint (778.806, 0, 0)
+add meshpoint (775.803, 0, 0)
+add meshpoint (772.8, 0, 0)
+add meshpoint (769.797, 0, 0)
+add meshpoint (766.794, 0, 0)
+add meshpoint (763.791, 0, 0)
+add meshpoint (760.788, 0, 0)
+add meshpoint (757.785, 0, 0)
+add meshpoint (754.782, 0, 0)
+add meshpoint (751.778, 0, 0)
+add meshpoint (748.775, 0, 0)
+add meshpoint (745.772, 0, 0)
+add meshpoint (742.769, 0, 0)
+add meshpoint (739.766, 0, 0)
+add meshpoint (736.763, 0, 0)
+add meshpoint (733.76, 0, 0)
+add meshpoint (730.757, 0, 0)
+add meshpoint (727.754, 0, 0)
+add meshpoint (724.751, 0, 0)
+add meshpoint (721.748, 0, 0)
+add meshpoint (718.745, 0, 0)
+add meshpoint (715.742, 0, 0)
+add meshpoint (712.739, 0, 0)
+add meshpoint (709.736, 0, 0)
+add meshpoint (706.733, 0, 0)
+add meshpoint (703.73, 0, 0)
+add meshpoint (700.727, 0, 0)
+add meshpoint (697.724, 0, 0)
+add meshpoint (694.721, 0, 0)
+add meshpoint (691.718, 0, 0)
+add meshpoint (688.715, 0, 0)
+add meshpoint (685.712, 0, 0)
+add meshpoint (682.709, 0, 0)
+add meshpoint (679.706, 0, 0)
+add meshpoint (676.703, 0, 0)
+add meshpoint (673.7, 0, 0)
+add meshpoint (670.697, 0, 0)
+add meshpoint (667.694, 0, 0)
+add meshpoint (664.691, 0, 0)
+add meshpoint (661.688, 0, 0)
+add meshpoint (658.685, 0, 0)
+add meshpoint (655.682, 0, 0)
+add meshpoint (652.679, 0, 0)
+add meshpoint (649.676, 0, 0)
+add meshpoint (646.672, 0, 0)
+add meshpoint (643.669, 0, 0)
+add meshpoint (640.666, 0, 0)
+add meshpoint (637.663, 0, 0)
+add meshpoint (634.66, 0, 0)
+add meshpoint (631.657, 0, 0)
+add meshpoint (628.654, 0, 0)
+add meshpoint (625.651, 0, 0)
+add meshpoint (622.648, 0, 0)
+add meshpoint (619.645, 0, 0)
+add meshpoint (616.642, 0, 0)
+add meshpoint (613.639, 0, 0)
+add meshpoint (610.636, 0, 0)
+add meshpoint (607.633, 0, 0)
+add meshpoint (604.63, 0, 0)
+add meshpoint (601.627, 0, 0)
+add meshpoint (598.624, 0, 0)
+add meshpoint (595.621, 0, 0)
+add meshpoint (592.618, 0, 0)
+add meshpoint (589.615, 0, 0)
+add meshpoint (586.612, 0, 0)
+add meshpoint (583.609, 0, 0)
+add meshpoint (580.606, 0, 0)
+add meshpoint (577.603, 0, 0)
+add meshpoint (574.6, 0, 0)
+add meshpoint (571.597, 0, 0)
+add meshpoint (568.594, 0, 0)
+add meshpoint (565.591, 0, 0)
+add meshpoint (562.588, 0, 0)
+add meshpoint (559.585, 0, 0)
+add meshpoint (556.582, 0, 0)
+add meshpoint (553.579, 0, 0)
+add meshpoint (550.576, 0, 0)
+add meshpoint (547.573, 0, 0)
+add meshpoint (544.569, 0, 0)
+add meshpoint (541.566, 0, 0)
+add meshpoint (538.563, 0, 0)
+add meshpoint (535.56, 0, 0)
+add meshpoint (532.557, 0, 0)
+add meshpoint (529.554, 0, 0)
+add meshpoint (526.551, 0, 0)
+add meshpoint (523.548, 0, 0)
+add meshpoint (520.545, 0, 0)
+add meshpoint (517.542, 0, 0)
+add meshpoint (514.539, 0, 0)
+add meshpoint (511.536, 0, 0)
+add meshpoint (508.533, 0, 0)
+add meshpoint (505.53, 0, 0)
+add meshpoint (502.527, 0, 0)
+add meshpoint (499.524, 0, 0)
+add meshpoint (496.521, 0, 0)
+add meshpoint (493.518, 0, 0)
+add meshpoint (490.515, 0, 0)
+add meshpoint (487.512, 0, 0)
+add meshpoint (484.509, 0, 0)
+add meshpoint (481.506, 0, 0)
+add meshpoint (478.503, 0, 0)
+add meshpoint (475.5, 0, 0)
+add meshpoint (472.497, 0, 0)
+add meshpoint (469.494, 0, 0)
+add meshpoint (466.491, 0, 0)
+add meshpoint (463.488, 0, 0)
+add meshpoint (460.485, 0, 0)
+add meshpoint (457.482, 0, 0)
+add meshpoint (454.479, 0, 0)
+add meshpoint (451.476, 0, 0)
+add meshpoint (448.473, 0, 0)
+add meshpoint (445.47, 0, 0)
+add meshpoint (442.466, 0, 0)
+add meshpoint (439.463, 0, 0)
+add meshpoint (436.46, 0, 0)
+add meshpoint (433.457, 0, 0)
+add meshpoint (430.454, 0, 0)
+add meshpoint (427.451, 0, 0)
+add meshpoint (424.448, 0, 0)
+add meshpoint (421.445, 0, 0)
+add meshpoint (418.442, 0, 0)
+add meshpoint (415.439, 0, 0)
+add meshpoint (412.436, 0, 0)
+add meshpoint (409.433, 0, 0)
+add meshpoint (406.43, 0, 0)
+add meshpoint (403.427, 0, 0)
+add meshpoint (400.424, 0, 0)
+add meshpoint (397.421, 0, 0)
+add meshpoint (394.418, 0, 0)
+add meshpoint (391.415, 0, 0)
+add meshpoint (388.412, 0, 0)
+add meshpoint (385.409, 0, 0)
+add meshpoint (382.406, 0, 0)
+add meshpoint (379.403, 0, 0)
+add meshpoint (376.4, 0, 0)
+add meshpoint (373.397, 0, 0)
+add meshpoint (370.394, 0, 0)
+add meshpoint (367.391, 0, 0)
+add meshpoint (364.388, 0, 0)
+add meshpoint (361.385, 0, 0)
+add meshpoint (358.382, 0, 0)
+add meshpoint (355.379, 0, 0)
+add meshpoint (352.376, 0, 0)
+add meshpoint (349.373, 0, 0)
+add meshpoint (346.37, 0, 0)
+add meshpoint (343.367, 0, 0)
+add meshpoint (340.363, 0, 0)
+add meshpoint (337.36, 0, 0)
+add meshpoint (334.357, 0, 0)
+add meshpoint (331.354, 0, 0)
+add meshpoint (328.351, 0, 0)
+add meshpoint (325.348, 0, 0)
+add meshpoint (322.345, 0, 0)
+add meshpoint (319.342, 0, 0)
+add meshpoint (316.339, 0, 0)
+add meshpoint (313.336, 0, 0)
+add meshpoint (310.333, 0, 0)
+add meshpoint (307.33, 0, 0)
+add meshpoint (304.327, 0, 0)
+add meshpoint (301.324, 0, 0)
+add meshpoint (298.321, 0, 0)
+add meshpoint (295.318, 0, 0)
+add meshpoint (292.315, 0, 0)
+add meshpoint (289.312, 0, 0)
+add meshpoint (286.309, 0, 0)
+add meshpoint (283.306, 0, 0)
+add meshpoint (280.303, 0, 0)
+add meshpoint (277.3, 0, 0)
+add meshpoint (274.297, 0, 0)
+add meshpoint (271.294, 0, 0)
+add meshpoint (268.291, 0, 0)
+add meshpoint (265.288, 0, 0)
+add meshpoint (262.285, 0, 0)
+add meshpoint (259.282, 0, 0)
+add meshpoint (256.279, 0, 0)
+add meshpoint (253.276, 0, 0)
+add meshpoint (250.273, 0, 0)
+add meshpoint (247.27, 0, 0)
+add meshpoint (244.267, 0, 0)
+add meshpoint (241.264, 0, 0)
+add meshpoint (238.261, 0, 0)
+add meshpoint (235.257, 0, 0)
+add meshpoint (232.254, 0, 0)
+add meshpoint (229.251, 0, 0)
+add meshpoint (226.248, 0, 0)
+add meshpoint (223.245, 0, 0)
+add meshpoint (220.242, 0, 0)
+add meshpoint (217.239, 0, 0)
+add meshpoint (214.236, 0, 0)
+add meshpoint (211.233, 0, 0)
+add meshpoint (208.23, 0, 0)
+add meshpoint (205.227, 0, 0)
+add meshpoint (202.224, 0, 0)
+add meshpoint (199.221, 0, 0)
+add meshpoint (196.218, 0, 0)
+add meshpoint (193.215, 0, 0)
+add meshpoint (190.212, 0, 0)
+add meshpoint (187.209, 0, 0)
+add meshpoint (184.206, 0, 0)
+add meshpoint (181.203, 0, 0)
+add meshpoint (178.2, 0, 0)
+add meshpoint (175.197, 0, 0)
+add meshpoint (172.194, 0, 0)
+add meshpoint (169.191, 0, 0)
+add meshpoint (166.188, 0, 0)
+add meshpoint (163.185, 0, 0)
+add meshpoint (160.182, 0, 0)
+add meshpoint (157.179, 0, 0)
+add meshpoint (154.176, 0, 0)
+add meshpoint (151.173, 0, 0)
+add meshpoint (148.17, 0, 0)
+add meshpoint (145.167, 0, 0)
+add meshpoint (142.164, 0, 0)
+add meshpoint (139.161, 0, 0)
+add meshpoint (136.158, 0, 0)
+add meshpoint (133.154, 0, 0)
+add meshpoint (130.151, 0, 0)
+add meshpoint (127.148, 0, 0)
+add meshpoint (124.145, 0, 0)
+add meshpoint (121.142, 0, 0)
+add meshpoint (118.139, 0, 0)
+add meshpoint (115.136, 0, 0)
+add meshpoint (112.133, 0, 0)
+add meshpoint (109.13, 0, 0)
+add meshpoint (106.127, 0, 0)
+add meshpoint (103.124, 0, 0)
+add meshpoint (100.121, 0, 0)
+add meshpoint (97.1181, 0, 0)
+add meshpoint (94.1151, 0, 0)
+add meshpoint (91.1121, 0, 0)
+add meshpoint (88.109, 0, 0)
+add meshpoint (85.106, 0, 0)
+add meshpoint (82.103, 0, 0)
+add meshpoint (79.1, 0, 0)
+add meshpoint (76.0969, 0, 0)
+add meshpoint (73.0939, 0, 0)
+add meshpoint (70.0909, 0, 0)
+add meshpoint (67.0878, 0, 0)
+add meshpoint (64.0848, 0, 0)
+add meshpoint (61.0818, 0, 0)
+add meshpoint (58.0788, 0, 0)
+add meshpoint (55.0757, 0, 0)
+add meshpoint (52.0727, 0, 0)
+add meshpoint (49.0697, 0, 0)
+add meshpoint (46.0666, 0, 0)
+add meshpoint (43.0636, 0, 0)
+add meshpoint (40.0606, 0, 0)
+add meshpoint (37.0576, 0, 0)
+add meshpoint (34.0545, 0, 0)
+add meshpoint (31.0515, 0, 0)
+add meshpoint (28.0485, 0, 0)
+add meshpoint (25.0454, 0, 0)
+add meshpoint (22.0424, 0, 0)
+add meshpoint (19.0394, 0, 0)
+add meshpoint (16.0363, 0, 0)
+add meshpoint (13.0333, 0, 0)
+add meshpoint (10.0303, 0, 0)
+add meshpoint (7.02726, 0, 0)
+add meshpoint (4.02423, 0, 0)
+add meshpoint (1.0212, 0, 0)
+add meshpoint (-1.98183, 0, 0)
+add meshpoint (-4.98485, 0, 0)
+add meshpoint (-7.98788, 0, 0)
+add meshpoint (-10.9909, 0, 0)
+add meshpoint (-13.9939, 0, 0)
+add meshpoint (-16.997, 0, 0)
+NP = 406
+edge nr 2
+add meshpoint (1100, 53.8658, 0)
+add meshpoint (1100, 50.8316, 0)
+add meshpoint (1100, 47.7974, 0)
+add meshpoint (1100, 44.7632, 0)
+add meshpoint (1100, 41.729, 0)
+add meshpoint (1100, 38.6948, 0)
+add meshpoint (1100, 35.6606, 0)
+add meshpoint (1100, 32.6264, 0)
+add meshpoint (1100, 29.5922, 0)
+add meshpoint (1100, 26.558, 0)
+add meshpoint (1100, 23.5238, 0)
+add meshpoint (1100, 20.4896, 0)
+add meshpoint (1100, 17.4554, 0)
+add meshpoint (1100, 14.4212, 0)
+add meshpoint (1100, 11.387, 0)
+add meshpoint (1100, 8.35278, 0)
+add meshpoint (1100, 5.31858, 0)
+add meshpoint (1100, 2.31822, 0)
+NP = 424
+edge nr 3
+add meshpoint (730.797, 198.924, 0)
+add meshpoint (733.594, 197.848, 0)
+add meshpoint (736.391, 196.772, 0)
+add meshpoint (739.188, 195.696, 0)
+add meshpoint (741.985, 194.62, 0)
+add meshpoint (744.782, 193.544, 0)
+add meshpoint (747.579, 192.468, 0)
+add meshpoint (750.376, 191.392, 0)
+add meshpoint (753.173, 190.317, 0)
+add meshpoint (755.97, 189.241, 0)
+add meshpoint (758.767, 188.165, 0)
+add meshpoint (761.564, 187.089, 0)
+add meshpoint (764.361, 186.013, 0)
+add meshpoint (767.158, 184.937, 0)
+add meshpoint (769.955, 183.861, 0)
+add meshpoint (772.752, 182.785, 0)
+add meshpoint (775.549, 181.709, 0)
+add meshpoint (778.346, 180.633, 0)
+add meshpoint (781.143, 179.557, 0)
+add meshpoint (783.94, 178.481, 0)
+add meshpoint (786.737, 177.405, 0)
+add meshpoint (789.534, 176.329, 0)
+add meshpoint (792.331, 175.253, 0)
+add meshpoint (795.128, 174.177, 0)
+add meshpoint (797.925, 173.102, 0)
+add meshpoint (800.722, 172.026, 0)
+add meshpoint (803.519, 170.95, 0)
+add meshpoint (806.316, 169.874, 0)
+add meshpoint (809.113, 168.798, 0)
+add meshpoint (811.91, 167.722, 0)
+add meshpoint (814.707, 166.646, 0)
+add meshpoint (817.504, 165.57, 0)
+add meshpoint (820.301, 164.494, 0)
+add meshpoint (823.098, 163.418, 0)
+add meshpoint (825.895, 162.342, 0)
+add meshpoint (828.692, 161.266, 0)
+add meshpoint (831.489, 160.19, 0)
+add meshpoint (834.286, 159.114, 0)
+add meshpoint (837.083, 158.038, 0)
+add meshpoint (839.88, 156.962, 0)
+add meshpoint (842.677, 155.886, 0)
+add meshpoint (845.474, 154.811, 0)
+add meshpoint (848.271, 153.735, 0)
+add meshpoint (851.068, 152.659, 0)
+add meshpoint (853.865, 151.583, 0)
+add meshpoint (856.662, 150.507, 0)
+add meshpoint (859.459, 149.431, 0)
+add meshpoint (862.256, 148.355, 0)
+add meshpoint (865.053, 147.279, 0)
+add meshpoint (867.85, 146.203, 0)
+add meshpoint (870.647, 145.127, 0)
+add meshpoint (873.444, 144.051, 0)
+add meshpoint (876.241, 142.975, 0)
+add meshpoint (879.038, 141.899, 0)
+add meshpoint (881.835, 140.823, 0)
+add meshpoint (884.632, 139.747, 0)
+add meshpoint (887.429, 138.671, 0)
+add meshpoint (890.226, 137.595, 0)
+add meshpoint (893.023, 136.52, 0)
+add meshpoint (895.82, 135.444, 0)
+add meshpoint (898.617, 134.368, 0)
+add meshpoint (901.414, 133.292, 0)
+add meshpoint (904.211, 132.216, 0)
+add meshpoint (907.008, 131.14, 0)
+add meshpoint (909.805, 130.064, 0)
+add meshpoint (912.602, 128.988, 0)
+add meshpoint (915.398, 127.912, 0)
+add meshpoint (918.195, 126.836, 0)
+add meshpoint (920.992, 125.76, 0)
+add meshpoint (923.789, 124.684, 0)
+add meshpoint (926.586, 123.608, 0)
+add meshpoint (929.383, 122.532, 0)
+add meshpoint (932.18, 121.456, 0)
+add meshpoint (934.977, 120.38, 0)
+add meshpoint (937.774, 119.305, 0)
+add meshpoint (940.571, 118.229, 0)
+add meshpoint (943.368, 117.153, 0)
+add meshpoint (946.165, 116.077, 0)
+add meshpoint (948.962, 115.001, 0)
+add meshpoint (951.759, 113.925, 0)
+add meshpoint (954.556, 112.849, 0)
+add meshpoint (957.353, 111.773, 0)
+add meshpoint (960.15, 110.697, 0)
+add meshpoint (962.947, 109.621, 0)
+add meshpoint (965.744, 108.545, 0)
+add meshpoint (968.541, 107.469, 0)
+add meshpoint (971.338, 106.393, 0)
+add meshpoint (974.135, 105.317, 0)
+add meshpoint (976.932, 104.241, 0)
+add meshpoint (979.729, 103.165, 0)
+add meshpoint (982.526, 102.089, 0)
+add meshpoint (985.323, 101.014, 0)
+add meshpoint (988.12, 99.9376, 0)
+add meshpoint (990.917, 98.8617, 0)
+add meshpoint (993.714, 97.7857, 0)
+add meshpoint (996.511, 96.7098, 0)
+add meshpoint (999.308, 95.6338, 0)
+add meshpoint (1002.11, 94.5579, 0)
+add meshpoint (1004.9, 93.482, 0)
+add meshpoint (1007.7, 92.406, 0)
+add meshpoint (1010.5, 91.3301, 0)
+add meshpoint (1013.29, 90.2541, 0)
+add meshpoint (1016.09, 89.1782, 0)
+add meshpoint (1018.89, 88.1023, 0)
+add meshpoint (1021.68, 87.0263, 0)
+add meshpoint (1024.48, 85.9504, 0)
+add meshpoint (1027.28, 84.8744, 0)
+add meshpoint (1030.08, 83.7985, 0)
+add meshpoint (1032.87, 82.7226, 0)
+add meshpoint (1035.67, 81.6466, 0)
+add meshpoint (1038.47, 80.5707, 0)
+add meshpoint (1041.26, 79.4947, 0)
+add meshpoint (1044.06, 78.4188, 0)
+add meshpoint (1046.86, 77.3429, 0)
+add meshpoint (1049.65, 76.2669, 0)
+add meshpoint (1052.45, 75.191, 0)
+add meshpoint (1055.25, 74.115, 0)
+add meshpoint (1058.05, 73.0391, 0)
+add meshpoint (1060.84, 71.9632, 0)
+add meshpoint (1063.64, 70.8872, 0)
+add meshpoint (1066.44, 69.8113, 0)
+add meshpoint (1069.23, 68.7353, 0)
+add meshpoint (1072.03, 67.6594, 0)
+add meshpoint (1074.83, 66.5835, 0)
+add meshpoint (1077.62, 65.5075, 0)
+add meshpoint (1080.42, 64.4316, 0)
+add meshpoint (1083.22, 63.3556, 0)
+add meshpoint (1086.02, 62.2797, 0)
+add meshpoint (1088.81, 61.2038, 0)
+add meshpoint (1091.61, 60.1278, 0)
+add meshpoint (1094.41, 59.0519, 0)
+add meshpoint (1097.2, 57.9759, 0)
+NP = 556
+edge nr 4
+add meshpoint (2.45816, 200, 0)
+add meshpoint (5.43007, 200, 0)
+add meshpoint (8.42828, 200, 0)
+add meshpoint (11.4265, 200, 0)
+add meshpoint (14.4247, 200, 0)
+add meshpoint (17.4229, 200, 0)
+add meshpoint (20.4211, 200, 0)
+add meshpoint (23.4194, 200, 0)
+add meshpoint (26.4176, 200, 0)
+add meshpoint (29.4158, 200, 0)
+add meshpoint (32.414, 200, 0)
+add meshpoint (35.4122, 200, 0)
+add meshpoint (38.4104, 200, 0)
+add meshpoint (41.4087, 200, 0)
+add meshpoint (44.4069, 200, 0)
+add meshpoint (47.4051, 200, 0)
+add meshpoint (50.4033, 200, 0)
+add meshpoint (53.4015, 200, 0)
+add meshpoint (56.3997, 200, 0)
+add meshpoint (59.3979, 200, 0)
+add meshpoint (62.3962, 200, 0)
+add meshpoint (65.3944, 200, 0)
+add meshpoint (68.3926, 200, 0)
+add meshpoint (71.3908, 200, 0)
+add meshpoint (74.389, 200, 0)
+add meshpoint (77.3872, 200, 0)
+add meshpoint (80.3855, 200, 0)
+add meshpoint (83.3837, 200, 0)
+add meshpoint (86.3819, 200, 0)
+add meshpoint (89.3801, 200, 0)
+add meshpoint (92.3783, 200, 0)
+add meshpoint (95.3765, 200, 0)
+add meshpoint (98.3747, 200, 0)
+add meshpoint (101.373, 200, 0)
+add meshpoint (104.371, 200, 0)
+add meshpoint (107.369, 200, 0)
+add meshpoint (110.368, 200, 0)
+add meshpoint (113.366, 200, 0)
+add meshpoint (116.364, 200, 0)
+add meshpoint (119.362, 200, 0)
+add meshpoint (122.36, 200, 0)
+add meshpoint (125.359, 200, 0)
+add meshpoint (128.357, 200, 0)
+add meshpoint (131.355, 200, 0)
+add meshpoint (134.353, 200, 0)
+add meshpoint (137.352, 200, 0)
+add meshpoint (140.35, 200, 0)
+add meshpoint (143.348, 200, 0)
+add meshpoint (146.346, 200, 0)
+add meshpoint (149.344, 200, 0)
+add meshpoint (152.343, 200, 0)
+add meshpoint (155.341, 200, 0)
+add meshpoint (158.339, 200, 0)
+add meshpoint (161.337, 200, 0)
+add meshpoint (164.335, 200, 0)
+add meshpoint (167.334, 200, 0)
+add meshpoint (170.332, 200, 0)
+add meshpoint (173.33, 200, 0)
+add meshpoint (176.328, 200, 0)
+add meshpoint (179.327, 200, 0)
+add meshpoint (182.325, 200, 0)
+add meshpoint (185.323, 200, 0)
+add meshpoint (188.321, 200, 0)
+add meshpoint (191.319, 200, 0)
+add meshpoint (194.318, 200, 0)
+add meshpoint (197.316, 200, 0)
+add meshpoint (200.314, 200, 0)
+add meshpoint (203.312, 200, 0)
+add meshpoint (206.311, 200, 0)
+add meshpoint (209.309, 200, 0)
+add meshpoint (212.307, 200, 0)
+add meshpoint (215.305, 200, 0)
+add meshpoint (218.303, 200, 0)
+add meshpoint (221.302, 200, 0)
+add meshpoint (224.3, 200, 0)
+add meshpoint (227.298, 200, 0)
+add meshpoint (230.296, 200, 0)
+add meshpoint (233.294, 200, 0)
+add meshpoint (236.293, 200, 0)
+add meshpoint (239.291, 200, 0)
+add meshpoint (242.289, 200, 0)
+add meshpoint (245.287, 200, 0)
+add meshpoint (248.286, 200, 0)
+add meshpoint (251.284, 200, 0)
+add meshpoint (254.282, 200, 0)
+add meshpoint (257.28, 200, 0)
+add meshpoint (260.278, 200, 0)
+add meshpoint (263.277, 200, 0)
+add meshpoint (266.275, 200, 0)
+add meshpoint (269.273, 200, 0)
+add meshpoint (272.271, 200, 0)
+add meshpoint (275.269, 200, 0)
+add meshpoint (278.268, 200, 0)
+add meshpoint (281.266, 200, 0)
+add meshpoint (284.264, 200, 0)
+add meshpoint (287.262, 200, 0)
+add meshpoint (290.261, 200, 0)
+add meshpoint (293.259, 200, 0)
+add meshpoint (296.257, 200, 0)
+add meshpoint (299.255, 200, 0)
+add meshpoint (302.253, 200, 0)
+add meshpoint (305.252, 200, 0)
+add meshpoint (308.25, 200, 0)
+add meshpoint (311.248, 200, 0)
+add meshpoint (314.246, 200, 0)
+add meshpoint (317.244, 200, 0)
+add meshpoint (320.243, 200, 0)
+add meshpoint (323.241, 200, 0)
+add meshpoint (326.239, 200, 0)
+add meshpoint (329.237, 200, 0)
+add meshpoint (332.236, 200, 0)
+add meshpoint (335.234, 200, 0)
+add meshpoint (338.232, 200, 0)
+add meshpoint (341.23, 200, 0)
+add meshpoint (344.228, 200, 0)
+add meshpoint (347.227, 200, 0)
+add meshpoint (350.225, 200, 0)
+add meshpoint (353.223, 200, 0)
+add meshpoint (356.221, 200, 0)
+add meshpoint (359.219, 200, 0)
+add meshpoint (362.218, 200, 0)
+add meshpoint (365.216, 200, 0)
+add meshpoint (368.214, 200, 0)
+add meshpoint (371.212, 200, 0)
+add meshpoint (374.211, 200, 0)
+add meshpoint (377.209, 200, 0)
+add meshpoint (380.207, 200, 0)
+add meshpoint (383.205, 200, 0)
+add meshpoint (386.203, 200, 0)
+add meshpoint (389.202, 200, 0)
+add meshpoint (392.2, 200, 0)
+add meshpoint (395.198, 200, 0)
+add meshpoint (398.196, 200, 0)
+add meshpoint (401.195, 200, 0)
+add meshpoint (404.193, 200, 0)
+add meshpoint (407.191, 200, 0)
+add meshpoint (410.189, 200, 0)
+add meshpoint (413.187, 200, 0)
+add meshpoint (416.186, 200, 0)
+add meshpoint (419.184, 200, 0)
+add meshpoint (422.182, 200, 0)
+add meshpoint (425.18, 200, 0)
+add meshpoint (428.178, 200, 0)
+add meshpoint (431.177, 200, 0)
+add meshpoint (434.175, 200, 0)
+add meshpoint (437.173, 200, 0)
+add meshpoint (440.171, 200, 0)
+add meshpoint (443.17, 200, 0)
+add meshpoint (446.168, 200, 0)
+add meshpoint (449.166, 200, 0)
+add meshpoint (452.164, 200, 0)
+add meshpoint (455.162, 200, 0)
+add meshpoint (458.161, 200, 0)
+add meshpoint (461.159, 200, 0)
+add meshpoint (464.157, 200, 0)
+add meshpoint (467.155, 200, 0)
+add meshpoint (470.153, 200, 0)
+add meshpoint (473.152, 200, 0)
+add meshpoint (476.15, 200, 0)
+add meshpoint (479.148, 200, 0)
+add meshpoint (482.146, 200, 0)
+add meshpoint (485.145, 200, 0)
+add meshpoint (488.143, 200, 0)
+add meshpoint (491.141, 200, 0)
+add meshpoint (494.139, 200, 0)
+add meshpoint (497.137, 200, 0)
+add meshpoint (500.136, 200, 0)
+add meshpoint (503.134, 200, 0)
+add meshpoint (506.132, 200, 0)
+add meshpoint (509.13, 200, 0)
+add meshpoint (512.128, 200, 0)
+add meshpoint (515.127, 200, 0)
+add meshpoint (518.125, 200, 0)
+add meshpoint (521.123, 200, 0)
+add meshpoint (524.121, 200, 0)
+add meshpoint (527.12, 200, 0)
+add meshpoint (530.118, 200, 0)
+add meshpoint (533.116, 200, 0)
+add meshpoint (536.114, 200, 0)
+add meshpoint (539.112, 200, 0)
+add meshpoint (542.111, 200, 0)
+add meshpoint (545.109, 200, 0)
+add meshpoint (548.107, 200, 0)
+add meshpoint (551.105, 200, 0)
+add meshpoint (554.104, 200, 0)
+add meshpoint (557.102, 200, 0)
+add meshpoint (560.1, 200, 0)
+add meshpoint (563.098, 200, 0)
+add meshpoint (566.096, 200, 0)
+add meshpoint (569.095, 200, 0)
+add meshpoint (572.093, 200, 0)
+add meshpoint (575.091, 200, 0)
+add meshpoint (578.089, 200, 0)
+add meshpoint (581.087, 200, 0)
+add meshpoint (584.086, 200, 0)
+add meshpoint (587.084, 200, 0)
+add meshpoint (590.082, 200, 0)
+add meshpoint (593.08, 200, 0)
+add meshpoint (596.079, 200, 0)
+add meshpoint (599.077, 200, 0)
+add meshpoint (602.075, 200, 0)
+add meshpoint (605.073, 200, 0)
+add meshpoint (608.071, 200, 0)
+add meshpoint (611.07, 200, 0)
+add meshpoint (614.068, 200, 0)
+add meshpoint (617.066, 200, 0)
+add meshpoint (620.064, 200, 0)
+add meshpoint (623.062, 200, 0)
+add meshpoint (626.061, 200, 0)
+add meshpoint (629.059, 200, 0)
+add meshpoint (632.057, 200, 0)
+add meshpoint (635.055, 200, 0)
+add meshpoint (638.054, 200, 0)
+add meshpoint (641.052, 200, 0)
+add meshpoint (644.05, 200, 0)
+add meshpoint (647.048, 200, 0)
+add meshpoint (650.046, 200, 0)
+add meshpoint (653.045, 200, 0)
+add meshpoint (656.043, 200, 0)
+add meshpoint (659.041, 200, 0)
+add meshpoint (662.039, 200, 0)
+add meshpoint (665.037, 200, 0)
+add meshpoint (668.036, 200, 0)
+add meshpoint (671.034, 200, 0)
+add meshpoint (674.032, 200, 0)
+add meshpoint (677.03, 200, 0)
+add meshpoint (680.029, 200, 0)
+add meshpoint (683.027, 200, 0)
+add meshpoint (686.025, 200, 0)
+add meshpoint (689.023, 200, 0)
+add meshpoint (692.021, 200, 0)
+add meshpoint (695.02, 200, 0)
+add meshpoint (698.018, 200, 0)
+add meshpoint (701.016, 200, 0)
+add meshpoint (704.014, 200, 0)
+add meshpoint (707.012, 200, 0)
+add meshpoint (710.011, 200, 0)
+add meshpoint (713.009, 200, 0)
+add meshpoint (716.007, 200, 0)
+add meshpoint (719.005, 200, 0)
+add meshpoint (722.004, 200, 0)
+add meshpoint (725.002, 200, 0)
+NP = 798
+edge nr 5
+add meshpoint (-5.17941e-33, 50.9615, 0)
+add meshpoint (-1.15458e-32, 51.9467, 0)
+add meshpoint (-1.84454e-32, 53.0144, 0)
+add meshpoint (-2.7625e-32, 54.4349, 0)
+add meshpoint (-3.99474e-32, 56.3418, 0)
+add meshpoint (-5.39959e-32, 58.5158, 0)
+add meshpoint (-7.19726e-32, 61.2977, 0)
+add meshpoint (-9.13618e-32, 64.2981, 0)
+add meshpoint (-1.10751e-31, 67.2986, 0)
+add meshpoint (-1.3014e-31, 70.2991, 0)
+add meshpoint (-1.49529e-31, 73.2995, 0)
+add meshpoint (-1.68919e-31, 76.3, 0)
+add meshpoint (-1.88308e-31, 79.3004, 0)
+add meshpoint (-2.07697e-31, 82.3009, 0)
+add meshpoint (-2.27086e-31, 85.3013, 0)
+add meshpoint (-2.46475e-31, 88.3018, 0)
+add meshpoint (-2.65865e-31, 91.3023, 0)
+add meshpoint (-2.85254e-31, 94.3027, 0)
+add meshpoint (-3.04643e-31, 97.3032, 0)
+add meshpoint (-3.24032e-31, 100.304, 0)
+add meshpoint (-3.43421e-31, 103.304, 0)
+add meshpoint (-3.62811e-31, 106.305, 0)
+add meshpoint (-3.822e-31, 109.305, 0)
+add meshpoint (-4.01589e-31, 112.305, 0)
+add meshpoint (-4.20978e-31, 115.306, 0)
+add meshpoint (-4.40367e-31, 118.306, 0)
+add meshpoint (-4.59757e-31, 121.307, 0)
+add meshpoint (-4.79146e-31, 124.307, 0)
+add meshpoint (-4.98535e-31, 127.308, 0)
+add meshpoint (-5.17924e-31, 130.308, 0)
+add meshpoint (-5.37313e-31, 133.309, 0)
+add meshpoint (-5.56703e-31, 136.309, 0)
+add meshpoint (-5.76092e-31, 139.31, 0)
+add meshpoint (-5.95481e-31, 142.31, 0)
+add meshpoint (-6.1487e-31, 145.31, 0)
+add meshpoint (-6.34259e-31, 148.311, 0)
+add meshpoint (-6.53649e-31, 151.311, 0)
+add meshpoint (-6.73038e-31, 154.312, 0)
+add meshpoint (-6.92427e-31, 157.312, 0)
+add meshpoint (-7.11816e-31, 160.313, 0)
+add meshpoint (-7.31205e-31, 163.313, 0)
+add meshpoint (-7.50595e-31, 166.314, 0)
+add meshpoint (-7.69984e-31, 169.314, 0)
+add meshpoint (-7.89373e-31, 172.315, 0)
+add meshpoint (-8.08762e-31, 175.315, 0)
+add meshpoint (-8.28151e-31, 178.316, 0)
+add meshpoint (-8.47541e-31, 181.316, 0)
+add meshpoint (-8.6693e-31, 184.316, 0)
+add meshpoint (-8.86319e-31, 187.317, 0)
+add meshpoint (-9.05708e-31, 190.317, 0)
+add meshpoint (-9.25097e-31, 193.318, 0)
+add meshpoint (-9.42803e-31, 196.058, 0)
+add meshpoint (-9.56675e-31, 198.204, 0)
+NP = 851
+edge nr 6
+add meshpoint (-1.8741, 50.16, 0)
+add meshpoint (-1.69806, 50.16, 0)
+add meshpoint (-1.4694, 50.16, 0)
+add meshpoint (-1.15761, 50.16, 0)
+add meshpoint (-0.713308, 50.16, 0)
+NP = 856
+edge nr 7
+add meshpoint (-2, 50.0798, 0)
+NP = 857
+edge nr 8
+add meshpoint (-0.69578, 50, 0)
+add meshpoint (-1.16209, 50, 0)
+add meshpoint (-1.47768, 50, 0)
+add meshpoint (-1.71143, 50, 0)
+add meshpoint (-1.88834, 50, 0)
+NP = 862
+edge nr 9
+add meshpoint (0, 22.4017, 0)
+add meshpoint (0, 25.3033, 0)
+add meshpoint (0, 28.205, 0)
+add meshpoint (0, 31.1066, 0)
+add meshpoint (0, 34.0083, 0)
+add meshpoint (0, 36.9099, 0)
+add meshpoint (0, 39.8116, 0)
+add meshpoint (0, 42.4979, 0)
+add meshpoint (0, 44.622, 0)
+add meshpoint (0, 46.203, 0)
+add meshpoint (0, 47.4488, 0)
+add meshpoint (0, 48.4234, 0)
+add meshpoint (0, 49.3063, 0)
+NP = 875
+edge nr 10
+add meshpoint (-17.1429, 19.5, 0)
+add meshpoint (-14.2857, 19.5, 0)
+add meshpoint (-11.4286, 19.5, 0)
+add meshpoint (-8.57143, 19.5, 0)
+add meshpoint (-5.71429, 19.5, 0)
+add meshpoint (-2.85714, 19.5, 0)
+NP = 881
+edge nr 11
+add meshpoint (-20, 3.25, 0)
+add meshpoint (-20, 6.5, 0)
+add meshpoint (-20, 9.75, 0)
+add meshpoint (-20, 13, 0)
+add meshpoint (-20, 16.25, 0)
+NP = 886
+edge nr 12
+NP = 886
+edge nr 13
+add meshpoint (1101.64, 0, 0)
+add meshpoint (1103.33, 0, 0)
+NP = 888
+edge nr 14
+add meshpoint (1105, 57.4023, 0)
+add meshpoint (1105, 54.4708, 0)
+add meshpoint (1105, 51.5393, 0)
+add meshpoint (1105, 48.6078, 0)
+add meshpoint (1105, 45.6763, 0)
+add meshpoint (1105, 42.7448, 0)
+add meshpoint (1105, 39.8133, 0)
+add meshpoint (1105, 36.8818, 0)
+add meshpoint (1105, 33.9503, 0)
+add meshpoint (1105, 31.0188, 0)
+add meshpoint (1105, 28.0873, 0)
+add meshpoint (1105, 25.1558, 0)
+add meshpoint (1105, 22.2243, 0)
+add meshpoint (1105, 19.2928, 0)
+add meshpoint (1105, 16.3613, 0)
+add meshpoint (1105, 13.4298, 0)
+add meshpoint (1105, 10.4983, 0)
+add meshpoint (1105, 7.56676, 0)
+add meshpoint (1105, 4.64244, 0)
+add meshpoint (1105, 2.04052, 0)
+NP = 908
+edge nr 15
+add meshpoint (731.735, 203.92, 0)
+add meshpoint (734.542, 202.841, 0)
+add meshpoint (737.348, 201.761, 0)
+add meshpoint (740.155, 200.682, 0)
+add meshpoint (742.961, 199.602, 0)
+add meshpoint (745.768, 198.522, 0)
+add meshpoint (748.574, 197.443, 0)
+add meshpoint (751.381, 196.363, 0)
+add meshpoint (754.187, 195.284, 0)
+add meshpoint (756.994, 194.204, 0)
+add meshpoint (759.8, 193.124, 0)
+add meshpoint (762.607, 192.045, 0)
+add meshpoint (765.413, 190.965, 0)
+add meshpoint (768.22, 189.886, 0)
+add meshpoint (771.026, 188.806, 0)
+add meshpoint (773.833, 187.726, 0)
+add meshpoint (776.639, 186.647, 0)
+add meshpoint (779.446, 185.567, 0)
+add meshpoint (782.252, 184.488, 0)
+add meshpoint (785.059, 183.408, 0)
+add meshpoint (787.865, 182.328, 0)
+add meshpoint (790.672, 181.249, 0)
+add meshpoint (793.478, 180.169, 0)
+add meshpoint (796.285, 179.09, 0)
+add meshpoint (799.091, 178.01, 0)
+add meshpoint (801.898, 176.93, 0)
+add meshpoint (804.704, 175.851, 0)
+add meshpoint (807.511, 174.771, 0)
+add meshpoint (810.317, 173.692, 0)
+add meshpoint (813.124, 172.612, 0)
+add meshpoint (815.93, 171.532, 0)
+add meshpoint (818.737, 170.453, 0)
+add meshpoint (821.543, 169.373, 0)
+add meshpoint (824.35, 168.294, 0)
+add meshpoint (827.156, 167.214, 0)
+add meshpoint (829.963, 166.134, 0)
+add meshpoint (832.769, 165.055, 0)
+add meshpoint (835.576, 163.975, 0)
+add meshpoint (838.382, 162.896, 0)
+add meshpoint (841.189, 161.816, 0)
+add meshpoint (843.995, 160.736, 0)
+add meshpoint (846.802, 159.657, 0)
+add meshpoint (849.608, 158.577, 0)
+add meshpoint (852.415, 157.498, 0)
+add meshpoint (855.221, 156.418, 0)
+add meshpoint (858.028, 155.338, 0)
+add meshpoint (860.834, 154.259, 0)
+add meshpoint (863.641, 153.179, 0)
+add meshpoint (866.447, 152.1, 0)
+add meshpoint (869.254, 151.02, 0)
+add meshpoint (872.06, 149.94, 0)
+add meshpoint (874.867, 148.861, 0)
+add meshpoint (877.673, 147.781, 0)
+add meshpoint (880.48, 146.702, 0)
+add meshpoint (883.286, 145.622, 0)
+add meshpoint (886.093, 144.542, 0)
+add meshpoint (888.899, 143.463, 0)
+add meshpoint (891.706, 142.383, 0)
+add meshpoint (894.512, 141.304, 0)
+add meshpoint (897.319, 140.224, 0)
+add meshpoint (900.125, 139.144, 0)
+add meshpoint (902.932, 138.065, 0)
+add meshpoint (905.738, 136.985, 0)
+add meshpoint (908.545, 135.906, 0)
+add meshpoint (911.351, 134.826, 0)
+add meshpoint (914.158, 133.746, 0)
+add meshpoint (916.964, 132.667, 0)
+add meshpoint (919.771, 131.587, 0)
+add meshpoint (922.577, 130.508, 0)
+add meshpoint (925.384, 129.428, 0)
+add meshpoint (928.19, 128.349, 0)
+add meshpoint (930.997, 127.269, 0)
+add meshpoint (933.803, 126.189, 0)
+add meshpoint (936.61, 125.11, 0)
+add meshpoint (939.416, 124.03, 0)
+add meshpoint (942.223, 122.951, 0)
+add meshpoint (945.029, 121.871, 0)
+add meshpoint (947.836, 120.791, 0)
+add meshpoint (950.642, 119.712, 0)
+add meshpoint (953.449, 118.632, 0)
+add meshpoint (956.255, 117.553, 0)
+add meshpoint (959.062, 116.473, 0)
+add meshpoint (961.868, 115.393, 0)
+add meshpoint (964.675, 114.314, 0)
+add meshpoint (967.481, 113.234, 0)
+add meshpoint (970.288, 112.155, 0)
+add meshpoint (973.094, 111.075, 0)
+add meshpoint (975.901, 109.995, 0)
+add meshpoint (978.707, 108.916, 0)
+add meshpoint (981.514, 107.836, 0)
+add meshpoint (984.32, 106.757, 0)
+add meshpoint (987.127, 105.677, 0)
+add meshpoint (989.933, 104.597, 0)
+add meshpoint (992.74, 103.518, 0)
+add meshpoint (995.546, 102.438, 0)
+add meshpoint (998.353, 101.359, 0)
+add meshpoint (1001.16, 100.279, 0)
+add meshpoint (1003.97, 99.1993, 0)
+add meshpoint (1006.77, 98.1197, 0)
+add meshpoint (1009.58, 97.0401, 0)
+add meshpoint (1012.39, 95.9605, 0)
+add meshpoint (1015.19, 94.8809, 0)
+add meshpoint (1018, 93.8014, 0)
+add meshpoint (1020.8, 92.7218, 0)
+add meshpoint (1023.61, 91.6422, 0)
+add meshpoint (1026.42, 90.5626, 0)
+add meshpoint (1029.22, 89.483, 0)
+add meshpoint (1032.03, 88.4034, 0)
+add meshpoint (1034.84, 87.3238, 0)
+add meshpoint (1037.64, 86.2442, 0)
+add meshpoint (1040.45, 85.1646, 0)
+add meshpoint (1043.26, 84.085, 0)
+add meshpoint (1046.06, 83.0054, 0)
+add meshpoint (1048.87, 81.9258, 0)
+add meshpoint (1051.68, 80.8462, 0)
+add meshpoint (1054.48, 79.7666, 0)
+add meshpoint (1057.29, 78.687, 0)
+add meshpoint (1060.1, 77.6074, 0)
+add meshpoint (1062.9, 76.5278, 0)
+add meshpoint (1065.71, 75.4482, 0)
+add meshpoint (1068.52, 74.3686, 0)
+add meshpoint (1071.32, 73.289, 0)
+add meshpoint (1074.13, 72.2094, 0)
+add meshpoint (1076.93, 71.1298, 0)
+add meshpoint (1079.74, 70.0502, 0)
+add meshpoint (1082.55, 68.9706, 0)
+add meshpoint (1085.35, 67.891, 0)
+add meshpoint (1088.16, 66.8114, 0)
+add meshpoint (1090.97, 65.7318, 0)
+add meshpoint (1093.77, 64.6522, 0)
+add meshpoint (1096.58, 63.5726, 0)
+add meshpoint (1099.39, 62.493, 0)
+add meshpoint (1102.19, 61.4134, 0)
+NP = 1041
+edge nr 16
+add meshpoint (2.19199, 205, 0)
+add meshpoint (4.91851, 205, 0)
+add meshpoint (7.9227, 205, 0)
+add meshpoint (10.9269, 205, 0)
+add meshpoint (13.9311, 205, 0)
+add meshpoint (16.9353, 205, 0)
+add meshpoint (19.9395, 205, 0)
+add meshpoint (22.9437, 205, 0)
+add meshpoint (25.9478, 205, 0)
+add meshpoint (28.952, 205, 0)
+add meshpoint (31.9562, 205, 0)
+add meshpoint (34.9604, 205, 0)
+add meshpoint (37.9646, 205, 0)
+add meshpoint (40.9688, 205, 0)
+add meshpoint (43.973, 205, 0)
+add meshpoint (46.9772, 205, 0)
+add meshpoint (49.9814, 205, 0)
+add meshpoint (52.9856, 205, 0)
+add meshpoint (55.9898, 205, 0)
+add meshpoint (58.9939, 205, 0)
+add meshpoint (61.9981, 205, 0)
+add meshpoint (65.0023, 205, 0)
+add meshpoint (68.0065, 205, 0)
+add meshpoint (71.0107, 205, 0)
+add meshpoint (74.0149, 205, 0)
+add meshpoint (77.0191, 205, 0)
+add meshpoint (80.0233, 205, 0)
+add meshpoint (83.0275, 205, 0)
+add meshpoint (86.0317, 205, 0)
+add meshpoint (89.0359, 205, 0)
+add meshpoint (92.04, 205, 0)
+add meshpoint (95.0442, 205, 0)
+add meshpoint (98.0484, 205, 0)
+add meshpoint (101.053, 205, 0)
+add meshpoint (104.057, 205, 0)
+add meshpoint (107.061, 205, 0)
+add meshpoint (110.065, 205, 0)
+add meshpoint (113.069, 205, 0)
+add meshpoint (116.074, 205, 0)
+add meshpoint (119.078, 205, 0)
+add meshpoint (122.082, 205, 0)
+add meshpoint (125.086, 205, 0)
+add meshpoint (128.09, 205, 0)
+add meshpoint (131.095, 205, 0)
+add meshpoint (134.099, 205, 0)
+add meshpoint (137.103, 205, 0)
+add meshpoint (140.107, 205, 0)
+add meshpoint (143.111, 205, 0)
+add meshpoint (146.115, 205, 0)
+add meshpoint (149.12, 205, 0)
+add meshpoint (152.124, 205, 0)
+add meshpoint (155.128, 205, 0)
+add meshpoint (158.132, 205, 0)
+add meshpoint (161.136, 205, 0)
+add meshpoint (164.141, 205, 0)
+add meshpoint (167.145, 205, 0)
+add meshpoint (170.149, 205, 0)
+add meshpoint (173.153, 205, 0)
+add meshpoint (176.157, 205, 0)
+add meshpoint (179.162, 205, 0)
+add meshpoint (182.166, 205, 0)
+add meshpoint (185.17, 205, 0)
+add meshpoint (188.174, 205, 0)
+add meshpoint (191.178, 205, 0)
+add meshpoint (194.183, 205, 0)
+add meshpoint (197.187, 205, 0)
+add meshpoint (200.191, 205, 0)
+add meshpoint (203.195, 205, 0)
+add meshpoint (206.199, 205, 0)
+add meshpoint (209.203, 205, 0)
+add meshpoint (212.208, 205, 0)
+add meshpoint (215.212, 205, 0)
+add meshpoint (218.216, 205, 0)
+add meshpoint (221.22, 205, 0)
+add meshpoint (224.224, 205, 0)
+add meshpoint (227.229, 205, 0)
+add meshpoint (230.233, 205, 0)
+add meshpoint (233.237, 205, 0)
+add meshpoint (236.241, 205, 0)
+add meshpoint (239.245, 205, 0)
+add meshpoint (242.25, 205, 0)
+add meshpoint (245.254, 205, 0)
+add meshpoint (248.258, 205, 0)
+add meshpoint (251.262, 205, 0)
+add meshpoint (254.266, 205, 0)
+add meshpoint (257.271, 205, 0)
+add meshpoint (260.275, 205, 0)
+add meshpoint (263.279, 205, 0)
+add meshpoint (266.283, 205, 0)
+add meshpoint (269.287, 205, 0)
+add meshpoint (272.292, 205, 0)
+add meshpoint (275.296, 205, 0)
+add meshpoint (278.3, 205, 0)
+add meshpoint (281.304, 205, 0)
+add meshpoint (284.308, 205, 0)
+add meshpoint (287.312, 205, 0)
+add meshpoint (290.317, 205, 0)
+add meshpoint (293.321, 205, 0)
+add meshpoint (296.325, 205, 0)
+add meshpoint (299.329, 205, 0)
+add meshpoint (302.333, 205, 0)
+add meshpoint (305.338, 205, 0)
+add meshpoint (308.342, 205, 0)
+add meshpoint (311.346, 205, 0)
+add meshpoint (314.35, 205, 0)
+add meshpoint (317.354, 205, 0)
+add meshpoint (320.359, 205, 0)
+add meshpoint (323.363, 205, 0)
+add meshpoint (326.367, 205, 0)
+add meshpoint (329.371, 205, 0)
+add meshpoint (332.375, 205, 0)
+add meshpoint (335.38, 205, 0)
+add meshpoint (338.384, 205, 0)
+add meshpoint (341.388, 205, 0)
+add meshpoint (344.392, 205, 0)
+add meshpoint (347.396, 205, 0)
+add meshpoint (350.4, 205, 0)
+add meshpoint (353.405, 205, 0)
+add meshpoint (356.409, 205, 0)
+add meshpoint (359.413, 205, 0)
+add meshpoint (362.417, 205, 0)
+add meshpoint (365.421, 205, 0)
+add meshpoint (368.426, 205, 0)
+add meshpoint (371.43, 205, 0)
+add meshpoint (374.434, 205, 0)
+add meshpoint (377.438, 205, 0)
+add meshpoint (380.442, 205, 0)
+add meshpoint (383.447, 205, 0)
+add meshpoint (386.451, 205, 0)
+add meshpoint (389.455, 205, 0)
+add meshpoint (392.459, 205, 0)
+add meshpoint (395.463, 205, 0)
+add meshpoint (398.468, 205, 0)
+add meshpoint (401.472, 205, 0)
+add meshpoint (404.476, 205, 0)
+add meshpoint (407.48, 205, 0)
+add meshpoint (410.484, 205, 0)
+add meshpoint (413.488, 205, 0)
+add meshpoint (416.493, 205, 0)
+add meshpoint (419.497, 205, 0)
+add meshpoint (422.501, 205, 0)
+add meshpoint (425.505, 205, 0)
+add meshpoint (428.509, 205, 0)
+add meshpoint (431.514, 205, 0)
+add meshpoint (434.518, 205, 0)
+add meshpoint (437.522, 205, 0)
+add meshpoint (440.526, 205, 0)
+add meshpoint (443.53, 205, 0)
+add meshpoint (446.535, 205, 0)
+add meshpoint (449.539, 205, 0)
+add meshpoint (452.543, 205, 0)
+add meshpoint (455.547, 205, 0)
+add meshpoint (458.551, 205, 0)
+add meshpoint (461.556, 205, 0)
+add meshpoint (464.56, 205, 0)
+add meshpoint (467.564, 205, 0)
+add meshpoint (470.568, 205, 0)
+add meshpoint (473.572, 205, 0)
+add meshpoint (476.576, 205, 0)
+add meshpoint (479.581, 205, 0)
+add meshpoint (482.585, 205, 0)
+add meshpoint (485.589, 205, 0)
+add meshpoint (488.593, 205, 0)
+add meshpoint (491.597, 205, 0)
+add meshpoint (494.602, 205, 0)
+add meshpoint (497.606, 205, 0)
+add meshpoint (500.61, 205, 0)
+add meshpoint (503.614, 205, 0)
+add meshpoint (506.618, 205, 0)
+add meshpoint (509.623, 205, 0)
+add meshpoint (512.627, 205, 0)
+add meshpoint (515.631, 205, 0)
+add meshpoint (518.635, 205, 0)
+add meshpoint (521.639, 205, 0)
+add meshpoint (524.644, 205, 0)
+add meshpoint (527.648, 205, 0)
+add meshpoint (530.652, 205, 0)
+add meshpoint (533.656, 205, 0)
+add meshpoint (536.66, 205, 0)
+add meshpoint (539.664, 205, 0)
+add meshpoint (542.669, 205, 0)
+add meshpoint (545.673, 205, 0)
+add meshpoint (548.677, 205, 0)
+add meshpoint (551.681, 205, 0)
+add meshpoint (554.685, 205, 0)
+add meshpoint (557.69, 205, 0)
+add meshpoint (560.694, 205, 0)
+add meshpoint (563.698, 205, 0)
+add meshpoint (566.702, 205, 0)
+add meshpoint (569.706, 205, 0)
+add meshpoint (572.711, 205, 0)
+add meshpoint (575.715, 205, 0)
+add meshpoint (578.719, 205, 0)
+add meshpoint (581.723, 205, 0)
+add meshpoint (584.727, 205, 0)
+add meshpoint (587.732, 205, 0)
+add meshpoint (590.736, 205, 0)
+add meshpoint (593.74, 205, 0)
+add meshpoint (596.744, 205, 0)
+add meshpoint (599.748, 205, 0)
+add meshpoint (602.753, 205, 0)
+add meshpoint (605.757, 205, 0)
+add meshpoint (608.761, 205, 0)
+add meshpoint (611.765, 205, 0)
+add meshpoint (614.769, 205, 0)
+add meshpoint (617.773, 205, 0)
+add meshpoint (620.778, 205, 0)
+add meshpoint (623.782, 205, 0)
+add meshpoint (626.786, 205, 0)
+add meshpoint (629.79, 205, 0)
+add meshpoint (632.794, 205, 0)
+add meshpoint (635.799, 205, 0)
+add meshpoint (638.803, 205, 0)
+add meshpoint (641.807, 205, 0)
+add meshpoint (644.811, 205, 0)
+add meshpoint (647.815, 205, 0)
+add meshpoint (650.82, 205, 0)
+add meshpoint (653.824, 205, 0)
+add meshpoint (656.828, 205, 0)
+add meshpoint (659.832, 205, 0)
+add meshpoint (662.836, 205, 0)
+add meshpoint (665.841, 205, 0)
+add meshpoint (668.845, 205, 0)
+add meshpoint (671.849, 205, 0)
+add meshpoint (674.853, 205, 0)
+add meshpoint (677.857, 205, 0)
+add meshpoint (680.861, 205, 0)
+add meshpoint (683.866, 205, 0)
+add meshpoint (686.87, 205, 0)
+add meshpoint (689.874, 205, 0)
+add meshpoint (692.878, 205, 0)
+add meshpoint (695.882, 205, 0)
+add meshpoint (698.887, 205, 0)
+add meshpoint (701.891, 205, 0)
+add meshpoint (704.895, 205, 0)
+add meshpoint (707.899, 205, 0)
+add meshpoint (710.903, 205, 0)
+add meshpoint (713.908, 205, 0)
+add meshpoint (716.912, 205, 0)
+add meshpoint (719.916, 205, 0)
+add meshpoint (722.92, 205, 0)
+add meshpoint (725.924, 205, 0)
+NP = 1283
+edge nr 17
+add meshpoint (-6.47226e-31, 201.658, 0)
+add meshpoint (-3.23613e-31, 203.329, 0)
+NP = 1285
+edge nr 18
+NP = 1285
+edge nr 19
+NP = 1285
+edge nr 20
+NP = 1285
+edge nr 21
+add meshpoint (1106.8, 0, 0)
+add meshpoint (1109.21, 0, 0)
+add meshpoint (1112.02, 0, 0)
+add meshpoint (1114.89, 0, 0)
+add meshpoint (1117.76, 0, 0)
+add meshpoint (1120.64, 0, 0)
+add meshpoint (1123.51, 0, 0)
+add meshpoint (1126.38, 0, 0)
+add meshpoint (1129.25, 0, 0)
+add meshpoint (1132.13, 0, 0)
+NP = 1295
+edge nr 22
+add meshpoint (1135, 77.9389, 0)
+add meshpoint (1135, 74.9413, 0)
+add meshpoint (1135, 71.9436, 0)
+add meshpoint (1135, 68.946, 0)
+add meshpoint (1135, 65.9483, 0)
+add meshpoint (1135, 62.9507, 0)
+add meshpoint (1135, 59.953, 0)
+add meshpoint (1135, 56.9554, 0)
+add meshpoint (1135, 53.9577, 0)
+add meshpoint (1135, 50.9601, 0)
+add meshpoint (1135, 47.9624, 0)
+add meshpoint (1135, 44.9648, 0)
+add meshpoint (1135, 41.9671, 0)
+add meshpoint (1135, 38.9695, 0)
+add meshpoint (1135, 35.9718, 0)
+add meshpoint (1135, 32.9742, 0)
+add meshpoint (1135, 29.9765, 0)
+add meshpoint (1135, 26.9789, 0)
+add meshpoint (1135, 23.9812, 0)
+add meshpoint (1135, 20.9836, 0)
+add meshpoint (1135, 17.9859, 0)
+add meshpoint (1135, 14.9883, 0)
+add meshpoint (1135, 11.9906, 0)
+add meshpoint (1135, 8.99295, 0)
+add meshpoint (1135, 5.9953, 0)
+add meshpoint (1135, 2.99765, 0)
+NP = 1321
+edge nr 23
+add meshpoint (737.3, 233.923, 0)
+add meshpoint (740.101, 232.845, 0)
+add meshpoint (742.902, 231.768, 0)
+add meshpoint (745.703, 230.691, 0)
+add meshpoint (748.503, 229.613, 0)
+add meshpoint (751.304, 228.536, 0)
+add meshpoint (754.105, 227.458, 0)
+add meshpoint (756.905, 226.381, 0)
+add meshpoint (759.706, 225.304, 0)
+add meshpoint (762.507, 224.226, 0)
+add meshpoint (765.307, 223.149, 0)
+add meshpoint (768.108, 222.072, 0)
+add meshpoint (770.909, 220.994, 0)
+add meshpoint (773.71, 219.917, 0)
+add meshpoint (776.51, 218.84, 0)
+add meshpoint (779.311, 217.762, 0)
+add meshpoint (782.112, 216.685, 0)
+add meshpoint (784.912, 215.607, 0)
+add meshpoint (787.713, 214.53, 0)
+add meshpoint (790.514, 213.453, 0)
+add meshpoint (793.314, 212.375, 0)
+add meshpoint (796.115, 211.298, 0)
+add meshpoint (798.916, 210.221, 0)
+add meshpoint (801.717, 209.143, 0)
+add meshpoint (804.517, 208.066, 0)
+add meshpoint (807.318, 206.988, 0)
+add meshpoint (810.119, 205.911, 0)
+add meshpoint (812.919, 204.834, 0)
+add meshpoint (815.72, 203.756, 0)
+add meshpoint (818.521, 202.679, 0)
+add meshpoint (821.321, 201.602, 0)
+add meshpoint (824.122, 200.524, 0)
+add meshpoint (826.923, 199.447, 0)
+add meshpoint (829.724, 198.37, 0)
+add meshpoint (832.524, 197.292, 0)
+add meshpoint (835.325, 196.215, 0)
+add meshpoint (838.126, 195.137, 0)
+add meshpoint (840.926, 194.06, 0)
+add meshpoint (843.727, 192.983, 0)
+add meshpoint (846.528, 191.905, 0)
+add meshpoint (849.328, 190.828, 0)
+add meshpoint (852.129, 189.751, 0)
+add meshpoint (854.93, 188.673, 0)
+add meshpoint (857.731, 187.596, 0)
+add meshpoint (860.531, 186.519, 0)
+add meshpoint (863.332, 185.441, 0)
+add meshpoint (866.133, 184.364, 0)
+add meshpoint (868.933, 183.286, 0)
+add meshpoint (871.734, 182.209, 0)
+add meshpoint (874.535, 181.132, 0)
+add meshpoint (877.335, 180.054, 0)
+add meshpoint (880.136, 178.977, 0)
+add meshpoint (882.937, 177.9, 0)
+add meshpoint (885.738, 176.822, 0)
+add meshpoint (888.538, 175.745, 0)
+add meshpoint (891.339, 174.667, 0)
+add meshpoint (894.14, 173.59, 0)
+add meshpoint (896.94, 172.513, 0)
+add meshpoint (899.741, 171.435, 0)
+add meshpoint (902.542, 170.358, 0)
+add meshpoint (905.342, 169.281, 0)
+add meshpoint (908.143, 168.203, 0)
+add meshpoint (910.944, 167.126, 0)
+add meshpoint (913.745, 166.049, 0)
+add meshpoint (916.545, 164.971, 0)
+add meshpoint (919.346, 163.894, 0)
+add meshpoint (922.147, 162.816, 0)
+add meshpoint (924.947, 161.739, 0)
+add meshpoint (927.748, 160.662, 0)
+add meshpoint (930.549, 159.584, 0)
+add meshpoint (933.349, 158.507, 0)
+add meshpoint (936.15, 157.43, 0)
+add meshpoint (938.951, 156.352, 0)
+add meshpoint (941.752, 155.275, 0)
+add meshpoint (944.552, 154.198, 0)
+add meshpoint (947.353, 153.12, 0)
+add meshpoint (950.154, 152.043, 0)
+add meshpoint (952.954, 150.965, 0)
+add meshpoint (955.755, 149.888, 0)
+add meshpoint (958.556, 148.811, 0)
+add meshpoint (961.357, 147.733, 0)
+add meshpoint (964.157, 146.656, 0)
+add meshpoint (966.958, 145.579, 0)
+add meshpoint (969.759, 144.501, 0)
+add meshpoint (972.559, 143.424, 0)
+add meshpoint (975.36, 142.346, 0)
+add meshpoint (978.161, 141.269, 0)
+add meshpoint (980.961, 140.192, 0)
+add meshpoint (983.762, 139.114, 0)
+add meshpoint (986.563, 138.037, 0)
+add meshpoint (989.364, 136.96, 0)
+add meshpoint (992.164, 135.882, 0)
+add meshpoint (994.965, 134.805, 0)
+add meshpoint (997.766, 133.728, 0)
+add meshpoint (1000.57, 132.65, 0)
+add meshpoint (1003.37, 131.573, 0)
+add meshpoint (1006.17, 130.495, 0)
+add meshpoint (1008.97, 129.418, 0)
+add meshpoint (1011.77, 128.341, 0)
+add meshpoint (1014.57, 127.263, 0)
+add meshpoint (1017.37, 126.186, 0)
+add meshpoint (1020.17, 125.109, 0)
+add meshpoint (1022.97, 124.031, 0)
+add meshpoint (1025.77, 122.954, 0)
+add meshpoint (1028.57, 121.877, 0)
+add meshpoint (1031.37, 120.799, 0)
+add meshpoint (1034.17, 119.722, 0)
+add meshpoint (1036.98, 118.644, 0)
+add meshpoint (1039.78, 117.567, 0)
+add meshpoint (1042.58, 116.49, 0)
+add meshpoint (1045.38, 115.412, 0)
+add meshpoint (1048.18, 114.335, 0)
+add meshpoint (1050.98, 113.258, 0)
+add meshpoint (1053.78, 112.18, 0)
+add meshpoint (1056.58, 111.103, 0)
+add meshpoint (1059.38, 110.025, 0)
+add meshpoint (1062.18, 108.948, 0)
+add meshpoint (1064.98, 107.871, 0)
+add meshpoint (1067.78, 106.793, 0)
+add meshpoint (1070.58, 105.716, 0)
+add meshpoint (1073.38, 104.639, 0)
+add meshpoint (1076.19, 103.561, 0)
+add meshpoint (1078.99, 102.484, 0)
+add meshpoint (1081.79, 101.407, 0)
+add meshpoint (1084.59, 100.329, 0)
+add meshpoint (1087.39, 99.2518, 0)
+add meshpoint (1090.19, 98.1744, 0)
+add meshpoint (1092.99, 97.0971, 0)
+add meshpoint (1095.79, 96.0197, 0)
+add meshpoint (1098.59, 94.9423, 0)
+add meshpoint (1101.39, 93.865, 0)
+add meshpoint (1104.19, 92.7876, 0)
+add meshpoint (1106.99, 91.7102, 0)
+add meshpoint (1109.79, 90.6329, 0)
+add meshpoint (1112.59, 89.5555, 0)
+add meshpoint (1115.4, 88.4781, 0)
+add meshpoint (1118.2, 87.4008, 0)
+add meshpoint (1121, 86.3234, 0)
+add meshpoint (1123.8, 85.246, 0)
+add meshpoint (1126.6, 84.1687, 0)
+add meshpoint (1129.4, 83.0913, 0)
+add meshpoint (1132.2, 82.0139, 0)
+NP = 1463
+edge nr 24
+add meshpoint (2.99796, 235, 0)
+add meshpoint (5.99592, 235, 0)
+add meshpoint (8.99387, 235, 0)
+add meshpoint (11.9918, 235, 0)
+add meshpoint (14.9898, 235, 0)
+add meshpoint (17.9877, 235, 0)
+add meshpoint (20.9857, 235, 0)
+add meshpoint (23.9837, 235, 0)
+add meshpoint (26.9816, 235, 0)
+add meshpoint (29.9796, 235, 0)
+add meshpoint (32.9775, 235, 0)
+add meshpoint (35.9755, 235, 0)
+add meshpoint (38.9735, 235, 0)
+add meshpoint (41.9714, 235, 0)
+add meshpoint (44.9694, 235, 0)
+add meshpoint (47.9673, 235, 0)
+add meshpoint (50.9653, 235, 0)
+add meshpoint (53.9632, 235, 0)
+add meshpoint (56.9612, 235, 0)
+add meshpoint (59.9592, 235, 0)
+add meshpoint (62.9571, 235, 0)
+add meshpoint (65.9551, 235, 0)
+add meshpoint (68.953, 235, 0)
+add meshpoint (71.951, 235, 0)
+add meshpoint (74.9489, 235, 0)
+add meshpoint (77.9469, 235, 0)
+add meshpoint (80.9449, 235, 0)
+add meshpoint (83.9428, 235, 0)
+add meshpoint (86.9408, 235, 0)
+add meshpoint (89.9387, 235, 0)
+add meshpoint (92.9367, 235, 0)
+add meshpoint (95.9347, 235, 0)
+add meshpoint (98.9326, 235, 0)
+add meshpoint (101.931, 235, 0)
+add meshpoint (104.929, 235, 0)
+add meshpoint (107.926, 235, 0)
+add meshpoint (110.924, 235, 0)
+add meshpoint (113.922, 235, 0)
+add meshpoint (116.92, 235, 0)
+add meshpoint (119.918, 235, 0)
+add meshpoint (122.916, 235, 0)
+add meshpoint (125.914, 235, 0)
+add meshpoint (128.912, 235, 0)
+add meshpoint (131.91, 235, 0)
+add meshpoint (134.908, 235, 0)
+add meshpoint (137.906, 235, 0)
+add meshpoint (140.904, 235, 0)
+add meshpoint (143.902, 235, 0)
+add meshpoint (146.9, 235, 0)
+add meshpoint (149.898, 235, 0)
+add meshpoint (152.896, 235, 0)
+add meshpoint (155.894, 235, 0)
+add meshpoint (158.892, 235, 0)
+add meshpoint (161.89, 235, 0)
+add meshpoint (164.888, 235, 0)
+add meshpoint (167.886, 235, 0)
+add meshpoint (170.884, 235, 0)
+add meshpoint (173.882, 235, 0)
+add meshpoint (176.88, 235, 0)
+add meshpoint (179.877, 235, 0)
+add meshpoint (182.875, 235, 0)
+add meshpoint (185.873, 235, 0)
+add meshpoint (188.871, 235, 0)
+add meshpoint (191.869, 235, 0)
+add meshpoint (194.867, 235, 0)
+add meshpoint (197.865, 235, 0)
+add meshpoint (200.863, 235, 0)
+add meshpoint (203.861, 235, 0)
+add meshpoint (206.859, 235, 0)
+add meshpoint (209.857, 235, 0)
+add meshpoint (212.855, 235, 0)
+add meshpoint (215.853, 235, 0)
+add meshpoint (218.851, 235, 0)
+add meshpoint (221.849, 235, 0)
+add meshpoint (224.847, 235, 0)
+add meshpoint (227.845, 235, 0)
+add meshpoint (230.843, 235, 0)
+add meshpoint (233.841, 235, 0)
+add meshpoint (236.839, 235, 0)
+add meshpoint (239.837, 235, 0)
+add meshpoint (242.835, 235, 0)
+add meshpoint (245.833, 235, 0)
+add meshpoint (248.831, 235, 0)
+add meshpoint (251.828, 235, 0)
+add meshpoint (254.826, 235, 0)
+add meshpoint (257.824, 235, 0)
+add meshpoint (260.822, 235, 0)
+add meshpoint (263.82, 235, 0)
+add meshpoint (266.818, 235, 0)
+add meshpoint (269.816, 235, 0)
+add meshpoint (272.814, 235, 0)
+add meshpoint (275.812, 235, 0)
+add meshpoint (278.81, 235, 0)
+add meshpoint (281.808, 235, 0)
+add meshpoint (284.806, 235, 0)
+add meshpoint (287.804, 235, 0)
+add meshpoint (290.802, 235, 0)
+add meshpoint (293.8, 235, 0)
+add meshpoint (296.798, 235, 0)
+add meshpoint (299.796, 235, 0)
+add meshpoint (302.794, 235, 0)
+add meshpoint (305.792, 235, 0)
+add meshpoint (308.79, 235, 0)
+add meshpoint (311.788, 235, 0)
+add meshpoint (314.786, 235, 0)
+add meshpoint (317.784, 235, 0)
+add meshpoint (320.781, 235, 0)
+add meshpoint (323.779, 235, 0)
+add meshpoint (326.777, 235, 0)
+add meshpoint (329.775, 235, 0)
+add meshpoint (332.773, 235, 0)
+add meshpoint (335.771, 235, 0)
+add meshpoint (338.769, 235, 0)
+add meshpoint (341.767, 235, 0)
+add meshpoint (344.765, 235, 0)
+add meshpoint (347.763, 235, 0)
+add meshpoint (350.761, 235, 0)
+add meshpoint (353.759, 235, 0)
+add meshpoint (356.757, 235, 0)
+add meshpoint (359.755, 235, 0)
+add meshpoint (362.753, 235, 0)
+add meshpoint (365.751, 235, 0)
+add meshpoint (368.749, 235, 0)
+add meshpoint (371.747, 235, 0)
+add meshpoint (374.745, 235, 0)
+add meshpoint (377.743, 235, 0)
+add meshpoint (380.741, 235, 0)
+add meshpoint (383.739, 235, 0)
+add meshpoint (386.737, 235, 0)
+add meshpoint (389.735, 235, 0)
+add meshpoint (392.732, 235, 0)
+add meshpoint (395.73, 235, 0)
+add meshpoint (398.728, 235, 0)
+add meshpoint (401.726, 235, 0)
+add meshpoint (404.724, 235, 0)
+add meshpoint (407.722, 235, 0)
+add meshpoint (410.72, 235, 0)
+add meshpoint (413.718, 235, 0)
+add meshpoint (416.716, 235, 0)
+add meshpoint (419.714, 235, 0)
+add meshpoint (422.712, 235, 0)
+add meshpoint (425.71, 235, 0)
+add meshpoint (428.708, 235, 0)
+add meshpoint (431.706, 235, 0)
+add meshpoint (434.704, 235, 0)
+add meshpoint (437.702, 235, 0)
+add meshpoint (440.7, 235, 0)
+add meshpoint (443.698, 235, 0)
+add meshpoint (446.696, 235, 0)
+add meshpoint (449.694, 235, 0)
+add meshpoint (452.692, 235, 0)
+add meshpoint (455.69, 235, 0)
+add meshpoint (458.688, 235, 0)
+add meshpoint (461.686, 235, 0)
+add meshpoint (464.683, 235, 0)
+add meshpoint (467.681, 235, 0)
+add meshpoint (470.679, 235, 0)
+add meshpoint (473.677, 235, 0)
+add meshpoint (476.675, 235, 0)
+add meshpoint (479.673, 235, 0)
+add meshpoint (482.671, 235, 0)
+add meshpoint (485.669, 235, 0)
+add meshpoint (488.667, 235, 0)
+add meshpoint (491.665, 235, 0)
+add meshpoint (494.663, 235, 0)
+add meshpoint (497.661, 235, 0)
+add meshpoint (500.659, 235, 0)
+add meshpoint (503.657, 235, 0)
+add meshpoint (506.655, 235, 0)
+add meshpoint (509.653, 235, 0)
+add meshpoint (512.651, 235, 0)
+add meshpoint (515.649, 235, 0)
+add meshpoint (518.647, 235, 0)
+add meshpoint (521.645, 235, 0)
+add meshpoint (524.643, 235, 0)
+add meshpoint (527.641, 235, 0)
+add meshpoint (530.639, 235, 0)
+add meshpoint (533.637, 235, 0)
+add meshpoint (536.634, 235, 0)
+add meshpoint (539.632, 235, 0)
+add meshpoint (542.63, 235, 0)
+add meshpoint (545.628, 235, 0)
+add meshpoint (548.626, 235, 0)
+add meshpoint (551.624, 235, 0)
+add meshpoint (554.622, 235, 0)
+add meshpoint (557.62, 235, 0)
+add meshpoint (560.618, 235, 0)
+add meshpoint (563.616, 235, 0)
+add meshpoint (566.614, 235, 0)
+add meshpoint (569.612, 235, 0)
+add meshpoint (572.61, 235, 0)
+add meshpoint (575.608, 235, 0)
+add meshpoint (578.606, 235, 0)
+add meshpoint (581.604, 235, 0)
+add meshpoint (584.602, 235, 0)
+add meshpoint (587.6, 235, 0)
+add meshpoint (590.598, 235, 0)
+add meshpoint (593.596, 235, 0)
+add meshpoint (596.594, 235, 0)
+add meshpoint (599.592, 235, 0)
+add meshpoint (602.59, 235, 0)
+add meshpoint (605.588, 235, 0)
+add meshpoint (608.585, 235, 0)
+add meshpoint (611.583, 235, 0)
+add meshpoint (614.581, 235, 0)
+add meshpoint (617.579, 235, 0)
+add meshpoint (620.577, 235, 0)
+add meshpoint (623.575, 235, 0)
+add meshpoint (626.573, 235, 0)
+add meshpoint (629.571, 235, 0)
+add meshpoint (632.569, 235, 0)
+add meshpoint (635.567, 235, 0)
+add meshpoint (638.565, 235, 0)
+add meshpoint (641.563, 235, 0)
+add meshpoint (644.561, 235, 0)
+add meshpoint (647.559, 235, 0)
+add meshpoint (650.557, 235, 0)
+add meshpoint (653.555, 235, 0)
+add meshpoint (656.553, 235, 0)
+add meshpoint (659.551, 235, 0)
+add meshpoint (662.549, 235, 0)
+add meshpoint (665.547, 235, 0)
+add meshpoint (668.545, 235, 0)
+add meshpoint (671.543, 235, 0)
+add meshpoint (674.541, 235, 0)
+add meshpoint (677.538, 235, 0)
+add meshpoint (680.536, 235, 0)
+add meshpoint (683.534, 235, 0)
+add meshpoint (686.532, 235, 0)
+add meshpoint (689.53, 235, 0)
+add meshpoint (692.528, 235, 0)
+add meshpoint (695.526, 235, 0)
+add meshpoint (698.524, 235, 0)
+add meshpoint (701.522, 235, 0)
+add meshpoint (704.52, 235, 0)
+add meshpoint (707.518, 235, 0)
+add meshpoint (710.516, 235, 0)
+add meshpoint (713.514, 235, 0)
+add meshpoint (716.512, 235, 0)
+add meshpoint (719.51, 235, 0)
+add meshpoint (722.508, 235, 0)
+add meshpoint (725.506, 235, 0)
+add meshpoint (728.504, 235, 0)
+add meshpoint (731.502, 235, 0)
+NP = 1707
+edge nr 25
+add meshpoint (0, 206.717, 0)
+add meshpoint (0, 209.07, 0)
+add meshpoint (0, 211.88, 0)
+add meshpoint (0, 214.77, 0)
+add meshpoint (0, 217.66, 0)
+add meshpoint (0, 220.55, 0)
+add meshpoint (0, 223.44, 0)
+add meshpoint (0, 226.33, 0)
+add meshpoint (0, 229.22, 0)
+add meshpoint (0, 232.11, 0)
+NP = 1717
+edge nr 26
+NP = 1717
+edge nr 27
+NP = 1717
+edge nr 28
+NP = 1717
+edge nr 29
+add meshpoint (1100, -53.9354, 0)
+add meshpoint (1100, -50.9708, 0)
+add meshpoint (1100, -48.0062, 0)
+add meshpoint (1100, -45.0416, 0)
+add meshpoint (1100, -42.0771, 0)
+add meshpoint (1100, -39.1125, 0)
+add meshpoint (1100, -36.1479, 0)
+add meshpoint (1100, -33.1833, 0)
+add meshpoint (1100, -30.2187, 0)
+add meshpoint (1100, -27.2541, 0)
+add meshpoint (1100, -24.2895, 0)
+add meshpoint (1100, -21.3249, 0)
+add meshpoint (1100, -18.3603, 0)
+add meshpoint (1100, -15.3958, 0)
+add meshpoint (1100, -12.4312, 0)
+add meshpoint (1100, -9.46658, 0)
+add meshpoint (1100, -6.502, 0)
+add meshpoint (1100, -3.84906, 0)
+add meshpoint (1100, -1.75032, 0)
+NP = 1736
+edge nr 30
+add meshpoint (730.797, -198.924, 0)
+add meshpoint (733.594, -197.848, 0)
+add meshpoint (736.391, -196.772, 0)
+add meshpoint (739.188, -195.696, 0)
+add meshpoint (741.985, -194.62, 0)
+add meshpoint (744.782, -193.544, 0)
+add meshpoint (747.579, -192.468, 0)
+add meshpoint (750.376, -191.392, 0)
+add meshpoint (753.173, -190.317, 0)
+add meshpoint (755.97, -189.241, 0)
+add meshpoint (758.767, -188.165, 0)
+add meshpoint (761.564, -187.089, 0)
+add meshpoint (764.361, -186.013, 0)
+add meshpoint (767.158, -184.937, 0)
+add meshpoint (769.955, -183.861, 0)
+add meshpoint (772.752, -182.785, 0)
+add meshpoint (775.549, -181.709, 0)
+add meshpoint (778.346, -180.633, 0)
+add meshpoint (781.143, -179.557, 0)
+add meshpoint (783.94, -178.481, 0)
+add meshpoint (786.737, -177.405, 0)
+add meshpoint (789.534, -176.329, 0)
+add meshpoint (792.331, -175.253, 0)
+add meshpoint (795.128, -174.177, 0)
+add meshpoint (797.925, -173.102, 0)
+add meshpoint (800.722, -172.026, 0)
+add meshpoint (803.519, -170.95, 0)
+add meshpoint (806.316, -169.874, 0)
+add meshpoint (809.113, -168.798, 0)
+add meshpoint (811.91, -167.722, 0)
+add meshpoint (814.707, -166.646, 0)
+add meshpoint (817.504, -165.57, 0)
+add meshpoint (820.301, -164.494, 0)
+add meshpoint (823.098, -163.418, 0)
+add meshpoint (825.895, -162.342, 0)
+add meshpoint (828.692, -161.266, 0)
+add meshpoint (831.489, -160.19, 0)
+add meshpoint (834.286, -159.114, 0)
+add meshpoint (837.083, -158.038, 0)
+add meshpoint (839.88, -156.962, 0)
+add meshpoint (842.677, -155.886, 0)
+add meshpoint (845.474, -154.811, 0)
+add meshpoint (848.271, -153.735, 0)
+add meshpoint (851.068, -152.659, 0)
+add meshpoint (853.865, -151.583, 0)
+add meshpoint (856.662, -150.507, 0)
+add meshpoint (859.459, -149.431, 0)
+add meshpoint (862.256, -148.355, 0)
+add meshpoint (865.053, -147.279, 0)
+add meshpoint (867.85, -146.203, 0)
+add meshpoint (870.647, -145.127, 0)
+add meshpoint (873.444, -144.051, 0)
+add meshpoint (876.241, -142.975, 0)
+add meshpoint (879.038, -141.899, 0)
+add meshpoint (881.835, -140.823, 0)
+add meshpoint (884.632, -139.747, 0)
+add meshpoint (887.429, -138.671, 0)
+add meshpoint (890.226, -137.595, 0)
+add meshpoint (893.023, -136.52, 0)
+add meshpoint (895.82, -135.444, 0)
+add meshpoint (898.617, -134.368, 0)
+add meshpoint (901.414, -133.292, 0)
+add meshpoint (904.211, -132.216, 0)
+add meshpoint (907.008, -131.14, 0)
+add meshpoint (909.805, -130.064, 0)
+add meshpoint (912.602, -128.988, 0)
+add meshpoint (915.398, -127.912, 0)
+add meshpoint (918.195, -126.836, 0)
+add meshpoint (920.992, -125.76, 0)
+add meshpoint (923.789, -124.684, 0)
+add meshpoint (926.586, -123.608, 0)
+add meshpoint (929.383, -122.532, 0)
+add meshpoint (932.18, -121.456, 0)
+add meshpoint (934.977, -120.38, 0)
+add meshpoint (937.774, -119.305, 0)
+add meshpoint (940.571, -118.229, 0)
+add meshpoint (943.368, -117.153, 0)
+add meshpoint (946.165, -116.077, 0)
+add meshpoint (948.962, -115.001, 0)
+add meshpoint (951.759, -113.925, 0)
+add meshpoint (954.556, -112.849, 0)
+add meshpoint (957.353, -111.773, 0)
+add meshpoint (960.15, -110.697, 0)
+add meshpoint (962.947, -109.621, 0)
+add meshpoint (965.744, -108.545, 0)
+add meshpoint (968.541, -107.469, 0)
+add meshpoint (971.338, -106.393, 0)
+add meshpoint (974.135, -105.317, 0)
+add meshpoint (976.932, -104.241, 0)
+add meshpoint (979.729, -103.165, 0)
+add meshpoint (982.526, -102.089, 0)
+add meshpoint (985.323, -101.014, 0)
+add meshpoint (988.12, -99.9376, 0)
+add meshpoint (990.917, -98.8617, 0)
+add meshpoint (993.714, -97.7857, 0)
+add meshpoint (996.511, -96.7098, 0)
+add meshpoint (999.308, -95.6338, 0)
+add meshpoint (1002.11, -94.5579, 0)
+add meshpoint (1004.9, -93.482, 0)
+add meshpoint (1007.7, -92.406, 0)
+add meshpoint (1010.5, -91.3301, 0)
+add meshpoint (1013.29, -90.2541, 0)
+add meshpoint (1016.09, -89.1782, 0)
+add meshpoint (1018.89, -88.1023, 0)
+add meshpoint (1021.68, -87.0263, 0)
+add meshpoint (1024.48, -85.9504, 0)
+add meshpoint (1027.28, -84.8744, 0)
+add meshpoint (1030.08, -83.7985, 0)
+add meshpoint (1032.87, -82.7226, 0)
+add meshpoint (1035.67, -81.6466, 0)
+add meshpoint (1038.47, -80.5707, 0)
+add meshpoint (1041.26, -79.4947, 0)
+add meshpoint (1044.06, -78.4188, 0)
+add meshpoint (1046.86, -77.3429, 0)
+add meshpoint (1049.65, -76.2669, 0)
+add meshpoint (1052.45, -75.191, 0)
+add meshpoint (1055.25, -74.115, 0)
+add meshpoint (1058.05, -73.0391, 0)
+add meshpoint (1060.84, -71.9632, 0)
+add meshpoint (1063.64, -70.8872, 0)
+add meshpoint (1066.44, -69.8113, 0)
+add meshpoint (1069.23, -68.7353, 0)
+add meshpoint (1072.03, -67.6594, 0)
+add meshpoint (1074.83, -66.5835, 0)
+add meshpoint (1077.62, -65.5075, 0)
+add meshpoint (1080.42, -64.4316, 0)
+add meshpoint (1083.22, -63.3556, 0)
+add meshpoint (1086.02, -62.2797, 0)
+add meshpoint (1088.81, -61.2038, 0)
+add meshpoint (1091.61, -60.1278, 0)
+add meshpoint (1094.41, -59.0519, 0)
+add meshpoint (1097.2, -57.9759, 0)
+NP = 1868
+edge nr 31
+add meshpoint (2.45816, -200, 0)
+add meshpoint (5.43007, -200, 0)
+add meshpoint (8.42828, -200, 0)
+add meshpoint (11.4265, -200, 0)
+add meshpoint (14.4247, -200, 0)
+add meshpoint (17.4229, -200, 0)
+add meshpoint (20.4211, -200, 0)
+add meshpoint (23.4194, -200, 0)
+add meshpoint (26.4176, -200, 0)
+add meshpoint (29.4158, -200, 0)
+add meshpoint (32.414, -200, 0)
+add meshpoint (35.4122, -200, 0)
+add meshpoint (38.4104, -200, 0)
+add meshpoint (41.4087, -200, 0)
+add meshpoint (44.4069, -200, 0)
+add meshpoint (47.4051, -200, 0)
+add meshpoint (50.4033, -200, 0)
+add meshpoint (53.4015, -200, 0)
+add meshpoint (56.3997, -200, 0)
+add meshpoint (59.3979, -200, 0)
+add meshpoint (62.3962, -200, 0)
+add meshpoint (65.3944, -200, 0)
+add meshpoint (68.3926, -200, 0)
+add meshpoint (71.3908, -200, 0)
+add meshpoint (74.389, -200, 0)
+add meshpoint (77.3872, -200, 0)
+add meshpoint (80.3855, -200, 0)
+add meshpoint (83.3837, -200, 0)
+add meshpoint (86.3819, -200, 0)
+add meshpoint (89.3801, -200, 0)
+add meshpoint (92.3783, -200, 0)
+add meshpoint (95.3765, -200, 0)
+add meshpoint (98.3747, -200, 0)
+add meshpoint (101.373, -200, 0)
+add meshpoint (104.371, -200, 0)
+add meshpoint (107.369, -200, 0)
+add meshpoint (110.368, -200, 0)
+add meshpoint (113.366, -200, 0)
+add meshpoint (116.364, -200, 0)
+add meshpoint (119.362, -200, 0)
+add meshpoint (122.36, -200, 0)
+add meshpoint (125.359, -200, 0)
+add meshpoint (128.357, -200, 0)
+add meshpoint (131.355, -200, 0)
+add meshpoint (134.353, -200, 0)
+add meshpoint (137.352, -200, 0)
+add meshpoint (140.35, -200, 0)
+add meshpoint (143.348, -200, 0)
+add meshpoint (146.346, -200, 0)
+add meshpoint (149.344, -200, 0)
+add meshpoint (152.343, -200, 0)
+add meshpoint (155.341, -200, 0)
+add meshpoint (158.339, -200, 0)
+add meshpoint (161.337, -200, 0)
+add meshpoint (164.335, -200, 0)
+add meshpoint (167.334, -200, 0)
+add meshpoint (170.332, -200, 0)
+add meshpoint (173.33, -200, 0)
+add meshpoint (176.328, -200, 0)
+add meshpoint (179.327, -200, 0)
+add meshpoint (182.325, -200, 0)
+add meshpoint (185.323, -200, 0)
+add meshpoint (188.321, -200, 0)
+add meshpoint (191.319, -200, 0)
+add meshpoint (194.318, -200, 0)
+add meshpoint (197.316, -200, 0)
+add meshpoint (200.314, -200, 0)
+add meshpoint (203.312, -200, 0)
+add meshpoint (206.311, -200, 0)
+add meshpoint (209.309, -200, 0)
+add meshpoint (212.307, -200, 0)
+add meshpoint (215.305, -200, 0)
+add meshpoint (218.303, -200, 0)
+add meshpoint (221.302, -200, 0)
+add meshpoint (224.3, -200, 0)
+add meshpoint (227.298, -200, 0)
+add meshpoint (230.296, -200, 0)
+add meshpoint (233.294, -200, 0)
+add meshpoint (236.293, -200, 0)
+add meshpoint (239.291, -200, 0)
+add meshpoint (242.289, -200, 0)
+add meshpoint (245.287, -200, 0)
+add meshpoint (248.286, -200, 0)
+add meshpoint (251.284, -200, 0)
+add meshpoint (254.282, -200, 0)
+add meshpoint (257.28, -200, 0)
+add meshpoint (260.278, -200, 0)
+add meshpoint (263.277, -200, 0)
+add meshpoint (266.275, -200, 0)
+add meshpoint (269.273, -200, 0)
+add meshpoint (272.271, -200, 0)
+add meshpoint (275.269, -200, 0)
+add meshpoint (278.268, -200, 0)
+add meshpoint (281.266, -200, 0)
+add meshpoint (284.264, -200, 0)
+add meshpoint (287.262, -200, 0)
+add meshpoint (290.261, -200, 0)
+add meshpoint (293.259, -200, 0)
+add meshpoint (296.257, -200, 0)
+add meshpoint (299.255, -200, 0)
+add meshpoint (302.253, -200, 0)
+add meshpoint (305.252, -200, 0)
+add meshpoint (308.25, -200, 0)
+add meshpoint (311.248, -200, 0)
+add meshpoint (314.246, -200, 0)
+add meshpoint (317.244, -200, 0)
+add meshpoint (320.243, -200, 0)
+add meshpoint (323.241, -200, 0)
+add meshpoint (326.239, -200, 0)
+add meshpoint (329.237, -200, 0)
+add meshpoint (332.236, -200, 0)
+add meshpoint (335.234, -200, 0)
+add meshpoint (338.232, -200, 0)
+add meshpoint (341.23, -200, 0)
+add meshpoint (344.228, -200, 0)
+add meshpoint (347.227, -200, 0)
+add meshpoint (350.225, -200, 0)
+add meshpoint (353.223, -200, 0)
+add meshpoint (356.221, -200, 0)
+add meshpoint (359.219, -200, 0)
+add meshpoint (362.218, -200, 0)
+add meshpoint (365.216, -200, 0)
+add meshpoint (368.214, -200, 0)
+add meshpoint (371.212, -200, 0)
+add meshpoint (374.211, -200, 0)
+add meshpoint (377.209, -200, 0)
+add meshpoint (380.207, -200, 0)
+add meshpoint (383.205, -200, 0)
+add meshpoint (386.203, -200, 0)
+add meshpoint (389.202, -200, 0)
+add meshpoint (392.2, -200, 0)
+add meshpoint (395.198, -200, 0)
+add meshpoint (398.196, -200, 0)
+add meshpoint (401.195, -200, 0)
+add meshpoint (404.193, -200, 0)
+add meshpoint (407.191, -200, 0)
+add meshpoint (410.189, -200, 0)
+add meshpoint (413.187, -200, 0)
+add meshpoint (416.186, -200, 0)
+add meshpoint (419.184, -200, 0)
+add meshpoint (422.182, -200, 0)
+add meshpoint (425.18, -200, 0)
+add meshpoint (428.178, -200, 0)
+add meshpoint (431.177, -200, 0)
+add meshpoint (434.175, -200, 0)
+add meshpoint (437.173, -200, 0)
+add meshpoint (440.171, -200, 0)
+add meshpoint (443.17, -200, 0)
+add meshpoint (446.168, -200, 0)
+add meshpoint (449.166, -200, 0)
+add meshpoint (452.164, -200, 0)
+add meshpoint (455.162, -200, 0)
+add meshpoint (458.161, -200, 0)
+add meshpoint (461.159, -200, 0)
+add meshpoint (464.157, -200, 0)
+add meshpoint (467.155, -200, 0)
+add meshpoint (470.153, -200, 0)
+add meshpoint (473.152, -200, 0)
+add meshpoint (476.15, -200, 0)
+add meshpoint (479.148, -200, 0)
+add meshpoint (482.146, -200, 0)
+add meshpoint (485.145, -200, 0)
+add meshpoint (488.143, -200, 0)
+add meshpoint (491.141, -200, 0)
+add meshpoint (494.139, -200, 0)
+add meshpoint (497.137, -200, 0)
+add meshpoint (500.136, -200, 0)
+add meshpoint (503.134, -200, 0)
+add meshpoint (506.132, -200, 0)
+add meshpoint (509.13, -200, 0)
+add meshpoint (512.128, -200, 0)
+add meshpoint (515.127, -200, 0)
+add meshpoint (518.125, -200, 0)
+add meshpoint (521.123, -200, 0)
+add meshpoint (524.121, -200, 0)
+add meshpoint (527.12, -200, 0)
+add meshpoint (530.118, -200, 0)
+add meshpoint (533.116, -200, 0)
+add meshpoint (536.114, -200, 0)
+add meshpoint (539.112, -200, 0)
+add meshpoint (542.111, -200, 0)
+add meshpoint (545.109, -200, 0)
+add meshpoint (548.107, -200, 0)
+add meshpoint (551.105, -200, 0)
+add meshpoint (554.104, -200, 0)
+add meshpoint (557.102, -200, 0)
+add meshpoint (560.1, -200, 0)
+add meshpoint (563.098, -200, 0)
+add meshpoint (566.096, -200, 0)
+add meshpoint (569.095, -200, 0)
+add meshpoint (572.093, -200, 0)
+add meshpoint (575.091, -200, 0)
+add meshpoint (578.089, -200, 0)
+add meshpoint (581.087, -200, 0)
+add meshpoint (584.086, -200, 0)
+add meshpoint (587.084, -200, 0)
+add meshpoint (590.082, -200, 0)
+add meshpoint (593.08, -200, 0)
+add meshpoint (596.079, -200, 0)
+add meshpoint (599.077, -200, 0)
+add meshpoint (602.075, -200, 0)
+add meshpoint (605.073, -200, 0)
+add meshpoint (608.071, -200, 0)
+add meshpoint (611.07, -200, 0)
+add meshpoint (614.068, -200, 0)
+add meshpoint (617.066, -200, 0)
+add meshpoint (620.064, -200, 0)
+add meshpoint (623.062, -200, 0)
+add meshpoint (626.061, -200, 0)
+add meshpoint (629.059, -200, 0)
+add meshpoint (632.057, -200, 0)
+add meshpoint (635.055, -200, 0)
+add meshpoint (638.054, -200, 0)
+add meshpoint (641.052, -200, 0)
+add meshpoint (644.05, -200, 0)
+add meshpoint (647.048, -200, 0)
+add meshpoint (650.046, -200, 0)
+add meshpoint (653.045, -200, 0)
+add meshpoint (656.043, -200, 0)
+add meshpoint (659.041, -200, 0)
+add meshpoint (662.039, -200, 0)
+add meshpoint (665.037, -200, 0)
+add meshpoint (668.036, -200, 0)
+add meshpoint (671.034, -200, 0)
+add meshpoint (674.032, -200, 0)
+add meshpoint (677.03, -200, 0)
+add meshpoint (680.029, -200, 0)
+add meshpoint (683.027, -200, 0)
+add meshpoint (686.025, -200, 0)
+add meshpoint (689.023, -200, 0)
+add meshpoint (692.021, -200, 0)
+add meshpoint (695.02, -200, 0)
+add meshpoint (698.018, -200, 0)
+add meshpoint (701.016, -200, 0)
+add meshpoint (704.014, -200, 0)
+add meshpoint (707.012, -200, 0)
+add meshpoint (710.011, -200, 0)
+add meshpoint (713.009, -200, 0)
+add meshpoint (716.007, -200, 0)
+add meshpoint (719.005, -200, 0)
+add meshpoint (722.004, -200, 0)
+add meshpoint (725.002, -200, 0)
+NP = 2110
+edge nr 32
+add meshpoint (-5.67365e-33, -51.038, 0)
+add meshpoint (-1.1859e-32, -51.9952, 0)
+add meshpoint (-1.90573e-32, -53.1091, 0)
+add meshpoint (-2.92396e-32, -54.6848, 0)
+add meshpoint (-4.14416e-32, -56.573, 0)
+add meshpoint (-5.6241e-32, -58.8632, 0)
+add meshpoint (-7.48394e-32, -61.7413, 0)
+add meshpoint (-9.41841e-32, -64.7349, 0)
+add meshpoint (-1.13529e-31, -67.7285, 0)
+add meshpoint (-1.32873e-31, -70.722, 0)
+add meshpoint (-1.52218e-31, -73.7156, 0)
+add meshpoint (-1.71563e-31, -76.7092, 0)
+add meshpoint (-1.90908e-31, -79.7027, 0)
+add meshpoint (-2.10252e-31, -82.6963, 0)
+add meshpoint (-2.29597e-31, -85.6899, 0)
+add meshpoint (-2.48942e-31, -88.6834, 0)
+add meshpoint (-2.68286e-31, -91.677, 0)
+add meshpoint (-2.87631e-31, -94.6706, 0)
+add meshpoint (-3.06976e-31, -97.6641, 0)
+add meshpoint (-3.2632e-31, -100.658, 0)
+add meshpoint (-3.45665e-31, -103.651, 0)
+add meshpoint (-3.6501e-31, -106.645, 0)
+add meshpoint (-3.84354e-31, -109.638, 0)
+add meshpoint (-4.03699e-31, -112.632, 0)
+add meshpoint (-4.23044e-31, -115.626, 0)
+add meshpoint (-4.42388e-31, -118.619, 0)
+add meshpoint (-4.61733e-31, -121.613, 0)
+add meshpoint (-4.81078e-31, -124.606, 0)
+add meshpoint (-5.00422e-31, -127.6, 0)
+add meshpoint (-5.19767e-31, -130.593, 0)
+add meshpoint (-5.39112e-31, -133.587, 0)
+add meshpoint (-5.58457e-31, -136.581, 0)
+add meshpoint (-5.77801e-31, -139.574, 0)
+add meshpoint (-5.97146e-31, -142.568, 0)
+add meshpoint (-6.16491e-31, -145.561, 0)
+add meshpoint (-6.35835e-31, -148.555, 0)
+add meshpoint (-6.5518e-31, -151.548, 0)
+add meshpoint (-6.74525e-31, -154.542, 0)
+add meshpoint (-6.93869e-31, -157.536, 0)
+add meshpoint (-7.13214e-31, -160.529, 0)
+add meshpoint (-7.32559e-31, -163.523, 0)
+add meshpoint (-7.51903e-31, -166.516, 0)
+add meshpoint (-7.71248e-31, -169.51, 0)
+add meshpoint (-7.90593e-31, -172.503, 0)
+add meshpoint (-8.09937e-31, -175.497, 0)
+add meshpoint (-8.29282e-31, -178.491, 0)
+add meshpoint (-8.48627e-31, -181.484, 0)
+add meshpoint (-8.67971e-31, -184.478, 0)
+add meshpoint (-8.87316e-31, -187.471, 0)
+add meshpoint (-9.06661e-31, -190.465, 0)
+add meshpoint (-9.25987e-31, -193.456, 0)
+add meshpoint (-9.43281e-31, -196.132, 0)
+add meshpoint (-9.56839e-31, -198.23, 0)
+NP = 2163
+edge nr 33
+add meshpoint (-1.86561, -50.16, 0)
+add meshpoint (-1.6901, -50.16, 0)
+add meshpoint (-1.44906, -50.16, 0)
+add meshpoint (-1.13607, -50.16, 0)
+add meshpoint (-0.70192, -50.16, 0)
+NP = 2168
+edge nr 34
+NP = 2168
+edge nr 35
+add meshpoint (-0.697788, -50, 0)
+add meshpoint (-1.12967, -50, 0)
+add meshpoint (-1.44221, -50, 0)
+add meshpoint (-1.69186, -50, 0)
+add meshpoint (-1.88243, -50, 0)
+NP = 2173
+edge nr 36
+add meshpoint (0, -22.3905, 0)
+add meshpoint (0, -25.281, 0)
+add meshpoint (0, -28.1715, 0)
+add meshpoint (0, -31.062, 0)
+add meshpoint (0, -33.9525, 0)
+add meshpoint (0, -36.843, 0)
+add meshpoint (0, -39.7335, 0)
+add meshpoint (0, -42.39, 0)
+add meshpoint (0, -44.4982, 0)
+add meshpoint (0, -46.3337, 0)
+add meshpoint (0, -48.0431, 0)
+add meshpoint (0, -49.1188, 0)
+NP = 2185
+edge nr 37
+add meshpoint (-17.1429, -19.5, 0)
+add meshpoint (-14.2857, -19.5, 0)
+add meshpoint (-11.4286, -19.5, 0)
+add meshpoint (-8.57143, -19.5, 0)
+add meshpoint (-5.71429, -19.5, 0)
+add meshpoint (-2.85714, -19.5, 0)
+NP = 2191
+edge nr 38
+add meshpoint (-20, -3.25, 0)
+add meshpoint (-20, -6.5, 0)
+add meshpoint (-20, -9.75, 0)
+add meshpoint (-20, -13, 0)
+add meshpoint (-20, -16.25, 0)
+NP = 2196
+edge nr 39
+NP = 2196
+edge nr 40
+NP = 2196
+edge nr 41
+add meshpoint (1105, -57.3696, 0)
+add meshpoint (1105, -54.4054, 0)
+add meshpoint (1105, -51.4412, 0)
+add meshpoint (1105, -48.477, 0)
+add meshpoint (1105, -45.5128, 0)
+add meshpoint (1105, -42.5485, 0)
+add meshpoint (1105, -39.5843, 0)
+add meshpoint (1105, -36.6201, 0)
+add meshpoint (1105, -33.6559, 0)
+add meshpoint (1105, -30.6917, 0)
+add meshpoint (1105, -27.7275, 0)
+add meshpoint (1105, -24.7633, 0)
+add meshpoint (1105, -21.7991, 0)
+add meshpoint (1105, -18.8349, 0)
+add meshpoint (1105, -15.8707, 0)
+add meshpoint (1105, -12.9065, 0)
+add meshpoint (1105, -9.94226, 0)
+add meshpoint (1105, -6.97805, 0)
+add meshpoint (1105, -4.04847, 0)
+add meshpoint (1105, -1.75083, 0)
+NP = 2216
+edge nr 42
+add meshpoint (731.735, -203.92, 0)
+add meshpoint (734.542, -202.841, 0)
+add meshpoint (737.348, -201.761, 0)
+add meshpoint (740.155, -200.682, 0)
+add meshpoint (742.961, -199.602, 0)
+add meshpoint (745.768, -198.522, 0)
+add meshpoint (748.574, -197.443, 0)
+add meshpoint (751.381, -196.363, 0)
+add meshpoint (754.187, -195.284, 0)
+add meshpoint (756.994, -194.204, 0)
+add meshpoint (759.8, -193.124, 0)
+add meshpoint (762.607, -192.045, 0)
+add meshpoint (765.413, -190.965, 0)
+add meshpoint (768.22, -189.886, 0)
+add meshpoint (771.026, -188.806, 0)
+add meshpoint (773.833, -187.726, 0)
+add meshpoint (776.639, -186.647, 0)
+add meshpoint (779.446, -185.567, 0)
+add meshpoint (782.252, -184.488, 0)
+add meshpoint (785.059, -183.408, 0)
+add meshpoint (787.865, -182.328, 0)
+add meshpoint (790.672, -181.249, 0)
+add meshpoint (793.478, -180.169, 0)
+add meshpoint (796.285, -179.09, 0)
+add meshpoint (799.091, -178.01, 0)
+add meshpoint (801.898, -176.93, 0)
+add meshpoint (804.704, -175.851, 0)
+add meshpoint (807.511, -174.771, 0)
+add meshpoint (810.317, -173.692, 0)
+add meshpoint (813.124, -172.612, 0)
+add meshpoint (815.93, -171.532, 0)
+add meshpoint (818.737, -170.453, 0)
+add meshpoint (821.543, -169.373, 0)
+add meshpoint (824.35, -168.294, 0)
+add meshpoint (827.156, -167.214, 0)
+add meshpoint (829.963, -166.134, 0)
+add meshpoint (832.769, -165.055, 0)
+add meshpoint (835.576, -163.975, 0)
+add meshpoint (838.382, -162.896, 0)
+add meshpoint (841.189, -161.816, 0)
+add meshpoint (843.995, -160.736, 0)
+add meshpoint (846.802, -159.657, 0)
+add meshpoint (849.608, -158.577, 0)
+add meshpoint (852.415, -157.498, 0)
+add meshpoint (855.221, -156.418, 0)
+add meshpoint (858.028, -155.338, 0)
+add meshpoint (860.834, -154.259, 0)
+add meshpoint (863.641, -153.179, 0)
+add meshpoint (866.447, -152.1, 0)
+add meshpoint (869.254, -151.02, 0)
+add meshpoint (872.06, -149.94, 0)
+add meshpoint (874.867, -148.861, 0)
+add meshpoint (877.673, -147.781, 0)
+add meshpoint (880.48, -146.702, 0)
+add meshpoint (883.286, -145.622, 0)
+add meshpoint (886.093, -144.542, 0)
+add meshpoint (888.899, -143.463, 0)
+add meshpoint (891.706, -142.383, 0)
+add meshpoint (894.512, -141.304, 0)
+add meshpoint (897.319, -140.224, 0)
+add meshpoint (900.125, -139.144, 0)
+add meshpoint (902.932, -138.065, 0)
+add meshpoint (905.738, -136.985, 0)
+add meshpoint (908.545, -135.906, 0)
+add meshpoint (911.351, -134.826, 0)
+add meshpoint (914.158, -133.746, 0)
+add meshpoint (916.964, -132.667, 0)
+add meshpoint (919.771, -131.587, 0)
+add meshpoint (922.577, -130.508, 0)
+add meshpoint (925.384, -129.428, 0)
+add meshpoint (928.19, -128.349, 0)
+add meshpoint (930.997, -127.269, 0)
+add meshpoint (933.803, -126.189, 0)
+add meshpoint (936.61, -125.11, 0)
+add meshpoint (939.416, -124.03, 0)
+add meshpoint (942.223, -122.951, 0)
+add meshpoint (945.029, -121.871, 0)
+add meshpoint (947.836, -120.791, 0)
+add meshpoint (950.642, -119.712, 0)
+add meshpoint (953.449, -118.632, 0)
+add meshpoint (956.255, -117.553, 0)
+add meshpoint (959.062, -116.473, 0)
+add meshpoint (961.868, -115.393, 0)
+add meshpoint (964.675, -114.314, 0)
+add meshpoint (967.481, -113.234, 0)
+add meshpoint (970.288, -112.155, 0)
+add meshpoint (973.094, -111.075, 0)
+add meshpoint (975.901, -109.995, 0)
+add meshpoint (978.707, -108.916, 0)
+add meshpoint (981.514, -107.836, 0)
+add meshpoint (984.32, -106.757, 0)
+add meshpoint (987.127, -105.677, 0)
+add meshpoint (989.933, -104.597, 0)
+add meshpoint (992.74, -103.518, 0)
+add meshpoint (995.546, -102.438, 0)
+add meshpoint (998.353, -101.359, 0)
+add meshpoint (1001.16, -100.279, 0)
+add meshpoint (1003.97, -99.1993, 0)
+add meshpoint (1006.77, -98.1197, 0)
+add meshpoint (1009.58, -97.0401, 0)
+add meshpoint (1012.39, -95.9605, 0)
+add meshpoint (1015.19, -94.8809, 0)
+add meshpoint (1018, -93.8014, 0)
+add meshpoint (1020.8, -92.7218, 0)
+add meshpoint (1023.61, -91.6422, 0)
+add meshpoint (1026.42, -90.5626, 0)
+add meshpoint (1029.22, -89.483, 0)
+add meshpoint (1032.03, -88.4034, 0)
+add meshpoint (1034.84, -87.3238, 0)
+add meshpoint (1037.64, -86.2442, 0)
+add meshpoint (1040.45, -85.1646, 0)
+add meshpoint (1043.26, -84.085, 0)
+add meshpoint (1046.06, -83.0054, 0)
+add meshpoint (1048.87, -81.9258, 0)
+add meshpoint (1051.68, -80.8462, 0)
+add meshpoint (1054.48, -79.7666, 0)
+add meshpoint (1057.29, -78.687, 0)
+add meshpoint (1060.1, -77.6074, 0)
+add meshpoint (1062.9, -76.5278, 0)
+add meshpoint (1065.71, -75.4482, 0)
+add meshpoint (1068.52, -74.3686, 0)
+add meshpoint (1071.32, -73.289, 0)
+add meshpoint (1074.13, -72.2094, 0)
+add meshpoint (1076.93, -71.1298, 0)
+add meshpoint (1079.74, -70.0502, 0)
+add meshpoint (1082.55, -68.9706, 0)
+add meshpoint (1085.35, -67.891, 0)
+add meshpoint (1088.16, -66.8114, 0)
+add meshpoint (1090.97, -65.7318, 0)
+add meshpoint (1093.77, -64.6522, 0)
+add meshpoint (1096.58, -63.5726, 0)
+add meshpoint (1099.39, -62.493, 0)
+add meshpoint (1102.19, -61.4134, 0)
+NP = 2349
+edge nr 43
+add meshpoint (2.19199, -205, 0)
+add meshpoint (4.91851, -205, 0)
+add meshpoint (7.9227, -205, 0)
+add meshpoint (10.9269, -205, 0)
+add meshpoint (13.9311, -205, 0)
+add meshpoint (16.9353, -205, 0)
+add meshpoint (19.9395, -205, 0)
+add meshpoint (22.9437, -205, 0)
+add meshpoint (25.9478, -205, 0)
+add meshpoint (28.952, -205, 0)
+add meshpoint (31.9562, -205, 0)
+add meshpoint (34.9604, -205, 0)
+add meshpoint (37.9646, -205, 0)
+add meshpoint (40.9688, -205, 0)
+add meshpoint (43.973, -205, 0)
+add meshpoint (46.9772, -205, 0)
+add meshpoint (49.9814, -205, 0)
+add meshpoint (52.9856, -205, 0)
+add meshpoint (55.9898, -205, 0)
+add meshpoint (58.9939, -205, 0)
+add meshpoint (61.9981, -205, 0)
+add meshpoint (65.0023, -205, 0)
+add meshpoint (68.0065, -205, 0)
+add meshpoint (71.0107, -205, 0)
+add meshpoint (74.0149, -205, 0)
+add meshpoint (77.0191, -205, 0)
+add meshpoint (80.0233, -205, 0)
+add meshpoint (83.0275, -205, 0)
+add meshpoint (86.0317, -205, 0)
+add meshpoint (89.0359, -205, 0)
+add meshpoint (92.04, -205, 0)
+add meshpoint (95.0442, -205, 0)
+add meshpoint (98.0484, -205, 0)
+add meshpoint (101.053, -205, 0)
+add meshpoint (104.057, -205, 0)
+add meshpoint (107.061, -205, 0)
+add meshpoint (110.065, -205, 0)
+add meshpoint (113.069, -205, 0)
+add meshpoint (116.074, -205, 0)
+add meshpoint (119.078, -205, 0)
+add meshpoint (122.082, -205, 0)
+add meshpoint (125.086, -205, 0)
+add meshpoint (128.09, -205, 0)
+add meshpoint (131.095, -205, 0)
+add meshpoint (134.099, -205, 0)
+add meshpoint (137.103, -205, 0)
+add meshpoint (140.107, -205, 0)
+add meshpoint (143.111, -205, 0)
+add meshpoint (146.115, -205, 0)
+add meshpoint (149.12, -205, 0)
+add meshpoint (152.124, -205, 0)
+add meshpoint (155.128, -205, 0)
+add meshpoint (158.132, -205, 0)
+add meshpoint (161.136, -205, 0)
+add meshpoint (164.141, -205, 0)
+add meshpoint (167.145, -205, 0)
+add meshpoint (170.149, -205, 0)
+add meshpoint (173.153, -205, 0)
+add meshpoint (176.157, -205, 0)
+add meshpoint (179.162, -205, 0)
+add meshpoint (182.166, -205, 0)
+add meshpoint (185.17, -205, 0)
+add meshpoint (188.174, -205, 0)
+add meshpoint (191.178, -205, 0)
+add meshpoint (194.183, -205, 0)
+add meshpoint (197.187, -205, 0)
+add meshpoint (200.191, -205, 0)
+add meshpoint (203.195, -205, 0)
+add meshpoint (206.199, -205, 0)
+add meshpoint (209.203, -205, 0)
+add meshpoint (212.208, -205, 0)
+add meshpoint (215.212, -205, 0)
+add meshpoint (218.216, -205, 0)
+add meshpoint (221.22, -205, 0)
+add meshpoint (224.224, -205, 0)
+add meshpoint (227.229, -205, 0)
+add meshpoint (230.233, -205, 0)
+add meshpoint (233.237, -205, 0)
+add meshpoint (236.241, -205, 0)
+add meshpoint (239.245, -205, 0)
+add meshpoint (242.25, -205, 0)
+add meshpoint (245.254, -205, 0)
+add meshpoint (248.258, -205, 0)
+add meshpoint (251.262, -205, 0)
+add meshpoint (254.266, -205, 0)
+add meshpoint (257.271, -205, 0)
+add meshpoint (260.275, -205, 0)
+add meshpoint (263.279, -205, 0)
+add meshpoint (266.283, -205, 0)
+add meshpoint (269.287, -205, 0)
+add meshpoint (272.292, -205, 0)
+add meshpoint (275.296, -205, 0)
+add meshpoint (278.3, -205, 0)
+add meshpoint (281.304, -205, 0)
+add meshpoint (284.308, -205, 0)
+add meshpoint (287.312, -205, 0)
+add meshpoint (290.317, -205, 0)
+add meshpoint (293.321, -205, 0)
+add meshpoint (296.325, -205, 0)
+add meshpoint (299.329, -205, 0)
+add meshpoint (302.333, -205, 0)
+add meshpoint (305.338, -205, 0)
+add meshpoint (308.342, -205, 0)
+add meshpoint (311.346, -205, 0)
+add meshpoint (314.35, -205, 0)
+add meshpoint (317.354, -205, 0)
+add meshpoint (320.359, -205, 0)
+add meshpoint (323.363, -205, 0)
+add meshpoint (326.367, -205, 0)
+add meshpoint (329.371, -205, 0)
+add meshpoint (332.375, -205, 0)
+add meshpoint (335.38, -205, 0)
+add meshpoint (338.384, -205, 0)
+add meshpoint (341.388, -205, 0)
+add meshpoint (344.392, -205, 0)
+add meshpoint (347.396, -205, 0)
+add meshpoint (350.4, -205, 0)
+add meshpoint (353.405, -205, 0)
+add meshpoint (356.409, -205, 0)
+add meshpoint (359.413, -205, 0)
+add meshpoint (362.417, -205, 0)
+add meshpoint (365.421, -205, 0)
+add meshpoint (368.426, -205, 0)
+add meshpoint (371.43, -205, 0)
+add meshpoint (374.434, -205, 0)
+add meshpoint (377.438, -205, 0)
+add meshpoint (380.442, -205, 0)
+add meshpoint (383.447, -205, 0)
+add meshpoint (386.451, -205, 0)
+add meshpoint (389.455, -205, 0)
+add meshpoint (392.459, -205, 0)
+add meshpoint (395.463, -205, 0)
+add meshpoint (398.468, -205, 0)
+add meshpoint (401.472, -205, 0)
+add meshpoint (404.476, -205, 0)
+add meshpoint (407.48, -205, 0)
+add meshpoint (410.484, -205, 0)
+add meshpoint (413.488, -205, 0)
+add meshpoint (416.493, -205, 0)
+add meshpoint (419.497, -205, 0)
+add meshpoint (422.501, -205, 0)
+add meshpoint (425.505, -205, 0)
+add meshpoint (428.509, -205, 0)
+add meshpoint (431.514, -205, 0)
+add meshpoint (434.518, -205, 0)
+add meshpoint (437.522, -205, 0)
+add meshpoint (440.526, -205, 0)
+add meshpoint (443.53, -205, 0)
+add meshpoint (446.535, -205, 0)
+add meshpoint (449.539, -205, 0)
+add meshpoint (452.543, -205, 0)
+add meshpoint (455.547, -205, 0)
+add meshpoint (458.551, -205, 0)
+add meshpoint (461.556, -205, 0)
+add meshpoint (464.56, -205, 0)
+add meshpoint (467.564, -205, 0)
+add meshpoint (470.568, -205, 0)
+add meshpoint (473.572, -205, 0)
+add meshpoint (476.576, -205, 0)
+add meshpoint (479.581, -205, 0)
+add meshpoint (482.585, -205, 0)
+add meshpoint (485.589, -205, 0)
+add meshpoint (488.593, -205, 0)
+add meshpoint (491.597, -205, 0)
+add meshpoint (494.602, -205, 0)
+add meshpoint (497.606, -205, 0)
+add meshpoint (500.61, -205, 0)
+add meshpoint (503.614, -205, 0)
+add meshpoint (506.618, -205, 0)
+add meshpoint (509.623, -205, 0)
+add meshpoint (512.627, -205, 0)
+add meshpoint (515.631, -205, 0)
+add meshpoint (518.635, -205, 0)
+add meshpoint (521.639, -205, 0)
+add meshpoint (524.644, -205, 0)
+add meshpoint (527.648, -205, 0)
+add meshpoint (530.652, -205, 0)
+add meshpoint (533.656, -205, 0)
+add meshpoint (536.66, -205, 0)
+add meshpoint (539.664, -205, 0)
+add meshpoint (542.669, -205, 0)
+add meshpoint (545.673, -205, 0)
+add meshpoint (548.677, -205, 0)
+add meshpoint (551.681, -205, 0)
+add meshpoint (554.685, -205, 0)
+add meshpoint (557.69, -205, 0)
+add meshpoint (560.694, -205, 0)
+add meshpoint (563.698, -205, 0)
+add meshpoint (566.702, -205, 0)
+add meshpoint (569.706, -205, 0)
+add meshpoint (572.711, -205, 0)
+add meshpoint (575.715, -205, 0)
+add meshpoint (578.719, -205, 0)
+add meshpoint (581.723, -205, 0)
+add meshpoint (584.727, -205, 0)
+add meshpoint (587.732, -205, 0)
+add meshpoint (590.736, -205, 0)
+add meshpoint (593.74, -205, 0)
+add meshpoint (596.744, -205, 0)
+add meshpoint (599.748, -205, 0)
+add meshpoint (602.753, -205, 0)
+add meshpoint (605.757, -205, 0)
+add meshpoint (608.761, -205, 0)
+add meshpoint (611.765, -205, 0)
+add meshpoint (614.769, -205, 0)
+add meshpoint (617.773, -205, 0)
+add meshpoint (620.778, -205, 0)
+add meshpoint (623.782, -205, 0)
+add meshpoint (626.786, -205, 0)
+add meshpoint (629.79, -205, 0)
+add meshpoint (632.794, -205, 0)
+add meshpoint (635.799, -205, 0)
+add meshpoint (638.803, -205, 0)
+add meshpoint (641.807, -205, 0)
+add meshpoint (644.811, -205, 0)
+add meshpoint (647.815, -205, 0)
+add meshpoint (650.82, -205, 0)
+add meshpoint (653.824, -205, 0)
+add meshpoint (656.828, -205, 0)
+add meshpoint (659.832, -205, 0)
+add meshpoint (662.836, -205, 0)
+add meshpoint (665.841, -205, 0)
+add meshpoint (668.845, -205, 0)
+add meshpoint (671.849, -205, 0)
+add meshpoint (674.853, -205, 0)
+add meshpoint (677.857, -205, 0)
+add meshpoint (680.861, -205, 0)
+add meshpoint (683.866, -205, 0)
+add meshpoint (686.87, -205, 0)
+add meshpoint (689.874, -205, 0)
+add meshpoint (692.878, -205, 0)
+add meshpoint (695.882, -205, 0)
+add meshpoint (698.887, -205, 0)
+add meshpoint (701.891, -205, 0)
+add meshpoint (704.895, -205, 0)
+add meshpoint (707.899, -205, 0)
+add meshpoint (710.903, -205, 0)
+add meshpoint (713.908, -205, 0)
+add meshpoint (716.912, -205, 0)
+add meshpoint (719.916, -205, 0)
+add meshpoint (722.92, -205, 0)
+add meshpoint (725.924, -205, 0)
+NP = 2591
+edge nr 44
+add meshpoint (-6.47226e-31, -201.658, 0)
+add meshpoint (-3.23613e-31, -203.329, 0)
+NP = 2593
+edge nr 45
+NP = 2593
+edge nr 46
+NP = 2593
+edge nr 47
+NP = 2593
+edge nr 48
+NP = 2593
+edge nr 49
+add meshpoint (1135, -77.9389, 0)
+add meshpoint (1135, -74.9413, 0)
+add meshpoint (1135, -71.9436, 0)
+add meshpoint (1135, -68.946, 0)
+add meshpoint (1135, -65.9483, 0)
+add meshpoint (1135, -62.9507, 0)
+add meshpoint (1135, -59.953, 0)
+add meshpoint (1135, -56.9554, 0)
+add meshpoint (1135, -53.9577, 0)
+add meshpoint (1135, -50.9601, 0)
+add meshpoint (1135, -47.9624, 0)
+add meshpoint (1135, -44.9648, 0)
+add meshpoint (1135, -41.9671, 0)
+add meshpoint (1135, -38.9695, 0)
+add meshpoint (1135, -35.9718, 0)
+add meshpoint (1135, -32.9742, 0)
+add meshpoint (1135, -29.9765, 0)
+add meshpoint (1135, -26.9789, 0)
+add meshpoint (1135, -23.9812, 0)
+add meshpoint (1135, -20.9836, 0)
+add meshpoint (1135, -17.9859, 0)
+add meshpoint (1135, -14.9883, 0)
+add meshpoint (1135, -11.9906, 0)
+add meshpoint (1135, -8.99295, 0)
+add meshpoint (1135, -5.9953, 0)
+add meshpoint (1135, -2.99765, 0)
+NP = 2619
+edge nr 50
+add meshpoint (737.3, -233.923, 0)
+add meshpoint (740.101, -232.845, 0)
+add meshpoint (742.902, -231.768, 0)
+add meshpoint (745.703, -230.691, 0)
+add meshpoint (748.503, -229.613, 0)
+add meshpoint (751.304, -228.536, 0)
+add meshpoint (754.105, -227.458, 0)
+add meshpoint (756.905, -226.381, 0)
+add meshpoint (759.706, -225.304, 0)
+add meshpoint (762.507, -224.226, 0)
+add meshpoint (765.307, -223.149, 0)
+add meshpoint (768.108, -222.072, 0)
+add meshpoint (770.909, -220.994, 0)
+add meshpoint (773.71, -219.917, 0)
+add meshpoint (776.51, -218.84, 0)
+add meshpoint (779.311, -217.762, 0)
+add meshpoint (782.112, -216.685, 0)
+add meshpoint (784.912, -215.607, 0)
+add meshpoint (787.713, -214.53, 0)
+add meshpoint (790.514, -213.453, 0)
+add meshpoint (793.314, -212.375, 0)
+add meshpoint (796.115, -211.298, 0)
+add meshpoint (798.916, -210.221, 0)
+add meshpoint (801.717, -209.143, 0)
+add meshpoint (804.517, -208.066, 0)
+add meshpoint (807.318, -206.988, 0)
+add meshpoint (810.119, -205.911, 0)
+add meshpoint (812.919, -204.834, 0)
+add meshpoint (815.72, -203.756, 0)
+add meshpoint (818.521, -202.679, 0)
+add meshpoint (821.321, -201.602, 0)
+add meshpoint (824.122, -200.524, 0)
+add meshpoint (826.923, -199.447, 0)
+add meshpoint (829.724, -198.37, 0)
+add meshpoint (832.524, -197.292, 0)
+add meshpoint (835.325, -196.215, 0)
+add meshpoint (838.126, -195.137, 0)
+add meshpoint (840.926, -194.06, 0)
+add meshpoint (843.727, -192.983, 0)
+add meshpoint (846.528, -191.905, 0)
+add meshpoint (849.328, -190.828, 0)
+add meshpoint (852.129, -189.751, 0)
+add meshpoint (854.93, -188.673, 0)
+add meshpoint (857.731, -187.596, 0)
+add meshpoint (860.531, -186.519, 0)
+add meshpoint (863.332, -185.441, 0)
+add meshpoint (866.133, -184.364, 0)
+add meshpoint (868.933, -183.286, 0)
+add meshpoint (871.734, -182.209, 0)
+add meshpoint (874.535, -181.132, 0)
+add meshpoint (877.335, -180.054, 0)
+add meshpoint (880.136, -178.977, 0)
+add meshpoint (882.937, -177.9, 0)
+add meshpoint (885.738, -176.822, 0)
+add meshpoint (888.538, -175.745, 0)
+add meshpoint (891.339, -174.667, 0)
+add meshpoint (894.14, -173.59, 0)
+add meshpoint (896.94, -172.513, 0)
+add meshpoint (899.741, -171.435, 0)
+add meshpoint (902.542, -170.358, 0)
+add meshpoint (905.342, -169.281, 0)
+add meshpoint (908.143, -168.203, 0)
+add meshpoint (910.944, -167.126, 0)
+add meshpoint (913.745, -166.049, 0)
+add meshpoint (916.545, -164.971, 0)
+add meshpoint (919.346, -163.894, 0)
+add meshpoint (922.147, -162.816, 0)
+add meshpoint (924.947, -161.739, 0)
+add meshpoint (927.748, -160.662, 0)
+add meshpoint (930.549, -159.584, 0)
+add meshpoint (933.349, -158.507, 0)
+add meshpoint (936.15, -157.43, 0)
+add meshpoint (938.951, -156.352, 0)
+add meshpoint (941.752, -155.275, 0)
+add meshpoint (944.552, -154.198, 0)
+add meshpoint (947.353, -153.12, 0)
+add meshpoint (950.154, -152.043, 0)
+add meshpoint (952.954, -150.965, 0)
+add meshpoint (955.755, -149.888, 0)
+add meshpoint (958.556, -148.811, 0)
+add meshpoint (961.357, -147.733, 0)
+add meshpoint (964.157, -146.656, 0)
+add meshpoint (966.958, -145.579, 0)
+add meshpoint (969.759, -144.501, 0)
+add meshpoint (972.559, -143.424, 0)
+add meshpoint (975.36, -142.346, 0)
+add meshpoint (978.161, -141.269, 0)
+add meshpoint (980.961, -140.192, 0)
+add meshpoint (983.762, -139.114, 0)
+add meshpoint (986.563, -138.037, 0)
+add meshpoint (989.364, -136.96, 0)
+add meshpoint (992.164, -135.882, 0)
+add meshpoint (994.965, -134.805, 0)
+add meshpoint (997.766, -133.728, 0)
+add meshpoint (1000.57, -132.65, 0)
+add meshpoint (1003.37, -131.573, 0)
+add meshpoint (1006.17, -130.495, 0)
+add meshpoint (1008.97, -129.418, 0)
+add meshpoint (1011.77, -128.341, 0)
+add meshpoint (1014.57, -127.263, 0)
+add meshpoint (1017.37, -126.186, 0)
+add meshpoint (1020.17, -125.109, 0)
+add meshpoint (1022.97, -124.031, 0)
+add meshpoint (1025.77, -122.954, 0)
+add meshpoint (1028.57, -121.877, 0)
+add meshpoint (1031.37, -120.799, 0)
+add meshpoint (1034.17, -119.722, 0)
+add meshpoint (1036.98, -118.644, 0)
+add meshpoint (1039.78, -117.567, 0)
+add meshpoint (1042.58, -116.49, 0)
+add meshpoint (1045.38, -115.412, 0)
+add meshpoint (1048.18, -114.335, 0)
+add meshpoint (1050.98, -113.258, 0)
+add meshpoint (1053.78, -112.18, 0)
+add meshpoint (1056.58, -111.103, 0)
+add meshpoint (1059.38, -110.025, 0)
+add meshpoint (1062.18, -108.948, 0)
+add meshpoint (1064.98, -107.871, 0)
+add meshpoint (1067.78, -106.793, 0)
+add meshpoint (1070.58, -105.716, 0)
+add meshpoint (1073.38, -104.639, 0)
+add meshpoint (1076.19, -103.561, 0)
+add meshpoint (1078.99, -102.484, 0)
+add meshpoint (1081.79, -101.407, 0)
+add meshpoint (1084.59, -100.329, 0)
+add meshpoint (1087.39, -99.2518, 0)
+add meshpoint (1090.19, -98.1744, 0)
+add meshpoint (1092.99, -97.0971, 0)
+add meshpoint (1095.79, -96.0197, 0)
+add meshpoint (1098.59, -94.9423, 0)
+add meshpoint (1101.39, -93.865, 0)
+add meshpoint (1104.19, -92.7876, 0)
+add meshpoint (1106.99, -91.7102, 0)
+add meshpoint (1109.79, -90.6329, 0)
+add meshpoint (1112.59, -89.5555, 0)
+add meshpoint (1115.4, -88.4781, 0)
+add meshpoint (1118.2, -87.4008, 0)
+add meshpoint (1121, -86.3234, 0)
+add meshpoint (1123.8, -85.246, 0)
+add meshpoint (1126.6, -84.1687, 0)
+add meshpoint (1129.4, -83.0913, 0)
+add meshpoint (1132.2, -82.0139, 0)
+NP = 2761
+edge nr 51
+add meshpoint (2.99796, -235, 0)
+add meshpoint (5.99592, -235, 0)
+add meshpoint (8.99387, -235, 0)
+add meshpoint (11.9918, -235, 0)
+add meshpoint (14.9898, -235, 0)
+add meshpoint (17.9877, -235, 0)
+add meshpoint (20.9857, -235, 0)
+add meshpoint (23.9837, -235, 0)
+add meshpoint (26.9816, -235, 0)
+add meshpoint (29.9796, -235, 0)
+add meshpoint (32.9775, -235, 0)
+add meshpoint (35.9755, -235, 0)
+add meshpoint (38.9735, -235, 0)
+add meshpoint (41.9714, -235, 0)
+add meshpoint (44.9694, -235, 0)
+add meshpoint (47.9673, -235, 0)
+add meshpoint (50.9653, -235, 0)
+add meshpoint (53.9632, -235, 0)
+add meshpoint (56.9612, -235, 0)
+add meshpoint (59.9592, -235, 0)
+add meshpoint (62.9571, -235, 0)
+add meshpoint (65.9551, -235, 0)
+add meshpoint (68.953, -235, 0)
+add meshpoint (71.951, -235, 0)
+add meshpoint (74.9489, -235, 0)
+add meshpoint (77.9469, -235, 0)
+add meshpoint (80.9449, -235, 0)
+add meshpoint (83.9428, -235, 0)
+add meshpoint (86.9408, -235, 0)
+add meshpoint (89.9387, -235, 0)
+add meshpoint (92.9367, -235, 0)
+add meshpoint (95.9347, -235, 0)
+add meshpoint (98.9326, -235, 0)
+add meshpoint (101.931, -235, 0)
+add meshpoint (104.929, -235, 0)
+add meshpoint (107.926, -235, 0)
+add meshpoint (110.924, -235, 0)
+add meshpoint (113.922, -235, 0)
+add meshpoint (116.92, -235, 0)
+add meshpoint (119.918, -235, 0)
+add meshpoint (122.916, -235, 0)
+add meshpoint (125.914, -235, 0)
+add meshpoint (128.912, -235, 0)
+add meshpoint (131.91, -235, 0)
+add meshpoint (134.908, -235, 0)
+add meshpoint (137.906, -235, 0)
+add meshpoint (140.904, -235, 0)
+add meshpoint (143.902, -235, 0)
+add meshpoint (146.9, -235, 0)
+add meshpoint (149.898, -235, 0)
+add meshpoint (152.896, -235, 0)
+add meshpoint (155.894, -235, 0)
+add meshpoint (158.892, -235, 0)
+add meshpoint (161.89, -235, 0)
+add meshpoint (164.888, -235, 0)
+add meshpoint (167.886, -235, 0)
+add meshpoint (170.884, -235, 0)
+add meshpoint (173.882, -235, 0)
+add meshpoint (176.88, -235, 0)
+add meshpoint (179.877, -235, 0)
+add meshpoint (182.875, -235, 0)
+add meshpoint (185.873, -235, 0)
+add meshpoint (188.871, -235, 0)
+add meshpoint (191.869, -235, 0)
+add meshpoint (194.867, -235, 0)
+add meshpoint (197.865, -235, 0)
+add meshpoint (200.863, -235, 0)
+add meshpoint (203.861, -235, 0)
+add meshpoint (206.859, -235, 0)
+add meshpoint (209.857, -235, 0)
+add meshpoint (212.855, -235, 0)
+add meshpoint (215.853, -235, 0)
+add meshpoint (218.851, -235, 0)
+add meshpoint (221.849, -235, 0)
+add meshpoint (224.847, -235, 0)
+add meshpoint (227.845, -235, 0)
+add meshpoint (230.843, -235, 0)
+add meshpoint (233.841, -235, 0)
+add meshpoint (236.839, -235, 0)
+add meshpoint (239.837, -235, 0)
+add meshpoint (242.835, -235, 0)
+add meshpoint (245.833, -235, 0)
+add meshpoint (248.831, -235, 0)
+add meshpoint (251.828, -235, 0)
+add meshpoint (254.826, -235, 0)
+add meshpoint (257.824, -235, 0)
+add meshpoint (260.822, -235, 0)
+add meshpoint (263.82, -235, 0)
+add meshpoint (266.818, -235, 0)
+add meshpoint (269.816, -235, 0)
+add meshpoint (272.814, -235, 0)
+add meshpoint (275.812, -235, 0)
+add meshpoint (278.81, -235, 0)
+add meshpoint (281.808, -235, 0)
+add meshpoint (284.806, -235, 0)
+add meshpoint (287.804, -235, 0)
+add meshpoint (290.802, -235, 0)
+add meshpoint (293.8, -235, 0)
+add meshpoint (296.798, -235, 0)
+add meshpoint (299.796, -235, 0)
+add meshpoint (302.794, -235, 0)
+add meshpoint (305.792, -235, 0)
+add meshpoint (308.79, -235, 0)
+add meshpoint (311.788, -235, 0)
+add meshpoint (314.786, -235, 0)
+add meshpoint (317.784, -235, 0)
+add meshpoint (320.781, -235, 0)
+add meshpoint (323.779, -235, 0)
+add meshpoint (326.777, -235, 0)
+add meshpoint (329.775, -235, 0)
+add meshpoint (332.773, -235, 0)
+add meshpoint (335.771, -235, 0)
+add meshpoint (338.769, -235, 0)
+add meshpoint (341.767, -235, 0)
+add meshpoint (344.765, -235, 0)
+add meshpoint (347.763, -235, 0)
+add meshpoint (350.761, -235, 0)
+add meshpoint (353.759, -235, 0)
+add meshpoint (356.757, -235, 0)
+add meshpoint (359.755, -235, 0)
+add meshpoint (362.753, -235, 0)
+add meshpoint (365.751, -235, 0)
+add meshpoint (368.749, -235, 0)
+add meshpoint (371.747, -235, 0)
+add meshpoint (374.745, -235, 0)
+add meshpoint (377.743, -235, 0)
+add meshpoint (380.741, -235, 0)
+add meshpoint (383.739, -235, 0)
+add meshpoint (386.737, -235, 0)
+add meshpoint (389.735, -235, 0)
+add meshpoint (392.732, -235, 0)
+add meshpoint (395.73, -235, 0)
+add meshpoint (398.728, -235, 0)
+add meshpoint (401.726, -235, 0)
+add meshpoint (404.724, -235, 0)
+add meshpoint (407.722, -235, 0)
+add meshpoint (410.72, -235, 0)
+add meshpoint (413.718, -235, 0)
+add meshpoint (416.716, -235, 0)
+add meshpoint (419.714, -235, 0)
+add meshpoint (422.712, -235, 0)
+add meshpoint (425.71, -235, 0)
+add meshpoint (428.708, -235, 0)
+add meshpoint (431.706, -235, 0)
+add meshpoint (434.704, -235, 0)
+add meshpoint (437.702, -235, 0)
+add meshpoint (440.7, -235, 0)
+add meshpoint (443.698, -235, 0)
+add meshpoint (446.696, -235, 0)
+add meshpoint (449.694, -235, 0)
+add meshpoint (452.692, -235, 0)
+add meshpoint (455.69, -235, 0)
+add meshpoint (458.688, -235, 0)
+add meshpoint (461.686, -235, 0)
+add meshpoint (464.683, -235, 0)
+add meshpoint (467.681, -235, 0)
+add meshpoint (470.679, -235, 0)
+add meshpoint (473.677, -235, 0)
+add meshpoint (476.675, -235, 0)
+add meshpoint (479.673, -235, 0)
+add meshpoint (482.671, -235, 0)
+add meshpoint (485.669, -235, 0)
+add meshpoint (488.667, -235, 0)
+add meshpoint (491.665, -235, 0)
+add meshpoint (494.663, -235, 0)
+add meshpoint (497.661, -235, 0)
+add meshpoint (500.659, -235, 0)
+add meshpoint (503.657, -235, 0)
+add meshpoint (506.655, -235, 0)
+add meshpoint (509.653, -235, 0)
+add meshpoint (512.651, -235, 0)
+add meshpoint (515.649, -235, 0)
+add meshpoint (518.647, -235, 0)
+add meshpoint (521.645, -235, 0)
+add meshpoint (524.643, -235, 0)
+add meshpoint (527.641, -235, 0)
+add meshpoint (530.639, -235, 0)
+add meshpoint (533.637, -235, 0)
+add meshpoint (536.634, -235, 0)
+add meshpoint (539.632, -235, 0)
+add meshpoint (542.63, -235, 0)
+add meshpoint (545.628, -235, 0)
+add meshpoint (548.626, -235, 0)
+add meshpoint (551.624, -235, 0)
+add meshpoint (554.622, -235, 0)
+add meshpoint (557.62, -235, 0)
+add meshpoint (560.618, -235, 0)
+add meshpoint (563.616, -235, 0)
+add meshpoint (566.614, -235, 0)
+add meshpoint (569.612, -235, 0)
+add meshpoint (572.61, -235, 0)
+add meshpoint (575.608, -235, 0)
+add meshpoint (578.606, -235, 0)
+add meshpoint (581.604, -235, 0)
+add meshpoint (584.602, -235, 0)
+add meshpoint (587.6, -235, 0)
+add meshpoint (590.598, -235, 0)
+add meshpoint (593.596, -235, 0)
+add meshpoint (596.594, -235, 0)
+add meshpoint (599.592, -235, 0)
+add meshpoint (602.59, -235, 0)
+add meshpoint (605.588, -235, 0)
+add meshpoint (608.585, -235, 0)
+add meshpoint (611.583, -235, 0)
+add meshpoint (614.581, -235, 0)
+add meshpoint (617.579, -235, 0)
+add meshpoint (620.577, -235, 0)
+add meshpoint (623.575, -235, 0)
+add meshpoint (626.573, -235, 0)
+add meshpoint (629.571, -235, 0)
+add meshpoint (632.569, -235, 0)
+add meshpoint (635.567, -235, 0)
+add meshpoint (638.565, -235, 0)
+add meshpoint (641.563, -235, 0)
+add meshpoint (644.561, -235, 0)
+add meshpoint (647.559, -235, 0)
+add meshpoint (650.557, -235, 0)
+add meshpoint (653.555, -235, 0)
+add meshpoint (656.553, -235, 0)
+add meshpoint (659.551, -235, 0)
+add meshpoint (662.549, -235, 0)
+add meshpoint (665.547, -235, 0)
+add meshpoint (668.545, -235, 0)
+add meshpoint (671.543, -235, 0)
+add meshpoint (674.541, -235, 0)
+add meshpoint (677.538, -235, 0)
+add meshpoint (680.536, -235, 0)
+add meshpoint (683.534, -235, 0)
+add meshpoint (686.532, -235, 0)
+add meshpoint (689.53, -235, 0)
+add meshpoint (692.528, -235, 0)
+add meshpoint (695.526, -235, 0)
+add meshpoint (698.524, -235, 0)
+add meshpoint (701.522, -235, 0)
+add meshpoint (704.52, -235, 0)
+add meshpoint (707.518, -235, 0)
+add meshpoint (710.516, -235, 0)
+add meshpoint (713.514, -235, 0)
+add meshpoint (716.512, -235, 0)
+add meshpoint (719.51, -235, 0)
+add meshpoint (722.508, -235, 0)
+add meshpoint (725.506, -235, 0)
+add meshpoint (728.504, -235, 0)
+add meshpoint (731.502, -235, 0)
+NP = 3005
+edge nr 52
+add meshpoint (0, -206.778, 0)
+add meshpoint (0, -209.167, 0)
+add meshpoint (0, -211.979, 0)
+add meshpoint (0, -214.856, 0)
+add meshpoint (0, -217.734, 0)
+add meshpoint (0, -220.612, 0)
+add meshpoint (0, -223.489, 0)
+add meshpoint (0, -226.367, 0)
+add meshpoint (0, -229.245, 0)
+add meshpoint (0, -232.122, 0)
+NP = 3015
+edge nr 53
+NP = 3015
+edge nr 54
+NP = 3015
+mesh face 1
+
+0/14/14 map/can/use rule Free Triangle (1)
+0/0/0 map/can/use rule Free Triangle (5)
+0/0/0 map/can/use rule Free Triangle (10)
+0/0/0 map/can/use rule Free Triangle (20)
+958/950/8 map/can/use rule Right 60 (1)
+37/29/9 map/can/use rule Left 60 (1)
+954/925/917 map/can/use rule Right 120 (1)
+40/4/0 map/can/use rule Left 120 (1)
+17/10/4 map/can/use rule Left Right 120 (1)
+2/2/1 map/can/use rule Fill Triangle
+191/22/3 map/can/use rule Vis A Vis (1)
+0/0/0 map/can/use rule 2 h Vis A Vis (1)
+
+
+0/27/27 map/can/use rule Free Triangle (1)
+0/0/0 map/can/use rule Free Triangle (5)
+0/0/0 map/can/use rule Free Triangle (10)
+0/0/0 map/can/use rule Free Triangle (20)
+1917/1901/16 map/can/use rule Right 60 (1)
+71/56/18 map/can/use rule Left 60 (1)
+1913/1857/1839 map/can/use rule Right 120 (1)
+84/19/7 map/can/use rule Left 120 (1)
+39/31/8 map/can/use rule Left Right 120 (1)
+8/8/3 map/can/use rule Fill Triangle
+318/35/3 map/can/use rule Vis A Vis (1)
+4/0/0 map/can/use rule 2 h Vis A Vis (1)
+
+
+0/46/43 map/can/use rule Free Triangle (1)
+0/1/1 map/can/use rule Free Triangle (5)
+0/0/0 map/can/use rule Free Triangle (10)
+0/0/0 map/can/use rule Free Triangle (20)
+2876/2848/22 map/can/use rule Right 60 (1)
+113/83/31 map/can/use rule Left 60 (1)
+2871/2786/2756 map/can/use rule Right 120 (1)
+128/35/11 map/can/use rule Left 120 (1)
+63/47/15 map/can/use rule Left Right 120 (1)
+12/12/3 map/can/use rule Fill Triangle
+436/41/4 map/can/use rule Vis A Vis (1)
+15/0/0 map/can/use rule 2 h Vis A Vis (1)
+
+
+0/63/60 map/can/use rule Free Triangle (1)
+0/1/1 map/can/use rule Free Triangle (5)
+0/0/0 map/can/use rule Free Triangle (10)
+0/0/0 map/can/use rule Free Triangle (20)
+3834/3794/32 map/can/use rule Right 60 (1)
+153/111/38 map/can/use rule Left 60 (1)
+3829/3711/3673 map/can/use rule Right 120 (1)
+186/57/20 map/can/use rule Left 120 (1)
+93/72/22 map/can/use rule Left Right 120 (1)
+23/23/9 map/can/use rule Fill Triangle
+562/51/10 map/can/use rule Vis A Vis (1)
+17/0/0 map/can/use rule 2 h Vis A Vis (1)
+
+
+0/79/76 map/can/use rule Free Triangle (1)
+0/1/1 map/can/use rule Free Triangle (5)
+0/0/0 map/can/use rule Free Triangle (10)
+0/0/0 map/can/use rule Free Triangle (20)
+4798/4752/39 map/can/use rule Right 60 (1)
+179/130/48 map/can/use rule Left 60 (1)
+4795/4661/4612 map/can/use rule Right 120 (1)
+227/82/31 map/can/use rule Left 120 (1)
+112/89/27 map/can/use rule Left Right 120 (1)
+29/29/11 map/can/use rule Fill Triangle
+612/52/11 map/can/use rule Vis A Vis (1)
+19/0/0 map/can/use rule 2 h Vis A Vis (1)
+
+
+0/98/95 map/can/use rule Free Triangle (1)
+0/1/1 map/can/use rule Free Triangle (5)
+0/0/0 map/can/use rule Free Triangle (10)
+0/0/0 map/can/use rule Free Triangle (20)
+5748/5702/49 map/can/use rule Right 60 (1)
+205/156/64 map/can/use rule Left 60 (1)
+5751/5595/5534 map/can/use rule Right 120 (1)
+281/112/50 map/can/use rule Left 120 (1)
+143/118/35 map/can/use rule Left Right 120 (1)
+29/29/11 map/can/use rule Fill Triangle
+677/54/11 map/can/use rule Vis A Vis (1)
+19/0/0 map/can/use rule 2 h Vis A Vis (1)
+
+
+0/113/110 map/can/use rule Free Triangle (1)
+0/1/1 map/can/use rule Free Triangle (5)
+0/0/0 map/can/use rule Free Triangle (10)
+0/0/0 map/can/use rule Free Triangle (20)
+6487/6440/55 map/can/use rule Right 60 (1)
+223/172/72 map/can/use rule Left 60 (1)
+6718/6554/6488 map/can/use rule Right 120 (1)
+310/126/58 map/can/use rule Left 120 (1)
+159/132/38 map/can/use rule Left Right 120 (1)
+29/29/11 map/can/use rule Fill Triangle
+719/55/11 map/can/use rule Vis A Vis (1)
+19/0/0 map/can/use rule 2 h Vis A Vis (1)
+
+
+0/131/128 map/can/use rule Free Triangle (1)
+0/1/1 map/can/use rule Free Triangle (5)
+0/0/0 map/can/use rule Free Triangle (10)
+0/0/0 map/can/use rule Free Triangle (20)
+7447/7398/65 map/can/use rule Right 60 (1)
+241/187/76 map/can/use rule Left 60 (1)
+7675/7497/7423 map/can/use rule Right 120 (1)
+355/149/72 map/can/use rule Left 120 (1)
+183/154/43 map/can/use rule Left Right 120 (1)
+31/31/13 map/can/use rule Fill Triangle
+1002/58/13 map/can/use rule Vis A Vis (1)
+19/0/0 map/can/use rule 2 h Vis A Vis (1)
+
+
+0/143/140 map/can/use rule Free Triangle (1)
+0/1/1 map/can/use rule Free Triangle (5)
+0/0/0 map/can/use rule Free Triangle (10)
+0/0/0 map/can/use rule Free Triangle (20)
+8418/8369/71 map/can/use rule Right 60 (1)
+252/198/79 map/can/use rule Left 60 (1)
+8645/8454/8377 map/can/use rule Right 120 (1)
+395/171/86 map/can/use rule Left 120 (1)
+207/178/52 map/can/use rule Left Right 120 (1)
+31/31/13 map/can/use rule Fill Triangle
+1475/58/13 map/can/use rule Vis A Vis (1)
+19/0/0 map/can/use rule 2 h Vis A Vis (1)
+
+
+0/160/157 map/can/use rule Free Triangle (1)
+0/1/1 map/can/use rule Free Triangle (5)
+0/0/0 map/can/use rule Free Triangle (10)
+0/0/0 map/can/use rule Free Triangle (20)
+9369/9317/80 map/can/use rule Right 60 (1)
+280/224/90 map/can/use rule Left 60 (1)
+9595/9381/9295 map/can/use rule Right 120 (1)
+457/204/110 map/can/use rule Left 120 (1)
+245/213/59 map/can/use rule Left Right 120 (1)
+32/32/14 map/can/use rule Fill Triangle
+1799/60/15 map/can/use rule Vis A Vis (1)
+19/0/0 map/can/use rule 2 h Vis A Vis (1)
+
+
+0/177/174 map/can/use rule Free Triangle (1)
+0/1/1 map/can/use rule Free Triangle (5)
+0/0/0 map/can/use rule Free Triangle (10)
+0/0/0 map/can/use rule Free Triangle (20)
+10332/10271/90 map/can/use rule Right 60 (1)
+305/240/96 map/can/use rule Left 60 (1)
+10555/10313/10222 map/can/use rule Right 120 (1)
+499/220/117 map/can/use rule Left 120 (1)
+272/235/63 map/can/use rule Left Right 120 (1)
+34/34/15 map/can/use rule Fill Triangle
+1886/63/17 map/can/use rule Vis A Vis (1)
+19/0/0 map/can/use rule 2 h Vis A Vis (1)
+
+
+0/196/193 map/can/use rule Free Triangle (1)
+0/1/1 map/can/use rule Free Triangle (5)
+0/0/0 map/can/use rule Free Triangle (10)
+0/0/0 map/can/use rule Free Triangle (20)
+11287/11209/107 map/can/use rule Right 60 (1)
+345/263/105 map/can/use rule Left 60 (1)
+11503/11223/11126 map/can/use rule Right 120 (1)
+540/235/125 map/can/use rule Left 120 (1)
+296/252/66 map/can/use rule Left Right 120 (1)
+43/43/19 map/can/use rule Fill Triangle
+1996/73/21 map/can/use rule Vis A Vis (1)
+25/0/0 map/can/use rule 2 h Vis A Vis (1)
+
+
+0/217/214 map/can/use rule Free Triangle (1)
+0/1/1 map/can/use rule Free Triangle (5)
+0/0/0 map/can/use rule Free Triangle (10)
+0/0/0 map/can/use rule Free Triangle (20)
+12221/12131/123 map/can/use rule Right 60 (1)
+390/298/127 map/can/use rule Left 60 (1)
+12434/12118/12011 map/can/use rule Right 120 (1)
+601/262/145 map/can/use rule Left 120 (1)
+328/279/70 map/can/use rule Left Right 120 (1)
+48/48/22 map/can/use rule Fill Triangle
+2140/83/22 map/can/use rule Vis A Vis (1)
+25/0/0 map/can/use rule 2 h Vis A Vis (1)
+
+
+0/231/228 map/can/use rule Free Triangle (1)
+0/1/1 map/can/use rule Free Triangle (5)
+0/0/0 map/can/use rule Free Triangle (10)
+0/0/0 map/can/use rule Free Triangle (20)
+13179/13083/130 map/can/use rule Right 60 (1)
+413/315/136 map/can/use rule Left 60 (1)
+13395/13056/12944 map/can/use rule Right 120 (1)
+634/278/158 map/can/use rule Left 120 (1)
+347/293/73 map/can/use rule Left Right 120 (1)
+51/51/25 map/can/use rule Fill Triangle
+2216/92/25 map/can/use rule Vis A Vis (1)
+25/0/0 map/can/use rule 2 h Vis A Vis (1)
+
+
+0/249/246 map/can/use rule Free Triangle (1)
+0/1/1 map/can/use rule Free Triangle (5)
+0/0/0 map/can/use rule Free Triangle (10)
+0/0/0 map/can/use rule Free Triangle (20)
+14138/14028/136 map/can/use rule Right 60 (1)
+446/332/142 map/can/use rule Left 60 (1)
+14358/13982/13863 map/can/use rule Right 120 (1)
+682/297/169 map/can/use rule Left 120 (1)
+379/314/81 map/can/use rule Left Right 120 (1)
+60/60/29 map/can/use rule Fill Triangle
+2519/104/32 map/can/use rule Vis A Vis (1)
+27/0/0 map/can/use rule 2 h Vis A Vis (1)
+
+
+0/269/266 map/can/use rule Free Triangle (1)
+0/1/1 map/can/use rule Free Triangle (5)
+0/0/0 map/can/use rule Free Triangle (10)
+0/0/0 map/can/use rule Free Triangle (20)
+15077/14951/150 map/can/use rule Right 60 (1)
+491/361/154 map/can/use rule Left 60 (1)
+15299/14882/14757 map/can/use rule Right 120 (1)
+737/318/186 map/can/use rule Left 120 (1)
+410/336/90 map/can/use rule Left Right 120 (1)
+69/69/34 map/can/use rule Fill Triangle
+2847/111/36 map/can/use rule Vis A Vis (1)
+27/0/0 map/can/use rule 2 h Vis A Vis (1)
+
+
+0/288/284 map/can/use rule Free Triangle (1)
+0/1/1 map/can/use rule Free Triangle (5)
+0/0/0 map/can/use rule Free Triangle (10)
+0/0/0 map/can/use rule Free Triangle (20)
+16039/15906/162 map/can/use rule Right 60 (1)
+517/379/160 map/can/use rule Left 60 (1)
+16260/15817/15686 map/can/use rule Right 120 (1)
+777/334/196 map/can/use rule Left 120 (1)
+433/356/95 map/can/use rule Left Right 120 (1)
+76/76/37 map/can/use rule Fill Triangle
+3351/118/39 map/can/use rule Vis A Vis (1)
+27/0/0 map/can/use rule 2 h Vis A Vis (1)
+
+
+0/309/305 map/can/use rule Free Triangle (1)
+0/1/1 map/can/use rule Free Triangle (5)
+0/0/0 map/can/use rule Free Triangle (10)
+0/0/0 map/can/use rule Free Triangle (20)
+16964/16803/175 map/can/use rule Right 60 (1)
+589/424/176 map/can/use rule Left 60 (1)
+17184/16685/16541 map/can/use rule Right 120 (1)
+860/369/222 map/can/use rule Left 120 (1)
+478/387/102 map/can/use rule Left Right 120 (1)
+92/92/43 map/can/use rule Fill Triangle
+3538/137/48 map/can/use rule Vis A Vis (1)
+30/0/0 map/can/use rule 2 h Vis A Vis (1)
+
+
+0/332/328 map/can/use rule Free Triangle (1)
+0/1/1 map/can/use rule Free Triangle (5)
+0/0/0 map/can/use rule Free Triangle (10)
+0/0/0 map/can/use rule Free Triangle (20)
+17904/17715/187 map/can/use rule Right 60 (1)
+654/460/194 map/can/use rule Left 60 (1)
+18121/17566/17412 map/can/use rule Right 120 (1)
+928/396/239 map/can/use rule Left 120 (1)
+518/416/111 map/can/use rule Left Right 120 (1)
+110/110/49 map/can/use rule Fill Triangle
+3680/146/51 map/can/use rule Vis A Vis (1)
+30/0/0 map/can/use rule 2 h Vis A Vis (1)
+
+
+0/350/346 map/can/use rule Free Triangle (1)
+0/1/1 map/can/use rule Free Triangle (5)
+0/0/0 map/can/use rule Free Triangle (10)
+0/0/0 map/can/use rule Free Triangle (20)
+18853/18647/199 map/can/use rule Right 60 (1)
+691/482/203 map/can/use rule Left 60 (1)
+19072/18479/18318 map/can/use rule Right 120 (1)
+983/419/255 map/can/use rule Left 120 (1)
+549/439/117 map/can/use rule Left Right 120 (1)
+118/118/53 map/can/use rule Fill Triangle
+4041/154/55 map/can/use rule Vis A Vis (1)
+31/0/0 map/can/use rule 2 h Vis A Vis (1)
+
+
+0/376/372 map/can/use rule Free Triangle (1)
+0/1/1 map/can/use rule Free Triangle (5)
+0/0/0 map/can/use rule Free Triangle (10)
+0/0/0 map/can/use rule Free Triangle (20)
+19784/19556/214 map/can/use rule Right 60 (1)
+743/514/213 map/can/use rule Left 60 (1)
+20002/19365/19195 map/can/use rule Right 120 (1)
+1059/456/278 map/can/use rule Left 120 (1)
+584/462/123 map/can/use rule Left Right 120 (1)
+131/131/60 map/can/use rule Fill Triangle
+4526/166/62 map/can/use rule Vis A Vis (1)
+31/0/0 map/can/use rule 2 h Vis A Vis (1)
+
+
+0/393/388 map/can/use rule Free Triangle (1)
+0/1/1 map/can/use rule Free Triangle (5)
+0/0/0 map/can/use rule Free Triangle (10)
+0/0/0 map/can/use rule Free Triangle (20)
+20731/20479/223 map/can/use rule Right 60 (1)
+794/541/228 map/can/use rule Left 60 (1)
+20946/20266/20087 map/can/use rule Right 120 (1)
+1123/485/300 map/can/use rule Left 120 (1)
+618/486/132 map/can/use rule Left Right 120 (1)
+141/141/66 map/can/use rule Fill Triangle
+5060/174/67 map/can/use rule Vis A Vis (1)
+31/0/0 map/can/use rule 2 h Vis A Vis (1)
+
+
+0/414/409 map/can/use rule Free Triangle (1)
+0/1/1 map/can/use rule Free Triangle (5)
+0/0/0 map/can/use rule Free Triangle (10)
+0/0/0 map/can/use rule Free Triangle (20)
+21669/21391/233 map/can/use rule Right 60 (1)
+858/580/248 map/can/use rule Left 60 (1)
+21874/21144/20951 map/can/use rule Right 120 (1)
+1203/512/317 map/can/use rule Left 120 (1)
+659/512/138 map/can/use rule Left Right 120 (1)
+154/154/71 map/can/use rule Fill Triangle
+5432/182/73 map/can/use rule Vis A Vis (1)
+33/0/0 map/can/use rule 2 h Vis A Vis (1)
+
+
+0/428/423 map/can/use rule Free Triangle (1)
+0/1/1 map/can/use rule Free Triangle (5)
+0/0/0 map/can/use rule Free Triangle (10)
+0/0/0 map/can/use rule Free Triangle (20)
+22622/22319/248 map/can/use rule Right 60 (1)
+907/604/259 map/can/use rule Left 60 (1)
+22816/22048/21846 map/can/use rule Right 120 (1)
+1261/536/333 map/can/use rule Left 120 (1)
+683/529/143 map/can/use rule Left Right 120 (1)
+170/170/74 map/can/use rule Fill Triangle
+5754/191/76 map/can/use rule Vis A Vis (1)
+33/0/0 map/can/use rule 2 h Vis A Vis (1)
+
+
+0/439/434 map/can/use rule Free Triangle (1)
+0/1/1 map/can/use rule Free Triangle (5)
+0/0/0 map/can/use rule Free Triangle (10)
+0/0/0 map/can/use rule Free Triangle (20)
+23556/23238/254 map/can/use rule Right 60 (1)
+965/647/277 map/can/use rule Left 60 (1)
+23760/22955/22739 map/can/use rule Right 120 (1)
+1327/572/364 map/can/use rule Left 120 (1)
+718/555/151 map/can/use rule Left Right 120 (1)
+180/180/79 map/can/use rule Fill Triangle
+5915/202/79 map/can/use rule Vis A Vis (1)
+33/0/0 map/can/use rule 2 h Vis A Vis (1)
+
+
+0/450/445 map/can/use rule Free Triangle (1)
+0/1/1 map/can/use rule Free Triangle (5)
+0/0/0 map/can/use rule Free Triangle (10)
+0/0/0 map/can/use rule Free Triangle (20)
+24522/24204/264 map/can/use rule Right 60 (1)
+993/675/283 map/can/use rule Left 60 (1)
+24730/23898/23674 map/can/use rule Right 120 (1)
+1373/590/379 map/can/use rule Left 120 (1)
+746/576/159 map/can/use rule Left Right 120 (1)
+180/180/79 map/can/use rule Fill Triangle
+6410/215/83 map/can/use rule Vis A Vis (1)
+33/0/0 map/can/use rule 2 h Vis A Vis (1)
+
+ 446 times used rule Free Triangle (1)
+   1 times used rule Free Triangle (5)
+   0 times used rule Free Triangle (10)
+   0 times used rule Free Triangle (20)
+ 281 times used rule Right 60 (1)
+ 295 times used rule Left 60 (1)
+23957 times used rule Right 120 (1)
+ 380 times used rule Left 120 (1)
+ 165 times used rule Left Right 120 (1)
+ 284 times used rule Fill Triangle
+ 283 times used rule Vis A Vis (1)
+   0 times used rule 2 h Vis A Vis (1)
+mesh face 2
+
+0/65/65 map/can/use rule Free Triangle (1)
+0/0/0 map/can/use rule Free Triangle (5)
+0/0/0 map/can/use rule Free Triangle (10)
+0/0/0 map/can/use rule Free Triangle (20)
+537/422/84 map/can/use rule Right 60 (1)
+292/184/4 map/can/use rule Left 60 (1)
+426/243/240 map/can/use rule Right 120 (1)
+458/12/12 map/can/use rule Left 120 (1)
+75/33/32 map/can/use rule Left Right 120 (1)
+100/100/86 map/can/use rule Fill Triangle
+1102/557/348 map/can/use rule Vis A Vis (1)
+0/0/0 map/can/use rule 2 h Vis A Vis (1)
+
+  65 times used rule Free Triangle (1)
+   0 times used rule Free Triangle (5)
+   0 times used rule Free Triangle (10)
+   0 times used rule Free Triangle (20)
+  99 times used rule Right 60 (1)
+  20 times used rule Left 60 (1)
+ 240 times used rule Right 120 (1)
+  12 times used rule Left 120 (1)
+  32 times used rule Left Right 120 (1)
+ 356 times used rule Fill Triangle
+ 355 times used rule Vis A Vis (1)
+   0 times used rule 2 h Vis A Vis (1)
+mesh face 3
+
+0/9/9 map/can/use rule Free Triangle (1)
+0/0/0 map/can/use rule Free Triangle (5)
+0/0/0 map/can/use rule Free Triangle (10)
+0/0/0 map/can/use rule Free Triangle (20)
+564/563/10 map/can/use rule Right 60 (1)
+386/384/1 map/can/use rule Left 60 (1)
+567/555/547 map/can/use rule Right 120 (1)
+436/424/423 map/can/use rule Left 120 (1)
+13/8/4 map/can/use rule Left Right 120 (1)
+0/0/0 map/can/use rule Fill Triangle
+462/0/0 map/can/use rule Vis A Vis (1)
+0/0/0 map/can/use rule 2 h Vis A Vis (1)
+
+
+0/22/22 map/can/use rule Free Triangle (1)
+0/0/0 map/can/use rule Free Triangle (5)
+0/0/0 map/can/use rule Free Triangle (10)
+0/0/0 map/can/use rule Free Triangle (20)
+1154/1149/13 map/can/use rule Right 60 (1)
+405/401/10 map/can/use rule Left 60 (1)
+1158/1130/1118 map/can/use rule Right 120 (1)
+846/820/811 map/can/use rule Left 120 (1)
+29/21/9 map/can/use rule Left Right 120 (1)
+0/0/0 map/can/use rule Fill Triangle
+538/1/0 map/can/use rule Vis A Vis (1)
+2/0/0 map/can/use rule 2 h Vis A Vis (1)
+
+
+0/43/43 map/can/use rule Free Triangle (1)
+0/0/0 map/can/use rule Free Triangle (5)
+0/0/0 map/can/use rule Free Triangle (10)
+0/0/0 map/can/use rule Free Triangle (20)
+1703/1691/20 map/can/use rule Right 60 (1)
+421/411/18 map/can/use rule Left 60 (1)
+1705/1660/1641 map/can/use rule Right 120 (1)
+1298/1247/1233 map/can/use rule Left 120 (1)
+49/37/13 map/can/use rule Left Right 120 (1)
+5/5/1 map/can/use rule Fill Triangle
+610/4/2 map/can/use rule Vis A Vis (1)
+3/0/0 map/can/use rule 2 h Vis A Vis (1)
+
+
+0/58/58 map/can/use rule Free Triangle (1)
+0/0/0 map/can/use rule Free Triangle (5)
+0/0/0 map/can/use rule Free Triangle (10)
+0/0/0 map/can/use rule Free Triangle (20)
+2132/2119/29 map/can/use rule Right 60 (1)
+434/423/24 map/can/use rule Left 60 (1)
+2137/2074/2047 map/can/use rule Right 120 (1)
+1872/1804/1784 map/can/use rule Left 120 (1)
+71/57/20 map/can/use rule Left Right 120 (1)
+6/6/2 map/can/use rule Fill Triangle
+667/4/2 map/can/use rule Vis A Vis (1)
+3/0/0 map/can/use rule 2 h Vis A Vis (1)
+
+
+0/67/67 map/can/use rule Free Triangle (1)
+0/0/0 map/can/use rule Free Triangle (5)
+0/0/0 map/can/use rule Free Triangle (10)
+0/0/0 map/can/use rule Free Triangle (20)
+2642/2234/42 map/can/use rule Right 60 (1)
+864/464/53 map/can/use rule Left 60 (1)
+2851/2100/2069 map/can/use rule Right 120 (1)
+2071/1942/1912 map/can/use rule Left 120 (1)
+111/75/25 map/can/use rule Left Right 120 (1)
+382/382/377 map/can/use rule Fill Triangle
+1886/663/382 map/can/use rule Vis A Vis (1)
+3/0/0 map/can/use rule 2 h Vis A Vis (1)
+
+  67 times used rule Free Triangle (1)
+   0 times used rule Free Triangle (5)
+   0 times used rule Free Triangle (10)
+   0 times used rule Free Triangle (20)
+  44 times used rule Right 60 (1)
+  60 times used rule Left 60 (1)
+2069 times used rule Right 120 (1)
+1912 times used rule Left 120 (1)
+  25 times used rule Left Right 120 (1)
+ 386 times used rule Fill Triangle
+ 385 times used rule Vis A Vis (1)
+   0 times used rule 2 h Vis A Vis (1)
+mesh face 4
+
+0/14/14 map/can/use rule Free Triangle (1)
+0/0/0 map/can/use rule Free Triangle (5)
+0/0/0 map/can/use rule Free Triangle (10)
+0/0/0 map/can/use rule Free Triangle (20)
+957/953/6 map/can/use rule Right 60 (1)
+34/30/12 map/can/use rule Left 60 (1)
+961/930/921 map/can/use rule Right 120 (1)
+34/3/0 map/can/use rule Left 120 (1)
+21/12/3 map/can/use rule Left Right 120 (1)
+1/1/1 map/can/use rule Fill Triangle
+137/26/1 map/can/use rule Vis A Vis (1)
+0/0/0 map/can/use rule 2 h Vis A Vis (1)
+
+
+0/27/27 map/can/use rule Free Triangle (1)
+0/1/1 map/can/use rule Free Triangle (5)
+0/0/0 map/can/use rule Free Triangle (10)
+0/0/0 map/can/use rule Free Triangle (20)
+1920/1914/16 map/can/use rule Right 60 (1)
+58/53/19 map/can/use rule Left 60 (1)
+1926/1867/1849 map/can/use rule Right 120 (1)
+79/17/5 map/can/use rule Left 120 (1)
+43/29/8 map/can/use rule Left Right 120 (1)
+2/2/2 map/can/use rule Fill Triangle
+254/39/2 map/can/use rule Vis A Vis (1)
+5/0/0 map/can/use rule 2 h Vis A Vis (1)
+
+
+0/42/42 map/can/use rule Free Triangle (1)
+0/1/1 map/can/use rule Free Triangle (5)
+0/0/0 map/can/use rule Free Triangle (10)
+0/0/0 map/can/use rule Free Triangle (20)
+2879/2864/22 map/can/use rule Right 60 (1)
+101/86/26 map/can/use rule Left 60 (1)
+2876/2785/2760 map/can/use rule Right 120 (1)
+126/31/10 map/can/use rule Left 120 (1)
+70/48/14 map/can/use rule Left Right 120 (1)
+4/4/2 map/can/use rule Fill Triangle
+409/52/4 map/can/use rule Vis A Vis (1)
+11/0/0 map/can/use rule 2 h Vis A Vis (1)
+
+
+0/60/59 map/can/use rule Free Triangle (1)
+0/1/1 map/can/use rule Free Triangle (5)
+0/0/0 map/can/use rule Free Triangle (10)
+0/0/0 map/can/use rule Free Triangle (20)
+3835/3795/30 map/can/use rule Right 60 (1)
+152/115/35 map/can/use rule Left 60 (1)
+3815/3685/3648 map/can/use rule Right 120 (1)
+189/51/16 map/can/use rule Left 120 (1)
+102/70/22 map/can/use rule Left Right 120 (1)
+17/17/5 map/can/use rule Fill Triangle
+586/63/8 map/can/use rule Vis A Vis (1)
+11/0/0 map/can/use rule 2 h Vis A Vis (1)
+
+
+0/77/76 map/can/use rule Free Triangle (1)
+0/1/1 map/can/use rule Free Triangle (5)
+0/0/0 map/can/use rule Free Triangle (10)
+0/0/0 map/can/use rule Free Triangle (20)
+4799/4737/38 map/can/use rule Right 60 (1)
+199/142/46 map/can/use rule Left 60 (1)
+4773/4600/4554 map/can/use rule Right 120 (1)
+239/61/23 map/can/use rule Left 120 (1)
+131/92/28 map/can/use rule Left Right 120 (1)
+30/30/8 map/can/use rule Fill Triangle
+725/68/10 map/can/use rule Vis A Vis (1)
+14/0/0 map/can/use rule 2 h Vis A Vis (1)
+
+
+0/87/86 map/can/use rule Free Triangle (1)
+0/1/1 map/can/use rule Free Triangle (5)
+0/0/0 map/can/use rule Free Triangle (10)
+0/0/0 map/can/use rule Free Triangle (20)
+5775/5702/44 map/can/use rule Right 60 (1)
+225/157/51 map/can/use rule Left 60 (1)
+5748/5555/5501 map/can/use rule Right 120 (1)
+282/74/32 map/can/use rule Left 120 (1)
+158/114/33 map/can/use rule Left Right 120 (1)
+39/39/10 map/can/use rule Fill Triangle
+791/69/11 map/can/use rule Vis A Vis (1)
+14/0/0 map/can/use rule 2 h Vis A Vis (1)
+
+
+0/103/102 map/can/use rule Free Triangle (1)
+0/1/1 map/can/use rule Free Triangle (5)
+0/0/0 map/can/use rule Free Triangle (10)
+0/0/0 map/can/use rule Free Triangle (20)
+6732/6647/54 map/can/use rule Right 60 (1)
+262/181/62 map/can/use rule Left 60 (1)
+6709/6485/6423 map/can/use rule Right 120 (1)
+342/97/45 map/can/use rule Left 120 (1)
+190/142/41 map/can/use rule Left Right 120 (1)
+50/50/10 map/can/use rule Fill Triangle
+1113/73/11 map/can/use rule Vis A Vis (1)
+14/0/0 map/can/use rule 2 h Vis A Vis (1)
+
+
+0/119/118 map/can/use rule Free Triangle (1)
+0/1/1 map/can/use rule Free Triangle (5)
+0/0/0 map/can/use rule Free Triangle (10)
+0/0/0 map/can/use rule Free Triangle (20)
+7701/7610/58 map/can/use rule Right 60 (1)
+284/197/70 map/can/use rule Left 60 (1)
+7681/7434/7368 map/can/use rule Right 120 (1)
+380/110/53 map/can/use rule Left 120 (1)
+216/167/48 map/can/use rule Left Right 120 (1)
+54/54/12 map/can/use rule Fill Triangle
+1185/76/12 map/can/use rule Vis A Vis (1)
+14/0/0 map/can/use rule 2 h Vis A Vis (1)
+
+
+0/129/128 map/can/use rule Free Triangle (1)
+0/1/1 map/can/use rule Free Triangle (5)
+0/0/0 map/can/use rule Free Triangle (10)
+0/0/0 map/can/use rule Free Triangle (20)
+8563/8472/64 map/can/use rule Right 60 (1)
+296/209/74 map/can/use rule Left 60 (1)
+8654/8395/8328 map/can/use rule Right 120 (1)
+414/127/65 map/can/use rule Left 120 (1)
+239/190/55 map/can/use rule Left Right 120 (1)
+54/54/12 map/can/use rule Fill Triangle
+1454/76/12 map/can/use rule Vis A Vis (1)
+14/0/0 map/can/use rule 2 h Vis A Vis (1)
+
+
+0/146/145 map/can/use rule Free Triangle (1)
+0/1/1 map/can/use rule Free Triangle (5)
+0/0/0 map/can/use rule Free Triangle (10)
+0/0/0 map/can/use rule Free Triangle (20)
+9406/9314/75 map/can/use rule Right 60 (1)
+312/225/81 map/can/use rule Left 60 (1)
+9612/9332/9259 map/can/use rule Right 120 (1)
+464/155/82 map/can/use rule Left 120 (1)
+268/219/65 map/can/use rule Left Right 120 (1)
+54/54/12 map/can/use rule Fill Triangle
+1753/77/12 map/can/use rule Vis A Vis (1)
+14/0/0 map/can/use rule 2 h Vis A Vis (1)
+
+
+0/156/155 map/can/use rule Free Triangle (1)
+0/1/1 map/can/use rule Free Triangle (5)
+0/0/0 map/can/use rule Free Triangle (10)
+0/0/0 map/can/use rule Free Triangle (20)
+10380/10285/78 map/can/use rule Right 60 (1)
+328/239/85 map/can/use rule Left 60 (1)
+10585/10287/10211 map/can/use rule Right 120 (1)
+501/171/93 map/can/use rule Left 120 (1)
+289/237/73 map/can/use rule Left Right 120 (1)
+54/54/12 map/can/use rule Fill Triangle
+2044/81/12 map/can/use rule Vis A Vis (1)
+14/0/0 map/can/use rule 2 h Vis A Vis (1)
+
+
+0/169/168 map/can/use rule Free Triangle (1)
+0/1/1 map/can/use rule Free Triangle (5)
+0/0/0 map/can/use rule Free Triangle (10)
+0/0/0 map/can/use rule Free Triangle (20)
+11344/11228/89 map/can/use rule Right 60 (1)
+362/257/90 map/can/use rule Left 60 (1)
+11542/11205/11127 map/can/use rule Right 120 (1)
+549/187/105 map/can/use rule Left 120 (1)
+312/246/75 map/can/use rule Left Right 120 (1)
+64/64/16 map/can/use rule Fill Triangle
+2434/91/18 map/can/use rule Vis A Vis (1)
+16/0/0 map/can/use rule 2 h Vis A Vis (1)
+
+
+0/191/190 map/can/use rule Free Triangle (1)
+0/1/1 map/can/use rule Free Triangle (5)
+0/0/0 map/can/use rule Free Triangle (10)
+0/0/0 map/can/use rule Free Triangle (20)
+12285/12146/108 map/can/use rule Right 60 (1)
+412/285/102 map/can/use rule Left 60 (1)
+12471/12097/12010 map/can/use rule Right 120 (1)
+607/210/121 map/can/use rule Left 120 (1)
+337/265/81 map/can/use rule Left Right 120 (1)
+81/81/23 map/can/use rule Fill Triangle
+2947/103/23 map/can/use rule Vis A Vis (1)
+16/0/0 map/can/use rule 2 h Vis A Vis (1)
+
+
+0/205/204 map/can/use rule Free Triangle (1)
+0/1/1 map/can/use rule Free Triangle (5)
+0/0/0 map/can/use rule Free Triangle (10)
+0/0/0 map/can/use rule Free Triangle (20)
+13242/13099/117 map/can/use rule Right 60 (1)
+435/304/111 map/can/use rule Left 60 (1)
+13430/13032/12942 map/can/use rule Right 120 (1)
+642/228/136 map/can/use rule Left 120 (1)
+354/277/85 map/can/use rule Left Right 120 (1)
+83/83/25 map/can/use rule Fill Triangle
+3238/111/25 map/can/use rule Vis A Vis (1)
+16/0/0 map/can/use rule 2 h Vis A Vis (1)
+
+
+0/224/223 map/can/use rule Free Triangle (1)
+0/1/1 map/can/use rule Free Triangle (5)
+0/0/0 map/can/use rule Free Triangle (10)
+0/0/0 map/can/use rule Free Triangle (20)
+14191/14030/126 map/can/use rule Right 60 (1)
+473/324/116 map/can/use rule Left 60 (1)
+14382/13943/13846 map/can/use rule Right 120 (1)
+696/252/156 map/can/use rule Left 120 (1)
+380/292/88 map/can/use rule Left Right 120 (1)
+93/93/30 map/can/use rule Fill Triangle
+3729/131/34 map/can/use rule Vis A Vis (1)
+16/0/0 map/can/use rule 2 h Vis A Vis (1)
+
+
+0/246/245 map/can/use rule Free Triangle (1)
+0/1/1 map/can/use rule Free Triangle (5)
+0/0/0 map/can/use rule Free Triangle (10)
+0/0/0 map/can/use rule Free Triangle (20)
+15119/14940/141 map/can/use rule Right 60 (1)
+530/361/134 map/can/use rule Left 60 (1)
+15311/14831/14719 map/can/use rule Right 120 (1)
+755/278/175 map/can/use rule Left 120 (1)
+410/313/93 map/can/use rule Left Right 120 (1)
+104/104/36 map/can/use rule Fill Triangle
+4140/142/38 map/can/use rule Vis A Vis (1)
+17/0/0 map/can/use rule 2 h Vis A Vis (1)
+
+
+0/265/263 map/can/use rule Free Triangle (1)
+0/1/1 map/can/use rule Free Triangle (5)
+0/0/0 map/can/use rule Free Triangle (10)
+0/0/0 map/can/use rule Free Triangle (20)
+16068/15866/152 map/can/use rule Right 60 (1)
+569/377/139 map/can/use rule Left 60 (1)
+16254/15738/15620 map/can/use rule Right 120 (1)
+809/299/190 map/can/use rule Left 120 (1)
+431/326/97 map/can/use rule Left Right 120 (1)
+123/123/43 map/can/use rule Fill Triangle
+4550/154/45 map/can/use rule Vis A Vis (1)
+19/0/0 map/can/use rule 2 h Vis A Vis (1)
+
+
+0/289/286 map/can/use rule Free Triangle (1)
+0/1/1 map/can/use rule Free Triangle (5)
+0/0/0 map/can/use rule Free Triangle (10)
+0/0/0 map/can/use rule Free Triangle (20)
+17000/16779/163 map/can/use rule Right 60 (1)
+623/415/158 map/can/use rule Left 60 (1)
+17187/16629/16500 map/can/use rule Right 120 (1)
+872/330/212 map/can/use rule Left 120 (1)
+466/355/102 map/can/use rule Left Right 120 (1)
+133/133/48 map/can/use rule Fill Triangle
+4994/167/51 map/can/use rule Vis A Vis (1)
+19/0/0 map/can/use rule 2 h Vis A Vis (1)
+
+
+0/313/310 map/can/use rule Free Triangle (1)
+0/1/1 map/can/use rule Free Triangle (5)
+0/0/0 map/can/use rule Free Triangle (10)
+0/0/0 map/can/use rule Free Triangle (20)
+17946/17707/173 map/can/use rule Right 60 (1)
+667/441/170 map/can/use rule Left 60 (1)
+18127/17533/17395 map/can/use rule Right 120 (1)
+925/351/229 map/can/use rule Left 120 (1)
+488/370/105 map/can/use rule Left Right 120 (1)
+144/144/52 map/can/use rule Fill Triangle
+5499/176/55 map/can/use rule Vis A Vis (1)
+19/0/0 map/can/use rule 2 h Vis A Vis (1)
+
+
+0/341/337 map/can/use rule Free Triangle (1)
+0/1/1 map/can/use rule Free Triangle (5)
+0/0/0 map/can/use rule Free Triangle (10)
+0/0/0 map/can/use rule Free Triangle (20)
+18872/18608/189 map/can/use rule Right 60 (1)
+732/484/192 map/can/use rule Left 60 (1)
+19050/18401/18248 map/can/use rule Right 120 (1)
+1007/382/248 map/can/use rule Left 120 (1)
+533/399/113 map/can/use rule Left Right 120 (1)
+153/153/57 map/can/use rule Fill Triangle
+5697/185/60 map/can/use rule Vis A Vis (1)
+19/0/0 map/can/use rule 2 h Vis A Vis (1)
+
+
+0/378/372 map/can/use rule Free Triangle (1)
+0/1/1 map/can/use rule Free Triangle (5)
+0/0/0 map/can/use rule Free Triangle (10)
+0/0/0 map/can/use rule Free Triangle (20)
+19787/19492/206 map/can/use rule Right 60 (1)
+801/527/212 map/can/use rule Left 60 (1)
+19970/19261/19091 map/can/use rule Right 120 (1)
+1089/417/268 map/can/use rule Left 120 (1)
+576/428/123 map/can/use rule Left Right 120 (1)
+168/168/64 map/can/use rule Fill Triangle
+6067/203/68 map/can/use rule Vis A Vis (1)
+22/0/0 map/can/use rule 2 h Vis A Vis (1)
+
+
+0/397/391 map/can/use rule Free Triangle (1)
+0/1/1 map/can/use rule Free Triangle (5)
+0/0/0 map/can/use rule Free Triangle (10)
+0/0/0 map/can/use rule Free Triangle (20)
+20741/20421/219 map/can/use rule Right 60 (1)
+844/546/220 map/can/use rule Left 60 (1)
+20916/20173/19993 map/can/use rule Right 120 (1)
+1145/441/286 map/can/use rule Left 120 (1)
+601/446/128 map/can/use rule Left Right 120 (1)
+182/182/70 map/can/use rule Fill Triangle
+6561/209/73 map/can/use rule Vis A Vis (1)
+22/0/0 map/can/use rule 2 h Vis A Vis (1)
+
+
+0/427/421 map/can/use rule Free Triangle (1)
+0/1/1 map/can/use rule Free Triangle (5)
+0/0/0 map/can/use rule Free Triangle (10)
+0/0/0 map/can/use rule Free Triangle (20)
+21662/21317/228 map/can/use rule Right 60 (1)
+913/591/240 map/can/use rule Left 60 (1)
+21834/21040/20852 map/can/use rule Right 120 (1)
+1227/471/306 map/can/use rule Left 120 (1)
+649/477/139 map/can/use rule Left Right 120 (1)
+197/197/76 map/can/use rule Fill Triangle
+7032/222/79 map/can/use rule Vis A Vis (1)
+22/0/0 map/can/use rule 2 h Vis A Vis (1)
+
+
+0/461/455 map/can/use rule Free Triangle (1)
+0/1/1 map/can/use rule Free Triangle (5)
+0/0/0 map/can/use rule Free Triangle (10)
+0/0/0 map/can/use rule Free Triangle (20)
+22572/22205/249 map/can/use rule Right 60 (1)
+979/638/263 map/can/use rule Left 60 (1)
+22744/21896/21695 map/can/use rule Right 120 (1)
+1315/513/331 map/can/use rule Left 120 (1)
+688/506/147 map/can/use rule Left Right 120 (1)
+212/212/80 map/can/use rule Fill Triangle
+7452/230/82 map/can/use rule Vis A Vis (1)
+22/0/0 map/can/use rule 2 h Vis A Vis (1)
+
+
+0/487/481 map/can/use rule Free Triangle (1)
+0/1/1 map/can/use rule Free Triangle (5)
+0/0/0 map/can/use rule Free Triangle (10)
+0/0/0 map/can/use rule Free Triangle (20)
+23492/23095/270 map/can/use rule Right 60 (1)
+1048/683/281 map/can/use rule Left 60 (1)
+23662/22770/22546 map/can/use rule Right 120 (1)
+1403/559/359 map/can/use rule Left 120 (1)
+732/539/150 map/can/use rule Left Right 120 (1)
+228/228/86 map/can/use rule Fill Triangle
+7629/241/87 map/can/use rule Vis A Vis (1)
+23/0/0 map/can/use rule 2 h Vis A Vis (1)
+
+
+0/502/495 map/can/use rule Free Triangle (1)
+0/1/1 map/can/use rule Free Triangle (5)
+0/0/0 map/can/use rule Free Triangle (10)
+0/0/0 map/can/use rule Free Triangle (20)
+24441/24039/285 map/can/use rule Right 60 (1)
+1081/711/292 map/can/use rule Left 60 (1)
+24622/23700/23463 map/can/use rule Right 120 (1)
+1458/585/375 map/can/use rule Left 120 (1)
+763/563/158 map/can/use rule Left Right 120 (1)
+230/230/87 map/can/use rule Fill Triangle
+7723/250/91 map/can/use rule Vis A Vis (1)
+23/0/0 map/can/use rule 2 h Vis A Vis (1)
+
+
+0/515/508 map/can/use rule Free Triangle (1)
+0/1/1 map/can/use rule Free Triangle (5)
+0/0/0 map/can/use rule Free Triangle (10)
+0/0/0 map/can/use rule Free Triangle (20)
+25390/24880/311 map/can/use rule Right 60 (1)
+1223/747/302 map/can/use rule Left 60 (1)
+25498/24314/24066 map/can/use rule Right 120 (1)
+1541/594/380 map/can/use rule Left 120 (1)
+808/586/165 map/can/use rule Left Right 120 (1)
+323/323/171 map/can/use rule Fill Triangle
+8368/469/287 map/can/use rule Vis A Vis (1)
+24/0/0 map/can/use rule 2 h Vis A Vis (1)
+
+ 508 times used rule Free Triangle (1)
+   1 times used rule Free Triangle (5)
+   0 times used rule Free Triangle (10)
+   0 times used rule Free Triangle (20)
+ 315 times used rule Right 60 (1)
+ 308 times used rule Left 60 (1)
+24066 times used rule Right 120 (1)
+ 380 times used rule Left 120 (1)
+ 167 times used rule Left Right 120 (1)
+ 290 times used rule Fill Triangle
+ 289 times used rule Vis A Vis (1)
+   0 times used rule 2 h Vis A Vis (1)
+mesh face 5
+
+0/75/75 map/can/use rule Free Triangle (1)
+0/0/0 map/can/use rule Free Triangle (5)
+0/0/0 map/can/use rule Free Triangle (10)
+0/0/0 map/can/use rule Free Triangle (20)
+527/428/69 map/can/use rule Right 60 (1)
+284/188/5 map/can/use rule Left 60 (1)
+432/243/240 map/can/use rule Right 120 (1)
+463/12/12 map/can/use rule Left 120 (1)
+87/45/40 map/can/use rule Left Right 120 (1)
+92/92/86 map/can/use rule Fill Triangle
+1134/575/348 map/can/use rule Vis A Vis (1)
+0/0/0 map/can/use rule 2 h Vis A Vis (1)
+
+  75 times used rule Free Triangle (1)
+   0 times used rule Free Triangle (5)
+   0 times used rule Free Triangle (10)
+   0 times used rule Free Triangle (20)
+  87 times used rule Right 60 (1)
+  27 times used rule Left 60 (1)
+ 240 times used rule Right 120 (1)
+  12 times used rule Left 120 (1)
+  40 times used rule Left Right 120 (1)
+ 360 times used rule Fill Triangle
+ 359 times used rule Vis A Vis (1)
+   0 times used rule 2 h Vis A Vis (1)
+mesh face 6
+
+0/12/12 map/can/use rule Free Triangle (1)
+0/0/0 map/can/use rule Free Triangle (5)
+0/0/0 map/can/use rule Free Triangle (10)
+0/0/0 map/can/use rule Free Triangle (20)
+560/558/8 map/can/use rule Right 60 (1)
+12/8/3 map/can/use rule Left 60 (1)
+561/549/541 map/can/use rule Right 120 (1)
+437/424/420 map/can/use rule Left 120 (1)
+11/8/4 map/can/use rule Left Right 120 (1)
+1/1/1 map/can/use rule Fill Triangle
+95/1/1 map/can/use rule Vis A Vis (1)
+0/0/0 map/can/use rule 2 h Vis A Vis (1)
+
+
+0/28/28 map/can/use rule Free Triangle (1)
+0/0/0 map/can/use rule Free Triangle (5)
+0/0/0 map/can/use rule Free Triangle (10)
+0/0/0 map/can/use rule Free Triangle (20)
+1155/1147/15 map/can/use rule Right 60 (1)
+31/21/9 map/can/use rule Left 60 (1)
+1152/1129/1114 map/can/use rule Right 120 (1)
+842/807/799 map/can/use rule Left 120 (1)
+24/20/11 map/can/use rule Left Right 120 (1)
+7/7/2 map/can/use rule Fill Triangle
+165/2/2 map/can/use rule Vis A Vis (1)
+0/0/0 map/can/use rule 2 h Vis A Vis (1)
+
+
+0/50/50 map/can/use rule Free Triangle (1)
+0/0/0 map/can/use rule Free Triangle (5)
+0/0/0 map/can/use rule Free Triangle (10)
+0/0/0 map/can/use rule Free Triangle (20)
+1700/1692/20 map/can/use rule Right 60 (1)
+48/38/17 map/can/use rule Left 60 (1)
+1699/1665/1646 map/can/use rule Right 120 (1)
+1290/1239/1218 map/can/use rule Left 120 (1)
+46/41/16 map/can/use rule Left Right 120 (1)
+7/7/2 map/can/use rule Fill Triangle
+236/5/2 map/can/use rule Vis A Vis (1)
+0/0/0 map/can/use rule 2 h Vis A Vis (1)
+
+
+0/70/70 map/can/use rule Free Triangle (1)
+0/0/0 map/can/use rule Free Triangle (5)
+0/0/0 map/can/use rule Free Triangle (10)
+0/0/0 map/can/use rule Free Triangle (20)
+2133/2122/28 map/can/use rule Right 60 (1)
+68/54/28 map/can/use rule Left 60 (1)
+2132/2082/2058 map/can/use rule Right 120 (1)
+1852/1780/1750 map/can/use rule Left 120 (1)
+70/61/20 map/can/use rule Left Right 120 (1)
+7/7/2 map/can/use rule Fill Triangle
+328/10/2 map/can/use rule Vis A Vis (1)
+2/0/0 map/can/use rule 2 h Vis A Vis (1)
+
+
+0/76/76 map/can/use rule Free Triangle (1)
+0/0/0 map/can/use rule Free Triangle (5)
+0/0/0 map/can/use rule Free Triangle (10)
+0/0/0 map/can/use rule Free Triangle (20)
+2809/2401/50 map/can/use rule Right 60 (1)
+499/86/50 map/can/use rule Left 60 (1)
+2703/2101/2074 map/can/use rule Right 120 (1)
+2227/1925/1888 map/can/use rule Left 120 (1)
+101/78/25 map/can/use rule Left Right 120 (1)
+388/388/377 map/can/use rule Fill Triangle
+1735/538/382 map/can/use rule Vis A Vis (1)
+5/0/0 map/can/use rule 2 h Vis A Vis (1)
+
+  78 times used rule Free Triangle (1)
+   1 times used rule Free Triangle (5)
+   0 times used rule Free Triangle (10)
+   0 times used rule Free Triangle (20)
+  61 times used rule Right 60 (1)
+  56 times used rule Left 60 (1)
+2074 times used rule Right 120 (1)
+1889 times used rule Left 120 (1)
+  26 times used rule Left Right 120 (1)
+ 385 times used rule Fill Triangle
+ 384 times used rule Vis A Vis (1)
+   0 times used rule 2 h Vis A Vis (1)
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0252553 f0 = 0.0252553
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245357 f0 = 0.0245357
+no success with linesearch
+fail, f = 0.0245357 f0 = 0.0245357
+no success with linesearch
+fail, f = 0.0245357 f0 = 0.0245357
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245357 f0 = 0.0245357
+no success with linesearch
+fail, f = 0.0245357 f0 = 0.0245357
+fail, f = 0.0245357 f0 = 0.0245357
+no success with linesearch
+fail, f = 0.0245357 f0 = 0.0245357
+no success with linesearch
+fail, f = 0.0245357 f0 = 0.0245357
+no success with linesearch
+fail, f = 0.0245357 f0 = 0.0245357
+no success with linesearch
+fail, f = 0.0245357 f0 = 0.0245357
+fail, f = 0.628599 f0 = 0.628599
+fail, f = 0.628599 f0 = 0.628599
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+fail, f = 0.0245358 f0 = 0.0245358
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0252553 f0 = 0.0252553
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245358 f0 = 0.0245358
+no success with linesearch
+fail, f = 0.0245359 f0 = 0.0245359

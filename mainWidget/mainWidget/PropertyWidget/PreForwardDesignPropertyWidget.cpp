@@ -526,7 +526,6 @@ void PreForwardDesignPropertyWidget::reset()
 
 void PreForwardDesignPropertyWidget::view()
 {
-
 	double start = 50.0;  // 初始温度
 	double end = 90.0; // 弹体目标温度（℃）
 	double step = (end-start)/30;
@@ -552,7 +551,6 @@ void PreForwardDesignPropertyWidget::view()
 		double value = preForwardCalculateForm(calculationPropertyInfo.preForwardCalculateFormula, i, B, C, D, E, F);
 		QString result = QString::number(qRound(value));
 		y.push_back(result.toDouble());
-
 	}
 	x.push_back(end);
 	double value = preForwardCalculateForm(calculationPropertyInfo.preForwardCalculateFormula, end, B, C, D, E, F);

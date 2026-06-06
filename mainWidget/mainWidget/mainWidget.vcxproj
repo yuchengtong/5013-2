@@ -124,6 +124,7 @@
     <ClCompile Include="CurvePlotWidget\InForwardDensityTempWid.cpp" />
     <ClCompile Include="CurvePlotWidget\InForwardDensityVacuumWid.cpp" />
     <ClCompile Include="CurvePlotWidget\InForwardDensityValveWid.cpp" />
+    <ClCompile Include="CurvePlotWidget\InForwardMassTimeWid.cpp" />
     <ClCompile Include="CurvePlotWidget\InForwardTimeTempWid.cpp" />
     <ClCompile Include="CurvePlotWidget\InForwardTimeVacuumWid.cpp" />
     <ClCompile Include="CurvePlotWidget\InForwardTimeValveWid.cpp" />
@@ -205,6 +206,7 @@
     <QtMoc Include="PropertyWidget\ProjectPropertyWidge.h" />
   </ItemGroup>
   <ItemGroup>
+    <QtMoc Include="CurvePlotWidget\InForwardMassTimeWid.h" />
     <ClInclude Include="InitWidget\InjectionParamWidget.h" />
     <QtMoc Include="InitWidget\PreheatingParamWidget.h" />
     <QtMoc Include="InitWidget\SoftwareSelectionWidget.h" />

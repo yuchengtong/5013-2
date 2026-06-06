@@ -29,6 +29,7 @@
 #include "InForwardTimeTempWid.h"
 #include "InForwardTimeVacuumWid.h"
 #include "InForwardTimeValveWid.h"
+#include "InForwardMassTimeWid.h"
 
 class GFImportModelWidget : public QWidget
 {
@@ -56,6 +57,8 @@ public:
 	QTabWidget* GetMainTabWidget() const {return m_pMainTabWidget;}
 	ToolsAnimationWidget* GetToolsAnimationWidget() const { return m_ToolsAnimationWidget; }
 
+	QStackedWidget* GetRightStackedWidget() const { return m_pRightStackedWidget; }
+
 	PreForwardTimeTempWid* GetPreForwardTimeTempWid() const { return m_PreForwardTimeTempWid; }
 	InForwardDensityTempWid* GetInForwardDensityTempWid() const { return m_InForwardDensityTempWid; }
 	InForwardDensityValveWid* GetInForwardDensityValveWid() const { return m_InForwardDensityValveWid; }
@@ -63,6 +66,7 @@ public:
 	InForwardTimeTempWid* GetInForwardTimeTempWid() const { return m_InForwardTimeTempWid; }
 	InForwardTimeValveWid* GetInForwardTimeValveWid() const { return m_InForwardTimeValveWid; }
 	InForwardTimeVacuumWid* GetInForwardTimeVacuumWid() const { return m_InForwardTimeVacuumWid; }
+	InForwardMassTimeWid* GetInForwardMassTimeWid()const {return m_InForwardMassTimeWid;}
 
 private slots:
 	void onTreeItemClicked(const QString& itemData);
@@ -108,7 +112,10 @@ private:
 
 	ToolsAnimationWidget* m_ToolsAnimationWidget = nullptr;
 
+	QStackedWidget* m_pRightStackedWidget = nullptr;
 	PreForwardTimeTempWid* m_PreForwardTimeTempWid = nullptr;
+	InForwardMassTimeWid* m_InForwardMassTimeWid = nullptr;
+
 	InForwardDensityTempWid* m_InForwardDensityTempWid = nullptr;
 	InForwardDensityValveWid* m_InForwardDensityValveWid = nullptr;
 	InForwardDensityVacuumWid* m_InForwardDensityVacuumWid = nullptr;
