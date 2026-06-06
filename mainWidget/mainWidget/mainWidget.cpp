@@ -117,8 +117,8 @@ border-bottom: 2px solid white; /* 改成白色，看起来就没有线了 */
 	m_navTabWidget->addTab(new QWidget(), QIcon(":/src/database.svg"), QString::fromLocal8Bit("数据库"));
 	m_navTabWidget->addTab(new QWidget(), QIcon(":/src/craft.svg"), QString::fromLocal8Bit("预热与注药工艺"));
 	m_navTabWidget->addTab(new QWidget(), QIcon(":/src/help.svg"), QString::fromLocal8Bit("帮助"));
-	m_navTabWidget->setFixedHeight(56);
-	m_navTabWidget->setIconSize(QSize(48, 48));
+	m_navTabWidget->setFixedHeight(48);
+	m_navTabWidget->setIconSize(QSize(32, 32));
 
 
 	// ========== 全局样式设置 ==========
@@ -231,7 +231,7 @@ void mainWidget::setupGeomWidget()
 	m_saveAsBtn->setIcon(QIcon(":/src/Save_as.svg"));
 	m_exportBtn->setIcon(QIcon(":/src/Export.svg"));
 
-	const int btnSize = 48;
+	const int btnSize = 32;
 	QSize iconSize(btnSize, btnSize); 
 	m_importBtn->setIconSize(iconSize);
 	m_saveBtn->setIconSize(iconSize);
@@ -308,7 +308,7 @@ void mainWidget::setupOperationWidget()
 	m_fitAllBtn->setIcon(QIcon(":/src/FitAll.svg"));
 	//m_resetBtn->setIcon(QIcon(":/src/Reset.svg"));
 
-	const int btnSize = 48;
+	const int btnSize = 32;
 	QSize iconSize(btnSize, btnSize);
 	//m_moveBtn->setFixedSize(btnSize, btnSize);
 	//m_rotateBtn->setFixedSize(btnSize, btnSize);
