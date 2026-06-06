@@ -114,10 +114,11 @@ border-bottom: 2px solid white; /* 改成白色，看起来就没有线了 */
 )");
 
 
-	m_navTabWidget->addTab(new QWidget(), QString::fromLocal8Bit("数据库"));
-	m_navTabWidget->addTab(new QWidget(), QString::fromLocal8Bit("预热与注药工艺"));
-	m_navTabWidget->addTab(new QWidget(), QString::fromLocal8Bit("帮助"));
-	m_navTabWidget->setFixedHeight(30);
+	m_navTabWidget->addTab(new QWidget(), QIcon(":/src/database.svg"), QString::fromLocal8Bit("数据库"));
+	m_navTabWidget->addTab(new QWidget(), QIcon(":/src/craft.svg"), QString::fromLocal8Bit("预热与注药工艺"));
+	m_navTabWidget->addTab(new QWidget(), QIcon(":/src/help.svg"), QString::fromLocal8Bit("帮助"));
+	m_navTabWidget->setFixedHeight(56);
+	m_navTabWidget->setIconSize(QSize(48, 48));
 
 
 	// ========== 全局样式设置 ==========
@@ -226,20 +227,26 @@ void mainWidget::setupGeomWidget()
 	m_exportBtn = new QPushButton();
 
 	m_importBtn->setIcon(QIcon(":/src/Import.svg"));
-	m_saveBtn->setIcon(QIcon(":/src/Save.svg"));
+	m_saveBtn->setIcon(QIcon(":/src/Save_1.svg"));
 	m_saveAsBtn->setIcon(QIcon(":/src/Save_as.svg"));
 	m_exportBtn->setIcon(QIcon(":/src/Export.svg"));
 
-	const int btnSize = 32;
-	m_importBtn->setFixedSize(btnSize, btnSize);
-	m_saveBtn->setFixedSize(btnSize, btnSize);
-	m_saveAsBtn->setFixedSize(btnSize, btnSize);
-	m_exportBtn->setFixedSize(btnSize, btnSize);
+	const int btnSize = 48;
+	QSize iconSize(btnSize, btnSize); 
+	m_importBtn->setIconSize(iconSize);
+	m_saveBtn->setIconSize(iconSize);
+	m_saveAsBtn->setIconSize(iconSize);
+	m_exportBtn->setIconSize(iconSize);
 
-	auto importLabel = new QLabel(QString::fromLocal8Bit("导入文件"));
-	auto saveLabel = new QLabel(QString::fromLocal8Bit("保存文件"));
+	m_importBtn->setFlat(true);
+	m_saveBtn->setFlat(true);
+	m_saveAsBtn->setFlat(true);
+	m_exportBtn->setFlat(true);
+
+	auto importLabel = new QLabel(QString::fromLocal8Bit("导入"));
+	auto saveLabel = new QLabel(QString::fromLocal8Bit("保存"));
 	auto saveAsLabel = new QLabel(QString::fromLocal8Bit("另存为..."));
-	auto exportLabel = new QLabel(QString::fromLocal8Bit("导出文件"));
+	auto exportLabel = new QLabel(QString::fromLocal8Bit("导出"));
 
 	auto importVBox = new QVBoxLayout();
 	importVBox->addWidget(m_importBtn, 0, Qt::AlignHCenter);
@@ -297,16 +304,20 @@ void mainWidget::setupOperationWidget()
 
 	//m_moveBtn->setIcon(QIcon(":/src/Move.svg"));
 	//m_rotateBtn->setIcon(QIcon(":/src/Rotate.svg"));
-	m_zoomBtn->setIcon(QIcon(":/src/Zoom.png"));
-	m_fitAllBtn->setIcon(QIcon(":/src/FitAll.png"));
+	m_zoomBtn->setIcon(QIcon(":/src/Zoom.svg"));
+	m_fitAllBtn->setIcon(QIcon(":/src/FitAll.svg"));
 	//m_resetBtn->setIcon(QIcon(":/src/Reset.svg"));
 
-	const int btnSize = 32;
+	const int btnSize = 48;
+	QSize iconSize(btnSize, btnSize);
 	//m_moveBtn->setFixedSize(btnSize, btnSize);
 	//m_rotateBtn->setFixedSize(btnSize, btnSize);
-	m_zoomBtn->setFixedSize(btnSize, btnSize);
-	m_fitAllBtn->setFixedSize(btnSize, btnSize);
+	m_zoomBtn->setIconSize(iconSize);
+	m_fitAllBtn->setIconSize(iconSize);
 	//m_resetBtn->setFixedSize(btnSize, btnSize);
+
+	m_zoomBtn->setFlat(true);
+	m_fitAllBtn->setFlat(true);
 
 	//auto moveLabel = new QLabel(QString::fromLocal8Bit("移动"));
 	//auto rotateLabel = new QLabel(QString::fromLocal8Bit("旋转"));

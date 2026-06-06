@@ -419,6 +419,29 @@ void InReverseOptimizationPropertyWidget::initWidget()
 void InReverseOptimizationPropertyWidget::calculate()
 {
 
+	auto ins = ModelDataManager::GetInstance();
+	auto modelGeometryInfo = ins->GetModelGeometryInfo();
+	auto steelPropertyInfo = ins->GetSteelPropertyInfo();
+	auto propellantPropertyInfo = ins->GetPropellantPropertyInfo();
+	auto gelatinPropertyInfo = ins->GetGelatinPropertyInfo();
+	auto calculationPropertyInfo = ins->GetCalculationPropertyInfo();
+
+	if (!steelPropertyInfo.isChecked)
+	{
+		QMessageBox::warning(this, "提示", "壳体物性材料未选择");
+		return;
+	}
+	if (!propellantPropertyInfo.isChecked)
+	{
+		QMessageBox::warning(this, "提示", "药液物性材料未选择");
+		return;
+	}
+	if (!gelatinPropertyInfo.isChecked)
+	{
+		QMessageBox::warning(this, "提示", "明胶物性材料未选择");
+		return;
+	}
+
 	auto valveOpeningBool = m_valveOpeningRadioBtn->isChecked(); // 阀门开度
 	auto vacuumDegreeBool = m_vacuumDegreeRadioBtn->isChecked(); // 真空度
 
@@ -479,11 +502,6 @@ void InReverseOptimizationPropertyWidget::calculate()
 			// 处理导入结果
 			connect(calculateWorker, &ReverseOptimizationWorker::WorkFinished, this,
 				[=](bool success, const QString& msg) {
-
-					auto ins = ModelDataManager::GetInstance();
-					auto modelGeometryInfo = ins->GetModelGeometryInfo();
-					auto steelPropertyInfo = ins->GetSteelPropertyInfo();
-					auto calculationPropertyInfo = ins->GetCalculationPropertyInfo();
 
 					auto A = m_valveOpeningValue.toDouble() / 2.0; // 阀门开度（mm）
 					auto B = modelGeometryInfo.gasketLayerThickness; // 胶层厚度(mm)

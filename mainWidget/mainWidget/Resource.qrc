@@ -45,6 +45,13 @@
         <file>src/HongYuBg.jpg</file>
         <file>src/HongYuLogo.jpg</file>
         <file>src/Workbench.bmp</file>
+        <file>src/Zoom.svg</file>
+        <file>src/FitAll.svg</file>
+        <file>src/Save_1.svg</file>
+        <file>src/craft.svg</file>
+        <file>src/database.svg</file>
+        <file>src/help.svg</file>
+        <file>src/Import_1.svg</file>
     </qresource>
     <qresource prefix="/animation">
         <file alias="Animation/first_frame.svg">src/icon/Animation/first_frame.svg</file>

@@ -392,9 +392,25 @@ void InForwardDesignPropertyWidget::inForwardCalculate() {
 	auto ins = ModelDataManager::GetInstance();
 	auto modelGeometryInfo = ins->GetModelGeometryInfo();
 	auto steelPropertyInfo = ins->GetSteelPropertyInfo();
+	auto propellantPropertyInfo = ins->GetPropellantPropertyInfo();
+	auto gelatinPropertyInfo = ins->GetGelatinPropertyInfo();
 	auto calculationPropertyInfo = ins->GetCalculationPropertyInfo();
 	auto inForwardPropertyInfo = ins->GetInForwardPropertyInfo();
-
+	if (!steelPropertyInfo.isChecked)
+	{
+		QMessageBox::warning(this, "提示", "壳体物性材料未选择");
+		return;
+	}
+	if (!propellantPropertyInfo.isChecked)
+	{
+		QMessageBox::warning(this, "提示", "药液物性材料未选择");
+		return;
+	}
+	if (!gelatinPropertyInfo.isChecked)
+	{
+		QMessageBox::warning(this, "提示", "明胶物性材料未选择");
+		return;
+	}
 	if (steelPropertyInfo.density == 0.0)
 	{
 		QMessageBox::warning(this, "提示", "壳体物性材料参数数值不能为0");

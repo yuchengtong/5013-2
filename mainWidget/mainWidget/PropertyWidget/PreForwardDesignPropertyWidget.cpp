@@ -327,6 +327,29 @@ void PreForwardDesignPropertyWidget::initWidget()
 
 void PreForwardDesignPropertyWidget::preForwardCalculate()
 {
+	auto ins = ModelDataManager::GetInstance();
+	auto modelGeometryInfo = ins->GetModelGeometryInfo();
+	auto steelPropertyInfo = ins->GetSteelPropertyInfo();
+	auto propellantPropertyInfo = ins->GetPropellantPropertyInfo();
+	auto gelatinPropertyInfo = ins->GetGelatinPropertyInfo();
+	auto calculationPropertyInfo = ins->GetCalculationPropertyInfo();
+
+	if (!steelPropertyInfo.isChecked  )
+	{
+		QMessageBox::warning(this, "提示", "壳体物性材料未选择");
+		return;
+	}
+	if (!propellantPropertyInfo.isChecked)
+	{
+		QMessageBox::warning(this, "提示", "药液物性材料未选择");
+		return;
+	}
+	if (!gelatinPropertyInfo.isChecked)
+	{
+		QMessageBox::warning(this, "提示", "明胶物性材料未选择");
+		return;
+	}
+
 	QWidget* parent = parentWidget();
 	while (parent) {
 		GFImportModelWidget* gfParent = dynamic_cast<GFImportModelWidget*>(parent);
@@ -360,10 +383,7 @@ void PreForwardDesignPropertyWidget::preForwardCalculate()
 			// 处理导入结果
 			connect(calculateWorker, &ForwardDesignWorker::WorkFinished, this,
 				[=](bool success, const QString& msg) {
-					auto ins = ModelDataManager::GetInstance();
-					auto modelGeometryInfo = ins->GetModelGeometryInfo();
-					auto steelPropertyInfo = ins->GetSteelPropertyInfo();
-					auto calculationPropertyInfo = ins->GetCalculationPropertyInfo();
+					
 
 					auto A = m_targetTemperatureValue.toDouble(); // 弹体目标温度（℃）
 					auto B = modelGeometryInfo.shellThickness; // 壳体厚度 (mm)
@@ -528,7 +548,7 @@ void PreForwardDesignPropertyWidget::view()
 {
 	double start = 50.0;  // 初始温度
 	double end = 90.0; // 弹体目标温度（℃）
-	double step = (end-start)/30;
+	double step = (end-start)/28;
 
 	auto ins = ModelDataManager::GetInstance();
 	auto modelGeometryInfo = ins->GetModelGeometryInfo();
@@ -573,20 +593,7 @@ void PreForwardDesignPropertyWidget::view()
 			QString timeStr = currentTime.toString("yyyy-MM-dd hh:mm:ss");
 			auto logWidget = gfParent->GetLogWidget();
 			auto textEdit = logWidget->GetTextEdit();
-
-
 			auto preForwardTimeTempWid = gfParent->GetPreForwardTimeTempWid();
-
-			/*QVector<double> x;
-			x.push_back(0.0);
-			x.push_back(300.0);
-			x.push_back(600.0);
-			QVector<double> y;
-			y.push_back(22.0);
-			y.push_back(40.0);
-			y.push_back(60.0);*/
-
-
 			preForwardTimeTempWid->AddDataPoint(x, y);
 
 			break;

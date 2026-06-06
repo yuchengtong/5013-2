@@ -243,9 +243,32 @@ void PreReverseOptimizationPropertyWidget::initWidget()
 
 void PreReverseOptimizationPropertyWidget::calculate() 
 {
+	auto ins = ModelDataManager::GetInstance();
+	auto modelGeometryInfo = ins->GetModelGeometryInfo();
+	auto steelPropertyInfo = ins->GetSteelPropertyInfo();
+	auto propellantPropertyInfo = ins->GetPropellantPropertyInfo();
+	auto gelatinPropertyInfo = ins->GetGelatinPropertyInfo();
+	auto calculationPropertyInfo = ins->GetCalculationPropertyInfo();
+
+	if (!steelPropertyInfo.isChecked)
+	{
+		QMessageBox::warning(this, "提示", "壳体物性材料未选择");
+		return;
+	}
+	if (!propellantPropertyInfo.isChecked)
+	{
+		QMessageBox::warning(this, "提示", "药液物性材料未选择");
+		return;
+	}
+	if (!gelatinPropertyInfo.isChecked)
+	{
+		QMessageBox::warning(this, "提示", "明胶物性材料未选择");
+		return;
+	}
+
 	if (m_preheatingTimeValue == "")
 	{
-		QMessageBox::information(this, "提示", "弹体预热时间不能为空！");
+		QMessageBox::warning(this, "提示", "弹体预热时间不能为空！");
 		return;
 	}
 	QWidget* parent = parentWidget();
@@ -289,11 +312,6 @@ void PreReverseOptimizationPropertyWidget::calculate()
 	connect(calculateWorker, &ReverseOptimizationWorker::WorkFinished, this,
 		[=](bool success, const QString& msg) {
 	
-		auto ins = ModelDataManager::GetInstance();
-		auto modelGeometryInfo = ins->GetModelGeometryInfo();
-		auto steelPropertyInfo = ins->GetSteelPropertyInfo();
-		auto calculationPropertyInfo = ins->GetCalculationPropertyInfo();
-
 		//auto A = m_targetTemperatureValue.toDouble(); // 弹体目标温度（℃）
 		auto B = modelGeometryInfo.shellThickness; // 壳体厚度 (mm)
 		auto C = modelGeometryInfo.gasketLayerThickness; // 胶层厚度(mm)
