@@ -1,31 +1,51 @@
 #pragma once
 #include <QWidget>
-
+#include <QMap>
+#include <QVBoxLayout>
 class QLineEdit;
 class QPushButton;
+class QGroupBox;
+class QFormLayout;
 
 class PreheatingParamWidget : public QWidget
 {
 	Q_OBJECT
+
 public:
+	struct ParamConfig {
+		QString label;
+		QString placeholder;
+		QString envVar;
+		QString defaultValue;
+		bool required;
+		QPair<double, double> range;
+	};
+
 	explicit PreheatingParamWidget(QWidget* parent = nullptr);
 	~PreheatingParamWidget();
 
 private:
 	void initUI();
 	void bindConnect();
+	void loadSettings();
+	void saveSettings();
+	bool validateInputs();
+
+	QGroupBox* createGroupBox(const QString& title);
+	QLineEdit* createParamEdit(const ParamConfig& config);
+	void buildLeftColumn(QVBoxLayout* layout);
+	void buildRightColumn(QVBoxLayout* layout);
+
+	QString globalStyleSheet() const;
+	QString groupBoxStyleSheet() const;
+	QString buttonStyleSheet() const;
 
 private:
-	// Workbench 路径
 	QLineEdit* m_pWorkbenchPathEdit = nullptr;
 	QPushButton* m_pBrowseBtn = nullptr;
-
-	// 工艺参数
-	QLineEdit* m_pValveOpeningEdit = nullptr;      // 阀门开度
-	QLineEdit* m_pWallThicknessEdit = nullptr;     // 壁厚
-	QLineEdit* m_pBondlineThicknessEdit = nullptr; // 胶层厚度
-	QLineEdit* m_pLiquidTempEdit = nullptr;        // 药液温度
-	QLineEdit* m_pInsulationTempEdit = nullptr;    // 保温温度
-
+	QMap<QString, QLineEdit*> m_paramEdits;
 	QPushButton* m_pStartBtn = nullptr;
+
+	static const QList < ParamConfig > s_leftParams;
+	static const QList < ParamConfig > s_rightParams;
 };

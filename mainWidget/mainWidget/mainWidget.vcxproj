@@ -209,7 +209,7 @@
   <ItemGroup>
     <QtMoc Include="TableWrapDelegate.h" />
     <QtMoc Include="CurvePlotWidget\InForwardMassTimeWid.h" />
-    <ClInclude Include="InitWidget\InjectionParamWidget.h" />
+    <QtMoc Include="InitWidget\InjectionParamWidget.h" />
     <QtMoc Include="InitWidget\PreheatingParamWidget.h" />
     <QtMoc Include="InitWidget\SoftwareSelectionWidget.h" />
     <QtMoc Include="InitWidget\LoginWindow.h" />

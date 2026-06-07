@@ -350,8 +350,9 @@
     </QtMoc>
     <QtMoc Include="TableWrapDelegate.h">
       <Filter>Header Files</Filter>
-    </QtMoc>
-  </ItemGroup>
+    </QtMoc>    <QtMoc Include="InitWidget\InjectionParamWidget.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>  </ItemGroup>
   <ItemGroup>
     <QtUic Include="DatabaseWidget.ui">
       <Filter>Form Files</Filter>
@@ -374,9 +375,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Algrithm\APISetNodeValue.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="InitWidget\InjectionParamWidget.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

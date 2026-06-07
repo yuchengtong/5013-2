@@ -1,211 +1,438 @@
-#pragma execution_character_set("utf-8")
+ï»¿#pragma execution_character_set("utf-8")
 #include "PreheatingParamWidget.h"
 #include <QVBoxLayout>
 #include <QHBoxLayout>
-#include <QGridLayout>
+#include <QFormLayout>
 #include <QLabel>
 #include <QLineEdit>
 #include <QPushButton>
+#include <QGroupBox>
 #include <QFileDialog>
 #include <QMessageBox>
+#include <QProcess>
+#include <QProcessEnvironment>
+#include <QDir>
+#include <QFile>
+#include <QFileInfo>
+#include <QDoubleValidator>
+#include <QSettings>
+#include <QCoreApplication>
 
+// ==================== å·¦åˆ—ï¼šææ–™å‚æ•°ï¼ˆèƒ¶å±‚ + å£³ä½“ï¼‰====================
+const QList < PreheatingParamWidget::ParamConfig > PreheatingParamWidget::s_leftParams = {
+	// èƒ¶å±‚
+	{"èƒ¶å±‚å¯†åº¦ (kg/mÂ³)", "å¯†åº¦", "BONDLINE_DENSITY", "", false, {0.0, 0.0}},
+	{"èƒ¶å±‚æ¯”çƒ­ (J/(kgÂ·K))", "æ¯”çƒ­", "BONDLINE_SPECIFIC_HEAT", "", false, {0.0, 0.0}},
+	{"èƒ¶å±‚çƒ­å¯¼ç‡ (W/(mÂ·K))", "çƒ­å¯¼ç‡", "BONDLINE_THERMAL_CONDUCTIVITY", "", false, {0.0, 0.0}},
+	{"èƒ¶å±‚å¸æ”¶ç³»æ•° (mâ»Â¹)", "å¸æ”¶ç³»æ•°", "BONDLINE_ABSORPTION_COEFFICIENT", "", false, {0.0, 0.0}},
+	// å£³ä½“
+	{"å£³ä½“å¯†åº¦ (kg/mÂ³)", "å¯†åº¦", "SHELL_DENSITY", "", false, {0.0, 0.0}},
+	{"å£³ä½“æ¯”çƒ­ (J/(kgÂ·K))", "æ¯”çƒ­", "SHELL_SPECIFIC_HEAT", "", false, {0.0, 0.0}},
+	{"å£³ä½“çƒ­å¯¼ç‡ (W/(mÂ·K))", "çƒ­å¯¼ç‡", "SHELL_THERMAL_CONDUCTIVITY", "", false, {0.0, 0.0}},
+	{"å£³ä½“å¸æ”¶ç³»æ•° (mâ»Â¹)", "å¸æ”¶ç³»æ•°", "SHELL_ABSORPTION_COEFFICIENT", "", false, {0.0, 0.0}},
+};
+
+// ==================== å³åˆ—ï¼šè¾¹ç•Œæ¡ä»¶ ====================
+const QList < PreheatingParamWidget::ParamConfig > PreheatingParamWidget::s_rightParams = {
+	{"ä¼ çƒ­ç³»æ•° (W/(mÂ²Â·K))", "ä¼ çƒ­ç³»æ•°", "HEAT_TRANSFER_COEFFICIENT", "", true, {0.0, 0.0}},
+	{"æ¥æµæ¸©åº¦ (K)", "æ¸©åº¦", "FREE_STREAM_TEMPERATURE", "", true, {0.0, 0.0}},
+	{"å¤–éƒ¨è¾å°„ç³»æ•°", "è¾å°„ç³»æ•°", "EXTERNAL_EMISSIVITY", "", false, {0.0, 1.0}},
+	{"å¤–éƒ¨è¾å°„æ¸©åº¦ (K)", "æ¸©åº¦", "EXTERNAL_RADIATION_TEMPERATURE", "", false, {0.0, 0.0}},
+	{"å†…éƒ¨è¾å°„ç³»æ•°", "è¾å°„ç³»æ•°", "INTERNAL_EMISSIVITY", "", false, {0.0, 1.0}},
+};
+
+// ==================== æ„é€  / ææ„ ====================
 PreheatingParamWidget::PreheatingParamWidget(QWidget* parent) : QWidget(parent)
 {
+	setStyleSheet(globalStyleSheet());
 	initUI();
 	bindConnect();
+	loadSettings();
 }
 
-PreheatingParamWidget::~PreheatingParamWidget()
-{
-}
+PreheatingParamWidget::~PreheatingParamWidget() = default;
 
+// ==================== ç•Œé¢åˆå§‹åŒ– ====================
 void PreheatingParamWidget::initUI()
 {
-	setWindowTitle("Ô¤ÈÈ¹¤ÒÕ²ÎÊıÉèÖÃ");
-	this->setWindowIcon(QIcon(":/selectWidget/src/selectWidget/PreheatingProcess.jpg"));
-	setFixedSize(520, 420);
+	setWindowTitle("é¢„çƒ­å‚æ•°è®¾ç½®");
+	setWindowIcon(QIcon(":/selectWidget/src/selectWidget/PreheatingProcess.jpg"));
+	setFixedSize(900, 520);
 
 	QVBoxLayout* mainLayout = new QVBoxLayout(this);
-	mainLayout->setContentsMargins(30, 24, 30, 24);
+	mainLayout->setContentsMargins(24, 20, 24, 20);
 	mainLayout->setSpacing(16);
 
-	// ========== ±êÌâ ==========
-	QLabel* title = new QLabel("Ô¤ÈÈ¹¤ÒÕ²ÎÊıÅäÖÃ");
+	// --- æ ‡é¢˜ ---
+	QLabel* title = new QLabel("é¢„çƒ­è¿‡ç¨‹æµå›ºçƒ­è€¦åˆè®¡ç®—å‚æ•°é…ç½®");
+	title->setObjectName("titleLabel");
 	title->setAlignment(Qt::AlignCenter);
-	title->setStyleSheet("font-size: 18px; font-weight: bold; color: #333333; background: transparent;");
 	mainLayout->addWidget(title);
 
-	mainLayout->addSpacing(8);
-
-	// ========== ²ÎÊı±íµ¥ÇøÓò ==========
-	QWidget* formWidget = new QWidget();
-	formWidget->setStyleSheet(R"(
-		QWidget { background-color: #ffffff; border: 1px solid #e0e0e0; border-radius: 8px; }
-		QLineEdit {
-			background-color: #ffffff;
-			border: 1px solid #d0d0d0;
-			border-radius: 4px;
-			padding: 6px;
-			font-size: 13px;
-			color: #333333;
-		}
-		QLineEdit:focus { border: 1px solid #0078D4; }
-	)");
-
-	QGridLayout* formLayout = new QGridLayout(formWidget);
-	formLayout->setContentsMargins(20, 16, 20, 16);
-	formLayout->setSpacing(12);
-	formLayout->setColumnStretch(1, 1);
-
-	int row = 0;
-
-	// Workbench Â·¾¶
-	QLabel* pathLabel = new QLabel("Workbench Â·¾¶:");
-	pathLabel->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
-	pathLabel->setStyleSheet("background: transparent; color: #555555; font-size: 13px;");
-
-	m_pWorkbenchPathEdit = new QLineEdit();
-	m_pWorkbenchPathEdit->setPlaceholderText("ÇëÑ¡Ôñ runwb2.exe Â·¾¶");
-	m_pWorkbenchPathEdit->setReadOnly(true);
-	m_pBrowseBtn = new QPushButton("ä¯ÀÀ...");
-	m_pBrowseBtn->setFixedWidth(60);
-	m_pBrowseBtn->setFixedHeight(28);
-	m_pBrowseBtn->setStyleSheet(R"(
-		QPushButton {
-			background-color: #f0f0f0;
-			border: 1px solid #d0d0d0;
-			border-radius: 4px;
-			font-size: 12px;
-			color: #333333;
-		}
-		QPushButton:hover { background-color: #e0e0e0; }
-		QPushButton:pressed { background-color: #d0d0d0; }
-	)");
-
+	// --- Workbench è·¯å¾„ï¼ˆå…¨å®½ï¼‰ ---
 	QHBoxLayout* pathLayout = new QHBoxLayout();
 	pathLayout->setSpacing(8);
-	pathLayout->setContentsMargins(0, 0, 0, 0);
-	pathLayout->addWidget(m_pWorkbenchPathEdit);
+
+	m_pWorkbenchPathEdit = new QLineEdit();
+	m_pWorkbenchPathEdit->setPlaceholderText("è¯·é€‰æ‹© runwb2.exe è·¯å¾„");
+	m_pWorkbenchPathEdit->setReadOnly(true);
+	m_pWorkbenchPathEdit->setMinimumHeight(32);
+
+	m_pBrowseBtn = new QPushButton("æµè§ˆ...");
+	m_pBrowseBtn->setFixedSize(72, 32);
+	m_pBrowseBtn->setCursor(Qt::PointingHandCursor);
+
+	pathLayout->addWidget(new QLabel("Workbench è·¯å¾„:"));
+	pathLayout->addWidget(m_pWorkbenchPathEdit, 1);
 	pathLayout->addWidget(m_pBrowseBtn);
+	mainLayout->addLayout(pathLayout);
 
-	formLayout->addWidget(pathLabel, row, 0, Qt::AlignRight | Qt::AlignVCenter);
-	formLayout->addLayout(pathLayout, row, 1);
-	++row;
+	// --- åŒåˆ—å‚æ•°åŒº ---
+	QHBoxLayout* columnsLayout = new QHBoxLayout();
+	columnsLayout->setSpacing(20);
 
-	// ·§ÃÅ¿ª¶È
-	QLabel* valveLabel = new QLabel("·§ÃÅ¿ª¶È:");
-	valveLabel->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
-	valveLabel->setStyleSheet("background: transparent; color: #555555; font-size: 13px;");
+	// å·¦åˆ—ï¼šææ–™å‚æ•°
+	QGroupBox* leftGroup = createGroupBox("ææ–™å‚æ•°");
+	QVBoxLayout* leftVBox = new QVBoxLayout(leftGroup);
+	leftVBox->setContentsMargins(20, 20, 20, 20);
+	buildLeftColumn(leftVBox);
 
-	m_pValveOpeningEdit = new QLineEdit();
-	m_pValveOpeningEdit->setPlaceholderText("ÀıÈç: 0.75");
-	formLayout->addWidget(valveLabel, row, 0, Qt::AlignRight | Qt::AlignVCenter);
-	formLayout->addWidget(m_pValveOpeningEdit, row, 1);
-	++row;
+	// å³åˆ—ï¼šè¾¹ç•Œæ¡ä»¶
+	QGroupBox* rightGroup = createGroupBox("è¾¹ç•Œæ¡ä»¶");
+	QVBoxLayout* rightVBox = new QVBoxLayout(rightGroup);
+	rightVBox->setContentsMargins(20, 20, 20, 20);
+	buildRightColumn(rightVBox);
 
-	// ±Úºñ
-	QLabel* wallLabel = new QLabel("±Úºñ (mm):");
-	wallLabel->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
-	wallLabel->setStyleSheet("background: transparent; color: #555555; font-size: 13px;");
+	columnsLayout->addWidget(leftGroup, 1);
+	columnsLayout->addWidget(rightGroup, 1);
+	mainLayout->addLayout(columnsLayout, 1);
 
-	m_pWallThicknessEdit = new QLineEdit();
-	m_pWallThicknessEdit->setPlaceholderText("ÀıÈç: 12.5");
-	formLayout->addWidget(wallLabel, row, 0, Qt::AlignRight | Qt::AlignVCenter);
-	formLayout->addWidget(m_pWallThicknessEdit, row, 1);
-	++row;
-
-	// ½º²ãºñ¶È
-	QLabel* bondLabel = new QLabel("½º²ãºñ¶È (mm):");
-	bondLabel->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
-	bondLabel->setStyleSheet("background: transparent; color: #555555; font-size: 13px;");
-
-	m_pBondlineThicknessEdit = new QLineEdit();
-	m_pBondlineThicknessEdit->setPlaceholderText("ÀıÈç: 2.0");
-	formLayout->addWidget(bondLabel, row, 0, Qt::AlignRight | Qt::AlignVCenter);
-	formLayout->addWidget(m_pBondlineThicknessEdit, row, 1);
-	++row;
-
-	// Ò©ÒºÎÂ¶È
-	QLabel* liquidLabel = new QLabel("Ò©ÒºÎÂ¶È (¡æ):");
-	liquidLabel->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
-	liquidLabel->setStyleSheet("background: transparent; color: #555555; font-size: 13px;");
-
-	m_pLiquidTempEdit = new QLineEdit();
-	m_pLiquidTempEdit->setPlaceholderText("ÀıÈç: 85");
-	formLayout->addWidget(liquidLabel, row, 0, Qt::AlignRight | Qt::AlignVCenter);
-	formLayout->addWidget(m_pLiquidTempEdit, row, 1);
-	++row;
-
-	// ±£ÎÂÎÂ¶È
-	QLabel* tempLabel = new QLabel("±£ÎÂÎÂ¶È (¡æ):");
-	tempLabel->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
-	tempLabel->setStyleSheet("background: transparent; color: #555555; font-size: 13px;");
-
-	m_pInsulationTempEdit = new QLineEdit();
-	m_pInsulationTempEdit->setPlaceholderText("ÀıÈç: 65");
-	formLayout->addWidget(tempLabel, row, 0, Qt::AlignRight | Qt::AlignVCenter);
-	formLayout->addWidget(m_pInsulationTempEdit, row, 1);
-	++row;
-
-	mainLayout->addWidget(formWidget);
-
-	mainLayout->addStretch();
-
-	// ========== Æô¶¯°´Å¥ ==========
-	m_pStartBtn = new QPushButton("Æô¶¯");
-	m_pStartBtn->setFixedHeight(40);
+	// --- å¯åŠ¨æŒ‰é’® ---
+	m_pStartBtn = new QPushButton("  â–¶ å¯åŠ¨è®¡ç®—");
+	m_pStartBtn->setFixedSize(180, 42);
 	m_pStartBtn->setCursor(Qt::PointingHandCursor);
-	m_pStartBtn->setStyleSheet(R"(
-		QPushButton {
-			background-color: #0078D4;
-			color: white;
-			border: none;
-			border-radius: 6px;
-			font-size: 14px;
-			font-weight: bold;
-		}
-		QPushButton:hover { background-color: #106EBE; }
-		QPushButton:pressed { background-color: #005A9E; }
-		QPushButton:disabled {
-			background-color: #cccccc;
-			color: #888888;
-		}
-	)");
+	m_pStartBtn->setStyleSheet(buttonStyleSheet());
 	mainLayout->addWidget(m_pStartBtn, 0, Qt::AlignHCenter);
-
-	// ´°¿Ú±³¾°
-	setStyleSheet("PreheatingParamWidget { background-color: #f5f6f7; }");
 }
 
+// ==================== æ„å»ºå·¦åˆ—ï¼šææ–™å‚æ•° ====================
+void PreheatingParamWidget::buildLeftColumn(QVBoxLayout * layout)
+{
+	QFormLayout* form = new QFormLayout();
+	form->setLabelAlignment(Qt::AlignRight);
+	form->setFormAlignment(Qt::AlignLeft);
+	form->setSpacing(12);
+	form->setContentsMargins(0, 0, 0, 0);
+	form->setFieldGrowthPolicy(QFormLayout::ExpandingFieldsGrow);
+
+	// èƒ¶å±‚
+	QLabel* bondTip = new QLabel("â€” èƒ¶å±‚ â€”");
+	bondTip->setObjectName("groupTip");
+	form->addRow(bondTip);
+
+	for (int i = 0; i < 4; ++i) {
+		QLineEdit* edit = createParamEdit(s_leftParams[i]);
+		form->addRow(s_leftParams[i].label + ":", edit);
+		m_paramEdits.insert(s_leftParams[i].envVar, edit);
+	}
+
+	// å£³ä½“
+	QLabel* shellTip = new QLabel("â€” å£³ä½“ â€”");
+	shellTip->setObjectName("groupTip");
+	form->addRow(shellTip);
+
+	for (int i = 4; i < s_leftParams.size(); ++i) {
+		QLineEdit* edit = createParamEdit(s_leftParams[i]);
+		form->addRow(s_leftParams[i].label + ":", edit);
+		m_paramEdits.insert(s_leftParams[i].envVar, edit);
+	}
+
+	layout->addLayout(form);
+	layout->addStretch();
+}
+
+// ==================== æ„å»ºå³åˆ—ï¼šè¾¹ç•Œæ¡ä»¶ ====================
+void PreheatingParamWidget::buildRightColumn(QVBoxLayout * layout)
+{
+	QFormLayout* form = new QFormLayout();
+	form->setLabelAlignment(Qt::AlignRight);
+	form->setFormAlignment(Qt::AlignLeft);
+	form->setSpacing(14);
+	form->setContentsMargins(0, 0, 0, 0);
+	form->setFieldGrowthPolicy(QFormLayout::ExpandingFieldsGrow);
+
+	for (int i = 0; i < s_rightParams.size(); ++i) {
+		QLineEdit* edit = createParamEdit(s_rightParams[i]);
+		form->addRow(s_rightParams[i].label + ":", edit);
+		m_paramEdits.insert(s_rightParams[i].envVar, edit);
+	}
+
+	layout->addLayout(form);
+	layout->addStretch();
+}
+
+// ==================== è¾…åŠ©å·¥å‚å‡½æ•° ====================
+QGroupBox* PreheatingParamWidget::createGroupBox(const QString & title)
+{
+	QGroupBox* box = new QGroupBox(title);
+	box->setStyleSheet(groupBoxStyleSheet());
+	return box;
+}
+
+QLineEdit* PreheatingParamWidget::createParamEdit(const ParamConfig & config)
+{
+	QLineEdit* edit = new QLineEdit();
+	edit->setPlaceholderText(config.placeholder);
+	edit->setMinimumHeight(32);
+	edit->setMinimumWidth(140);
+	edit->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+	edit->setText(config.defaultValue);
+
+	if (config.range.first != 0.0 || config.range.second != 0.0) {
+		edit->setValidator(new QDoubleValidator(
+			config.range.first, config.range.second, 4, this));
+	}
+
+	return edit;
+}
+
+// ==================== æ ·å¼è¡¨ ====================
+QString PreheatingParamWidget::globalStyleSheet() const
+{
+	return R"(
+        PreheatingParamWidget {
+            background-color: #f0f2f5;
+        }
+        #titleLabel {
+            font-size: 18px;
+            font-weight: bold;
+            color: #1a1a1a;
+            background: transparent;
+            padding: 4px;
+        }
+        #groupTip {
+            color: #0078D4;
+            font-size: 11px;
+            font-weight: bold;
+            background: transparent;
+            padding-top: 4px;
+            padding-bottom: 2px;
+        }
+        QLabel {
+            color: #333333;
+            font-size: 13px;
+            background: transparent;
+        }
+        QLineEdit {
+            background-color: #ffffff;
+            border: 1px solid #d0d0d0;
+            border-radius: 4px;
+            padding: 4px 8px;
+            font-size: 13px;
+            color: #333333;
+        }
+        QLineEdit:focus {
+            border: 1px solid #0078D4;
+            background-color: #f8fbff;
+        }
+        QLineEdit::placeholder {
+            color: #aaaaaa;
+        }
+        QLineEdit[readOnly="true"] {
+            background-color: #f5f5f5;
+            color: #666666;
+        }
+        QPushButton {
+            border-radius: 4px;
+            font-size: 13px;
+        }
+    )";
+}
+
+QString PreheatingParamWidget::groupBoxStyleSheet() const
+{
+	return R"(
+        QGroupBox {
+            background-color: #ffffff;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            margin-top: 12px;
+            font-size: 13px;
+            font-weight: bold;
+            color: #333333;
+        }
+        QGroupBox::title {
+            subcontrol-origin: margin;
+            left: 12px;
+            padding: 0 6px;
+            color: #0078D4;
+        }
+    )";
+}
+
+QString PreheatingParamWidget::buttonStyleSheet() const
+{
+	return R"(
+        QPushButton {
+            background-color: #0078D4;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+        QPushButton:hover {
+            background-color: #106EBE;
+        }
+        QPushButton:pressed {
+            background-color: #005A9E;
+        }
+        QPushButton:disabled {
+            background-color: #cccccc;
+            color: #888888;
+        }
+    )";
+}
+
+// ==================== ä¿¡å·ç»‘å®š ====================
 void PreheatingParamWidget::bindConnect()
 {
-	// ä¯ÀÀ°´Å¥£ºÑ¡Ôñ Workbench Â·¾¶
 	connect(m_pBrowseBtn, &QPushButton::clicked, this, [this]() {
+		QString lastPath = m_pWorkbenchPathEdit->text();
+		if (lastPath.isEmpty()) {
+			lastPath = QDir::homePath();
+		}
+		else {
+			lastPath = QFileInfo(lastPath).absolutePath();
+		}
+
 		QString filePath = QFileDialog::getOpenFileName(this,
-			"Ñ¡Ôñ Workbench Æô¶¯³ÌĞò",
-			QDir::homePath(),
-			"Executable Files (*.exe);;All Files (*.*)");
+			"é€‰æ‹© Workbench å¯åŠ¨ç¨‹åº",
+			lastPath,
+			"å¯æ‰§è¡Œæ–‡ä»¶ (*.exe);;æ‰€æœ‰æ–‡ä»¶ (*.*)");
+
 		if (!filePath.isEmpty()) {
 			m_pWorkbenchPathEdit->setText(filePath);
+			saveSettings();
 		}
 		});
 
-	// Æô¶¯°´Å¥
 	connect(m_pStartBtn, &QPushButton::clicked, this, [this]() {
-		// ¼òµ¥Ğ£Ñé
-		if (m_pWorkbenchPathEdit->text().isEmpty()) {
-			QMessageBox::warning(this, "ÌáÊ¾", "ÇëÏÈÑ¡Ôñ Workbench Â·¾¶£¡");
-			return;
+		if (!validateInputs()) return;
+
+		QString batPath = QCoreApplication::applicationDirPath() + "/module/yr/yr.bat";
+		if (!QFile::exists(batPath)) {
+			batPath = QDir::currentPath() + "/module/yr/yr.bat";
 		}
-		if (m_pValveOpeningEdit->text().isEmpty() ||
-			m_pWallThicknessEdit->text().isEmpty() ||
-			m_pBondlineThicknessEdit->text().isEmpty() ||
-			m_pLiquidTempEdit->text().isEmpty() ||
-			m_pInsulationTempEdit->text().isEmpty()) {
-			QMessageBox::warning(this, "ÌáÊ¾", "ÇëÌîĞ´ÍêÕûµÄ¹¤ÒÕ²ÎÊı£¡");
+
+		if (!QFile::exists(batPath)) {
+			QMessageBox::critical(this, "é”™è¯¯",
+				QString("æ‰¾ä¸åˆ°æ‰¹å¤„ç†æ–‡ä»¶:\n%1").arg(batPath));
 			return;
 		}
 
-		QMessageBox::information(this, "Æô¶¯", "²ÎÊıÒÑÈ·ÈÏ£¬×¼±¸Æô¶¯ Workbench...");
+		QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
+		env.insert("WORKBENCH_PATH", m_pWorkbenchPathEdit->text());
+
+		for (auto it = m_paramEdits.begin(); it != m_paramEdits.end(); ++it) {
+			QString value = it.value()->text().trimmed();
+			if (!value.isEmpty()) {
+				env.insert(it.key(), value);
+			}
+		}
+
+		QProcess process;
+		process.setProgram("cmd.exe");
+		process.setArguments(QStringList() << "/c" << batPath);
+		process.setProcessEnvironment(env);
+		process.setWorkingDirectory(QCoreApplication::applicationDirPath());
+
+		bool ok = process.startDetached();
+		if (!ok) {
+			QMessageBox::critical(this, "é”™è¯¯",
+				"å¯åŠ¨è®¡ç®—å¤±è´¥ï¼Œè¯·æ£€æŸ¥ç³»ç»Ÿæƒé™æˆ–å‘½ä»¤é…ç½®ã€‚");
+		}
+		else {
+			saveSettings();
+			QMessageBox::information(this, "æç¤º", "è®¡ç®—ä»»åŠ¡å·²å¯åŠ¨ï¼");
+		}
 		});
+}
+
+// ==================== éªŒè¯ä¸æŒä¹…åŒ– ====================
+bool PreheatingParamWidget::validateInputs()
+{
+	if (m_pWorkbenchPathEdit->text().isEmpty()) {
+		QMessageBox::warning(this, "æç¤º", "è¯·å…ˆé€‰æ‹© Workbench è·¯å¾„");
+		m_pBrowseBtn->setFocus();
+		return false;
+	}
+
+	QStringList missing;
+	auto checkMissing = [&](const QList < ParamConfig > &list) {
+		for (const auto& config : list) {
+			if (config.required && m_paramEdits[config.envVar]->text().trimmed().isEmpty()) {
+				missing.append(config.label);
+			}
+		}
+	};
+
+	checkMissing(s_leftParams);
+	checkMissing(s_rightParams);
+
+	if (!missing.isEmpty()) {
+		QMessageBox::warning(this, "æç¤º",
+			"è¯·å¡«å†™ä»¥ä¸‹å¿…å¡«å‚æ•°:\nâ€¢ " + missing.join("\nâ€¢ "));
+		return false;
+	}
+
+	auto checkRange = [&](const QList < ParamConfig > &list) {
+		for (const auto& config : list) {
+			if (config.range.first == 0.0 && config.range.second == 0.0) continue;
+
+			QString text = m_paramEdits[config.envVar]->text().trimmed();
+			if (text.isEmpty()) continue;
+
+			bool ok;
+			double val = text.toDouble(&ok);
+			if (!ok || val < config.range.first || val > config.range.second) {
+				QMessageBox::warning(this, "è¾“å…¥é”™è¯¯",
+					QString("%1 å¿…é¡»åœ¨ %2 ~ %3 ä¹‹é—´")
+					.arg(config.label)
+					.arg(config.range.first)
+					.arg(config.range.second));
+				m_paramEdits[config.envVar]->setFocus();
+				m_paramEdits[config.envVar]->selectAll();
+				return false;
+			}
+		}
+		return true;
+	};
+
+	if (!checkRange(s_leftParams)) return false;
+	if (!checkRange(s_rightParams)) return false;
+
+	return true;
+}
+
+void PreheatingParamWidget::loadSettings()
+{
+	QSettings settings("PreheatingApp", "Params");
+
+	m_pWorkbenchPathEdit->setText(settings.value("workbench_path").toString());
+
+	for (auto it = m_paramEdits.begin(); it != m_paramEdits.end(); ++it) {
+		it.value()->setText(settings.value(it.key()).toString());
+	}
+}
+
+void PreheatingParamWidget::saveSettings()
+{
+	QSettings settings("PreheatingApp", "Params");
+
+	settings.setValue("workbench_path", m_pWorkbenchPathEdit->text());
+
+	for (auto it = m_paramEdits.begin(); it != m_paramEdits.end(); ++it) {
+		settings.setValue(it.key(), it.value()->text());
+	}
 }

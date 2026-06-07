@@ -8,7 +8,7 @@
 #include <QDebug>
 #include "mainWidget.h"
 #include "PreheatingParamWidget.h"
-//#include "InjectionParamWidget.h"
+#include "InjectionParamWidget.h"
 
 SoftwareSelectionWidget::SoftwareSelectionWidget(QWidget* parent) : QMainWindow(parent)
 {
@@ -24,7 +24,6 @@ void SoftwareSelectionWidget::init()
 {
 	setWindowIcon(QIcon(":/src/HongYuLogo.jpg"));
 	setWindowTitle("软件选择");
-	// 窗口缩小，刚好容纳 3 个按钮 + 标题
 	setFixedSize(560, 280);
 
 	// 中央容器
@@ -41,11 +40,11 @@ void SoftwareSelectionWidget::init()
 	title->setStyleSheet("font-size: 16px; font-weight: bold; color: #333333; background: transparent;");
 	mainLayout->addWidget(title);
 
-	mainLayout->addSpacing(20);  // 标题和按钮之间间距缩小
+	mainLayout->addSpacing(20);
 
 	// 3 个按钮的水平布局
 	QHBoxLayout* btnLayout = new QHBoxLayout();
-	btnLayout->setSpacing(24);   // 按钮间距缩小
+	btnLayout->setSpacing(24);
 	btnLayout->setAlignment(Qt::AlignCenter);
 
 	// ---------- 按钮1：预热工艺 ----------
@@ -132,11 +131,11 @@ void SoftwareSelectionWidget::bindConnect()
 		w->show();
 		});
 
-	// 注装工艺（预留）
+	// 注装工艺
 	connect(m_pInjectionBtn, &QPushButton::clicked, this, []() {
-		//InjectionParamWidget* w = new InjectionParamWidget();
-		//w->setAttribute(Qt::WA_DeleteOnClose);
-		//w->show();
+		InjectionParamWidget* w = new InjectionParamWidget();
+		w->setAttribute(Qt::WA_DeleteOnClose);
+		w->show();
 		});
 
 	// 流体仿真平台
@@ -150,8 +149,6 @@ void SoftwareSelectionWidget::bindConnect()
 		connect(w, &QObject::destroyed, m_pCustomBtn, [this]() {
 			m_pCustomBtn->setEnabled(true);
 			});
-
-		w->show();
 		});
 }
 
