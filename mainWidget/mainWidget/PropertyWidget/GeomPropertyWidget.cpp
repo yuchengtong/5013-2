@@ -75,7 +75,7 @@ void GeomPropertyWidget::initWidget()
 	m_tableWidget->horizontalHeader()->setSectionResizeMode(1, QHeaderView::Fixed);
 	m_tableWidget->horizontalHeader()->resizeSection(0, 5);
 	m_tableWidget->horizontalHeader()->resizeSection(1, 60);
-	m_tableWidget->horizontalHeader()->resizeSection(3, 5);
+	m_tableWidget->horizontalHeader()->resizeSection(3, 40);
 	m_tableWidget->horizontalHeader()->setSectionResizeMode(2, QHeaderView::Stretch);
 	m_tableWidget->horizontalHeader()->setSectionResizeMode(3, QHeaderView::Fixed);
 	// 让表格充满布局，自动调整行列大小

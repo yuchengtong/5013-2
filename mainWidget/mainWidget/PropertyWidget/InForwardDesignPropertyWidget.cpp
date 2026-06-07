@@ -1312,7 +1312,7 @@ void InForwardDesignPropertyWidget::inForwardCalculate()
 	for (double i = timeQualityXStart; i <= timeQualityXEnd; i += timeQualityStep)
 	{
 		timeQualityX.push_back(i);
-		timeQualityY.push_back(quality / 30 * i);
+		timeQualityY.push_back(quality / 30 * (i/ timeQualityStep));
 	}
 
 	
@@ -1386,10 +1386,10 @@ void InForwardDesignPropertyWidget::inForwardCalculate()
 					auto inForwardMassTimeWid = gfParent->GetInForwardMassTimeWid();
 					QVector<double> x_value, y_value;
 					auto inForwardPropertyInfo = ins->GetInForwardPropertyInfo();
-					for (int j = 0; j < inForwardPropertyInfo.timeVacuumX.size() && j < frameIndex; ++j)
+					for (int j = 0; j < inForwardPropertyInfo.timeQualityX.size() && j < frameIndex; ++j)
 					{
-						x_value.push_back(inForwardPropertyInfo.timeVacuumX.at(j));
-						y_value.push_back(inForwardPropertyInfo.timeVacuumY.at(j));
+						x_value.push_back(inForwardPropertyInfo.timeQualityX.at(j));
+						y_value.push_back(inForwardPropertyInfo.timeQualityY.at(j));
 					}
 					inForwardMassTimeWid->AddDataPoint(x_value, y_value);
 					//inForwardDensityTempWid->AddDataPoint(densityTempX, densityTempY);
