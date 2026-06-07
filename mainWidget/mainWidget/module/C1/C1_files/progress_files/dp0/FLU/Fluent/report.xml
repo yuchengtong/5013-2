@@ -1,0 +1,592 @@
+<FluentXMLReport>
+<version>
+Fluent
+Version: axi, dp, pbns, vof, sstkw, transient (axi, double precision, pressure-based, VOF, SST k-omega, transient)
+Release: 22.2.0
+Title: 
+</version>
+
+<Models>
+
+Models
+------
+
+   Model                        Settings                       
+   ---------------------------------------------------------
+   Space                        Axisymmetric                   
+   Time                         Unsteady, 1st-Order Implicit   
+   Viscous                      SST k-omega turbulence model   
+   Heat Transfer                Enabled                        
+   Solidification and Melting   Disabled                       
+   Radiation                    None                           
+   Species                      Disabled                       
+   Coupled Dispersed Phase      Disabled                       
+   NOx Pollutants               Disabled                       
+   SOx Pollutants               Disabled                       
+   Soot                         Disabled                       
+   Mercury Pollutants           Disabled                       
+   Structure                    Disabled                       
+   Acoustics                    Disabled                       
+   Eulerian Wall Film           Disabled                       
+   Potential/Li-ion Battery     Disabled                       
+   Multiphase                   Volume of Fluid                
+
+</Models>
+
+<MaterialProperties>
+Material Properties
+-------------------
+
+   Material: keti (solid)
+
+      Property               Units      Method     Value(s)   
+      -----------------------------------------------------
+      Density                kg/m^3     constant   7850       
+      Cp (Specific Heat)     J/(kg K)   constant   460        
+      Thermal Conductivity   W/(m K)    constant   43         
+
+   Material: yaoye (fluid)
+
+      Property                  Units      Method       Value(s)                                                                                                                                                                           
+      ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+      Density                   kg/m^3     constant     1855                                                                                                                                                                               
+      Cp (Specific Heat)        J/(kg K)   constant     1500                                                                                                                                                                               
+      Thermal Conductivity      W/(m K)    constant     0.6                                                                                                                                                                                
+      Viscosity                 kg/(m s)   expression   1[kg/m/s]*(0.002343*StaticTemperature/1[K]*StaticTemperature/1[K]-0.664971*StaticTemperature/1[K]+47.439429)*(StrainRate*1[s])^(-0.506895*exp(-0.015751*StaticTemperature/1[K]))   
+      Molecular Weight          kg/kmol    constant     28.966                                                                                                                                                                             
+      Standard State Enthalpy   J/kgmol    constant     0                                                                                                                                                                                  
+      Reference Temperature     K          constant     298.15                                                                                                                                                                             
+
+   Material: air (fluid)
+
+      Property                  Units      Method     Value(s)     
+      ----------------------------------------------------------
+      Density                   kg/m^3     constant   1.225        
+      Cp (Specific Heat)        J/(kg K)   constant   1006.43      
+      Thermal Conductivity      W/(m K)    constant   0.0242       
+      Viscosity                 kg/(m s)   constant   1.7894e-05   
+      Molecular Weight          kg/kmol    constant   28.966       
+      Standard State Enthalpy   J/kgmol    constant   0            
+      Reference Temperature     K          constant   298.15       
+
+   Material: jiaoceng (solid)
+
+      Property               Units      Method     Value(s)   
+      -----------------------------------------------------
+      Density                kg/m^3     constant   900        
+      Cp (Specific Heat)     J/(kg K)   constant   1800       
+      Thermal Conductivity   W/(m K)    constant   1.1        
+
+</MaterialProperties>
+
+<CellZoneConditions>
+Cell Zone Conditions
+--------------------
+
+   Zones
+
+      name                   id   type    
+      ---------------------------------
+      fluid-up (mixture)     11   fluid   
+      fluid-up (air)         11   fluid   
+      fluid-up (yaoye)       11   fluid   
+      fluid-down (mixture)   12   fluid   
+      fluid-down (air)       12   fluid   
+      fluid-down (yaoye)     12   fluid   
+      jiaoceng (mixture)     13   solid   
+      jiaoceng (air)         13   solid   
+      jiaoceng (yaoye)       13   solid   
+      keti (mixture)         14   solid   
+      keti (air)             14   solid   
+      keti (yaoye)           14   solid   
+
+   Setup Conditions
+
+      fluid-up (mixture)
+
+         Condition       Value   
+         ---------------------
+         Frame Motion?   no      
+         Mesh Motion?    no      
+
+      fluid-up (air)
+
+         Condition   Value   
+         -----------------
+
+      fluid-up (yaoye)
+
+         Condition   Value   
+         -----------------
+
+      fluid-down (mixture)
+
+         Condition       Value   
+         ---------------------
+         Frame Motion?   no      
+         Mesh Motion?    no      
+
+      fluid-down (air)
+
+         Condition   Value   
+         -----------------
+
+      fluid-down (yaoye)
+
+         Condition   Value   
+         -----------------
+
+      jiaoceng (mixture)
+
+         Condition       Value      
+         ------------------------
+         Material Name   jiaoceng   
+         Frame Motion?   no         
+         Mesh Motion?    no         
+
+      jiaoceng (air)
+
+         Condition   Value   
+         -----------------
+
+      jiaoceng (yaoye)
+
+         Condition   Value   
+         -----------------
+
+      keti (mixture)
+
+         Condition       Value   
+         ---------------------
+         Frame Motion?   no      
+         Mesh Motion?    no      
+
+      keti (air)
+
+         Condition   Value   
+         -----------------
+
+      keti (yaoye)
+
+         Condition   Value   
+         -----------------
+
+</CellZoneConditions>
+
+<BoundaryConditions>
+Boundary Conditions
+-------------------
+
+   Zones
+
+      name                                        id   type              
+      ----------------------------------------------------------------
+      part-surface_body.1-shadow (mixture)        26   wall              
+      part-surface_body.1-shadow (air)            26   wall              
+      part-surface_body.1-shadow (yaoye)          26   wall              
+      part-surface_body.1 (mixture)               6    wall              
+      part-surface_body.1 (air)                   6    wall              
+      part-surface_body.1 (yaoye)                 6    wall              
+      inlet (mixture)                             19   pressure-inlet    
+      inlet (air)                                 19   pressure-inlet    
+      inlet (yaoye)                               19   pressure-inlet    
+      wall-part-surface_body (mixture)            7    wall              
+      wall-part-surface_body (air)                7    wall              
+      wall-part-surface_body (yaoye)              7    wall              
+      wall-part-surface_body.1 (mixture)          8    wall              
+      wall-part-surface_body.1 (air)              8    wall              
+      wall-part-surface_body.1 (yaoye)            8    wall              
+      axis-fluid-up (mixture)                     15   axis              
+      axis-fluid-up (air)                         15   axis              
+      axis-fluid-up (yaoye)                       15   axis              
+      axis-fluid-down (mixture)                   16   axis              
+      axis-fluid-down (air)                       16   axis              
+      axis-fluid-down (yaoye)                     16   axis              
+      axis-jiaoceng (mixture)                     17   axis              
+      axis-jiaoceng (air)                         17   axis              
+      axis-jiaoceng (yaoye)                       17   axis              
+      axis-keti (mixture)                         18   axis              
+      axis-keti (air)                             18   axis              
+      axis-keti (yaoye)                           18   axis              
+      outlet (mixture)                            20   pressure-outlet   
+      outlet (air)                                20   pressure-outlet   
+      outlet (yaoye)                              20   pressure-outlet   
+      wall-fluid-up (mixture)                     21   wall              
+      wall-fluid-up (air)                         21   wall              
+      wall-fluid-up (yaoye)                       21   wall              
+      wall-jiaoceng (mixture)                     22   wall              
+      wall-jiaoceng (air)                         22   wall              
+      wall-jiaoceng (yaoye)                       22   wall              
+      wall-keti (mixture)                         23   wall              
+      wall-keti (air)                             23   wall              
+      wall-keti (yaoye)                           23   wall              
+      heat (mixture)                              24   wall              
+      heat (air)                                  24   wall              
+      heat (yaoye)                                24   wall              
+      wall-part-surface_body.1-shadow (mixture)   10   wall              
+      wall-part-surface_body.1-shadow (air)       10   wall              
+      wall-part-surface_body.1-shadow (yaoye)     10   wall              
+      wall-part-surface_body-shadow (mixture)     25   wall              
+      wall-part-surface_body-shadow (air)         25   wall              
+      wall-part-surface_body-shadow (yaoye)       25   wall              
+
+   Setup Conditions
+
+      part-surface_body.1-shadow (mixture)
+
+         Condition         Value     
+         -------------------------
+         Thermal BC Type   Coupled   
+
+      part-surface_body.1-shadow (air)
+
+         Condition   Value   
+         -----------------
+
+      part-surface_body.1-shadow (yaoye)
+
+         Condition   Value   
+         -----------------
+
+      part-surface_body.1 (mixture)
+
+         Condition         Value     
+         -------------------------
+         Thermal BC Type   Coupled   
+
+      part-surface_body.1 (air)
+
+         Condition   Value   
+         -----------------
+
+      part-surface_body.1 (yaoye)
+
+         Condition   Value   
+         -----------------
+
+      inlet (mixture)
+
+         Condition                   Value    
+         ----------------------------------
+         Gauge Total Pressure [Pa]   80000    
+         Total Temperature [K]       375.15   
+
+      inlet (air)
+
+         Condition   Value   
+         -----------------
+
+      inlet (yaoye)
+
+         Condition         Value   
+         -----------------------
+         Volume Fraction   1       
+
+      wall-part-surface_body (mixture)
+
+         Condition                  Value             
+         ------------------------------------------
+         Material Name              jiaoceng          
+         Thermal BC Type            Coupled           
+         Wall Motion                Stationary Wall   
+         Shear Boundary Condition   No Slip           
+         Wall Surface Roughness     0                 
+
+      wall-part-surface_body (air)
+
+         Condition   Value   
+         -----------------
+
+      wall-part-surface_body (yaoye)
+
+         Condition   Value   
+         -----------------
+
+      wall-part-surface_body.1 (mixture)
+
+         Condition                  Value             
+         ------------------------------------------
+         Material Name              jiaoceng          
+         Thermal BC Type            Coupled           
+         Wall Motion                Stationary Wall   
+         Shear Boundary Condition   No Slip           
+         Wall Surface Roughness     0                 
+
+      wall-part-surface_body.1 (air)
+
+         Condition   Value   
+         -----------------
+
+      wall-part-surface_body.1 (yaoye)
+
+         Condition   Value   
+         -----------------
+
+      axis-fluid-up (mixture)
+
+         Condition   Value   
+         -----------------
+
+      axis-fluid-up (air)
+
+         Condition   Value   
+         -----------------
+
+      axis-fluid-up (yaoye)
+
+         Condition   Value   
+         -----------------
+
+      axis-fluid-down (mixture)
+
+         Condition   Value   
+         -----------------
+
+      axis-fluid-down (air)
+
+         Condition   Value   
+         -----------------
+
+      axis-fluid-down (yaoye)
+
+         Condition   Value   
+         -----------------
+
+      axis-jiaoceng (mixture)
+
+         Condition   Value   
+         -----------------
+
+      axis-jiaoceng (air)
+
+         Condition   Value   
+         -----------------
+
+      axis-jiaoceng (yaoye)
+
+         Condition   Value   
+         -----------------
+
+      axis-keti (mixture)
+
+         Condition   Value   
+         -----------------
+
+      axis-keti (air)
+
+         Condition   Value   
+         -----------------
+
+      axis-keti (yaoye)
+
+         Condition   Value   
+         -----------------
+
+      outlet (mixture)
+
+         Condition                        Value    
+         ---------------------------------------
+         Backflow Total Temperature [K]   343.15   
+
+      outlet (air)
+
+         Condition   Value   
+         -----------------
+
+      outlet (yaoye)
+
+         Condition   Value   
+         -----------------
+
+      wall-fluid-up (mixture)
+
+         Condition                  Value             
+         ------------------------------------------
+         Material Name              jiaoceng          
+         Thermal BC Type            Heat Flux         
+         Wall Motion                Stationary Wall   
+         Shear Boundary Condition   No Slip           
+         Wall Surface Roughness     0                 
+
+      wall-fluid-up (air)
+
+         Condition   Value   
+         -----------------
+
+      wall-fluid-up (yaoye)
+
+         Condition   Value   
+         -----------------
+
+      wall-jiaoceng (mixture)
+
+         Condition         Value       
+         ---------------------------
+         Material Name     jiaoceng    
+         Thermal BC Type   Heat Flux   
+
+      wall-jiaoceng (air)
+
+         Condition   Value   
+         -----------------
+
+      wall-jiaoceng (yaoye)
+
+         Condition   Value   
+         -----------------
+
+      wall-keti (mixture)
+
+         Condition         Value       
+         ---------------------------
+         Material Name     jiaoceng    
+         Thermal BC Type   Heat Flux   
+
+      wall-keti (air)
+
+         Condition   Value   
+         -----------------
+
+      wall-keti (yaoye)
+
+         Condition   Value   
+         -----------------
+
+      heat (mixture)
+
+         Condition         Value         
+         -----------------------------
+         Thermal BC Type   Temperature   
+         Temperature [K]   343.15        
+
+      heat (air)
+
+         Condition   Value   
+         -----------------
+
+      heat (yaoye)
+
+         Condition   Value   
+         -----------------
+
+      wall-part-surface_body.1-shadow (mixture)
+
+         Condition         Value      
+         --------------------------
+         Material Name     jiaoceng   
+         Thermal BC Type   Coupled    
+
+      wall-part-surface_body.1-shadow (air)
+
+         Condition   Value   
+         -----------------
+
+      wall-part-surface_body.1-shadow (yaoye)
+
+         Condition   Value   
+         -----------------
+
+      wall-part-surface_body-shadow (mixture)
+
+         Condition         Value      
+         --------------------------
+         Material Name     jiaoceng   
+         Thermal BC Type   Coupled    
+
+      wall-part-surface_body-shadow (air)
+
+         Condition   Value   
+         -----------------
+
+      wall-part-surface_body-shadow (yaoye)
+
+         Condition   Value   
+         -----------------
+
+</BoundaryConditions>
+
+<SolverSettings>
+Solver Settings
+---------------
+
+   Equations
+
+      Equation          Solved   
+      ------------------------
+      Flow              yes      
+      Volume Fraction   yes      
+      Turbulence        yes      
+      Energy            yes      
+
+   Numerics
+
+      Numeric                         Enabled   
+      ---------------------------------------
+      Absolute Velocity Formulation   yes       
+
+   Unsteady Calculation Parameters
+
+                                               
+      --------------------------------------
+      Number of Time Steps       10000000000   
+      Time Step Size [s]         0.01          
+      Max Iterations/Time Step   20            
+
+   Under-Relaxation Factors
+
+      Variable                    Relaxation Factor   
+      ---------------------------------------------
+      Pressure                    0.3                 
+      Density                     1                   
+      Body Forces                 1                   
+      Momentum                    0.7                 
+      Volume Fraction             0.5                 
+      Turbulent Kinetic Energy    0.8                 
+      Specific Dissipation Rate   0.8                 
+      Turbulent Viscosity         1                   
+      Energy                      1                   
+
+   Linear Solver
+
+      Variable                    Solver Type   Termination Criterion   Residual Reduction Tolerance   
+      ----------------------------------------------------------------------------------------------
+      Pressure                    V-Cycle       0.1                                                    
+      X-Momentum                  Flexible      0.1                     0.7                            
+      Y-Momentum                  Flexible      0.1                     0.7                            
+      Volume Fraction             Flexible      0.1                     0.7                            
+      Turbulent Kinetic Energy    Flexible      0.1                     0.7                            
+      Specific Dissipation Rate   Flexible      0.1                     0.7                            
+      Energy                      F-Cycle       0.1                                                    
+
+   Pressure-Velocity Coupling
+
+      Parameter   Value    
+      ------------------
+      Type        SIMPLE   
+
+   Discretization Scheme
+
+      Variable                    Scheme                
+      -----------------------------------------------
+      Pressure                    PRESTO!               
+      Momentum                    Second Order Upwind   
+      Volume Fraction             Compressive           
+      Turbulent Kinetic Energy    Second Order Upwind   
+      Specific Dissipation Rate   Second Order Upwind   
+      Energy                      Second Order Upwind   
+
+   Solution Limits
+
+      Quantity                         Limit    
+      ---------------------------------------
+      Minimum Absolute Pressure        1        
+      Maximum Absolute Pressure        5e+10    
+      Minimum Temperature              1        
+      Maximum Temperature              5000     
+      Minimum Turb. Kinetic Energy     1e-14    
+      Minimum Spec. Dissipation Rate   1e-20    
+      Maximum Turb. Viscosity Ratio    100000   
+
+</SolverSettings>
+
+</FluentXMLReport>
