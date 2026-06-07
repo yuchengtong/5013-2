@@ -1,6 +1,7 @@
 #pragma once
 #include <QWidget>
 #include "BasePropertyWidget.h"
+#include "ModelDataManager.h"
 
 class InForwardDesignPropertyWidget : public BasePropertyWidget
 {
@@ -10,6 +11,8 @@ public:
 
 private:
 	void initWidget() override;
+
+	void calculateTable(InForwardPropertyInfo& inForwardPropertyInfo, ModelGeometryInfo& modelGeometryInfo, SteelPropertyInfo& steelPropertyInfo, CalculationPropertyInfo& calculationPropertyInfo);
 
 private slots:
 	void inForwardCalculate();

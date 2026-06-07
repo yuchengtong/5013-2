@@ -7,7 +7,6 @@
 #include <QDir>
 #include <QPushButton>
 #include <QDialog>
-#include "ModelDataManager.h"
 #include "../GFTreeModelWidget.h"
 #include "../GFImportModelWidget.h"
 #include "xlsxdocument.h"
@@ -427,6 +426,7 @@ void InForwardDesignPropertyWidget::inForwardCalculate()
 	auto propellantPropertyInfo = ins->GetPropellantPropertyInfo();
 	auto gelatinPropertyInfo = ins->GetGelatinPropertyInfo();
 	auto calculationPropertyInfo = ins->GetCalculationPropertyInfo();
+	auto inForwardPropertyInfo = ins->GetInForwardPropertyInfo();
 
 	if (!steelPropertyInfo.isChecked)
 	{
@@ -448,6 +448,10 @@ void InForwardDesignPropertyWidget::inForwardCalculate()
 		QMessageBox::warning(this, "提示", "壳体物性材料参数数值不能为0");
 		return;
 	}
+
+	// 计算表格值
+	calculateTable(inForwardPropertyInfo, modelGeometryInfo, steelPropertyInfo, calculationPropertyInfo);
+
 
 	// ==================== 预计算参数 ====================
 	auto A = m_valveOpeningValue.toDouble() / 2.0; // 阀门开度（mm）
@@ -1277,9 +1281,13 @@ void InForwardDesignPropertyWidget::inForwardCalculate()
 
 	// 质量温度
 	double injectionTime = 0.0;
-	if (m_tableWidget->item(8, 2)->text() != "")
+	if (inForwardPropertyInfo.m_injectionTimeValue != 0.0)
 	{
-		injectionTime = m_tableWidget->item(8, 2)->text().toDouble();
+		injectionTime = inForwardPropertyInfo.m_injectionTimeValue;
+	}
+	else
+	{
+		injectionTime = 1.0;
 	}
 	double quality = 64;
 	if (model == "HQ-9B")
@@ -1307,7 +1315,7 @@ void InForwardDesignPropertyWidget::inForwardCalculate()
 		timeQualityY.push_back(quality / 30 * i);
 	}
 
-	auto inForwardPropertyInfo = ins->GetInForwardPropertyInfo();
+	
 	inForwardPropertyInfo.densityTempX = densityTempX;
 	inForwardPropertyInfo.densityTempY = densityTempY;
 
@@ -1460,286 +1468,6 @@ void InForwardDesignPropertyWidget::inForwardCalculate()
 					if (success)
 					{
 						int maxFrame = msg.toInt();		
-						double gasRateValue = 0.0;
-						double injectionTimeValue = 0.0;
-						if (model == "HQ-9B")
-						{
-							if (A < 6.740741)
-							{
-								A = 6.740741;
-							}
-							else if (A > 18.296296)
-							{
-								A = 18.296296;
-							}
-							if (B < 1.074074)
-							{
-								B = 1.074074;
-							}
-							else if (B > 4.9259266)
-							{
-								B = 4.925926;
-							}
-							if (C < 20.185185)
-							{
-								C = 20.185185;
-							}
-							else if (C > 29.814815)
-							{
-								C = 29.814815;
-							}
-							if (D < 21.111111)
-							{
-								D = 21.111111;
-							}
-							else if (D > 78.888889)
-							{
-								D = 78.888889;
-							}
-							if (E < 53.000000)
-							{
-								E = 53.000000;
-							}
-							else if (E > 69.629630)
-							{
-								E = 69.629630;
-							}
-							// 气含率
-							auto gasRateA = (A - 12.509291) / 2.218704;
-							auto gasRateB = (B - 3.01888) / 0.702157;
-							auto gasRateC = (C - 25.076659) / 1.740173;
-							auto gasRateD = (D - 50.037481) / 10.504812;
-							auto gasRateE = (E - 60.043506) / 3.582356;
-							gasRateValue = inForwardCalculateForm(calculationPropertyInfo.oneGasRateCalculateFormula, gasRateA, gasRateB, gasRateC, gasRateD, gasRateE);
-
-							// 注药时间
-							auto injectionTimeA = (A - 12.518519) / 2.177802;
-							auto injectionTimeB = (B - 2.999897) / 0.725859;
-							auto injectionTimeC = (C - 25.001792) / 1.8102640;
-							auto injectionTimeD = (D - 50.000000) / 10.889012;
-							auto injectionTimeE = (E - 60.005435) / 3.621028;
-							injectionTimeValue = inForwardCalculateForm(calculationPropertyInfo.oneInjectionTimeCalculateFormula, injectionTimeA, injectionTimeB, injectionTimeC, injectionTimeD, injectionTimeE);
-							injectionTimeValue = injectionTimeValue * 21.33;
-						}
-						else if (model == "YJ-20")
-						{
-							if (A < 6.500000)
-							{
-								A = 6.500000;
-							}
-							else if (A > 19.500000)
-							{
-								A = 19.500000;
-							}
-							if (B < 1.000000)
-							{
-								B = 1.000000;
-							}
-							else if (B > 5.000000)
-							{
-								B = 5.000000;
-							}
-							if (C < 20.000000)
-							{
-								C = 20.000000;
-							}
-							else if (C > 30.000000)
-							{
-								C = 30.000000;
-							}
-							if (D < 20.000000)
-							{
-								D = 20.000000;
-							}
-							else if (D > 80.000000)
-							{
-								D = 80.000000;
-							}
-							if (E < 50.000000)
-							{
-								E = 50.000000;
-							}
-							else if (E > 70.000000)
-							{
-								E = 70.000000;
-							}
-							// 气含率
-							auto gasRateA = (A - 13.000000) / 2.44883;
-							auto gasRateB = (B - 3.000000) / 0.753487;
-							auto gasRateC = (C - 25.000000) / 1.883716;
-							auto gasRateD = (D - 50.000000) / 11.302298;
-							auto gasRateE = (E - 60.000000) / 3.767433;
-							gasRateValue = inForwardCalculateForm(calculationPropertyInfo.twoGasRateCalculateFormula, gasRateA, gasRateB, gasRateC, gasRateD, gasRateE);
-
-
-							// 注药时间
-							auto injectionTimeA = (A - 13.000000) / 2.44883;
-							auto injectionTimeB = (B - 3.000000) / 0.753487;
-							auto injectionTimeC = (C - 25.000000) / 1.883716;
-							auto injectionTimeD = (D - 50.000000) / 11.302298;
-							auto injectionTimeE = (E - 60.000000) / 3.767433;
-							injectionTimeValue = inForwardCalculateForm(calculationPropertyInfo.twoInjectionTimeCalculateFormula, injectionTimeA, injectionTimeB, injectionTimeC, injectionTimeD, injectionTimeE);
-							injectionTimeValue = injectionTimeValue * 26.67;
-						}
-						else if (model == "YJ-91A")
-						{
-							if (A < 6.500000)
-							{
-								A = 6.500000;
-							}
-							else if (A > 18.777778)
-							{
-								A = 18.777778;
-							}
-							if (B < 1.000000)
-							{
-								B = 1.000000;
-							}
-							else if (B > 5.000000)
-							{
-								B = 5.000000;
-							}
-							if (C < 20.000000)
-							{
-								C = 20.000000;
-							}
-							else if (C > 30.000000)
-							{
-								C = 30.000000;
-							}
-							if (D < 20.000000)
-							{
-								D = 20.000000;
-							}
-							else if (D > 80.000000)
-							{
-								D = 80.000000;
-							}
-							if (E < 50.000000)
-							{
-								E = 50.000000;
-							}
-							else if (E > 70.000000)
-							{
-								E = 70.000000;
-							}
-							// 气含率
-							auto gasRateA = (A - 12.638889) / 2.312785;
-							auto gasRateB = (B - 3.000000) / 0.753487;
-							auto gasRateC = (C - 25.000000) / 1.883716;
-							auto gasRateD = (D - 50.000000) / 11.302298;
-							auto gasRateE = (E - 60.000000) / 3.767433;
-							gasRateValue = inForwardCalculateForm(calculationPropertyInfo.threeGasRateCalculateFormula, gasRateA, gasRateB, gasRateC, gasRateD, gasRateE);
-
-
-							// 注药时间
-							auto injectionTimeA = (A - 12.638889) / 2.312785;
-							auto injectionTimeB = (B - 3.000000) / 0.753487;
-							auto injectionTimeC = (C - 25.000000) / 1.883716;
-							auto injectionTimeD = (D - 50.000000) / 11.302298;
-							auto injectionTimeE = (E - 60.000000) / 3.767433;
-							injectionTimeValue = inForwardCalculateForm(calculationPropertyInfo.threeInjectionTimeCalculateFormula, injectionTimeA, injectionTimeB, injectionTimeC, injectionTimeD, injectionTimeE);
-							injectionTimeValue = injectionTimeValue * 26.33;
-						}
-						else
-						{
-							if (A < 8.500000)
-							{
-								A = 8.500000;
-							}
-							else if (A > 18.296296)
-							{
-								A = 18.296296;
-							}
-							if (B < 1.000000)
-							{
-								B = 1.000000;
-							}
-							else if (B > 5.000000)
-							{
-								B = 5.000000;
-							}
-							if (C < 20.000000)
-							{
-								C = 20.000000;
-							}
-							else if (C > 30.000000)
-							{
-								C = 30.000000;
-							}
-							if (D < 20.000000)
-							{
-								D = 20.000000;
-							}
-							else if (D > 80.000000)
-							{
-								D = 80.000000;
-							}
-							if (E < 50.000000)
-							{
-								E = 50.000000;
-							}
-							else if (E > 70.000000)
-							{
-								E = 70.000000;
-							}
-							// 气含率
-							auto gasRateA = (A - 13.398148) / 1.845344;
-							auto gasRateB = (B - 3.000000) / 0.753487;
-							auto gasRateC = (C - 25.000000) / 1.883716;
-							auto gasRateD = (D - 50.000000) / 11.302298;
-							auto gasRateE = (E - 60.000000) / 3.767433;
-							gasRateValue = inForwardCalculateForm(calculationPropertyInfo.fourGasRateCalculateFormula, gasRateA, gasRateB, gasRateC, gasRateD, gasRateE);
-
-
-							// 注药时间
-							auto injectionTimeA = (A - 13.398148) / 1.845344;
-							auto injectionTimeB = (B - 3.000000) / 0.753487;
-							auto injectionTimeC = (C - 25.000000) / 1.883716;
-							auto injectionTimeD = (D - 50.000000) / 11.302298;
-							auto injectionTimeE = (E - 60.000000) / 3.767433;
-							injectionTimeValue = inForwardCalculateForm(calculationPropertyInfo.fourInjectionTimeCalculateFormula, injectionTimeA, injectionTimeB, injectionTimeC, injectionTimeD, injectionTimeE);
-							injectionTimeValue = injectionTimeValue * 27.33;
-						}
-
-						// 气含率转相对密度
-						double density = ins->GetSteelPropertyInfo().density;
-						double gas = 1.205 * gasRateValue; // 气体质量
-						double solid = density * (1 - gasRateValue);
-						double relativeDensity = (gas + solid) / density;
-						if (relativeDensity < 0.0)
-						{
-							relativeDensity = 0;
-						}
-						if (relativeDensity > 1.0)
-						{
-							relativeDensity = 1.0;
-						}
-						QString relativeDensityResult = QString::number(relativeDensity * 100, 'f', 4);
-						// 保存结果
-						
-						inForwardPropertyInfo.m_relativeDensityValue = relativeDensityResult.toDouble();
-						inForwardPropertyInfo.isChecked = true;
-						ins->SetInForwardPropertyInfo(inForwardPropertyInfo);
-
-						QTableWidgetItem* relativeDensityItem = new QTableWidgetItem(relativeDensityResult);
-						relativeDensityItem->setBackground(QBrush(QColor(2, 253, 254)));
-						m_tableWidget->setItem(7, 2, relativeDensityItem);
-
-						if (injectionTimeValue < 0.0)
-						{
-							injectionTimeValue = 0;
-						}
-						QString injectionTimeResult = QString::number(qRound(injectionTimeValue));
-						QTableWidgetItem* injectionTimeItem = new QTableWidgetItem(injectionTimeResult);
-						injectionTimeItem->setBackground(QBrush(QColor(2, 253, 254)));
-						m_tableWidget->setItem(8, 2, injectionTimeItem);
-					
-
-						
-
-						
-
 						// 连接动画帧变化信号（使用UniqueConnection防止重复连接）
 						auto toolsAnimationWidget = gfParent->GetToolsAnimationWidget();
 						connect(toolsAnimationWidget, &ToolsAnimationWidget::animationFrameChanged, this,
@@ -1791,12 +1519,22 @@ void InForwardDesignPropertyWidget::inForwardCalculate()
 						QString newText = newTimeStr + "[信息]>注药工艺计算" + QString("第 %1 / %2 帧计算完成").arg(maxFrame).arg(12);
 						textEdit->appendPlainText(newText);
 						logWidget->update();
+
+						// 更新表格的值
+						QTableWidgetItem* relativeDensityItem = new QTableWidgetItem(m_relativeDensityValue);
+						relativeDensityItem->setBackground(QBrush(QColor(2, 253, 254)));
+						m_tableWidget->setItem(7, 2, relativeDensityItem);
+
+						QTableWidgetItem* injectionTimeItem = new QTableWidgetItem(m_injectionTimeValue);
+						injectionTimeItem->setBackground(QBrush(QColor(2, 253, 254)));
+						m_tableWidget->setItem(8, 2, injectionTimeItem);
+											
+
 						QApplication::processEvents();
 					}
 					else
 					{
 						// 失败或取消：清空数据
-						auto inForwardPropertyInfo = ins->GetInForwardPropertyInfo();
 						inForwardPropertyInfo.m_ColorScale.Nullify();
 						ins->SetInForwardPropertyInfo(inForwardPropertyInfo);
 
@@ -1855,3 +1593,285 @@ void InForwardDesignPropertyWidget::reset()
 	m_tableWidget->setItem(8, 2, injectionTimeItem);
 }
 
+void InForwardDesignPropertyWidget::calculateTable(InForwardPropertyInfo& inForwardPropertyInfo, ModelGeometryInfo& modelGeometryInfo, SteelPropertyInfo& steelPropertyInfo, CalculationPropertyInfo& calculationPropertyInfo)
+
+{
+	auto A = m_valveOpeningValue.toDouble() / 2.0; // 阀门开度（mm）
+	auto B = modelGeometryInfo.gasketLayerThickness; // 胶层厚度(mm)
+	auto C = modelGeometryInfo.shellThickness; // 壳体厚度 (mm)
+	auto D = m_vacuumDegreeValue.toDouble() * 1000; // 真空度(KPa)
+	auto E = m_insulationTemperatureValue.toDouble(); // 保温温度（℃）
+
+	QString model = modelGeometryInfo.model;
+	double gasRateValue = 0.0;
+	double injectionTimeValue = 0.0;
+
+	if (model == "HQ-9B")
+	{
+		if (A < 6.740741)
+		{
+			A = 6.740741;
+		}
+		else if (A > 18.296296)
+		{
+			A = 18.296296;
+		}
+		if (B < 1.074074)
+		{
+			B = 1.074074;
+		}
+		else if (B > 4.9259266)
+		{
+			B = 4.925926;
+		}
+		if (C < 20.185185)
+		{
+			C = 20.185185;
+		}
+		else if (C > 29.814815)
+		{
+			C = 29.814815;
+		}
+		if (D < 21.111111)
+		{
+			D = 21.111111;
+		}
+		else if (D > 78.888889)
+		{
+			D = 78.888889;
+		}
+		if (E < 53.000000)
+		{
+			E = 53.000000;
+		}
+		else if (E > 69.629630)
+		{
+			E = 69.629630;
+		}
+		// 气含率
+		auto gasRateA = (A - 12.509291) / 2.218704;
+		auto gasRateB = (B - 3.01888) / 0.702157;
+		auto gasRateC = (C - 25.076659) / 1.740173;
+		auto gasRateD = (D - 50.037481) / 10.504812;
+		auto gasRateE = (E - 60.043506) / 3.582356;
+		gasRateValue = inForwardCalculateForm(calculationPropertyInfo.oneGasRateCalculateFormula, gasRateA, gasRateB, gasRateC, gasRateD, gasRateE);
+
+		// 注药时间
+		auto injectionTimeA = (A - 12.518519) / 2.177802;
+		auto injectionTimeB = (B - 2.999897) / 0.725859;
+		auto injectionTimeC = (C - 25.001792) / 1.8102640;
+		auto injectionTimeD = (D - 50.000000) / 10.889012;
+		auto injectionTimeE = (E - 60.005435) / 3.621028;
+		injectionTimeValue = inForwardCalculateForm(calculationPropertyInfo.oneInjectionTimeCalculateFormula, injectionTimeA, injectionTimeB, injectionTimeC, injectionTimeD, injectionTimeE);
+		injectionTimeValue = injectionTimeValue * 21.33;
+	}
+	else if (model == "YJ-20")
+	{
+		if (A < 6.500000)
+		{
+			A = 6.500000;
+		}
+		else if (A > 19.500000)
+		{
+			A = 19.500000;
+		}
+		if (B < 1.000000)
+		{
+			B = 1.000000;
+		}
+		else if (B > 5.000000)
+		{
+			B = 5.000000;
+		}
+		if (C < 20.000000)
+		{
+			C = 20.000000;
+		}
+		else if (C > 30.000000)
+		{
+			C = 30.000000;
+		}
+		if (D < 20.000000)
+		{
+			D = 20.000000;
+		}
+		else if (D > 80.000000)
+		{
+			D = 80.000000;
+		}
+		if (E < 50.000000)
+		{
+			E = 50.000000;
+		}
+		else if (E > 70.000000)
+		{
+			E = 70.000000;
+		}
+		// 气含率
+		auto gasRateA = (A - 13.000000) / 2.44883;
+		auto gasRateB = (B - 3.000000) / 0.753487;
+		auto gasRateC = (C - 25.000000) / 1.883716;
+		auto gasRateD = (D - 50.000000) / 11.302298;
+		auto gasRateE = (E - 60.000000) / 3.767433;
+		gasRateValue = inForwardCalculateForm(calculationPropertyInfo.twoGasRateCalculateFormula, gasRateA, gasRateB, gasRateC, gasRateD, gasRateE);
+
+
+		// 注药时间
+		auto injectionTimeA = (A - 13.000000) / 2.44883;
+		auto injectionTimeB = (B - 3.000000) / 0.753487;
+		auto injectionTimeC = (C - 25.000000) / 1.883716;
+		auto injectionTimeD = (D - 50.000000) / 11.302298;
+		auto injectionTimeE = (E - 60.000000) / 3.767433;
+		injectionTimeValue = inForwardCalculateForm(calculationPropertyInfo.twoInjectionTimeCalculateFormula, injectionTimeA, injectionTimeB, injectionTimeC, injectionTimeD, injectionTimeE);
+		injectionTimeValue = injectionTimeValue * 26.67;
+	}
+	else if (model == "YJ-91A")
+	{
+		if (A < 6.500000)
+		{
+			A = 6.500000;
+		}
+		else if (A > 18.777778)
+		{
+			A = 18.777778;
+		}
+		if (B < 1.000000)
+		{
+			B = 1.000000;
+		}
+		else if (B > 5.000000)
+		{
+			B = 5.000000;
+		}
+		if (C < 20.000000)
+		{
+			C = 20.000000;
+		}
+		else if (C > 30.000000)
+		{
+			C = 30.000000;
+		}
+		if (D < 20.000000)
+		{
+			D = 20.000000;
+		}
+		else if (D > 80.000000)
+		{
+			D = 80.000000;
+		}
+		if (E < 50.000000)
+		{
+			E = 50.000000;
+		}
+		else if (E > 70.000000)
+		{
+			E = 70.000000;
+		}
+		// 气含率
+		auto gasRateA = (A - 12.638889) / 2.312785;
+		auto gasRateB = (B - 3.000000) / 0.753487;
+		auto gasRateC = (C - 25.000000) / 1.883716;
+		auto gasRateD = (D - 50.000000) / 11.302298;
+		auto gasRateE = (E - 60.000000) / 3.767433;
+		gasRateValue = inForwardCalculateForm(calculationPropertyInfo.threeGasRateCalculateFormula, gasRateA, gasRateB, gasRateC, gasRateD, gasRateE);
+
+
+		// 注药时间
+		auto injectionTimeA = (A - 12.638889) / 2.312785;
+		auto injectionTimeB = (B - 3.000000) / 0.753487;
+		auto injectionTimeC = (C - 25.000000) / 1.883716;
+		auto injectionTimeD = (D - 50.000000) / 11.302298;
+		auto injectionTimeE = (E - 60.000000) / 3.767433;
+		injectionTimeValue = inForwardCalculateForm(calculationPropertyInfo.threeInjectionTimeCalculateFormula, injectionTimeA, injectionTimeB, injectionTimeC, injectionTimeD, injectionTimeE);
+		injectionTimeValue = injectionTimeValue * 26.33;
+	}
+	else
+	{
+		if (A < 8.500000)
+		{
+			A = 8.500000;
+		}
+		else if (A > 18.296296)
+		{
+			A = 18.296296;
+		}
+		if (B < 1.000000)
+		{
+			B = 1.000000;
+		}
+		else if (B > 5.000000)
+		{
+			B = 5.000000;
+		}
+		if (C < 20.000000)
+		{
+			C = 20.000000;
+		}
+		else if (C > 30.000000)
+		{
+			C = 30.000000;
+		}
+		if (D < 20.000000)
+		{
+			D = 20.000000;
+		}
+		else if (D > 80.000000)
+		{
+			D = 80.000000;
+		}
+		if (E < 50.000000)
+		{
+			E = 50.000000;
+		}
+		else if (E > 70.000000)
+		{
+			E = 70.000000;
+		}
+		// 气含率
+		auto gasRateA = (A - 13.398148) / 1.845344;
+		auto gasRateB = (B - 3.000000) / 0.753487;
+		auto gasRateC = (C - 25.000000) / 1.883716;
+		auto gasRateD = (D - 50.000000) / 11.302298;
+		auto gasRateE = (E - 60.000000) / 3.767433;
+		gasRateValue = inForwardCalculateForm(calculationPropertyInfo.fourGasRateCalculateFormula, gasRateA, gasRateB, gasRateC, gasRateD, gasRateE);
+
+
+		// 注药时间
+		auto injectionTimeA = (A - 13.398148) / 1.845344;
+		auto injectionTimeB = (B - 3.000000) / 0.753487;
+		auto injectionTimeC = (C - 25.000000) / 1.883716;
+		auto injectionTimeD = (D - 50.000000) / 11.302298;
+		auto injectionTimeE = (E - 60.000000) / 3.767433;
+		injectionTimeValue = inForwardCalculateForm(calculationPropertyInfo.fourInjectionTimeCalculateFormula, injectionTimeA, injectionTimeB, injectionTimeC, injectionTimeD, injectionTimeE);
+		injectionTimeValue = injectionTimeValue * 27.33;
+	}
+
+	// 气含率转相对密度
+	double density = steelPropertyInfo.density;
+	double gas = 1.205 * gasRateValue; // 气体质量
+	double solid = density * (1 - gasRateValue);
+	double relativeDensity = (gas + solid) / density;
+	if (relativeDensity < 0.0)
+	{
+		relativeDensity = 0;
+	}
+	if (relativeDensity > 1.0)
+	{
+		relativeDensity = 1.0;
+	}
+	QString relativeDensityResult = QString::number(relativeDensity * 100, 'f', 4);
+
+	if (injectionTimeValue < 0.0)
+	{
+		injectionTimeValue = 0;
+	}
+	QString injectionTimeResult = QString::number(qRound(injectionTimeValue));
+	
+	// 保存结果
+	inForwardPropertyInfo.m_relativeDensityValue = relativeDensityResult.toDouble();
+	inForwardPropertyInfo.m_injectionTimeValue = injectionTimeResult.toDouble();
+	inForwardPropertyInfo.isChecked = true;
+
+	m_injectionTimeValue = injectionTimeResult;
+	m_relativeDensityValue = relativeDensityResult;
+}
