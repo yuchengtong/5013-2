@@ -112,6 +112,28 @@ InForwardDesignPropertyWidget::InForwardDesignPropertyWidget(QWidget* parent)
 	:BasePropertyWidget(parent)
 {
 	initWidget();
+	m_tableWidget->setStyleSheet(
+		"QTableWidget {"
+		"	background-color: #ffffff;"
+		"   border: 2px solid #999999;"
+		"   border-radius: 12px;"
+		"}"
+
+		"QPushButton {"
+		"   background-color: #f0f0f0;"
+		"   border: 1px solid #ccc;"
+		"   border-radius: 8px;"
+		"   padding: 4px 8px;"
+		"   min-width: 60px;"
+		"}"
+		"QPushButton:hover {"
+		"   background-color: #e0e0e0;"
+		"}"
+		"QPushButton:pressed {"
+		"   background-color: #d0d0d0;"
+		"}"
+	);
+
 }
 
 void InForwardDesignPropertyWidget::initWidget()
@@ -166,6 +188,15 @@ void InForwardDesignPropertyWidget::initWidget()
 	// 导入按钮
 	QPushButton* importButton = new QPushButton("计算");
 	QPushButton* resetButton = new QPushButton("默认");
+
+	importButton->setIcon(QIcon(":/tree/Tree/calculate.svg"));
+	resetButton->setIcon(QIcon(":/tree/Tree/reset.svg"));
+	const int btnSize = 20;
+	QSize iconSize(btnSize, btnSize);
+	importButton->setIconSize(iconSize);
+	resetButton->setIconSize(iconSize);
+
+
 	m_tableWidget->setCellWidget(0, 2, importButton);
 	m_tableWidget->setCellWidget(1, 2, resetButton);
 	connect(importButton, &QPushButton::clicked, this, &InForwardDesignPropertyWidget::inForwardCalculate);
@@ -210,6 +241,9 @@ void InForwardDesignPropertyWidget::initWidget()
 
 	// 显示按钮
 	QPushButton* viewButton = new QPushButton("显示");
+	viewButton->setIcon(QIcon(":/tree/Tree/view.svg"));
+	viewButton->setIconSize(iconSize);
+
 	m_tableWidget->setCellWidget(9, 2, viewButton);
 	m_tableWidget->setSpan(9, 2, 1, 2);
 	connect(viewButton, &QPushButton::clicked, this, &InForwardDesignPropertyWidget::view);

@@ -19,6 +19,28 @@ ShellPropertyWidget::ShellPropertyWidget(QWidget* parent)
 	:BasePropertyWidget(parent)
 {
 	initWidget();
+	m_tableWidget->setStyleSheet(
+		"QTableWidget {"
+		"	background-color: #ffffff;"
+		"   border: 2px solid #999999;"
+		"   border-radius: 12px;"
+		"}"
+
+		"QPushButton {"
+		"   background-color: #f0f0f0;"
+		"   border: 1px solid #ccc;"
+		"   border-radius: 8px;"
+		"   padding: 4px 8px;"
+		"   min-width: 60px;"
+		"}"
+		"QPushButton:hover {"
+		"   background-color: #e0e0e0;"
+		"}"
+		"QPushButton:pressed {"
+		"   background-color: #d0d0d0;"
+		"}"
+	);
+
 }
 
 void ShellPropertyWidget::initWidget()
@@ -82,6 +104,10 @@ void ShellPropertyWidget::initWidget()
 
 	// 导入按钮
 	QPushButton* importButton = new QPushButton("导入");
+	importButton->setIcon(QIcon(":/tree/Tree/import.svg"));
+	const int btnSize = 20;
+	QSize iconSize(btnSize, btnSize);
+	importButton->setIconSize(iconSize);
 	m_tableWidget->setCellWidget(0, 2, importButton);
 	connect(importButton, &QPushButton::clicked, this, &ShellPropertyWidget::showTableDialog);
 	// 合并第一行的第三和第四列

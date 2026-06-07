@@ -19,6 +19,28 @@ GelatinPropertyWidget::GelatinPropertyWidget(QWidget* parent)
 	:BasePropertyWidget(parent)
 {
 	initWidget();
+	m_tableWidget->setStyleSheet(
+		"QTableWidget {"
+		"	background-color: #ffffff;"
+		"   border: 2px solid #999999;"
+		"   border-radius: 12px;"
+		"}"
+
+		"QPushButton {"
+		"   background-color: #f0f0f0;"
+		"   border: 1px solid #ccc;"
+		"   border-radius: 8px;"
+		"   padding: 4px 8px;"
+		"   min-width: 60px;"
+		"}"
+		"QPushButton:hover {"
+		"   background-color: #e0e0e0;"
+		"}"
+		"QPushButton:pressed {"
+		"   background-color: #d0d0d0;"
+		"}"
+	);
+
 }
 
 void GelatinPropertyWidget::initWidget()
@@ -27,6 +49,23 @@ void GelatinPropertyWidget::initWidget()
 	vlayout->setContentsMargins(0, 0, 0, 0);
 
 	m_tableWidget = new QTableWidget(this);
+	m_tableWidget->setStyleSheet(R"(
+    QTableWidget {
+        border: 2px solid #aaa;
+        border-radius: 10px;
+        background-color: white;
+    }
+    /* 让内部单元格不覆盖圆角 */
+    QTableWidget::item {
+        border: none;
+    }
+    /* 可选：隐藏垂直滚动条后圆角更干净 */
+    QTableWidget:vertical {
+        border-top-right-radius: 10px;
+        border-bottom-right-radius: 10px;
+    }
+	)");
+	m_tableWidget->verticalScrollBar()->setStyleSheet("border-radius: 0px;"); // 避免滚动条覆盖圆角
 
 	m_tableWidget->setRowCount(6);
 	m_tableWidget->setColumnCount(4);
@@ -82,6 +121,10 @@ void GelatinPropertyWidget::initWidget()
 
 	// 导入按钮
 	QPushButton* importButton = new QPushButton("导入");
+	importButton->setIcon(QIcon(":/tree/Tree/import.svg"));
+	const int btnSize = 20;
+	QSize iconSize(btnSize, btnSize);
+	importButton->setIconSize(iconSize);
 	m_tableWidget->setCellWidget(0, 2, importButton);
 	connect(importButton, &QPushButton::clicked, this, &GelatinPropertyWidget::showTableDialog);
 	// 合并第一行的第三和第四列

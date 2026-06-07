@@ -88,6 +88,10 @@
         <file alias="Tree/propellant.svg">src/icon/Tree/propellant.svg</file>
         <file alias="Tree/reverse_optimization.svg">src/icon/Tree/reverse_optimization.svg</file>
         <file alias="Tree/steel.svg">src/icon/Tree/steel.svg</file>
+        <file alias="Tree/calculate.svg">src/icon/Tree/calculate.svg</file>
+        <file alias="Tree/reset.svg">src/icon/Tree/reset.svg</file>
+        <file alias="Tree/view.svg">src/icon/Tree/view.svg</file>
+        <file alias="Tree/import.svg">src/icon/Tree/import.svg</file>
     </qresource>
     <qresource prefix="/plot">
         <file>src/icon/Plot/reset.svg</file>

@@ -127,6 +127,27 @@ PreForwardDesignPropertyWidget::PreForwardDesignPropertyWidget(QWidget* parent)
 	:BasePropertyWidget(parent)
 {
 	initWidget();
+	m_tableWidget->setStyleSheet(
+		"QTableWidget {"
+		"	background-color: #ffffff;"
+		"   border: 2px solid #999999;"
+		"   border-radius: 12px;"
+		"}"
+		"QPushButton {"
+		"   background-color: #f0f0f0;"
+		"   border: 1px solid #ccc;"
+		"   border-radius: 8px;"
+		"   padding: 4px 8px;"
+		"   min-width: 60px;"
+		"}"
+		"QPushButton:hover {"
+		"   background-color: #e0e0e0;"
+		"}"
+		"QPushButton:pressed {"
+		"   background-color: #d0d0d0;"
+		"}"
+	);
+	
 }
 
 void PreForwardDesignPropertyWidget::initWidget()
@@ -150,6 +171,11 @@ void PreForwardDesignPropertyWidget::initWidget()
 	m_tableWidget->horizontalHeader()->resizeSection(3, 80);
 	m_tableWidget->horizontalHeader()->setSectionResizeMode(2, QHeaderView::Stretch);
 	m_tableWidget->horizontalHeader()->setSectionResizeMode(3, QHeaderView::Fixed);
+
+	
+
+
+
 	// 让表格充满布局，自动调整行列大小
 	m_tableWidget->verticalHeader()->setSectionResizeMode(QHeaderView::Fixed);
 	m_tableWidget->setColumnWidth(0, 5);
@@ -184,6 +210,13 @@ void PreForwardDesignPropertyWidget::initWidget()
 	// 导入按钮
 	QPushButton* importButton = new QPushButton("计算");
 	QPushButton* resetButton = new QPushButton("默认");
+	importButton->setIcon(QIcon(":/tree/Tree/calculate.svg"));
+	resetButton->setIcon(QIcon(":/tree/Tree/reset.svg"));
+	const int btnSize = 20;
+	QSize iconSize(btnSize, btnSize);
+	importButton->setIconSize(iconSize);
+	resetButton->setIconSize(iconSize);
+
 	m_tableWidget->setCellWidget(0, 2, importButton);
 	m_tableWidget->setCellWidget(1, 2, resetButton);
 	connect(importButton, &QPushButton::clicked, this, &PreForwardDesignPropertyWidget::preForwardCalculate);
@@ -241,6 +274,8 @@ void PreForwardDesignPropertyWidget::initWidget()
 
 	// 显示按钮
 	QPushButton* viewButton = new QPushButton("显示");
+	viewButton->setIcon(QIcon(":/tree/Tree/view.svg"));
+	viewButton->setIconSize(iconSize);
 	m_tableWidget->setCellWidget(10, 2, viewButton);
 	m_tableWidget->setSpan(10, 2, 1, 2);
 	//connect(viewButton, &QPushButton::clicked, this, &PreForwardDesignPropertyWidget::view);

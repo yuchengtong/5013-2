@@ -109,6 +109,28 @@ InReverseOptimizationPropertyWidget::InReverseOptimizationPropertyWidget(QWidget
 	:BasePropertyWidget(parent)
 {
 	initWidget();
+	m_tableWidget->setStyleSheet(
+		"QTableWidget {"
+		"	background-color: #ffffff;"
+		"   border: 2px solid #999999;"
+		"   border-radius: 12px;"
+		"}"
+
+		"QPushButton {"
+		"   background-color: #f0f0f0;"
+		"   border: 1px solid #ccc;"
+		"   border-radius: 8px;"
+		"   padding: 4px 8px;"
+		"   min-width: 60px;"
+		"}"
+		"QPushButton:hover {"
+		"   background-color: #e0e0e0;"
+		"}"
+		"QPushButton:pressed {"
+		"   background-color: #d0d0d0;"
+		"}"
+	);
+
 }
 
 void InReverseOptimizationPropertyWidget::initWidget()
@@ -158,6 +180,14 @@ void InReverseOptimizationPropertyWidget::initWidget()
 		// 计算按钮
 		QPushButton* m_calButton = new QPushButton("计算");
 		QPushButton* m_resetButton = new QPushButton("默认");
+
+		m_calButton->setIcon(QIcon(":/tree/Tree/calculate.svg"));
+		m_resetButton->setIcon(QIcon(":/tree/Tree/reset.svg"));
+		const int btnSize = 20;
+		QSize iconSize(btnSize, btnSize);
+		m_calButton->setIconSize(iconSize);
+		m_resetButton->setIconSize(iconSize);
+
 		m_tableWidget->setCellWidget(0, 2, m_calButton);
 		m_tableWidget->setCellWidget(1, 2, m_resetButton);
 		connect(m_calButton, &QPushButton::clicked, this, &InReverseOptimizationPropertyWidget::calculate);
@@ -300,6 +330,8 @@ void InReverseOptimizationPropertyWidget::initWidget()
 
 		// 显示按钮
 		m_viewButton = new QPushButton("显示");
+		m_viewButton->setIcon(QIcon(":/tree/Tree/view.svg"));
+		m_viewButton->setIconSize(iconSize);
 		m_tableWidget->setCellWidget(9, 2, m_viewButton);
 
 		// 设置列宽度
