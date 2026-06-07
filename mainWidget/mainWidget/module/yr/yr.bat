@@ -1,0 +1,53 @@
+@echo off
+chcp 65001 >nul
+setlocal enabledelayedexpansion
+::=====================================================================
+::                        参数传递
+::=====================================================================
+set "WB_PATH=%WORKBENCH_PATH%"
+set "SCRIPT_PATH=%~dp0yr.wbjn"
+set "ARCHIVE_PATH=%~dp0yr.wbpz"
+set "PROJECT_DIR=%~dp0yr.wbpj"
+set "VALVE_OPENING=%VALVE_OPENING%"
+set "BONDLINE_THICKNESS=%BONDLINE_THICKNESS%"
+set "SHELL_THICKNESS=%SHELL_THICKNESS%"
+set "BONDLINE_DENSITY=%BONDLINE_DENSITY%"
+set "BONDLINE_SPECIFIC_HEAT=%BONDLINE_SPECIFIC_HEAT%"
+set "BONDLINE_THERMAL_CONDUCTIVITY=%BONDLINE_THERMAL_CONDUCTIVITY%"
+set "SHELL_DENSITY=%SHELL_DENSITY%"
+set "SHELL_SPECIFIC_HEAT=%SHELL_SPECIFIC_HEAT%"
+set "SHELL_THERMAL_CONDUCTIVITY=%SHELL_THERMAL_CONDUCTIVITY%"
+set "LIQUID_DENSITY=%LIQUID_DENSITY%"
+set "LIQUID_SPECIFIC_HEAT=%LIQUID_SPECIFIC_HEAT%"
+set "LIQUID_THERMAL_CONDUCTIVITY=%LIQUID_THERMAL_CONDUCTIVITY%"
+set "LIQUID_VISCOSITY_FUNCTION=%LIQUID_VISCOSITY_FUNCTION%"
+set "INLET_TOTAL_PRESSURE=%INLET_TOTAL_PRESSURE%"
+set "INLET_TOTAL_TEMPERATURE=%INLET_TOTAL_TEMPERATURE%"
+set "WALL_TEMPERATURE=%WALL_TEMPERATURE%"
+set "EXECUTE_COMMANDS=%EXECUTE_COMMANDS%"
+echo.
+echo ======================================================
+echo           ANSYS Workbench 2022R2 自动启动
+echo ======================================================
+echo Workbench路径:%WORKBENCH_PATH%	
+echo ArchivePath：%ARCHIVE_PATH%
+echo ProjectPath：%PROJECT_DIR%
+echo 阀门开度:%VALVE_OPENING%
+echo 胶层厚度:%BONDLINE_THICKNESS%
+echo 壳体厚度:%SHELL_THICKNESS%
+echo 胶层密度:%BONDLINE_DENSITY%
+echo 胶层比热:%BONDLINE_SPECIFIC_HEAT%
+echo 胶层导热:%BONDLINE_THERMAL_CONDUCTIVITY%
+echo 壳体密度:%SHELL_DENSITY%
+echo 壳体比热:%SHELL_SPECIFIC_HEAT%
+echo 壳体导热:%SHELL_THERMAL_CONDUCTIVITY%
+echo 药液密度:%LIQUID_DENSITY%
+echo 药液比热:%LIQUID_SPECIFIC_HEAT%
+echo 药液导热:%LIQUID_THERMAL_CONDUCTIVITY%
+echo 药液函数:%LIQUID_VISCOSITY_FUNCTION%
+echo 进气口总压:%INLET_TOTAL_PRESSURE%
+echo 进气口总温度:%INLET_TOTAL_TEMPERATURE%
+echo 壁温:%WALL_TEMPERATURE%
+echo 执行命令:%EXECUTE_COMMANDS%
+echo.
+"%WB_PATH%" -I -R "%SCRIPT_PATH%"

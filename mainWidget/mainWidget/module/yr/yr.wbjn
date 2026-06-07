@@ -1,0 +1,102 @@
+﻿# encoding: utf-8
+# 2022 R2
+
+#参数传递
+import os
+import sys
+ARCHIVE_PATH = os.environ.get("ARCHIVE_PATH")
+PROJECT_DIR  = os.environ.get("PROJECT_DIR")
+
+VALVE_OPENING=os.environ.get("VALVE_OPENING")
+BONDLINE_THICKNESS=os.environ.get("BONDLINE_THICKNESS")
+SHELL_THICKNESS=os.environ.get("SHELL_THICKNESS")
+
+BONDLINE_DENSITY=os.environ.get("BONDLINE_DENSITY")
+BONDLINE_SPECIFIC_HEAT=os.environ.get("BONDLINE_SPECIFIC_HEAT")
+BONDLINE_THERMAL_CONDUCTIVITY=os.environ.get("BONDLINE_THERMAL_CONDUCTIVITY")
+SHELL_DENSITY=os.environ.get("SHELL_DENSITY")
+SHELL_SPECIFIC_HEAT=os.environ.get("SHELL_SPECIFIC_HEAT")
+SHELL_THERMAL_CONDUCTIVITY=os.environ.get("SHELL_THERMAL_CONDUCTIVITY")
+LIQUID_DENSITY=os.environ.get("LIQUID_DENSITY")
+LIQUID_SPECIFIC_HEAT=os.environ.get("LIQUID_SPECIFIC_HEAT")
+LIQUID_THERMAL_CONDUCTIVITY=os.environ.get("LIQUID_THERMAL_CONDUCTIVITY")
+LIQUID_VISCOSITY_FUNCTION=os.environ.get("LIQUID_VISCOSITY_FUNCTION")
+
+INLET_TOTAL_PRESSURE=os.environ.get("INLET_TOTAL_PRESSURE")
+INLET_TOTAL_TEMPERATURE=os.environ.get("INLET_TOTAL_TEMPERATURE")
+WALL_TEMPERATURE=os.environ.get("WALL_TEMPERATURE")
+
+EXECUTE_COMMANDS=os.environ.get("EXECUTE_COMMANDS")
+
+#
+
+
+
+SetScriptVersion(Version="22.2.192")
+Unarchive(
+    ArchivePath=ARCHIVE_PATH,
+    ProjectPath=PROJECT_DIR,
+    Overwrite=True)
+Extensions.UnloadExtension(
+    Id="5e7e01a6-8601-11e8-9f8c-28f10e13ffe6",
+    Version="2022.2",
+    Format="Binary")
+Extensions.UnloadExtension(
+    Id="5f463412-bd3e-484b-87e7-cbc0a665e474",
+    Version="2022.2",
+    Format="Binary")
+Extensions.UnloadExtension(
+    Id="7b0e9e84-396d-4099-9602-2ced9dddc253",
+    Version="2022.2",
+    Format="Binary")
+Extensions.UnloadExtension(
+    Id="20180725-3f81-49eb-9f31-41364844c769",
+    Version="2022.2",
+    Format="Binary")
+Extensions.UnloadExtension(
+    Id="f3e3da52-fb02-4910-8cc9-980efd047bc6",
+    Version="2022.2",
+    Format="Binary")
+system1 = GetSystem(Name="FLU")
+solution1 = system1.GetContainer(ComponentName="Solution")
+solution1.Edit()
+setup1 = system1.GetContainer(ComponentName="Setup")
+setup1.SendCommand(Command='(cx-gui-do cx-activate-tab-index "NavigationPane*Frame1(TreeTab)" 0)(cx-gui-do cx-activate-tab-index "NavigationPane*Frame1(TreeTab)" 1)')
+setup1.SendCommand(Command='(%py-exec "preferences.fixState()")')
+setup1.SendCommand(Command="(%py-exec \"preferences.setState({r'Appearance': None,r'GPUApp': None,r'General': None,r'Graphics': None,r'MatProApp': None,r'MeshingWorkflow': None,r'Navigation': None,r'PrjApp': None,r'Simulation': None,r'TurboWorkflow': None,})\")")
+setup1.SendCommand(Command='/file/set-tui-version "22.2"(cx-gui-do cx-activate-item "Key Behavioral Changes*PanelButtons*PushButton1(OK)")')
+setup1.SendCommand(Command='(%py-exec "preferences.General.KeyBehavioralChangesMessage.setState(True)")')
+setup1.SendCommand(Command='(cx-gui-do cx-set-list-tree-selections "NavigationPane*Frame2*Table1*List_Tree2" (list "Setup|Materials|Solid|jiaoceng"))')
+setup1.SendCommand(Command='(cx-gui-do cx-set-list-tree-selections "NavigationPane*Frame2*Table1*List_Tree2" (list "Setup|Materials|Solid|jiaoceng"))(cx-gui-do cx-activate-item "NavigationPane*Frame2*Table1*List_Tree2")')
+# ========== 【修正1】胶层材料参数：使用 f-string 嵌入环境变量 ==========
+setup1.SendCommand(Command=f"(cx-gui-do cx-set-list-tree-selections \"NavigationPane*Frame2*Table1*List_Tree2\" (list \"Setup|Materials|Solid|jiaoceng\"))(cx-gui-do cx-set-real-entry-list \"Create/Edit Materials*RealEntry10\" '( {BONDLINE_DENSITY}))(cx-gui-do cx-set-real-entry-list \"Create/Edit Materials*RealEntry12\" '( {BONDLINE_SPECIFIC_HEAT}))(cx-gui-do cx-set-real-entry-list \"Create/Edit Materials*RealEntry14\" '( {BONDLINE_THERMAL_CONDUCTIVITY}))(cx-gui-do cx-set-real-entry-list \"Create/Edit Materials*RealEntry40\" '( 0.51111))")
+setup1.SendCommand(Command='(cx-gui-do cx-activate-item "Create/Edit Materials*PanelButtons*PushButton3(Change/Create)")')
+# ========== 【修正2】胶层比热单独确认 ==========
+setup1.SendCommand(Command=f"(cx-gui-do cx-set-real-entry-list \"Create/Edit Materials*RealEntry12\" '( {BONDLINE_SPECIFIC_HEAT}))")
+setup1.SendCommand(Command='(cx-gui-do cx-activate-item "Create/Edit Materials*PanelButtons*PushButton3(Change/Create)")')
+setup1.SendCommand(Command='(cx-gui-do cx-activate-item "Create/Edit Materials*PanelButtons*PushButton1(Close)")')
+setup1.SendCommand(Command='(cx-gui-do cx-set-list-tree-selections "NavigationPane*Frame2*Table1*List_Tree2" (list "Setup|Materials|Solid|keti"))')
+setup1.SendCommand(Command='(cx-gui-do cx-set-list-tree-selections "NavigationPane*Frame2*Table1*List_Tree2" (list "Setup|Materials|Solid|keti"))(cx-gui-do cx-activate-item "NavigationPane*Frame2*Table1*List_Tree2")')
+# ========== 【修正3】壳体材料参数：使用 f-string 嵌入环境变量 ==========
+setup1.SendCommand(Command=f"(cx-gui-do cx-set-list-tree-selections \"NavigationPane*Frame2*Table1*List_Tree2\" (list \"Setup|Materials|Solid|keti\"))(cx-gui-do cx-set-real-entry-list \"Create/Edit Materials*RealEntry10\" '( {SHELL_DENSITY}))(cx-gui-do cx-set-real-entry-list \"Create/Edit Materials*RealEntry12\" '( {SHELL_SPECIFIC_HEAT}))(cx-gui-do cx-set-real-entry-list \"Create/Edit Materials*RealEntry14\" '( {SHELL_THERMAL_CONDUCTIVITY}))(cx-gui-do cx-set-real-entry-list \"Create/Edit Materials*RealEntry40\" '( 0.51111))")
+setup1.SendCommand(Command='(cx-gui-do cx-activate-item "Create/Edit Materials*PanelButtons*PushButton3(Change/Create)")')
+# ========== 【修正4】壳体密度单独确认 ==========
+setup1.SendCommand(Command=f"(cx-gui-do cx-set-real-entry-list \"Create/Edit Materials*RealEntry10\" '( {SHELL_DENSITY}))")
+setup1.SendCommand(Command='(cx-gui-do cx-activate-item "Create/Edit Materials*PanelButtons*PushButton3(Change/Create)")')
+setup1.SendCommand(Command='(cx-gui-do cx-activate-item "Create/Edit Materials*PanelButtons*PushButton1(Close)")')
+setup1.SendCommand(Command='(cx-gui-do cx-set-list-tree-selections "NavigationPane*Frame2*Table1*List_Tree2" (list "Setup|Boundary Conditions|Wall|heat (wall, id=8)"))')
+setup1.SendCommand(Command='(cx-gui-do cx-set-list-tree-selections "NavigationPane*Frame2*Table1*List_Tree2" (list "Setup|Boundary Conditions|Wall|heat (wall, id=8)"))(cx-gui-do cx-activate-item "NavigationPane*Frame2*Table1*List_Tree2")')
+# ========== 【修正5】边界条件 heat：温度替换为 WALL_TEMPERATURE ==========
+setup1.SendCommand(Command=f"(cx-gui-do cx-set-list-tree-selections \"NavigationPane*Frame2*Table1*List_Tree2\" (list \"Setup|Boundary Conditions|Wall|heat (wall, id=8)\"))(cx-gui-do cx-activate-tab-index \"Wall*Frame4\" 0)(cx-gui-do cx-activate-tab-index \"Wall*Frame4\" 1)(cx-gui-do cx-activate-tab-index \"Wall*Frame4\" 0)(cx-gui-do cx-activate-tab-index \"Wall*Frame4\" 2)(cx-gui-do cx-activate-tab-index \"Wall*Frame4\" 0)(cx-gui-do cx-activate-tab-index \"Wall*Frame4\" 3)(cx-gui-do cx-activate-tab-index \"Wall*Frame4\" 0)(cx-gui-do cx-activate-tab-index \"Wall*Frame4\" 4)(cx-gui-do cx-activate-tab-index \"Wall*Frame4\" 0)(cx-gui-do cx-activate-tab-index \"Wall*Frame4\" 5)(cx-gui-do cx-activate-tab-index \"Wall*Frame4\" 0)(cx-gui-do cx-activate-tab-index \"Wall*Frame4\" 6)(cx-gui-do cx-activate-tab-index \"Wall*Frame4\" 0)(cx-gui-do cx-activate-tab-index \"Wall*Frame4\" 7)(cx-gui-do cx-activate-tab-index \"Wall*Frame4\" 0)(cx-gui-do cx-activate-tab-index \"Wall*Frame4\" 8)(cx-gui-do cx-activate-tab-index \"Wall*Frame4\" 0)(cx-gui-do cx-activate-tab-index \"Wall*Frame4\" 9)(cx-gui-do cx-activate-tab-index \"Wall*Frame4\" 0)(cx-gui-do cx-activate-tab-index \"Wall*Frame4\" 10)(cx-gui-do cx-activate-tab-index \"Wall*Frame4\" 0)(cx-gui-do cx-activate-tab-index \"Wall*Frame4*Frame8(Wall Film)*Frame1*Frame2\" 0)(cx-gui-do cx-activate-tab-index \"Wall*Frame4*Frame8(Wall Film)*Frame1*Frame2\" 1)(cx-gui-do cx-activate-tab-index \"Wall*Frame4*Frame8(Wall Film)*Frame1*Frame2\" 0)(cx-gui-do cx-activate-tab-index \"Wall*Frame4*Frame8(Wall Film)*Frame1*Frame2\" 2)(cx-gui-do cx-activate-tab-index \"Wall*Frame4*Frame8(Wall Film)*Frame1*Frame2\" 0)(cx-gui-do cx-activate-tab-index \"Wall*Frame4*Frame8(Wall Film)*Frame1*Frame2\" 3)(cx-gui-do cx-activate-tab-index \"Wall*Frame4*Frame8(Wall Film)*Frame1*Frame2\" 0)(cx-gui-do cx-activate-tab-index \"Wall*Frame4*Frame8(Wall Film)*Frame1*Frame2\" 4)(cx-gui-do cx-activate-tab-index \"Wall*Frame4*Frame8(Wall Film)*Frame1*Frame2\" 0)(cx-gui-do cx-activate-tab-index \"Wall*Frame4*Frame8(Wall Film)*Frame1*Frame2\" 5)(cx-gui-do cx-activate-tab-index \"Wall*Frame4*Frame8(Wall Film)*Frame1*Frame2\" 0)(cx-gui-do cx-activate-tab-index \"Wall*Frame4\" 1)(cx-gui-do cx-enable-apply-button \"Wall\")(cx-gui-do cx-set-expression-entry \"Wall*Frame4*Frame2(Thermal)*Frame1*Frame1(Thermal Conditions)*Table3*Table1*Table3*ExpressionEntry1(Heat Transfer Coefficient)\" '(\"58.1111\" . 0))(cx-gui-do cx-set-expression-entry \"Wall*Frame4*Frame2(Thermal)*Frame1*Frame1(Thermal Conditions)*Table3*Table1*Table4*ExpressionEntry1(Free Stream Temperature)\" '(\"{WALL_TEMPERATURE}\" . 0))(cx-gui-do cx-set-expression-entry \"Wall*Frame4*Frame2(Thermal)*Frame1*Frame1(Thermal Conditions)*Table3*Table1*Table5*ExpressionEntry1(External Emissivity)\" '(\"0.51111\" . 0))(cx-gui-do cx-set-expression-entry \"Wall*Frame4*Frame2(Thermal)*Frame1*Frame1(Thermal Conditions)*Table3*Table1*Table6*ExpressionEntry1(External Radiation Temperature)\" '(\"{WALL_TEMPERATURE}\" . 0))(cx-gui-do cx-activate-tab-index \"Wall*Frame4\" 2)(cx-gui-do cx-set-expression-entry \"Wall*Frame4*Frame3(Radiation)*Table1*Table1*Table2*Table1*ExpressionEntry1(Internal Emissivity)\" '(\"0.51111\" . 0))(cx-gui-do cx-activate-item \"Wall*PanelButtons*PushButton1(OK)\")")
+setup1.SendCommand(Command='(cx-gui-do cx-activate-tab-index "Wall*Frame4" 1)(cx-gui-do cx-activate-item "Wall*PanelButtons*PushButton2(Cancel)")')
+setup1.SendCommand(Command='(cx-gui-do cx-set-list-tree-selections "NavigationPane*Frame2*Table1*List_Tree2" (list "Setup|Boundary Conditions|Wall|wall-jiaoceng (wall, id=10)"))')
+setup1.SendCommand(Command='(cx-gui-do cx-set-list-tree-selections "NavigationPane*Frame2*Table1*List_Tree2" (list "Setup|Boundary Conditions|Wall|wall-jiaoceng (wall, id=10)"))(cx-gui-do cx-activate-item "NavigationPane*Frame2*Table1*List_Tree2")')
+setup1.SendCommand(Command="(cx-gui-do cx-set-list-tree-selections \"NavigationPane*Frame2*Table1*List_Tree2\" (list \"Setup|Boundary Conditions|Wall|wall-jiaoceng (wall, id=10)\"))(cx-gui-do cx-activate-tab-index \"Wall*Frame4\" 0)(cx-gui-do cx-activate-tab-index \"Wall*Frame4\" 1)(cx-gui-do cx-activate-tab-index \"Wall*Frame4\" 0)(cx-gui-do cx-activate-tab-index \"Wall*Frame4\" 2)(cx-gui-do cx-activate-tab-index \"Wall*Frame4\" 0)(cx-gui-do cx-activate-tab-index \"Wall*Frame4\" 3)(cx-gui-do cx-activate-tab-index \"Wall*Frame4\" 0)(cx-gui-do cx-activate-tab-index \"Wall*Frame4\" 4)(cx-gui-do cx-activate-tab-index \"Wall*Frame4\" 0)(cx-gui-do cx-activate-tab-index \"Wall*Frame4\" 5)(cx-gui-do cx-activate-tab-index \"Wall*Frame4\" 0)(cx-gui-do cx-activate-tab-index \"Wall*Frame4\" 6)(cx-gui-do cx-activate-tab-index \"Wall*Frame4\" 0)(cx-gui-do cx-activate-tab-index \"Wall*Frame4\" 7)(cx-gui-do cx-activate-tab-index \"Wall*Frame4\" 0)(cx-gui-do cx-activate-tab-index \"Wall*Frame4\" 8)(cx-gui-do cx-activate-tab-index \"Wall*Frame4\" 0)(cx-gui-do cx-activate-tab-index \"Wall*Frame4\" 9)(cx-gui-do cx-activate-tab-index \"Wall*Frame4\" 0)(cx-gui-do cx-activate-tab-index \"Wall*Frame4\" 10)(cx-gui-do cx-activate-tab-index \"Wall*Frame4\" 0)(cx-gui-do cx-activate-tab-index \"Wall*Frame4*Frame8(Wall Film)*Frame1*Frame2\" 0)(cx-gui-do cx-activate-tab-index \"Wall*Frame4*Frame8(Wall Film)*Frame1*Frame2\" 1)(cx-gui-do cx-activate-tab-index \"Wall*Frame4*Frame8(Wall Film)*Frame1*Frame2\" 0)(cx-gui-do cx-activate-tab-index \"Wall*Frame4*Frame8(Wall Film)*Frame1*Frame2\" 2)(cx-gui-do cx-activate-tab-index \"Wall*Frame4*Frame8(Wall Film)*Frame1*Frame2\" 0)(cx-gui-do cx-activate-tab-index \"Wall*Frame4*Frame8(Wall Film)*Frame1*Frame2\" 3)(cx-gui-do cx-activate-tab-index \"Wall*Frame4*Frame8(Wall Film)*Frame1*Frame2\" 0)(cx-gui-do cx-activate-tab-index \"Wall*Frame4*Frame8(Wall Film)*Frame1*Frame2\" 4)(cx-gui-do cx-activate-tab-index \"Wall*Frame4*Frame8(Wall Film)*Frame1*Frame2\" 0)(cx-gui-do cx-activate-tab-index \"Wall*Frame4*Frame8(Wall Film)*Frame1*Frame2\" 5)(cx-gui-do cx-activate-tab-index \"Wall*Frame4*Frame8(Wall Film)*Frame1*Frame2\" 0)(cx-gui-do cx-activate-tab-index \"Wall*Frame4\" 1)(cx-gui-do cx-activate-tab-index \"Wall*Frame4\" 2)(cx-gui-do cx-enable-apply-button \"Wall\")(cx-gui-do cx-set-expression-entry \"Wall*Frame4*Frame3(Radiation)*Table1*Table1*Table2*Table1*ExpressionEntry1(Internal Emissivity)\" '(\"0.51111\" . 0))(cx-gui-do cx-activate-item \"Wall*PanelButtons*PushButton1(OK)\")")
+setup1.SendCommand(Command='(cx-gui-do cx-activate-item "Wall*PanelButtons*PushButton2(Cancel)")')
+setup1.SendCommand(Command='(cx-gui-do cx-set-list-tree-selections "NavigationPane*Frame2*Table1*List_Tree2" (list "Setup|Boundary Conditions|Wall|wall-keti (wall, id=9)"))')
+setup1.SendCommand(Command='(cx-gui-do cx-set-list-tree-selections "NavigationPane*Frame2*Table1*List_Tree2" (list "Setup|Boundary Conditions|Wall|wall-keti (wall, id=9)"))(cx-gui-do cx-activate-item "NavigationPane*Frame2*Table1*List_Tree2")')
+setup1.SendCommand(Command="(cx-gui-do cx-set-list-tree-selections \"NavigationPane*Frame2*Table1*List_Tree2\" (list \"Setup|Boundary Conditions|Wall|wall-keti (wall, id=9)\"))(cx-gui-do cx-activate-tab-index \"Wall*Frame4\" 0)(cx-gui-do cx-activate-tab-index \"Wall*Frame4\" 1)(cx-gui-do cx-activate-tab-index \"Wall*Frame4\" 0)(cx-gui-do cx-activate-tab-index \"Wall*Frame4\" 2)(cx-gui-do cx-activate-tab-index \"Wall*Frame4\" 0)(cx-gui-do cx-activate-tab-index \"Wall*Frame4\" 3)(cx-gui-do cx-activate-tab-index \"Wall*Frame4\" 0)(cx-gui-do cx-activate-tab-index \"Wall*Frame4\" 4)(cx-gui-do cx-activate-tab-index \"Wall*Frame4\" 0)(cx-gui-do cx-activate-tab-index \"Wall*Frame4\" 5)(cx-gui-do cx-activate-tab-index \"Wall*Frame4\" 0)(cx-gui-do cx-activate-tab-index \"Wall*Frame4\" 6)(cx-gui-do cx-activate-tab-index \"Wall*Frame4\" 0)(cx-gui-do cx-activate-tab-index \"Wall*Frame4\" 7)(cx-gui-do cx-activate-tab-index \"Wall*Frame4\" 0)(cx-gui-do cx-activate-tab-index \"Wall*Frame4\" 8)(cx-gui-do cx-activate-tab-index \"Wall*Frame4\" 0)(cx-gui-do cx-activate-tab-index \"Wall*Frame4\" 9)(cx-gui-do cx-activate-tab-index \"Wall*Frame4\" 0)(cx-gui-do cx-activate-tab-index \"Wall*Frame4\" 10)(cx-gui-do cx-activate-tab-index \"Wall*Frame4\" 0)(cx-gui-do cx-activate-tab-index \"Wall*Frame4*Frame8(Wall Film)*Frame1*Frame2\" 0)(cx-gui-do cx-activate-tab-index \"Wall*Frame4*Frame8(Wall Film)*Frame1*Frame2\" 1)(cx-gui-do cx-activate-tab-index \"Wall*Frame4*Frame8(Wall Film)*Frame1*Frame2\" 0)(cx-gui-do cx-activate-tab-index \"Wall*Frame4*Frame8(Wall Film)*Frame1*Frame2\" 2)(cx-gui-do cx-activate-tab-index \"Wall*Frame4*Frame8(Wall Film)*Frame1*Frame2\" 0)(cx-gui-do cx-activate-tab-index \"Wall*Frame4*Frame8(Wall Film)*Frame1*Frame2\" 3)(cx-gui-do cx-activate-tab-index \"Wall*Frame4*Frame8(Wall Film)*Frame1*Frame2\" 0)(cx-gui-do cx-activate-tab-index \"Wall*Frame4*Frame8(Wall Film)*Frame1*Frame2\" 4)(cx-gui-do cx-activate-tab-index \"Wall*Frame4*Frame8(Wall Film)*Frame1*Frame2\" 0)(cx-gui-do cx-activate-tab-index \"Wall*Frame4*Frame8(Wall Film)*Frame1*Frame2\" 5)(cx-gui-do cx-activate-tab-index \"Wall*Frame4*Frame8(Wall Film)*Frame1*Frame2\" 0)(cx-gui-do cx-activate-tab-index \"Wall*Frame4\" 1)(cx-gui-do cx-activate-tab-index \"Wall*Frame4\" 2)(cx-gui-do cx-enable-apply-button \"Wall\")(cx-gui-do cx-set-expression-entry \"Wall*Frame4*Frame3(Radiation)*Table1*Table1*Table2*Table1*ExpressionEntry1(Internal Emissivity)\" '(\"0.51111\" . 0))(cx-gui-do cx-activate-item \"Wall*PanelButtons*PushButton1(OK)\")")
+setup1.SendCommand(Command='(cx-gui-do cx-activate-item "Wall*PanelButtons*PushButton2(Cancel)")')
+setup1.SendCommand(Command='(cx-gui-do cx-set-list-tree-selections "NavigationPane*Frame2*Table1*List_Tree2" (list "Setup|Boundary Conditions|Wall|heat (wall, id=8)"))')
+setup1.SendCommand(Command='(cx-gui-do cx-set-list-tree-selections "NavigationPane*Frame2*Table1*List_Tree2" (list "Setup|Boundary Conditions|Wall|heat (wall, id=8)"))(cx-gui-do cx-activate-item "NavigationPane*Frame2*Table1*List_Tree2")')
+setup1.SendCommand(Command='(cx-gui-do cx-set-list-tree-selections "NavigationPane*Frame2*Table1*List_Tree2" (list "Setup|Boundary Conditions|Wall|heat (wall, id=8)"))(cx-gui-do cx-activate-tab-index "Wall*Frame4" 2)(cx-gui-do cx-activate-item "Wall*PanelButtons*PushButton2(Cancel)")')
