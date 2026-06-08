@@ -161,6 +161,7 @@
     <ClCompile Include="PropertyWidget\ShellPropertyWidget.cpp" />
     <ClCompile Include="QCustomPlot\qcustomplot.cpp" />
     <ClCompile Include="ReverseOptimizationWorker.cpp" />
+    <ClCompile Include="TableWrapDelegate.cpp" />
     <ClCompile Include="ToolsAnimationWidget.cpp" />
     <ClCompile Include="TriangulationWorker.cpp" />
     <ClCompile Include="WordExporter.cpp" />
@@ -206,6 +207,7 @@
     <QtMoc Include="PropertyWidget\ProjectPropertyWidge.h" />
   </ItemGroup>
   <ItemGroup>
+    <QtMoc Include="TableWrapDelegate.h" />
     <QtMoc Include="CurvePlotWidget\InForwardMassTimeWid.h" />
     <ClInclude Include="InitWidget\InjectionParamWidget.h" />
     <QtMoc Include="InitWidget\PreheatingParamWidget.h" />

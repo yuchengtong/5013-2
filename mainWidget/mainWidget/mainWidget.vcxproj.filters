@@ -202,6 +202,9 @@
     <ClCompile Include="CurvePlotWidget\InForwardMassTimeWid.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="TableWrapDelegate.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="occView.h">
@@ -343,6 +346,9 @@
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="CurvePlotWidget\InForwardMassTimeWid.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="TableWrapDelegate.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>

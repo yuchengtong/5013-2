@@ -18,16 +18,6 @@
 #include <QFileDialog>
 
 
-void setTableCenter(QTableWidget* tableWidget) {
-	// 遍历第一列的所有单元格，并设置内容居中
-	for (int row = 0; row < tableWidget->rowCount(); ++row) {
-		QTableWidgetItem* item = tableWidget->item(row, 0); // 获取第一列的单元格项
-		if (item) {
-			item->setTextAlignment(Qt::AlignCenter); // 设置文本居中
-		}
-	}
-}
-
 
 DatabaseWidget::DatabaseWidget(QWidget* parent)
 	: QWidget(parent)
@@ -37,12 +27,18 @@ DatabaseWidget::DatabaseWidget(QWidget* parent)
 	ui.tableWidget->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch); // tableWidge随窗口大小变化
 
 	QTableWidget* tableWidget = ui.tableWidget;
-	tableWidget->horizontalHeader()->setSectionResizeMode(QHeaderView::Interactive);
-	tableWidget->setColumnWidth(0, 3);
-	tableWidget->horizontalHeader()->setDefaultSectionSize(250); // 设置默认列宽
-	tableWidget->verticalHeader()->setDefaultSectionSize(25); // 设置默认行高
+	QHeaderView* hh = tableWidget->horizontalHeader();
+	hh->setSectionResizeMode(QHeaderView::ResizeToContents); // 前列自适应内容
+	hh->setStretchLastSection(true); // 最后一列铺满剩余宽度
+	hh->setMinimumSectionSize(60);
+	tableWidget->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff); // 关闭滚动条
+	tableWidget->verticalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents); //行高自适应开关
 
-	tableWidget->horizontalHeader()->setStretchLastSection(true);
+	// 加载完数据强制刷新尺寸
+	connect(tableWidget->model(), &QAbstractItemModel::dataChanged, tableWidget, &QTableWidget::resizeRowsToContents);
+	connect(tableWidget->horizontalHeader(), &QHeaderView::sectionResized, tableWidget, &QTableWidget::resizeRowsToContents);
+
+
 	// 启用右键菜单
 	tableWidget->setContextMenuPolicy(Qt::CustomContextMenu);
 	// 设置选择行为 - 选择整行
@@ -108,7 +104,7 @@ DatabaseWidget::DatabaseWidget(QWidget* parent)
 	connect(treeWidget, &QTreeWidget::itemClicked, this, &DatabaseWidget::onTreeItemClicked);
 
 	// tableWidget信号槽
-	connect(tableWidget, &QTableWidget::itemEntered, this, &DatabaseWidget::showTooltip);
+	//connect(tableWidget, &QTableWidget::itemEntered, this, &DatabaseWidget::showTooltip);
 
 	// 连接右键菜单信号
 	connect(tableWidget, &QTableWidget::customContextMenuRequested,
@@ -358,12 +354,7 @@ QTreeWidget* DatabaseWidget::getQTreeWid()
 void DatabaseWidget::onTreeItemClicked(QTreeWidgetItem* item) {
 
 	QTableWidget* tableWidge = getTableWid();
-	tableWidge->setStyleSheet(R"(
-        QTableWidget::item {
-            white-space: nowrap; /* 禁止文本换行 */
-            text-overflow: ellipsis; /* 可选：文本过长时显示省略号（...） */
-        }
-    )");
+	
 
 	QString filepath = nullptr;
 	QDir dir;
@@ -493,9 +484,19 @@ void DatabaseWidget::onTreeItemClicked(QTreeWidgetItem* item) {
 			xlsxrow++;
 		}
 	}
-
-	setTableCenter(tableWidge);
-
+	int colCount = tableWidge->columnCount();
+	for (int i = 0; i < colCount; ++i) {
+		tableWidge->setItemDelegateForColumn(i, nullptr);
+	}
+	if (currentDataaseType == "预热工艺模型" || currentDataaseType == "计算模型数据库" || currentDataaseType == "注药工艺模型")
+	{
+		TableWrapDelegate* wrapDelegate = new TableWrapDelegate(this);
+		int lastCol = colCount - 1;
+		tableWidge->setItemDelegateForColumn(lastCol, wrapDelegate); // 仅最后一列生效
+	}
+	
+	tableWidge->resizeRowsToContents();
+	tableWidge->update();
 }
 
 

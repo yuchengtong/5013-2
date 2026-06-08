@@ -53,7 +53,8 @@ void CalculationPropertyWidget::initWidget()
 	// 设置第一列固定宽度（例如100像素）
 	m_tableWidget->horizontalHeader()->setSectionResizeMode(0, QHeaderView::Fixed);
 	m_tableWidget->horizontalHeader()->resizeSection(0, 5);
-	m_tableWidget->horizontalHeader()->setSectionResizeMode(1, QHeaderView::Stretch);
+	m_tableWidget->horizontalHeader()->setSectionResizeMode(1, QHeaderView::Fixed);
+	m_tableWidget->horizontalHeader()->setSectionResizeMode(2, QHeaderView::Stretch);
 	// 让表格充满布局，自动调整行列大小
 	m_tableWidget->verticalHeader()->setSectionResizeMode(QHeaderView::Fixed);
 	m_tableWidget->setColumnWidth(0, 5);

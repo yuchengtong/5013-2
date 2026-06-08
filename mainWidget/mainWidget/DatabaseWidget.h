@@ -4,6 +4,8 @@
 #include "ui_DatabaseWidget.h"
 #include <QResizeEvent>
 
+#include "TableWrapDelegate.h"
+
 class DatabaseWidget : public QWidget
 {
 	Q_OBJECT

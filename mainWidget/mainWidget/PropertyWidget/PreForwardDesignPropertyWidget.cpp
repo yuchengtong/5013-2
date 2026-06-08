@@ -217,6 +217,11 @@ void PreForwardDesignPropertyWidget::initWidget()
 	importButton->setIconSize(iconSize);
 	resetButton->setIconSize(iconSize);
 
+	QFont font = importButton->font();
+	font.setPointSize(10);
+	importButton->setFont(font);
+	resetButton->setFont(font);
+
 	m_tableWidget->setCellWidget(0, 2, importButton);
 	m_tableWidget->setCellWidget(1, 2, resetButton);
 	connect(importButton, &QPushButton::clicked, this, &PreForwardDesignPropertyWidget::preForwardCalculate);
@@ -276,6 +281,7 @@ void PreForwardDesignPropertyWidget::initWidget()
 	QPushButton* viewButton = new QPushButton("ÏÔÊ¾");
 	viewButton->setIcon(QIcon(":/tree/Tree/view.svg"));
 	viewButton->setIconSize(iconSize);
+	viewButton->setFont(font);
 	m_tableWidget->setCellWidget(10, 2, viewButton);
 	m_tableWidget->setSpan(10, 2, 1, 2);
 	//connect(viewButton, &QPushButton::clicked, this, &PreForwardDesignPropertyWidget::view);

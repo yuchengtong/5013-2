@@ -188,6 +188,11 @@ void InReverseOptimizationPropertyWidget::initWidget()
 		m_calButton->setIconSize(iconSize);
 		m_resetButton->setIconSize(iconSize);
 
+		QFont font = m_calButton->font();
+		font.setPointSize(10);
+		m_calButton->setFont(font);
+		m_resetButton->setFont(font);
+
 		m_tableWidget->setCellWidget(0, 2, m_calButton);
 		m_tableWidget->setCellWidget(1, 2, m_resetButton);
 		connect(m_calButton, &QPushButton::clicked, this, &InReverseOptimizationPropertyWidget::calculate);
@@ -332,6 +337,7 @@ void InReverseOptimizationPropertyWidget::initWidget()
 		m_viewButton = new QPushButton("显示");
 		m_viewButton->setIcon(QIcon(":/tree/Tree/view.svg"));
 		m_viewButton->setIconSize(iconSize);
+		m_viewButton->setFont(font);
 		m_tableWidget->setCellWidget(9, 2, m_viewButton);
 
 		// 设置列宽度

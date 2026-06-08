@@ -108,6 +108,9 @@ void PropellantPropertyWidget::initWidget()
 	importButton->setIcon(QIcon(":/tree/Tree/import.svg"));
 	const int btnSize = 20;
 	QSize iconSize(btnSize, btnSize);
+	QFont font = importButton->font();
+	font.setPointSize(10);
+	importButton->setFont(font);
 	importButton->setIconSize(iconSize);
 	m_tableWidget->setCellWidget(0, 2, importButton);
 	connect(importButton, &QPushButton::clicked, this, &PropellantPropertyWidget::showTableDialog);

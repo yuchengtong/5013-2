@@ -194,6 +194,11 @@ void InForwardDesignPropertyWidget::initWidget()
 	importButton->setIconSize(iconSize);
 	resetButton->setIconSize(iconSize);
 
+	QFont font = importButton->font();
+	font.setPointSize(10);
+	importButton->setFont(font);
+	resetButton->setFont(font);
+
 
 	m_tableWidget->setCellWidget(0, 2, importButton);
 	m_tableWidget->setCellWidget(1, 2, resetButton);
@@ -241,6 +246,7 @@ void InForwardDesignPropertyWidget::initWidget()
 	QPushButton* viewButton = new QPushButton("ÏÔÊ¾");
 	viewButton->setIcon(QIcon(":/tree/Tree/view.svg"));
 	viewButton->setIconSize(iconSize);
+	viewButton->setFont(font);
 
 	m_tableWidget->setCellWidget(9, 2, viewButton);
 	m_tableWidget->setSpan(9, 2, 1, 2);
