@@ -4,12 +4,47 @@ setlocal enabledelayedexpansion
 ::=====================================================================
 ::                        客户可修改参数区
 ::=====================================================================
-set "WB_PATH=C:\work\ANSYS Inc\v222\Framework\bin\Win64\runwb2.exe"
-set "SCRIPT_PATH=C:\work\Test\C1\C1.wbjn"
+set "WB_PATH=%WORKBENCH_PATH%"
+set "SCRIPT_PATH=%~dp0C1.wbjn"
+set "ARCHIVE_PATH=%~dp0C1.wbpz"
+set "PROJECT_PATH=%~dp0C1.wbpj"
+
+set "BONDLINE_DENSITY=%BONDLINE_DENSITY%"
+set "BONDLINE_SPECIFIC_HEAT=%BONDLINE_SPECIFIC_HEAT%"
+set "BONDLINE_THERMAL_CONDUCTIVITY=%BONDLINE_THERMAL_CONDUCTIVITY%"
+set "BONDLINE_ABSORPTION_COEFFICIENT=%BONDLINE_ABSORPTION_COEFFICIENT%"
+
+set "SHELL_DENSITY=%SHELL_DENSITY%"
+set "SHELL_SPECIFIC_HEAT=%SHELL_SPECIFIC_HEAT%"
+set "SHELL_THERMAL_CONDUCTIVITY=%SHELL_THERMAL_CONDUCTIVITY%"
+set "SHELL_ABSORPTION_COEFFICIENT=%SHELL_ABSORPTION_COEFFICIENT%"
+
+set "HEAT_TRANSFER_COEFFICIENT=%HEAT_TRANSFER_COEFFICIENT%"
+set "FREE_STREAM_TEMPERATURE=%FREE_STREAM_TEMPERATURE%"
+set "EXTERNAL_EMISSIVITY=%EXTERNAL_EMISSIVITY%"
+set "EXTERNAL_RADIATION_TEMPERATURE=%EXTERNAL_RADIATION_TEMPERATURE%"
+set "INTERNAL_EMISSIVITY=%INTERNAL_EMISSIVITY%"
+
 echo.
 echo ======================================================
 echo           ANSYS Workbench 2022R2 自动启动
 echo ======================================================
-echo  脚本路径：%SCRIPT_PATH%
+echo Workbench路径:%WORKBENCH_PATH%	
+echo ArchivePath：%ARCHIVE_PATH%
+echo ProjectPath：%PROJECT_DIR%
+echo 胶层密度:%BONDLINE_DENSITY%
+echo 胶层比热:%BONDLINE_SPECIFIC_HEAT%
+echo 胶层热导率:%BONDLINE_THERMAL_CONDUCTIVITY%
+echo 胶层吸收系数:%BONDLINE_ABSORPTION_COEFFICIENT%
+echo 壳体密度:%SHELL_DENSITY%
+echo 壳体比热:%SHELL_SPECIFIC_HEAT%
+echo 壳体热导率:%SHELL_THERMAL_CONDUCTIVITY%
+echo 壳体吸收系数:%SHELL_ABSORPTION_COEFFICIENT%
+echo 传热系数:%HEAT_TRANSFER_COEFFICIENT%
+echo 来流温度:%FREE_STREAM_TEMPERATURE%
+echo 外部辐射系数:%EXTERNAL_EMISSIVITY%
+echo 外部辐射温度:%EXTERNAL_RADIATION_TEMPERATURE%
+echo 内部辐射系数:%INTERNAL_EMISSIVITY%
 echo.
+
 "%WB_PATH%" -I -R "%SCRIPT_PATH%"

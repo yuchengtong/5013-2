@@ -408,9 +408,15 @@ void InjectionParamWidget::bindConnect()
 	connect(m_pStartBtn, &QPushButton::clicked, this, [this]() {
 		if (!validateInputs()) return;
 
-		QString batPath = QCoreApplication::applicationDirPath() + "/module/yr/yr.bat";
+		QString caseType = m_pTypeComboBox->currentText();
+
+		QString basePath = QCoreApplication::applicationDirPath() + "/module/" + caseType;
+		QString batPath = basePath + "/" + caseType + ".bat";
+
+		// 如果 applicationDirPath 下找不到，尝试 currentPath
 		if (!QFile::exists(batPath)) {
-			batPath = QDir::currentPath() + "/module/yr/yr.bat";
+			basePath = QDir::currentPath() + "/module/" + caseType;
+			batPath = basePath + "/" + caseType + ".bat";
 		}
 
 		if (!QFile::exists(batPath)) {
@@ -421,7 +427,7 @@ void InjectionParamWidget::bindConnect()
 
 		QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
 		env.insert("WORKBENCH_PATH", m_pWorkbenchPathEdit->text());
-		env.insert("CASE_TYPE", m_pTypeComboBox->currentText());
+		env.insert("CASE_TYPE", caseType);
 
 		for (auto it = m_paramEdits.begin(); it != m_paramEdits.end(); ++it) {
 			QString value = it.value()->text().trimmed();
@@ -444,7 +450,7 @@ void InjectionParamWidget::bindConnect()
 		else {
 			saveSettings();
 			QMessageBox::information(this, "提示",
-				QString("计算任务已启动！\n当前工况: %1").arg(m_pTypeComboBox->currentText()));
+				QString("计算任务已启动！\n当前工况: %1").arg(caseType));
 		}
 		});
 }

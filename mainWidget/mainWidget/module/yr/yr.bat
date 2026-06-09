@@ -7,6 +7,7 @@ setlocal enabledelayedexpansion
 set "WB_PATH=%WORKBENCH_PATH%"
 set "SCRIPT_PATH=%~dp0yr.wbjn"
 set "ARCHIVE_PATH=%~dp0yr.wbpz"
+set "PROJECT_PATH=%~dp0yr.wbpj"
 
 set "BONDLINE_DENSITY=%BONDLINE_DENSITY%"
 set "BONDLINE_SPECIFIC_HEAT=%BONDLINE_SPECIFIC_HEAT%"
@@ -30,7 +31,7 @@ echo           ANSYS Workbench 2022R2 自动启动
 echo ======================================================
 echo Workbench路径:%WORKBENCH_PATH%	
 echo ArchivePath：%ARCHIVE_PATH%
-echo ProjectPath：%PROJECT_DIR%
+echo ProjectPath：%PROJECT_PATH%
 echo 胶层密度:%BONDLINE_DENSITY%
 echo 胶层比热:%BONDLINE_SPECIFIC_HEAT%
 echo 胶层热导率:%BONDLINE_THERMAL_CONDUCTIVITY%
@@ -47,14 +48,3 @@ echo 内部辐射系数:%INTERNAL_EMISSIVITY%
 echo.
 
 "%WB_PATH%" -I -R "%SCRIPT_PATH%"
-
-echo 执行 Workbench 脚本，日志保存至: %LOG_FILE%
-"%WB_PATH%" -I -R "%SCRIPT_PATH%" > "%LOG_FILE%" 2>&1
-
-echo.
-echo ======================================================
-echo 执行完成，查看日志内容:
-type "%LOG_FILE%"
-echo ======================================================
-echo 按任意键关闭...
-pause > nul

@@ -195,7 +195,8 @@ int main(int argc, char *argv[])
 		select.show();
 		});
 
-	login.show();
+	//login.show();
+	select.show();
 
 	//mainWidget w;
 	//w.show();

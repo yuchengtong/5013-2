@@ -1,17 +1,54 @@
 @echo off
 chcp 65001 >nul
 setlocal enabledelayedexpansion
-title 【保持打开】关闭本窗口 = 自动关闭ANSYS Workbench + Fluent
 
 ::=====================================================================
 ::                        客户可修改参数区
 ::=====================================================================
-set "WB_PATH=C:\work\ANSYS Inc\v222\Framework\bin\Win64\runwb2.exe"
-set "SCRIPT_PATH=C:\work\Test\C4\C4.wbjn"
+set "WB_PATH=%WORKBENCH_PATH%"
+set "SCRIPT_PATH=%~dp0C4.wbjn"
+set "ARCHIVE_PATH=%~dp0C4.wbpz"
+set "PROJECT_PATH=%~dp0C4.wbpj"
+
+set "LIQUID_DENSITY=%LIQUID_DENSITY%"
+set "LIQUID_SPECIFIC_HEAT=%LIQUID_SPECIFIC_HEAT%"
+set "LIQUID_THERMAL_CONDUCTIVITY=%LIQUID_THERMAL_CONDUCTIVITY%"
+
+set "BONDLINE_DENSITY=%BONDLINE_DENSITY%"
+set "BONDLINE_SPECIFIC_HEAT=%BONDLINE_SPECIFIC_HEAT%"
+set "BONDLINE_THERMAL_CONDUCTIVITY=%BONDLINE_THERMAL_CONDUCTIVITY%"
+
+set "SHELL_DENSITY=%SHELL_DENSITY%"
+set "SHELL_SPECIFIC_HEAT=%SHELL_SPECIFIC_HEAT%"
+set "SHELL_THERMAL_CONDUCTIVITY=%SHELL_THERMAL_CONDUCTIVITY%"
+
+set "INLET_TOTAL_PRESSURE=%INLET_TOTAL_PRESSURE%"
+set "INLET_TOTAL_TEMPERATURE=%INLET_TOTAL_TEMPERATURE%"
+set "WALL_TEMPERATURE=%WALL_TEMPERATURE%"
+
 echo.
 echo ======================================================
 echo           ANSYS Workbench 2022R2 自动启动
 echo ======================================================
-echo  脚本路径：%SCRIPT_PATH%
+echo Workbench路径:%WORKBENCH_PATH%	
+echo ArchivePath：%ARCHIVE_PATH%
+echo ProjectPath：%PROJECT_DIR%
+
+echo 药液密度:%LIQUID_DENSITY%
+echo 药液比热:%LIQUID_SPECIFIC_HEAT%
+echo 药液导热系数:%LIQUID_THERMAL_CONDUCTIVITY%
+
+echo 胶层密度:%BONDLINE_DENSITY%
+echo 胶层比热:%BONDLINE_SPECIFIC_HEAT%
+echo 胶层导热系数:%BONDLINE_THERMAL_CONDUCTIVITY%
+
+echo 壳体密度:%SHELL_DENSITY%
+echo 壳体比热:%SHELL_SPECIFIC_HEAT%
+echo 壳体导热系数:%SHELL_THERMAL_CONDUCTIVITY%
+
+echo 进气口总压:%INLET_TOTAL_PRESSURE%
+echo 进气口总温度:%INLET_TOTAL_TEMPERATURE%
+echo 壁温:%WALL_TEMPERATURE%
 echo.
+
 "%WB_PATH%" -I -R "%SCRIPT_PATH%"

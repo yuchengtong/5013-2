@@ -13,6 +13,9 @@ def fmt_float(val):
         return str(val)
 
 # 从环境变量读取参数（请确保在执行前已设置）
+ARCHIVE_PATH = os.environ.get("ARCHIVE_PATH")
+PROJECT_PATH = os.environ.get("PROJECT_PATH")
+
 BONDLINE_DENSITY = fmt_float(os.environ.get("BONDLINE_DENSITY", "900.1111"))
 BONDLINE_SPECIFIC_HEAT = fmt_float(os.environ.get("BONDLINE_SPECIFIC_HEAT", "1800.111"))
 BONDLINE_THERMAL_CONDUCTIVITY = fmt_float(os.environ.get("BONDLINE_THERMAL_CONDUCTIVITY", "1.1111"))
@@ -31,8 +34,8 @@ INTERNAL_EMISSIVITY = fmt_float(os.environ.get("INTERNAL_EMISSIVITY", "0.51111")
 
 SetScriptVersion(Version="22.2.192")
 Unarchive(
-    ArchivePath="C:/Users/yu_ch/Desktop/Test/yr/yr.wbpz",
-    ProjectPath="C:/Users/yu_ch/Desktop/Test/yr/yr.wbpj",
+    ArchivePath=ARCHIVE_PATH,
+    ProjectPath=PROJECT_PATH,
     Overwrite=True)
 Extensions.UnloadExtension(
     Id="5e7e01a6-8601-11e8-9f8c-28f10e13ffe6",
