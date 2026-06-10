@@ -98,7 +98,7 @@ void InjectionParamWidget::initUI()
 	typeLayout->setSpacing(8);
 
 	m_pTypeComboBox = new QComboBox();
-	m_pTypeComboBox->addItems(QStringList() << "C1" << "C2" << "C3" << "C4");
+	m_pTypeComboBox->addItems(QStringList() << "HQ-9B" << "YJ-20" << "YJ-91A" << "CJ-20A");
 	m_pTypeComboBox->setMinimumHeight(32);
 	m_pTypeComboBox->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 
@@ -520,7 +520,7 @@ void InjectionParamWidget::loadSettings()
 	QSettings settings("PreheatingApp", "Params");
 
 	m_pWorkbenchPathEdit->setText(settings.value("workbench_path").toString());
-	m_pTypeComboBox->setCurrentText(settings.value("case_type", "C1").toString());
+	m_pTypeComboBox->setCurrentText(settings.value("case_type", "HQ-9B").toString());
 
 	for (auto it = m_paramEdits.begin(); it != m_paramEdits.end(); ++it) {
 		it.value()->setText(settings.value(it.key()).toString());
