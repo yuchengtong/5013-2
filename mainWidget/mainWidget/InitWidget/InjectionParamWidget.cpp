@@ -22,21 +22,21 @@
 // ==================== 第1列：药液 ====================
 const QList < InjectionParamWidget::ParamConfig > InjectionParamWidget::s_col1Params = {
 	{"药液密度 (kg/m³)", "密度", "LIQUID_DENSITY", "", false, {0.0, 0.0}},
-	{"药液比热 (J/(kg·K))", "比热", "LIQUID_SPECIFIC_HEAT", "", false, {0.0, 0.0}},
+	{"药液比热容 (J/(kg·K))", "比热容", "LIQUID_SPECIFIC_HEAT", "", false, {0.0, 0.0}},
 	{"药液导热系数 (W/(cm·K))", "导热系数", "LIQUID_THERMAL_CONDUCTIVITY", "", false, {0.0, 0.0}},
 };
 
 // ==================== 第2列：胶层 ====================
 const QList < InjectionParamWidget::ParamConfig > InjectionParamWidget::s_col2Params = {
 	{"胶层密度 (kg/m³)", "密度", "BONDLINE_DENSITY", "", false, {0.0, 0.0}},
-	{"胶层比热 (J/(kg·K))", "比热", "BONDLINE_SPECIFIC_HEAT", "", false, {0.0, 0.0}},
+	{"胶层比热容 (J/(kg·K))", "比热容", "BONDLINE_SPECIFIC_HEAT", "", false, {0.0, 0.0}},
 	{"胶层导热系数 (W/(cm·K))", "导热系数", "BONDLINE_THERMAL_CONDUCTIVITY", "", false, {0.0, 0.0}},
 };
 
 // ==================== 第3列：壳体 ====================
 const QList < InjectionParamWidget::ParamConfig > InjectionParamWidget::s_col3Params = {
 	{"壳体密度 (kg/m³)", "密度", "SHELL_DENSITY", "", false, {0.0, 0.0}},
-	{"壳体比热 (J/(kg·K))", "比热", "SHELL_SPECIFIC_HEAT", "", false, {0.0, 0.0}},
+	{"壳体比热容 (J/(kg·K))", "比热容", "SHELL_SPECIFIC_HEAT", "", false, {0.0, 0.0}},
 	{"壳体导热系数 (W/(cm·K))", "导热系数", "SHELL_THERMAL_CONDUCTIVITY", "", false, {0.0, 0.0}},
 };
 
@@ -250,7 +250,7 @@ QLineEdit* InjectionParamWidget::createParamEdit(const ParamConfig & config)
 	QLineEdit* edit = new QLineEdit();
 	edit->setPlaceholderText(config.placeholder);
 	edit->setMinimumHeight(32);
-	edit->setMinimumWidth(140);
+	edit->setMinimumWidth(90);
 	edit->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 	edit->setText(config.defaultValue);
 
