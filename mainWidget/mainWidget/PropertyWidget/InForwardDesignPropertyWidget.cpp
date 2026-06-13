@@ -1383,12 +1383,6 @@ void InForwardDesignPropertyWidget::inForwardCalculate()
 					}
 					toolsAnimationWidget->SetAnimationSteps(frameNames);
 
-					//auto inForwardDensityTempWid = gfParent->GetInForwardDensityTempWid();
-					//auto inForwardDensityValveWid = gfParent->GetInForwardDensityValveWid();
-					//auto inForwardDensityVacuumWid = gfParent->GetInForwardDensityVacuumWid();
-					//auto inForwardTimeTempWid = gfParent->GetInForwardTimeTempWid();
-					//auto inForwardTimeValveWid = gfParent->GetInForwardTimeValveWid();
-					//auto inForwardTimeVacuumWid = gfParent->GetInForwardTimeVacuumWid();
 					auto inForwardMassTimeWid = gfParent->GetInForwardMassTimeWid();
 					QVector<double> x_value, y_value;
 					auto inForwardPropertyInfo = ins->GetInForwardPropertyInfo();
@@ -1398,15 +1392,25 @@ void InForwardDesignPropertyWidget::inForwardCalculate()
 						y_value.push_back(inForwardPropertyInfo.timeQualityY.at(j));
 					}
 					inForwardMassTimeWid->AddDataPoint(x_value, y_value);
-					//inForwardDensityTempWid->AddDataPoint(densityTempX, densityTempY);
-					//inForwardDensityValveWid->AddDataPoint(densityValveX, densityValveY);
-					//inForwardDensityVacuumWid->AddDataPoint(densityVacuumX, densityVacuumY);
-					//inForwardTimeTempWid->AddDataPoint(timeTempX, timeTempY);
-					//inForwardTimeValveWid->AddDataPoint(timeValveX, timeValveY);
-					//inForwardTimeVacuumWid->AddDataPoint(timeVacuumX, timeVacuumY);
+
+					if (frameIndex == 30)
+					{
+						auto inForwardDensityTempWid = gfParent->GetInForwardDensityTempWid();
+						auto inForwardDensityValveWid = gfParent->GetInForwardDensityValveWid();
+						auto inForwardDensityVacuumWid = gfParent->GetInForwardDensityVacuumWid();
+						auto inForwardTimeTempWid = gfParent->GetInForwardTimeTempWid();
+						auto inForwardTimeValveWid = gfParent->GetInForwardTimeValveWid();
+						auto inForwardTimeVacuumWid = gfParent->GetInForwardTimeVacuumWid();
+
+						inForwardDensityTempWid->AddDataPoint(densityTempX, densityTempY);
+						inForwardDensityValveWid->AddDataPoint(densityValveX, densityValveY);
+						inForwardDensityVacuumWid->AddDataPoint(densityVacuumX, densityVacuumY);
+						inForwardTimeTempWid->AddDataPoint(timeTempX, timeTempY);
+						inForwardTimeValveWid->AddDataPoint(timeValveX, timeValveY);
+						inForwardTimeVacuumWid->AddDataPoint(timeVacuumX, timeVacuumY);
+					}
 					
-
-
+					
 					// 实时更新3D视图
 					auto occView = gfParent->GetOccView();
 					Handle(AIS_InteractiveContext) context = occView->getContext();
@@ -1419,7 +1423,7 @@ void InForwardDesignPropertyWidget::inForwardCalculate()
 					auto time = inForwardPropertyInfo2.timeQualityX.at(frameIndex);
 					auto mass= inForwardPropertyInfo2.timeQualityY.at(frameIndex);
 
-					QString titleStr = QString("时间: %1s\n当前已注药质量: %2 Kg\n体积分数")
+					QString titleStr = QString("时间: %1s\n当前已注药质量: %2 Kg\n体积分数 %")
 						.arg(time, 0, 'f', 0)
 						.arg(mass, 0, 'f', 0);
 					TCollection_ExtendedString newTitle(titleStr.toUtf8().constData(), true);
@@ -1447,7 +1451,7 @@ void InForwardDesignPropertyWidget::inForwardCalculate()
 						inForwardPropertyInfo2.m_ColorScale = aColorScale;
 						ins->SetInForwardPropertyInfo(inForwardPropertyInfo2);
 
-						Graphic3d_Vec2i anoffset(0, Standard_Integer(580));
+						Graphic3d_Vec2i anoffset(0, Standard_Integer(600));
 						context->SetTransformPersistence(inForwardPropertyInfo2.m_ColorScale, new Graphic3d_TransformPers(Graphic3d_TMF_2d, Aspect_TOTP_LEFT_UPPER, anoffset));
 						context->SetDisplayMode(inForwardPropertyInfo2.m_ColorScale, 1, Standard_False);
 						context->Display(inForwardPropertyInfo2.m_ColorScale, Standard_True);
@@ -1501,7 +1505,7 @@ void InForwardDesignPropertyWidget::inForwardCalculate()
 										auto time = inForwardPropertyInfo.timeQualityX.at(frameIndex);
 										auto mass = inForwardPropertyInfo.timeQualityY.at(frameIndex);
 
-										QString titleStr = QString("时间: %1s\n当前已注药质量: %2 Kg\n体积分数")
+										QString titleStr = QString("时间: %1s\n当前已注药质量: %2 Kg\n体积分数 %")
 											.arg(time, 0, 'f', 0)
 											.arg(mass, 0, 'f', 0);
 										TCollection_ExtendedString newTitle(titleStr.toUtf8().constData(), true);
@@ -1509,7 +1513,7 @@ void InForwardDesignPropertyWidget::inForwardCalculate()
 										context->Redisplay(inForwardPropertyInfo.m_ColorScale, true);
 									}
 
-									Graphic3d_Vec2i anoffset(0, Standard_Integer(580));
+									Graphic3d_Vec2i anoffset(0, Standard_Integer(600));
 									context->SetTransformPersistence(inForwardPropertyInfo.m_ColorScale, new Graphic3d_TransformPers(Graphic3d_TMF_2d, Aspect_TOTP_LEFT_UPPER, anoffset));
 									context->SetDisplayMode(inForwardPropertyInfo.m_ColorScale, 1, Standard_False);
 									context->Display(inForwardPropertyInfo.m_ColorScale, Standard_True);

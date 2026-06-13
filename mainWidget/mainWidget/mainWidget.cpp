@@ -537,7 +537,7 @@ void mainWidget::bindConnect()
 		else if (index == 2) {
 			// 帮助 - 只弹出对话框，不改变当前界面
 			QString aboutText = QString::fromLocal8Bit(
-				"软件名称：TNT弹/DNAN粒状工业炸药注装药型罩参数匹配设计软件\n"
+				"软件名称：TNT基/DNAN基熔铸炸药注装工艺参数匹配设计工具软件\n"
 				"软件版本：V1.0.0\n"
 				"版权所有：南京理工大学\n"
 				"开发团队：南京理工大学\n"
@@ -548,7 +548,7 @@ void mainWidget::bindConnect()
 				"    如有任何问题，请联系我们。"
 			);
 			QMessageBox::about(this,
-				QString::fromLocal8Bit("TNT弹/DNAN粒状工业炸药注装药型罩参数匹配设计软件"),
+				QString::fromLocal8Bit("TNT基/DNAN基熔铸炸药注装工艺参数匹配设计工具软件"),
 				aboutText);
 
 			// 帮助弹窗后，切回之前有效的页面，不改变主内容

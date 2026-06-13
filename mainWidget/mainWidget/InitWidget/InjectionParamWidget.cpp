@@ -42,9 +42,9 @@ const QList < InjectionParamWidget::ParamConfig > InjectionParamWidget::s_col3Pa
 
 // ==================== 第4列：边界条件 ====================
 const QList < InjectionParamWidget::ParamConfig > InjectionParamWidget::s_col4Params = {
-	{"进气口总压 (Pa)", "Pa", "INLET_TOTAL_PRESSURE", "", true, {0.0, 0.0}},
-	{"进气口总温度 (K)", "K", "INLET_TOTAL_TEMPERATURE", "", true, {0.0, 0.0}},
-	{"壁温 (K)", "K", "WALL_TEMPERATURE", "", true, {0.0, 0.0}},
+	{"进气口总压 (Pa)", "Pa", "INLET_TOTAL_PRESSURE", "", false, {0.0, 0.0}},
+	{"进气口总温度 (K)", "K", "INLET_TOTAL_TEMPERATURE", "", false, {0.0, 0.0}},
+	{"壁温 (K)", "K", "WALL_TEMPERATURE", "", false, {0.0, 0.0}},
 };
 
 // ==================== 构造 / 析构 ====================
@@ -75,7 +75,7 @@ void InjectionParamWidget::initUI()
 	title->setAlignment(Qt::AlignCenter);
 	mainLayout->addWidget(title);
 
-	// --- Workbench 路径（全宽） ---
+	// --- Workbench 路径 ---
 	QHBoxLayout* pathLayout = new QHBoxLayout();
 	pathLayout->setSpacing(8);
 
@@ -146,7 +146,7 @@ void InjectionParamWidget::initUI()
 	mainLayout->addLayout(columnsLayout, 1);
 
 	// --- 启动按钮 ---
-	m_pStartBtn = new QPushButton("  ▶ 启动计算");
+	m_pStartBtn = new QPushButton("启动计算");
 	m_pStartBtn->setFixedSize(180, 42);
 	m_pStartBtn->setCursor(Qt::PointingHandCursor);
 	m_pStartBtn->setStyleSheet(buttonStyleSheet());
@@ -164,7 +164,8 @@ void InjectionParamWidget::buildColumn1(QVBoxLayout * layout)
 	form->setFieldGrowthPolicy(QFormLayout::ExpandingFieldsGrow);
 	form->setRowWrapPolicy(QFormLayout::DontWrapRows);
 
-	for (int i = 0; i < s_col1Params.size(); ++i) {
+	for (int i = 0; i < s_col1Params.size(); ++i) 
+	{
 		QLineEdit* edit = createParamEdit(s_col1Params[i]);
 		form->addRow(s_col1Params[i].label + ":", edit);
 		m_paramEdits.insert(s_col1Params[i].envVar, edit);
@@ -185,7 +186,8 @@ void InjectionParamWidget::buildColumn2(QVBoxLayout * layout)
 	form->setFieldGrowthPolicy(QFormLayout::ExpandingFieldsGrow);
 	form->setRowWrapPolicy(QFormLayout::DontWrapRows);
 
-	for (int i = 0; i < s_col2Params.size(); ++i) {
+	for (int i = 0; i < s_col2Params.size(); ++i)
+	{
 		QLineEdit* edit = createParamEdit(s_col2Params[i]);
 		form->addRow(s_col2Params[i].label + ":", edit);
 		m_paramEdits.insert(s_col2Params[i].envVar, edit);
@@ -206,7 +208,8 @@ void InjectionParamWidget::buildColumn3(QVBoxLayout * layout)
 	form->setFieldGrowthPolicy(QFormLayout::ExpandingFieldsGrow);
 	form->setRowWrapPolicy(QFormLayout::DontWrapRows);
 
-	for (int i = 0; i < s_col3Params.size(); ++i) {
+	for (int i = 0; i < s_col3Params.size(); ++i)
+	{
 		QLineEdit* edit = createParamEdit(s_col3Params[i]);
 		form->addRow(s_col3Params[i].label + ":", edit);
 		m_paramEdits.insert(s_col3Params[i].envVar, edit);
@@ -227,7 +230,8 @@ void InjectionParamWidget::buildColumn4(QVBoxLayout * layout)
 	form->setFieldGrowthPolicy(QFormLayout::ExpandingFieldsGrow);
 	form->setRowWrapPolicy(QFormLayout::DontWrapRows);
 
-	for (int i = 0; i < s_col4Params.size(); ++i) {
+	for (int i = 0; i < s_col4Params.size(); ++i) 
+	{
 		QLineEdit* edit = createParamEdit(s_col4Params[i]);
 		form->addRow(s_col4Params[i].label + ":", edit);
 		m_paramEdits.insert(s_col4Params[i].envVar, edit);
@@ -254,7 +258,8 @@ QLineEdit* InjectionParamWidget::createParamEdit(const ParamConfig & config)
 	edit->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 	edit->setText(config.defaultValue);
 
-	if (config.range.first != 0.0 || config.range.second != 0.0) {
+	if (config.range.first != 0.0 || config.range.second != 0.0)
+	{
 		edit->setValidator(new QDoubleValidator(
 			config.range.first, config.range.second, 4, this));
 	}
@@ -387,7 +392,8 @@ void InjectionParamWidget::bindConnect()
 {
 	connect(m_pBrowseBtn, &QPushButton::clicked, this, [this]() {
 		QString lastPath = m_pWorkbenchPathEdit->text();
-		if (lastPath.isEmpty()) {
+		if (lastPath.isEmpty()) 
+		{
 			lastPath = QDir::homePath();
 		}
 		else {
@@ -399,27 +405,52 @@ void InjectionParamWidget::bindConnect()
 			lastPath,
 			"可执行文件 (*.exe);;所有文件 (*.*)");
 
-		if (!filePath.isEmpty()) {
+		if (!filePath.isEmpty()) 
+		{
 			m_pWorkbenchPathEdit->setText(filePath);
 			saveSettings();
 		}
 		});
 
 	connect(m_pStartBtn, &QPushButton::clicked, this, [this]() {
-		if (!validateInputs()) return;
+		if (!validateInputs())
+		{
+			return;
+		}
 
+		QString basePath, batPath;
 		QString caseType = m_pTypeComboBox->currentText();
 
-		QString basePath = QCoreApplication::applicationDirPath() + "/module/" + caseType;
-		QString batPath = basePath + "/" + caseType + ".bat";
+		if (caseType == "HQ-9B")
+		{
+			basePath = QDir::currentPath() + "/module/C1";
+			batPath = basePath + "/C1.bat";
+		}
+		else if(caseType == "YJ-20")
+		{
+			basePath = QDir::currentPath() + "/module/C2";
+			batPath = basePath + "/C2.bat";
+		}
+		else if (caseType == "YJ-91A")
+		{
+			basePath = QDir::currentPath() + "/module/C3";
+			batPath = basePath + "/C3.bat";
+		}
+		else if (caseType == "CJ-20A")
+		{
+			basePath = QDir::currentPath() + "/module/C4";
+			batPath = basePath + "/C4.bat";
+		}
 
 		// 如果 applicationDirPath 下找不到，尝试 currentPath
-		if (!QFile::exists(batPath)) {
+		if (!QFile::exists(batPath)) 
+		{
 			basePath = QDir::currentPath() + "/module/" + caseType;
 			batPath = basePath + "/" + caseType + ".bat";
 		}
 
-		if (!QFile::exists(batPath)) {
+		if (!QFile::exists(batPath)) 
+		{
 			QMessageBox::critical(this, "错误",
 				QString("找不到批处理文件:\n%1").arg(batPath));
 			return;
@@ -429,9 +460,11 @@ void InjectionParamWidget::bindConnect()
 		env.insert("WORKBENCH_PATH", m_pWorkbenchPathEdit->text());
 		env.insert("CASE_TYPE", caseType);
 
-		for (auto it = m_paramEdits.begin(); it != m_paramEdits.end(); ++it) {
+		for (auto it = m_paramEdits.begin(); it != m_paramEdits.end(); ++it)
+		{
 			QString value = it.value()->text().trimmed();
-			if (!value.isEmpty()) {
+			if (!value.isEmpty()) 
+			{
 				env.insert(it.key(), value);
 			}
 		}
@@ -443,14 +476,14 @@ void InjectionParamWidget::bindConnect()
 		process.setWorkingDirectory(QCoreApplication::applicationDirPath());
 
 		bool ok = process.startDetached();
-		if (!ok) {
+		if (!ok) 
+		{
 			QMessageBox::critical(this, "错误",
 				"启动计算失败，请检查系统权限或命令配置。");
 		}
-		else {
+		else 
+		{
 			saveSettings();
-			QMessageBox::information(this, "提示",
-				QString("计算任务已启动！\n当前工况: %1").arg(caseType));
 		}
 		});
 }
@@ -458,7 +491,8 @@ void InjectionParamWidget::bindConnect()
 // ==================== 验证与持久化 ====================
 bool InjectionParamWidget::validateInputs()
 {
-	if (m_pWorkbenchPathEdit->text().isEmpty()) {
+	if (m_pWorkbenchPathEdit->text().isEmpty())
+	{
 		QMessageBox::warning(this, "提示", "请先选择 Workbench 路径");
 		m_pBrowseBtn->setFocus();
 		return false;
@@ -466,8 +500,10 @@ bool InjectionParamWidget::validateInputs()
 
 	QStringList missing;
 	auto checkMissing = [&](const QList < ParamConfig >& list) {
-		for (const auto& config : list) {
-			if (config.required && m_paramEdits[config.envVar]->text().trimmed().isEmpty()) {
+		for (const auto& config : list) 
+		{
+			if (config.required && m_paramEdits[config.envVar]->text().trimmed().isEmpty()) 
+			{
 				missing.append(config.label);
 			}
 		}
@@ -478,22 +514,31 @@ bool InjectionParamWidget::validateInputs()
 	checkMissing(s_col3Params);
 	checkMissing(s_col4Params);
 
-	if (!missing.isEmpty()) {
+	if (!missing.isEmpty()) 
+	{
 		QMessageBox::warning(this, "提示",
 			"请填写以下必填参数:\n• " + missing.join("\n• "));
 		return false;
 	}
 
 	auto checkRange = [&](const QList < ParamConfig >& list) {
-		for (const auto& config : list) {
-			if (config.range.first == 0.0 && config.range.second == 0.0) continue;
+		for (const auto& config : list)
+		{
+			if (config.range.first == 0.0 && config.range.second == 0.0)
+			{
+				continue;
+			}
 
 			QString text = m_paramEdits[config.envVar]->text().trimmed();
-			if (text.isEmpty()) continue;
+			if (text.isEmpty()) 
+			{
+				continue;
+			}
 
 			bool ok;
 			double val = text.toDouble(&ok);
-			if (!ok || val < config.range.first || val > config.range.second) {
+			if (!ok || val < config.range.first || val > config.range.second) 
+			{
 				QMessageBox::warning(this, "输入错误",
 					QString("%1 必须在 %2 ~ %3 之间")
 					.arg(config.label)
@@ -507,10 +552,25 @@ bool InjectionParamWidget::validateInputs()
 		return true;
 	};
 
-	if (!checkRange(s_col1Params)) return false;
-	if (!checkRange(s_col2Params)) return false;
-	if (!checkRange(s_col3Params)) return false;
-	if (!checkRange(s_col4Params)) return false;
+	if (!checkRange(s_col1Params))
+	{
+		return false;
+	}
+
+	if (!checkRange(s_col2Params)) 
+	{
+		return false;
+	}
+
+	if (!checkRange(s_col3Params)) 
+	{
+		return false;
+	}
+
+	if (!checkRange(s_col4Params)) 
+	{
+		return false;
+	}
 
 	return true;
 }
@@ -522,7 +582,8 @@ void InjectionParamWidget::loadSettings()
 	m_pWorkbenchPathEdit->setText(settings.value("workbench_path").toString());
 	m_pTypeComboBox->setCurrentText(settings.value("case_type", "HQ-9B").toString());
 
-	for (auto it = m_paramEdits.begin(); it != m_paramEdits.end(); ++it) {
+	for (auto it = m_paramEdits.begin(); it != m_paramEdits.end(); ++it) 
+	{
 		it.value()->setText(settings.value(it.key()).toString());
 	}
 }
@@ -534,7 +595,8 @@ void InjectionParamWidget::saveSettings()
 	settings.setValue("workbench_path", m_pWorkbenchPathEdit->text());
 	settings.setValue("case_type", m_pTypeComboBox->currentText());
 
-	for (auto it = m_paramEdits.begin(); it != m_paramEdits.end(); ++it) {
+	for (auto it = m_paramEdits.begin(); it != m_paramEdits.end(); ++it) 
+	{
 		settings.setValue(it.key(), it.value()->text());
 	}
 }

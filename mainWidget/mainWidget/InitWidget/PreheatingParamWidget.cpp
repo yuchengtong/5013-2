@@ -34,8 +34,8 @@ const QList < PreheatingParamWidget::ParamConfig > PreheatingParamWidget::s_left
 
 // ==================== 右列：边界条件 ====================
 const QList < PreheatingParamWidget::ParamConfig > PreheatingParamWidget::s_rightParams = {
-	{"传热系数 (W/(m²·K))", "传热系数", "HEAT_TRANSFER_COEFFICIENT", "", true, {0.0, 0.0}},
-	{"来流温度 (K)", "温度", "FREE_STREAM_TEMPERATURE", "", true, {0.0, 0.0}},
+	{"传热系数 (W/(m²·K))", "传热系数", "HEAT_TRANSFER_COEFFICIENT", "", false, {0.0, 0.0}},
+	{"来流温度 (K)", "温度", "FREE_STREAM_TEMPERATURE", "", false, {0.0, 0.0}},
 	{"外部辐射系数", "辐射系数", "EXTERNAL_EMISSIVITY", "", false, {0.0, 1.0}},
 	{"外部辐射温度 (K)", "温度", "EXTERNAL_RADIATION_TEMPERATURE", "", false, {0.0, 0.0}},
 	{"内部辐射系数", "辐射系数", "INTERNAL_EMISSIVITY", "", false, {0.0, 1.0}},
@@ -55,7 +55,7 @@ PreheatingParamWidget::~PreheatingParamWidget() = default;
 // ==================== 界面初始化 ====================
 void PreheatingParamWidget::initUI()
 {
-	setWindowTitle("预热参数设置");
+	setWindowTitle("预热工艺仿真计算");
 	setWindowIcon(QIcon(":/selectWidget/src/selectWidget/PreheatingProcess.jpg"));
 	setFixedSize(900, 520);
 
@@ -64,7 +64,7 @@ void PreheatingParamWidget::initUI()
 	mainLayout->setSpacing(16);
 
 	// --- 标题 ---
-	QLabel* title = new QLabel("预热过程流固热耦合计算参数配置");
+	QLabel* title = new QLabel("预热工艺仿真参数配置");
 	title->setObjectName("titleLabel");
 	title->setAlignment(Qt::AlignCenter);
 	mainLayout->addWidget(title);
@@ -108,7 +108,7 @@ void PreheatingParamWidget::initUI()
 	mainLayout->addLayout(columnsLayout, 1);
 
 	// --- 启动按钮 ---
-	m_pStartBtn = new QPushButton("  ▶ 启动计算");
+	m_pStartBtn = new QPushButton("启动计算");
 	m_pStartBtn->setFixedSize(180, 42);
 	m_pStartBtn->setCursor(Qt::PointingHandCursor);
 	m_pStartBtn->setStyleSheet(buttonStyleSheet());
@@ -130,7 +130,8 @@ void PreheatingParamWidget::buildLeftColumn(QVBoxLayout * layout)
 	bondTip->setObjectName("groupTip");
 	form->addRow(bondTip);
 
-	for (int i = 0; i < 4; ++i) {
+	for (int i = 0; i < 4; ++i) 
+	{
 		QLineEdit* edit = createParamEdit(s_leftParams[i]);
 		form->addRow(s_leftParams[i].label + ":", edit);
 		m_paramEdits.insert(s_leftParams[i].envVar, edit);
@@ -141,7 +142,8 @@ void PreheatingParamWidget::buildLeftColumn(QVBoxLayout * layout)
 	shellTip->setObjectName("groupTip");
 	form->addRow(shellTip);
 
-	for (int i = 4; i < s_leftParams.size(); ++i) {
+	for (int i = 4; i < s_leftParams.size(); ++i)
+	{
 		QLineEdit* edit = createParamEdit(s_leftParams[i]);
 		form->addRow(s_leftParams[i].label + ":", edit);
 		m_paramEdits.insert(s_leftParams[i].envVar, edit);
@@ -161,7 +163,8 @@ void PreheatingParamWidget::buildRightColumn(QVBoxLayout * layout)
 	form->setContentsMargins(0, 0, 0, 0);
 	form->setFieldGrowthPolicy(QFormLayout::ExpandingFieldsGrow);
 
-	for (int i = 0; i < s_rightParams.size(); ++i) {
+	for (int i = 0; i < s_rightParams.size(); ++i)
+	{
 		QLineEdit* edit = createParamEdit(s_rightParams[i]);
 		form->addRow(s_rightParams[i].label + ":", edit);
 		m_paramEdits.insert(s_rightParams[i].envVar, edit);
@@ -320,10 +323,10 @@ void PreheatingParamWidget::bindConnect()
 	connect(m_pStartBtn, &QPushButton::clicked, this, [this]() {
 		if (!validateInputs()) return;
 
-		QString batPath = QCoreApplication::applicationDirPath() + "/module/yr/yr.bat";
-		if (!QFile::exists(batPath)) {
-			batPath = QDir::currentPath() + "/module/yr/yr.bat";
-		}
+		QString batPath = QDir::currentPath() + "/module/yr/yr.bat";
+		//if (!QFile::exists(batPath)) {
+		//	batPath = QDir::currentPath() + "/module/yr/yr.bat";
+		//}
 
 		if (!QFile::exists(batPath)) {
 			QMessageBox::critical(this, "错误",
@@ -348,21 +351,22 @@ void PreheatingParamWidget::bindConnect()
 		process.setWorkingDirectory(QCoreApplication::applicationDirPath());
 
 		bool ok = process.startDetached();
-		if (!ok) {
+		if (!ok) 
+		{
 			QMessageBox::critical(this, "错误",
 				"启动计算失败，请检查系统权限或命令配置。");
 		}
-		else {
+		else 
+		{
 			saveSettings();
-			QMessageBox::information(this, "提示", "计算任务已启动！");
 		}
 		});
 }
 
-// ==================== 验证与持久化 ====================
 bool PreheatingParamWidget::validateInputs()
 {
-	if (m_pWorkbenchPathEdit->text().isEmpty()) {
+	if (m_pWorkbenchPathEdit->text().isEmpty()) 
+	{
 		QMessageBox::warning(this, "提示", "请先选择 Workbench 路径");
 		m_pBrowseBtn->setFocus();
 		return false;
@@ -370,8 +374,10 @@ bool PreheatingParamWidget::validateInputs()
 
 	QStringList missing;
 	auto checkMissing = [&](const QList < ParamConfig > &list) {
-		for (const auto& config : list) {
-			if (config.required && m_paramEdits[config.envVar]->text().trimmed().isEmpty()) {
+		for (const auto& config : list) 
+		{
+			if (config.required && m_paramEdits[config.envVar]->text().trimmed().isEmpty()) 
+			{
 				missing.append(config.label);
 			}
 		}
@@ -380,22 +386,31 @@ bool PreheatingParamWidget::validateInputs()
 	checkMissing(s_leftParams);
 	checkMissing(s_rightParams);
 
-	if (!missing.isEmpty()) {
+	if (!missing.isEmpty()) 
+	{
 		QMessageBox::warning(this, "提示",
 			"请填写以下必填参数:\n• " + missing.join("\n• "));
 		return false;
 	}
 
 	auto checkRange = [&](const QList < ParamConfig > &list) {
-		for (const auto& config : list) {
-			if (config.range.first == 0.0 && config.range.second == 0.0) continue;
+		for (const auto& config : list) 
+		{
+			if (config.range.first == 0.0 && config.range.second == 0.0)
+			{
+				continue;
+			}
 
 			QString text = m_paramEdits[config.envVar]->text().trimmed();
-			if (text.isEmpty()) continue;
+			if (text.isEmpty())
+			{
+				continue;
+			}
 
 			bool ok;
 			double val = text.toDouble(&ok);
-			if (!ok || val < config.range.first || val > config.range.second) {
+			if (!ok || val < config.range.first || val > config.range.second) 
+			{
 				QMessageBox::warning(this, "输入错误",
 					QString("%1 必须在 %2 ~ %3 之间")
 					.arg(config.label)
@@ -409,8 +424,15 @@ bool PreheatingParamWidget::validateInputs()
 		return true;
 	};
 
-	if (!checkRange(s_leftParams)) return false;
-	if (!checkRange(s_rightParams)) return false;
+	if (!checkRange(s_leftParams))
+	{
+		return false;
+	}
+
+	if (!checkRange(s_rightParams)) 
+	{
+		return false;
+	}
 
 	return true;
 }
@@ -421,7 +443,8 @@ void PreheatingParamWidget::loadSettings()
 
 	m_pWorkbenchPathEdit->setText(settings.value("workbench_path").toString());
 
-	for (auto it = m_paramEdits.begin(); it != m_paramEdits.end(); ++it) {
+	for (auto it = m_paramEdits.begin(); it != m_paramEdits.end(); ++it) 
+	{
 		it.value()->setText(settings.value(it.key()).toString());
 	}
 }
@@ -432,7 +455,8 @@ void PreheatingParamWidget::saveSettings()
 
 	settings.setValue("workbench_path", m_pWorkbenchPathEdit->text());
 
-	for (auto it = m_paramEdits.begin(); it != m_paramEdits.end(); ++it) {
+	for (auto it = m_paramEdits.begin(); it != m_paramEdits.end(); ++it) 
+	{
 		settings.setValue(it.key(), it.value()->text());
 	}
 }

@@ -384,9 +384,6 @@ bool GFImportModelWidget::displayPreForwardDesignResult(OccView* occView)
 		return false;
 	}
 
-	std::vector<double> nodeValues;
-	APISetNodeValue::SetPreForwardDesignResult(occView, nodeValues, toolsAnimationWidget->GetCurrentFrameIndex());
-
 	Handle(AIS_InteractiveContext) context = occView->getContext();
 	if (context.IsNull())
 	{
@@ -394,6 +391,9 @@ bool GFImportModelWidget::displayPreForwardDesignResult(OccView* occView)
 	}
 
 	context->EraseAll(true);
+
+	std::vector<double> nodeValues;
+	APISetNodeValue::SetPreForwardDesignResult(occView, nodeValues, toolsAnimationWidget->GetCurrentFrameIndex());
 
 	if (!preForwardInfo.m_ColorScale.IsNull())
 	{
@@ -426,9 +426,6 @@ bool GFImportModelWidget::displayInForwardDesignResult(OccView* occView)
 		return false;
 	}
 
-	std::vector<double> nodeValues;
-	APISetNodeValue::SetInForwardDesignResult(occView, nodeValues, toolsAnimationWidget->GetCurrentFrameIndex());
-
 	Handle(AIS_InteractiveContext) context = occView->getContext();
 	if (context.IsNull()) 
 	{
@@ -437,9 +434,12 @@ bool GFImportModelWidget::displayInForwardDesignResult(OccView* occView)
 
 	context->EraseAll(true);
 
+	std::vector<double> nodeValues;
+	APISetNodeValue::SetInForwardDesignResult(occView, nodeValues, toolsAnimationWidget->GetCurrentFrameIndex());
+
 	if (!inForwardInfo.m_ColorScale.IsNull())
 	{
-		Graphic3d_Vec2i offset(0, Standard_Integer(550));
+		Graphic3d_Vec2i offset(0, Standard_Integer(600));
 		context->SetTransformPersistence(inForwardInfo.m_ColorScale,
 			new Graphic3d_TransformPers(Graphic3d_TMF_2d, Aspect_TOTP_LEFT_UPPER, offset));
 		context->SetDisplayMode(inForwardInfo.m_ColorScale, 1, Standard_False);

@@ -596,46 +596,6 @@ void PreForwardDesignPropertyWidget::preForwardCalculate()
 								}
 							}, Qt::UniqueConnection);
 
-						// 初始化3D显示（显示最后一帧）
-						auto occView = gfParent->GetOccView();
-						Handle(AIS_InteractiveContext) context = occView->getContext();
-						context->EraseAll(true);
-
-						std::vector<double> nodeValues;
-						APISetNodeValue::SetPreForwardDesignResult(occView, nodeValues, maxFrame - 1);
-
-						double min_value = 22;
-						double max_value = 90;
-
-						double temperature = preForwardPropertyInfo.x.at(maxFrame - 1);
-						double time = preForwardPropertyInfo.y.at(maxFrame - 1);
-						QString titleStr = QString("时间: %1s\n温度: %2 ℃")
-							.arg(time, 0, 'f', 0)
-							.arg(temperature, 0, 'f', 0);
-						TCollection_ExtendedString newTitle(titleStr.toUtf8().constData(), true);
-
-						Handle(AIS_ColorScale) aColorScale = new AIS_ColorScale();
-						{
-							aColorScale->SetFormat(TCollection_AsciiString("%.2f"));
-							aColorScale->SetSize(200, 500);
-							aColorScale->SetRange(min_value, max_value);
-							aColorScale->SetNumberOfIntervals(9);
-							aColorScale->SetLabelPosition(Aspect_TOCSP_RIGHT);
-							aColorScale->SetTextHeight(30);
-							aColorScale->SetColor(Quantity_Color(Quantity_NOC_BLACK));
-							aColorScale->SetTitle(newTitle);
-							aColorScale->SetColorRange(Quantity_Color(Quantity_NOC_BLUE1), Quantity_Color(Quantity_NOC_RED));
-							aColorScale->SetLabelType(Aspect_TOCSD_AUTO);
-							aColorScale->SetZLayer(Graphic3d_ZLayerId_TopOSD);
-						}
-						preForwardPropertyInfo.m_ColorScale = aColorScale;
-						ins->SetPreForwardPropertyInfo(preForwardPropertyInfo);
-
-						Graphic3d_Vec2i anoffset(0, Standard_Integer(550));
-						context->SetTransformPersistence(preForwardPropertyInfo.m_ColorScale, new Graphic3d_TransformPers(Graphic3d_TMF_2d, Aspect_TOTP_LEFT_UPPER, anoffset));
-						context->SetDisplayMode(preForwardPropertyInfo.m_ColorScale, 1, Standard_False);
-						context->Display(preForwardPropertyInfo.m_ColorScale, Standard_True);
-
 						//日志输出
 						QString newTimeStr = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss");
 						QString newText = newTimeStr + "[信息]>预热工艺正向设计计算完成";
