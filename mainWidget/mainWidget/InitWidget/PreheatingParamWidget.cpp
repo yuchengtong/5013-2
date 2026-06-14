@@ -321,14 +321,24 @@ void PreheatingParamWidget::bindConnect()
 		});
 
 	connect(m_pStartBtn, &QPushButton::clicked, this, [this]() {
-		if (!validateInputs()) return;
+		if (!validateInputs())
+		{
+			return;
+		}
 
 		QString batPath = QDir::currentPath() + "/module/yr/yr.bat";
 		//if (!QFile::exists(batPath)) {
 		//	batPath = QDir::currentPath() + "/module/yr/yr.bat";
 		//}
 
-		if (!QFile::exists(batPath)) {
+		if (QFile::exists(batPath))
+		{
+			QMessageBox::critical(this, "正确",
+				QString("找到批处理文件:\n%1").arg(batPath));
+		}
+
+		if (!QFile::exists(batPath)) 
+		{
 			QMessageBox::critical(this, "错误",
 				QString("找不到批处理文件:\n%1").arg(batPath));
 			return;
@@ -337,9 +347,11 @@ void PreheatingParamWidget::bindConnect()
 		QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
 		env.insert("WORKBENCH_PATH", m_pWorkbenchPathEdit->text());
 
-		for (auto it = m_paramEdits.begin(); it != m_paramEdits.end(); ++it) {
+		for (auto it = m_paramEdits.begin(); it != m_paramEdits.end(); ++it) 
+		{
 			QString value = it.value()->text().trimmed();
-			if (!value.isEmpty()) {
+			if (!value.isEmpty()) 
+			{
 				env.insert(it.key(), value);
 			}
 		}
