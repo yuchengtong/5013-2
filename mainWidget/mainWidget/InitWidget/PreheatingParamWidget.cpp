@@ -327,9 +327,7 @@ void PreheatingParamWidget::bindConnect()
 		}
 
 		QString batPath = QDir::currentPath() + "/module/yr/yr.bat";
-		//if (!QFile::exists(batPath)) {
-		//	batPath = QDir::currentPath() + "/module/yr/yr.bat";
-		//}
+
 
 		if (QFile::exists(batPath))
 		{
@@ -356,11 +354,36 @@ void PreheatingParamWidget::bindConnect()
 			}
 		}
 
+		auto p = QCoreApplication::applicationDirPath();
+
 		QProcess process;
 		process.setProgram("cmd.exe");
 		process.setArguments(QStringList() << "/c" << batPath);
 		process.setProcessEnvironment(env);
-		process.setWorkingDirectory(QCoreApplication::applicationDirPath());
+		process.setWorkingDirectory(QDir::currentPath() + "/module/yr");
+
+
+		// 设置环境变量
+		/*QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
+		env.insert("WORKBENCH_PATH", m_pWorkbenchPathEdit->text());
+
+		for (auto it = m_paramEdits.begin(); it != m_paramEdits.end(); ++it) {
+			QString value = it.value()->text().trimmed();
+			if (!value.isEmpty()) {
+				env.insert(it.key(), value);
+			}
+		}
+
+		QStringList args;
+		args << "/c" << batPath;
+		QProcess::startDetached(
+			"cmd.exe",
+			args,
+			QCoreApplication::applicationDirPath(),
+			&m_pid,
+			env
+		);*/
+
 
 		bool ok = process.startDetached();
 		if (!ok) 
