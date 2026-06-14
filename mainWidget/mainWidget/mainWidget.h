@@ -90,4 +90,6 @@ private:
 	FILETIME m_prevKernelTime = { 0 };
 	FILETIME m_prevUserTime = { 0 };
 	bool m_isFirstSample = true;
+
+	int m_prevValidIndex = 0;
 };

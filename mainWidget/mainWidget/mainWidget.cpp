@@ -502,9 +502,8 @@ void mainWidget::bindConnect()
 {
 	// 导航Tab切换
 	// 记录上一个有效的页面索引（排除帮助页）
-	int m_prevValidIndex = 0;
 
-	connect(m_navTabWidget, &QTabWidget::currentChanged, [this, &m_prevValidIndex](int index) {
+	connect(m_navTabWidget, &QTabWidget::currentChanged, [this](int index) {
 		if (index == 0) {
 			// 数据库
 			m_pMainTabWidget->setCurrentIndex(1);
