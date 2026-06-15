@@ -40,11 +40,16 @@ private:
 	QString groupBoxStyleSheet() const;
 	QString buttonStyleSheet() const;
 
+	void setDefaultValues();
+
 private:
 	QLineEdit* m_pWorkbenchPathEdit = nullptr;
 	QPushButton* m_pBrowseBtn = nullptr;
 	QMap<QString, QLineEdit*> m_paramEdits;
 	QPushButton* m_pStartBtn = nullptr;
+
+	static const QMap<QString, QString> s_defaultParamValues;
+	QPushButton* m_pDefaultBtn = nullptr;
 
 	static const QList < ParamConfig > s_leftParams;
 	static const QList < ParamConfig > s_rightParams;

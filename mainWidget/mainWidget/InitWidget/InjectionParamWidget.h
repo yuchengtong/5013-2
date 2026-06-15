@@ -44,15 +44,24 @@ private:
 	QString groupBoxStyleSheet() const;
 	QString buttonStyleSheet() const;
 
+	QString defaultButtonStyleSheet() const;
+
+	void setDefaultValues(); 
+
 private:
 	QLineEdit* m_pWorkbenchPathEdit = nullptr;
 	QPushButton* m_pBrowseBtn = nullptr;
 	QComboBox* m_pTypeComboBox = nullptr;
 	QMap<QString, QLineEdit*> m_paramEdits;
 	QPushButton* m_pStartBtn = nullptr;
+	QPushButton* m_pDefaultBtn = nullptr; 
 
 	static const QList < ParamConfig > s_col1Params;
 	static const QList < ParamConfig > s_col2Params;
 	static const QList < ParamConfig > s_col3Params;
 	static const QList < ParamConfig > s_col4Params;
+	static const QMap<QString, QString> s_defaultParamValues1;
+	static const QMap<QString, QString> s_defaultParamValues2;
+	static const QMap<QString, QString> s_defaultParamValues3;
+	static const QMap<QString, QString> s_defaultParamValues4;
 };

@@ -22,12 +22,12 @@
 const QList < PreheatingParamWidget::ParamConfig > PreheatingParamWidget::s_leftParams = {
 	// 胶层
 	{"胶层密度 (kg/m³)", "密度", "BONDLINE_DENSITY", "", false, {0.0, 0.0}},
-	{"胶层比热 (J/(kg·K))", "比热", "BONDLINE_SPECIFIC_HEAT", "", false, {0.0, 0.0}},
+	{"胶层比热容 (J/(kg·K))", "比热容", "BONDLINE_SPECIFIC_HEAT", "", false, {0.0, 0.0}},
 	{"胶层热导率 (W/(m·K))", "热导率", "BONDLINE_THERMAL_CONDUCTIVITY", "", false, {0.0, 0.0}},
 	{"胶层吸收系数 (m⁻¹)", "吸收系数", "BONDLINE_ABSORPTION_COEFFICIENT", "", false, {0.0, 0.0}},
 	// 壳体
 	{"壳体密度 (kg/m³)", "密度", "SHELL_DENSITY", "", false, {0.0, 0.0}},
-	{"壳体比热 (J/(kg·K))", "比热", "SHELL_SPECIFIC_HEAT", "", false, {0.0, 0.0}},
+	{"壳体比热容 (J/(kg·K))", "比热容", "SHELL_SPECIFIC_HEAT", "", false, {0.0, 0.0}},
 	{"壳体热导率 (W/(m·K))", "热导率", "SHELL_THERMAL_CONDUCTIVITY", "", false, {0.0, 0.0}},
 	{"壳体吸收系数 (m⁻¹)", "吸收系数", "SHELL_ABSORPTION_COEFFICIENT", "", false, {0.0, 0.0}},
 };
@@ -49,6 +49,25 @@ PreheatingParamWidget::PreheatingParamWidget(QWidget* parent) : QWidget(parent)
 	bindConnect();
 	loadSettings();
 }
+// ==================== 默认值 ====================
+const QMap<QString, QString> PreheatingParamWidget::s_defaultParamValues = {
+	// 胶层参数
+	{"BONDLINE_DENSITY", "900.1"},
+	{"BONDLINE_SPECIFIC_HEAT", "1800.1"},
+	{"BONDLINE_THERMAL_CONDUCTIVITY", "1.1"},
+	{"BONDLINE_ABSORPTION_COEFFICIENT", "0.5"},
+	// 壳体参数
+	{"SHELL_DENSITY", "2700.1"},
+	{"SHELL_SPECIFIC_HEAT", "920.1"},
+	{"SHELL_THERMAL_CONDUCTIVITY", "130.1"},
+	{"SHELL_ABSORPTION_COEFFICIENT", "0.51"},
+	// 边界条件
+	{"HEAT_TRANSFER_COEFFICIENT", "58.1"},
+	{"FREE_STREAM_TEMPERATURE", "363.15"},
+	{"EXTERNAL_EMISSIVITY", "0.5"},
+	{"EXTERNAL_RADIATION_TEMPERATURE", "363.15"},
+	{"INTERNAL_EMISSIVITY", "0.5"},
+};
 
 PreheatingParamWidget::~PreheatingParamWidget() = default;
 
@@ -107,12 +126,25 @@ void PreheatingParamWidget::initUI()
 	columnsLayout->addWidget(rightGroup, 1);
 	mainLayout->addLayout(columnsLayout, 1);
 
-	// --- 启动按钮 ---
+	QHBoxLayout* btnLayout = new QHBoxLayout();
+	btnLayout->setSpacing(20);
+	btnLayout->setAlignment(Qt::AlignCenter);
+
+	// 默认值按钮
+	m_pDefaultBtn = new QPushButton("默认");
+	m_pDefaultBtn->setFixedSize(180, 42);
+	m_pDefaultBtn->setCursor(Qt::PointingHandCursor);
+	m_pDefaultBtn->setStyleSheet(buttonStyleSheet());
+
+	// 启动计算按钮
 	m_pStartBtn = new QPushButton("启动计算");
 	m_pStartBtn->setFixedSize(180, 42);
 	m_pStartBtn->setCursor(Qt::PointingHandCursor);
 	m_pStartBtn->setStyleSheet(buttonStyleSheet());
-	mainLayout->addWidget(m_pStartBtn, 0, Qt::AlignHCenter);
+
+	btnLayout->addWidget(m_pDefaultBtn);
+	btnLayout->addWidget(m_pStartBtn);
+	mainLayout->addLayout(btnLayout);
 }
 
 // ==================== 构建左列：材料参数 ====================
@@ -364,6 +396,10 @@ void PreheatingParamWidget::bindConnect()
 			saveSettings();
 		}
 		});
+
+
+	connect(m_pDefaultBtn, &QPushButton::clicked, this, &PreheatingParamWidget::setDefaultValues);
+
 }
 
 bool PreheatingParamWidget::validateInputs()
@@ -461,5 +497,17 @@ void PreheatingParamWidget::saveSettings()
 	for (auto it = m_paramEdits.begin(); it != m_paramEdits.end(); ++it) 
 	{
 		settings.setValue(it.key(), it.value()->text());
+	}
+}
+
+void PreheatingParamWidget::setDefaultValues()
+{
+	// 遍历默认参数表，设置到对应输入框
+	for (auto it = s_defaultParamValues.begin(); it != s_defaultParamValues.end(); ++it)
+	{
+		if (m_paramEdits.contains(it.key()))
+		{
+			m_paramEdits[it.key()]->setText(it.value());
+		}
 	}
 }

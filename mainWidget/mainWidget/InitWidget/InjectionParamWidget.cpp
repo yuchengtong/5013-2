@@ -47,6 +47,79 @@ const QList < InjectionParamWidget::ParamConfig > InjectionParamWidget::s_col4Pa
 	{"壁温 (K)", "K", "WALL_TEMPERATURE", "", false, {0.0, 0.0}},
 };
 
+// ==================== 参数默认值 ====================
+const QMap<QString, QString> InjectionParamWidget::s_defaultParamValues1 = {
+	{"LIQUID_DENSITY",          "1855.1"},
+	{"LIQUID_SPECIFIC_HEAT",    "1500.1"},
+	{"LIQUID_THERMAL_CONDUCTIVITY", "0.6"},
+
+	{"BONDLINE_DENSITY",        "900.1"},
+	{"BONDLINE_SPECIFIC_HEAT",  "1800.1"},
+	{"BONDLINE_THERMAL_CONDUCTIVITY", "1.1"},
+
+	{"SHELL_DENSITY",           "7850.1"},
+	{"SHELL_SPECIFIC_HEAT",     "460.1"},
+	{"SHELL_THERMAL_CONDUCTIVITY", "43.1"},
+
+	{"INLET_TOTAL_PRESSURE",    "80000.1"},
+	{"INLET_TOTAL_TEMPERATURE", "375.15"},
+	{"WALL_TEMPERATURE",        "343.15"}
+};
+
+const QMap<QString, QString> InjectionParamWidget::s_defaultParamValues2 = {
+	{"LIQUID_DENSITY",          "1855.1"},
+	{"LIQUID_SPECIFIC_HEAT",    "1500.1"},
+	{"LIQUID_THERMAL_CONDUCTIVITY", "0.6"},
+
+	{"BONDLINE_DENSITY",        "900.1"},
+	{"BONDLINE_SPECIFIC_HEAT",  "1800.1"},
+	{"BONDLINE_THERMAL_CONDUCTIVITY", "1.1"},
+
+	{"SHELL_DENSITY",           "7850.1"},
+	{"SHELL_SPECIFIC_HEAT",     "460.1"},
+	{"SHELL_THERMAL_CONDUCTIVITY", "43.1"},
+
+	{"INLET_TOTAL_PRESSURE",    "80000.1"},
+	{"INLET_TOTAL_TEMPERATURE", "375.15"},
+	{"WALL_TEMPERATURE",        "343.15"}
+};
+
+const QMap<QString, QString> InjectionParamWidget::s_defaultParamValues3 = {
+	{"LIQUID_DENSITY",          "1790.1"},
+	{"LIQUID_SPECIFIC_HEAT",    "1500.1"},
+	{"LIQUID_THERMAL_CONDUCTIVITY", "0.6"},
+
+	{"BONDLINE_DENSITY",        "900.1"},
+	{"BONDLINE_SPECIFIC_HEAT",  "1800.1"},
+	{"BONDLINE_THERMAL_CONDUCTIVITY", "1.1"},
+
+	{"SHELL_DENSITY",           "2700.1"},
+	{"SHELL_SPECIFIC_HEAT",     "920.1"},
+	{"SHELL_THERMAL_CONDUCTIVITY", "130.1"},
+
+	{"INLET_TOTAL_PRESSURE",    "80000.1"},
+	{"INLET_TOTAL_TEMPERATURE", "375.15"},
+	{"WALL_TEMPERATURE",        "343.15"}
+};
+
+const QMap<QString, QString> InjectionParamWidget::s_defaultParamValues4 = {
+	{"LIQUID_DENSITY",          "1730.1"},
+	{"LIQUID_SPECIFIC_HEAT",    "1500.1"},
+	{"LIQUID_THERMAL_CONDUCTIVITY", "0.6"},
+
+	{"BONDLINE_DENSITY",        "900.1"},
+	{"BONDLINE_SPECIFIC_HEAT",  "1800.1"},
+	{"BONDLINE_THERMAL_CONDUCTIVITY", "1.1"},
+
+	{"SHELL_DENSITY",           "7850.1"},
+	{"SHELL_SPECIFIC_HEAT",     "460.1"},
+	{"SHELL_THERMAL_CONDUCTIVITY", "43.1"},
+
+	{"INLET_TOTAL_PRESSURE",    "80000.1"},
+	{"INLET_TOTAL_TEMPERATURE", "375.15"},
+	{"WALL_TEMPERATURE",        "343.15"}
+};
+
 // ==================== 构造 / 析构 ====================
 InjectionParamWidget::InjectionParamWidget(QWidget* parent) : QWidget(parent)
 {
@@ -145,12 +218,25 @@ void InjectionParamWidget::initUI()
 	columnsLayout->addWidget(col4Group, 1);
 	mainLayout->addLayout(columnsLayout, 1);
 
-	// --- 启动按钮 ---
+	QHBoxLayout* bottomBtnLayout = new QHBoxLayout();
+	bottomBtnLayout->setSpacing(20);
+	bottomBtnLayout->setAlignment(Qt::AlignCenter);
+
+	// 左侧：恢复默认值按钮
+	m_pDefaultBtn = new QPushButton("默认");
+	m_pDefaultBtn->setFixedSize(180, 42);
+	m_pDefaultBtn->setCursor(Qt::PointingHandCursor);
+	m_pDefaultBtn->setStyleSheet(buttonStyleSheet());
+
+	// 右侧：启动计算按钮
 	m_pStartBtn = new QPushButton("启动计算");
 	m_pStartBtn->setFixedSize(180, 42);
 	m_pStartBtn->setCursor(Qt::PointingHandCursor);
 	m_pStartBtn->setStyleSheet(buttonStyleSheet());
-	mainLayout->addWidget(m_pStartBtn, 0, Qt::AlignHCenter);
+
+	bottomBtnLayout->addWidget(m_pDefaultBtn);
+	bottomBtnLayout->addWidget(m_pStartBtn);
+	mainLayout->addLayout(bottomBtnLayout);
 }
 
 // ==================== 构建第1列：药液 ====================
@@ -480,6 +566,8 @@ void InjectionParamWidget::bindConnect()
 			saveSettings();
 		}
 		});
+
+	connect(m_pDefaultBtn, &QPushButton::clicked, this, &InjectionParamWidget::setDefaultValues);
 }
 
 // ==================== 验证与持久化 ====================
@@ -592,5 +680,36 @@ void InjectionParamWidget::saveSettings()
 	for (auto it = m_paramEdits.begin(); it != m_paramEdits.end(); ++it) 
 	{
 		settings.setValue(it.key(), it.value()->text());
+	}
+}
+
+void InjectionParamWidget::setDefaultValues()
+{
+	QString caseType = m_pTypeComboBox->currentText();
+	QMap<QString, QString> s_defaultParamValues;
+	if (caseType == "HQ-9B")
+	{
+		s_defaultParamValues = s_defaultParamValues1;
+	}
+	else if (caseType == "YJ-20")
+	{
+		s_defaultParamValues = s_defaultParamValues2;
+	}
+	else if (caseType == "YJ-91A")
+	{
+		s_defaultParamValues = s_defaultParamValues3;
+	}
+	else
+	{
+		s_defaultParamValues = s_defaultParamValues4;
+	}
+
+	for (auto it = m_paramEdits.begin(); it != m_paramEdits.end(); ++it)
+	{
+		QString key = it.key();
+		if (s_defaultParamValues.contains(key))
+		{
+			it.value()->setText(s_defaultParamValues[key]);
+		}
 	}
 }
