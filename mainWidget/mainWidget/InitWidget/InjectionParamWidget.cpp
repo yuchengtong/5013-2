@@ -442,12 +442,6 @@ void InjectionParamWidget::bindConnect()
 			batPath = basePath + "/C4.bat";
 		}
 
-		// 如果 applicationDirPath 下找不到，尝试 currentPath
-		if (!QFile::exists(batPath)) 
-		{
-			basePath = QDir::currentPath() + "/module/" + caseType;
-			batPath = basePath + "/" + caseType + ".bat";
-		}
 
 		if (!QFile::exists(batPath)) 
 		{
@@ -458,7 +452,7 @@ void InjectionParamWidget::bindConnect()
 
 		QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
 		env.insert("WORKBENCH_PATH", m_pWorkbenchPathEdit->text());
-		env.insert("CASE_TYPE", caseType);
+		//env.insert("CASE_TYPE", caseType);
 
 		for (auto it = m_paramEdits.begin(); it != m_paramEdits.end(); ++it)
 		{
@@ -473,7 +467,7 @@ void InjectionParamWidget::bindConnect()
 		process.setProgram("cmd.exe");
 		process.setArguments(QStringList() << "/c" << batPath);
 		process.setProcessEnvironment(env);
-		process.setWorkingDirectory(QCoreApplication::applicationDirPath());
+		process.setWorkingDirectory(basePath);
 
 		bool ok = process.startDetached();
 		if (!ok) 
