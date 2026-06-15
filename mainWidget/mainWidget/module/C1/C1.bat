@@ -31,7 +31,7 @@ echo           ANSYS Workbench 2022R2 自动启动
 echo ======================================================
 echo Workbench路径:%WORKBENCH_PATH%	
 echo ArchivePath：%ARCHIVE_PATH%
-echo ProjectPath：%PROJECT_DIR%
+echo ProjectPath：%PROJECT_PATH%
 echo 胶层密度:%BONDLINE_DENSITY%
 echo 胶层比热:%BONDLINE_SPECIFIC_HEAT%
 echo 胶层热导率:%BONDLINE_THERMAL_CONDUCTIVITY%

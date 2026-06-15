@@ -24,15 +24,16 @@ set "SHELL_THERMAL_CONDUCTIVITY=%SHELL_THERMAL_CONDUCTIVITY%"
 
 set "INLET_TOTAL_PRESSURE=%INLET_TOTAL_PRESSURE%"
 set "INLET_TOTAL_TEMPERATURE=%INLET_TOTAL_TEMPERATURE%"
+::set "OUTLET_BACKFLOW_TEMPERATURE=343.15"
 set "WALL_TEMPERATURE=%WALL_TEMPERATURE%"
 
 echo.
 echo ======================================================
 echo           ANSYS Workbench 2022R2 自动启动
 echo ======================================================
-echo Workbench路径:%WORKBENCH_PATH%	
+echo Workbench路径:%WB_PATH%	
 echo ArchivePath：%ARCHIVE_PATH%
-echo ProjectPath：%PROJECT_DIR%
+echo ProjectPath：%PROJECT_PATH%
 
 echo 药液密度:%LIQUID_DENSITY%
 echo 药液比热:%LIQUID_SPECIFIC_HEAT%

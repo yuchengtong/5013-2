@@ -452,7 +452,7 @@ void InjectionParamWidget::bindConnect()
 
 		QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
 		env.insert("WORKBENCH_PATH", m_pWorkbenchPathEdit->text());
-		//env.insert("CASE_TYPE", caseType);
+		env.insert("CASE_TYPE", caseType);
 
 		for (auto it = m_paramEdits.begin(); it != m_paramEdits.end(); ++it)
 		{
