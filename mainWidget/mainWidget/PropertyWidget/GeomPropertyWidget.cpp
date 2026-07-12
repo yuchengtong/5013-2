@@ -87,11 +87,11 @@ void GeomPropertyWidget::initWidget()
 	vlayout->addWidget(m_tableWidget);
 	setLayout(vlayout);
 
-	QStringList labels = { "几何模型","产品型号","来源","弹体大径","等径段高度", "弹体小径", "变径段高度", "壳体厚度(20～30)", "胶层厚度(1～5)", "注药孔孔径(5～39)", "真空孔孔径" };
+	QStringList labels = { "模型建立","产品型号","来源","弹体大径","等径段高度", "弹体小径", "变径段高度", "壳体厚度(20～30)", "胶层厚度(1～5)", "注药孔孔径(5～39)", "真空孔孔径" };
 	for (int row = 0; row < labels.size(); ++row) {
 		QTableWidgetItem* serialItem = new QTableWidgetItem(QString::number(row));
 		if (row == 0) {
-			serialItem = new QTableWidgetItem("几何模型");
+			serialItem = new QTableWidgetItem("模型建立");
 		}
 		serialItem->setFlags(serialItem->flags() & ~Qt::ItemIsEditable); // 不可编辑
 		m_tableWidget->setItem(row, 0, serialItem);

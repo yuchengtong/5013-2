@@ -65,13 +65,13 @@ void DatabasePropertyWidget::initWidget()
 	setLayout(vlayout);
 
 
-	QStringList labels = { "数据库", "物性数据库","计算模型数据库" };
+	QStringList labels = { "数据管理", "物性数据","计算模型数据" };
 	for (int row = 0; row < labels.size(); ++row) 
 	{
 		QTableWidgetItem* serialItem = new QTableWidgetItem(QString::number(row));
 		if (row == 0)
 		{
-			serialItem = new QTableWidgetItem("数据库");
+			serialItem = new QTableWidgetItem("数据管理");
 		}
 		serialItem->setFlags(serialItem->flags() & ~Qt::ItemIsEditable); // 不可编辑
 		m_tableWidget->setItem(row, 0, serialItem);

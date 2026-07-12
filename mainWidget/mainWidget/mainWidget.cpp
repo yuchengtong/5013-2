@@ -114,8 +114,8 @@ border-bottom: 2px solid white; /* 改成白色，看起来就没有线了 */
 )");
 
 
-	m_navTabWidget->addTab(new QWidget(), QIcon(":/src/database.svg"), QString::fromLocal8Bit("数据库"));
-	m_navTabWidget->addTab(new QWidget(), QIcon(":/src/craft.svg"), QString::fromLocal8Bit("预热与注药工艺"));
+	m_navTabWidget->addTab(new QWidget(), QIcon(":/src/database.svg"), QString::fromLocal8Bit("数据管理"));
+	m_navTabWidget->addTab(new QWidget(), QIcon(":/src/craft.svg"), QString::fromLocal8Bit("基于产线环境注药工艺参数优化设计"));
 	m_navTabWidget->addTab(new QWidget(), QIcon(":/src/help.svg"), QString::fromLocal8Bit("帮助"));
 	m_navTabWidget->setFixedHeight(48);
 	m_navTabWidget->setIconSize(QSize(32, 32));

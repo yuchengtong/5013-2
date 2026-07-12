@@ -359,7 +359,7 @@ void InForwardDesignPropertyWidget::initWidget()
 		{
 			auto text = item->text();
 			auto value = text.toDouble();
-			if (value >= 13 && value <= 39)
+			if (value >= 11 && value <= 39)
 			{
 				m_valveOpeningValue = text;
 			}
@@ -495,10 +495,10 @@ void InForwardDesignPropertyWidget::inForwardCalculate()
 		{
 			A = 6.740741;
 		}
-		else if (A > 18.296296)
+		/*else if (A > 18.296296)
 		{
 			A = 18.296296;
-		}
+		}*/
 		if (B < 1.074074)
 		{
 			B = 1.074074;
@@ -689,10 +689,10 @@ void InForwardDesignPropertyWidget::inForwardCalculate()
 		{
 			A = 6.500000;
 		}
-		else if (A > 19.500000)
+		/*else if (A > 19.500000)
 		{
 			A = 19.500000;
-		}
+		}*/
 		if (B < 1.000000)
 		{
 			B = 1.000000;
@@ -888,10 +888,10 @@ void InForwardDesignPropertyWidget::inForwardCalculate()
 		{
 			A = 6.500000;
 		}
-		else if (A > 18.777778)
+		/*else if (A > 18.777778)
 		{
 			A = 18.777778;
-		}
+		}*/
 		if (B < 1.000000)
 		{
 			B = 1.000000;
@@ -1089,10 +1089,10 @@ void InForwardDesignPropertyWidget::inForwardCalculate()
 		{
 			A = 8.500000;
 		}
-		else if (A > 18.296296)
+		/*else if (A > 18.296296)
 		{
 			A = 18.296296;
-		}
+		}*/
 		if (B < 1.000000)
 		{
 			B = 1.000000;
@@ -1320,7 +1320,11 @@ void InForwardDesignPropertyWidget::inForwardCalculate()
 		timeQualityX.push_back(i);
 		timeQualityY.push_back(quality / 30 * (i/ timeQualityStep));
 	}
-
+	if (timeQualityX.last() < timeQualityXEnd)
+	{
+		timeQualityX.push_back(timeQualityXEnd);
+		timeQualityY.push_back(quality);
+	}
 	
 	inForwardPropertyInfo.densityTempX = densityTempX;
 	inForwardPropertyInfo.densityTempY = densityTempY;
@@ -1355,14 +1359,14 @@ void InForwardDesignPropertyWidget::inForwardCalculate()
 			QString timeStr = currentTime.toString("yyyy-MM-dd hh:mm:ss");
 			auto logWidget = gfParent->GetLogWidget();
 			auto textEdit = logWidget->GetTextEdit();
-			QString text = timeStr + "[信息]>开始注药工艺正向计算";
+			QString text = timeStr + "[信息]>开始真空环境注药速度温度耦合工程分析正向计算";
 			textEdit->appendPlainText(text);
 			logWidget->update();
 
 			QApplication::processEvents();
 
 			// 创建进度对话框
-			ProgressDialog* progressDialog = new ProgressDialog("注药工艺正向计算", this);
+			ProgressDialog* progressDialog = new ProgressDialog("真空环境注药速度温度耦合工程分析正向计算", this);
 			progressDialog->show();
 
 			// 创建工作线程和工作对象
@@ -1526,7 +1530,7 @@ void InForwardDesignPropertyWidget::inForwardCalculate()
 
 						// 日志输出
 						QString newTimeStr = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss");
-						QString newText = newTimeStr + "[信息]>注药工艺计算" + QString("第 %1 / %2 帧计算完成").arg(maxFrame).arg(12);
+						QString newText = newTimeStr + "[信息]>真空环境注药速度温度耦合工程分析计算" + QString("第 %1 / %2 帧计算完成").arg(maxFrame).arg(12);
 						textEdit->appendPlainText(newText);
 						logWidget->update();
 
@@ -1618,14 +1622,14 @@ void InForwardDesignPropertyWidget::calculateTable(InForwardPropertyInfo& inForw
 
 	if (model == "HQ-9B")
 	{
-		if (A < 6.740741)
+		/*if (A < 6.740741)
 		{
 			A = 6.740741;
-		}
-		else if (A > 18.296296)
+		}*/
+		/*else if (A > 18.296296)
 		{
 			A = 18.296296;
-		}
+		}*/
 		if (B < 1.074074)
 		{
 			B = 1.074074;
@@ -1677,14 +1681,14 @@ void InForwardDesignPropertyWidget::calculateTable(InForwardPropertyInfo& inForw
 	}
 	else if (model == "YJ-20")
 	{
-		if (A < 6.500000)
+		/*if (A < 6.500000)
 		{
 			A = 6.500000;
-		}
-		else if (A > 19.500000)
+		}*/
+		/*else if (A > 19.500000)
 		{
 			A = 19.500000;
-		}
+		}*/
 		if (B < 1.000000)
 		{
 			B = 1.000000;
@@ -1737,14 +1741,14 @@ void InForwardDesignPropertyWidget::calculateTable(InForwardPropertyInfo& inForw
 	}
 	else if (model == "YJ-91A")
 	{
-		if (A < 6.500000)
+		/*if (A < 6.500000)
 		{
 			A = 6.500000;
-		}
-		else if (A > 18.777778)
+		}*/
+		/*else if (A > 18.777778)
 		{
 			A = 18.777778;
-		}
+		}*/
 		if (B < 1.000000)
 		{
 			B = 1.000000;
@@ -1797,14 +1801,14 @@ void InForwardDesignPropertyWidget::calculateTable(InForwardPropertyInfo& inForw
 	}
 	else
 	{
-		if (A < 8.500000)
+		/*if (A < 8.500000)
 		{
 			A = 8.500000;
-		}
-		else if (A > 18.296296)
+		}*/
+		/*else if (A > 18.296296)
 		{
 			A = 18.296296;
-		}
+		}*/
 		if (B < 1.000000)
 		{
 			B = 1.000000;

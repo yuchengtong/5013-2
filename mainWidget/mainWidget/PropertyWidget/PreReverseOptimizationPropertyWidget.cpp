@@ -119,8 +119,7 @@ void PreReverseOptimizationPropertyWidget::initWidget()
 
 		QTableWidgetItem* environmentalTemperatureValueItem = new QTableWidgetItem(m_environmentalTemperatureValue);
 		environmentalTemperatureValueItem->setTextAlignment(Qt::AlignCenter); // 文本居中
-		environmentalTemperatureValueItem->setFlags(environmentalTemperatureValueItem->flags() & ~Qt::ItemIsEditable); // 不可编辑
-		environmentalTemperatureValueItem->setBackground(QBrush(QColor(230, 230, 230)));
+		environmentalTemperatureValueItem->setBackground(QBrush(QColor(2, 253, 254)));
 
 		QTableWidgetItem* initialTemperatureValueItem = new QTableWidgetItem(m_initialTemperatureValue);
 		initialTemperatureValueItem->setTextAlignment(Qt::AlignCenter); // 文本居中
@@ -159,13 +158,54 @@ void PreReverseOptimizationPropertyWidget::initWidget()
 		m_tableWidget->setItem(7, 2, environmentalEmissivityValueItem);
 		m_tableWidget->setItem(9, 2, preheatingTimeValueItem);
 
-		connect(m_tableWidget, &QTableWidget::itemChanged, this, [this, preheatingTimeValueItem](QTableWidgetItem* item) {
+		connect(m_tableWidget, &QTableWidget::itemChanged, this, [this, preheatingTimeValueItem, targetTemperatureValueItem, environmentalTemperatureValueItem](QTableWidgetItem* item) {
 
 			if (item == preheatingTimeValueItem)
 			{
 				auto text = item->text();
 				auto value = text.toDouble();
-				m_preheatingTimeValue = text;
+				if (value > 0)
+				{
+					m_preheatingTimeValue = text;
+				}
+				else
+				{
+					m_tableWidget->blockSignals(true);
+					item->setText(m_preheatingTimeValue);
+					m_tableWidget->blockSignals(false);
+				}
+				
+			}
+			else if (item == targetTemperatureValueItem)
+			{
+				auto text = item->text();
+				auto value = text.toDouble();
+				if (value > 0)
+				{
+					m_targetTemperatureValue = text;
+				}
+				else
+				{
+					m_tableWidget->blockSignals(true);
+					item->setText(m_targetTemperatureValue);
+					m_tableWidget->blockSignals(false);
+				}
+			}
+			else if (item == environmentalTemperatureValueItem)
+			{
+				auto text = item->text();
+				auto value = text.toDouble();
+
+				if (value > 0)
+				{
+					m_environmentalTemperatureValue = text;
+				}
+				else
+				{
+					m_tableWidget->blockSignals(true);
+					item->setText(m_environmentalTemperatureValue);
+					m_tableWidget->blockSignals(false);
+				}
 			}
 
 		});
@@ -205,7 +245,7 @@ void PreReverseOptimizationPropertyWidget::initWidget()
 			m_environmentalTempeRadioBtn = new QRadioButton();
 			
 			m_tableWidget->setCellWidget(2, 4, createCenteredRadioWidget(m_targetempeRadioBtn));
-			//m_tableWidget->setCellWidget(3, 4, createCenteredRadioWidget(m_environmentalTempeRadioBtn));
+			m_tableWidget->setCellWidget(3, 4, createCenteredRadioWidget(m_environmentalTempeRadioBtn));
 			
 			firRadioButtonGroup->addButton(m_targetempeRadioBtn);
 			firRadioButtonGroup->addButton(m_environmentalTempeRadioBtn);		
@@ -308,6 +348,29 @@ void PreReverseOptimizationPropertyWidget::calculate()
 		QMessageBox::warning(this, "提示", "弹体预热时间不能为空！");
 		return;
 	}
+
+
+	auto targeTempeBool = m_targetempeRadioBtn->isChecked(); // 弹体目标温度
+	auto environmentalTempeBool = m_environmentalTempeRadioBtn->isChecked(); // 烘箱环境温度
+
+	if (targeTempeBool)
+	{
+
+		if (m_targetTemperatureValue == "")
+		{
+			QMessageBox::information(this, "提示", "弹体目标温度不能为空！");
+			return;
+		}
+	}
+	else
+	{
+		if (m_environmentalTemperatureValue == "")
+		{
+			QMessageBox::information(this, "提示", "烘箱环境温度不能为空！");
+			return;
+		}
+	}
+
 	QWidget* parent = parentWidget();
 	while (parent) {
 		GFImportModelWidget* gfParent = dynamic_cast<GFImportModelWidget*>(parent);
@@ -317,7 +380,7 @@ void PreReverseOptimizationPropertyWidget::calculate()
 			QString timeStr = currentTime.toString("yyyy-MM-dd hh:mm:ss");
 			auto logWidget = gfParent->GetLogWidget();
 			auto textEdit = logWidget->GetTextEdit();
-			QString text = timeStr + "[信息]>开始预热工艺逆向寻优";
+			QString text = timeStr + "[信息]>开始热环境弹体预热工程分析逆向寻优";
 			textEdit->appendPlainText(text);
 			logWidget->update();
 
@@ -331,7 +394,7 @@ void PreReverseOptimizationPropertyWidget::calculate()
 	}
 
 	// 创建进度对话框
-	ProgressDialog* progressDialog = new ProgressDialog("预热工艺工程逆向寻优", this);
+	ProgressDialog* progressDialog = new ProgressDialog("热环境弹体预热工程分析逆向寻优", this);
 	progressDialog->show();
 
 	// 创建工作线程和工作对象
@@ -349,12 +412,13 @@ void PreReverseOptimizationPropertyWidget::calculate()
 	connect(calculateWorker, &ReverseOptimizationWorker::WorkFinished, this,
 		[=](bool success, const QString& msg) {
 	
-		//auto A = m_targetTemperatureValue.toDouble(); // 弹体目标温度（℃）
+		auto A = m_targetTemperatureValue.toDouble(); // 弹体目标温度（℃）
 		auto B = modelGeometryInfo.shellThickness; // 壳体厚度 (mm)
 		auto C = modelGeometryInfo.gasketLayerThickness; // 胶层厚度(mm)
 		auto D = steelPropertyInfo.density; // 壳体密度 (kg m^-3)
 		auto E = steelPropertyInfo.specificHeatCapacity; // 壳体比热容 (J kg^-1 K^-1)
 		auto F = steelPropertyInfo.thermalConductivity; // 壳体导热系数 (W m^-1 K^-1)
+		auto G = m_environmentalTemperatureValue.toDouble(); //环境温度
 		double target = m_tableWidget->item(9, 2)->text().toDouble();
 
 
@@ -373,7 +437,7 @@ void PreReverseOptimizationPropertyWidget::calculate()
 					QString timeStr = currentTime.toString("yyyy-MM-dd hh:mm:ss");
 					auto logWidget = gfParent->GetLogWidget();
 					auto textEdit = logWidget->GetTextEdit();
-					QString text = timeStr + "[信息]>预热工艺逆向寻优完成";
+					QString text = timeStr + "[信息]>热环境弹体预热工程分析逆向寻优完成";
 					textEdit->appendPlainText(text);
 					logWidget->update();
 
@@ -391,31 +455,67 @@ void PreReverseOptimizationPropertyWidget::calculate()
 				return;
 			}
 
-			for (double v : resList) {
-				double value = 35 * v + 50;
 
-				if (value >= 0 && value <= 100) {
 
-					QTableWidgetItem* resultItem = new QTableWidgetItem(QString::number(qRound(value)));
-					resultItem->setBackground(QBrush(QColor(2, 253, 254)));
-					m_tableWidget->setItem(2, 2, resultItem);
-					//QMessageBox::information(this, "成功", "计算完成");
-					return;
+			if (targeTempeBool)
+			{
+
+				for (double v : resList) {
+					double value = 35 * v + 50;
+
+					if (value >= 0 && value <= 120) {
+
+						QTableWidgetItem* resultItem = new QTableWidgetItem(QString::number(qRound(value)));
+						resultItem->setBackground(QBrush(QColor(2, 253, 254)));
+						m_tableWidget->setItem(2, 2, resultItem);
+						//QMessageBox::information(this, "成功", "计算完成");
+						return;
+					}
 				}
 			}
+			else
+			{
+				for (double v : resList) {
+					double value = 30 * v + 60;
+					if (value >= 0 && value <= 120) {
+
+						QTableWidgetItem* resultItem = new QTableWidgetItem(QString::number(qRound(value)));
+						resultItem->setBackground(QBrush(QColor(2, 253, 254)));
+						m_tableWidget->setItem(3, 2, resultItem);
+						//QMessageBox::information(this, "成功", "计算完成");
+						return;
+					}
+				}
+			}
+
+
+
+			
 
 			QMessageBox::warning(this, "提示", "解超出范围");
 			});
 
 		QString formula = calculationPropertyInfo.preForwardCalculateFormula;
 
+		A = (A - 50) / 35;
 		B = (B - 20) / 10;
 		C = (C - 1) / 4;
 		D = (D - 2160) / 7260;
 		E = (E - 368) / 736;
 		F = (F - 6) / 150;
+		G = (G - 60) / 30;
 
-		m_solver->solve(formula, target, 0, B, C, D, E, F, 'A');
+		if (targeTempeBool)
+		{
+			m_solver->solve(formula, target, 0, B, C, D, E, F, G, 'A');
+			
+		}
+		else
+		{
+			m_solver->solve(formula, target, A, B, C, D, E, F, 0, 'G');
+		}
+
+		
 		if (!success)
 		{
 			//QMessageBox::warning(this, "计算失败", msg);

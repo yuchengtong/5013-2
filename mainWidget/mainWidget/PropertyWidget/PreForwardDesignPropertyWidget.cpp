@@ -30,7 +30,7 @@
 
 // 计算
 double preForwardCalculateForm(const QString& formula,
-	double A, double B, double C, double D, double E, double F)
+	double A, double B, double C, double D, double E, double F, double G)
 {
 	A = (A - 50) / 35;
 	B = (B - 20) / 10;
@@ -38,17 +38,19 @@ double preForwardCalculateForm(const QString& formula,
 	D = (D - 2160) / 7260;
 	E = (E - 368) / 736;
 	F = (F - 6) / 150;
+	G = (G - 60) / 30;
 
+	
 	QString processedFormula = formula;
 	processedFormula.remove(' '); // 移除所有空格
 
 	// 变量映射：公式二使用 A-F
 	const QMap<QString, double> varMap = {
-		{"A", A}, {"B", B}, {"C", C}, {"D", D}, {"E", E}, {"F", F}
+		{"A", A}, {"B", B}, {"C", C}, {"D", D}, {"E", E}, {"F", F}, {"G", G}
 	};
 
 	/************************ 核心：支持 1/2/3/4次项 + 多变量乘积 ************************/
-	QRegExp regExp("([+-]?)((?:\\d+(?:\\.\\d*)?)|(?:\\.\\d+))(\\*[A-F](?:\\^[234])?(?:\\*[A-F](?:\\^[234])?)*)?");
+	QRegExp regExp("([+-]?)((?:\\d+(?:\\.\\d*)?)|(?:\\.\\d+))(\\*[A-G](?:\\^[234])?(?:\\*[A-G](?:\\^[234])?)*)?");
 	regExp.setMinimal(false);
 
 	double result = 0.0;
@@ -192,7 +194,7 @@ void PreForwardDesignPropertyWidget::initWidget()
 		m_tableWidget->setItem(row, 0, serialItem);
 	}
 
-	QStringList labels = { "正向设计","工艺输入参数",  "弹体目标温度(50～90)", "烘箱环境温度", "弹体初始温度","环境对流传热系数","壳体辐射吸收系数","环境发射率","工艺输出参数","弹体预热时间","弹体温度云图与温升曲线" };
+	QStringList labels = { "正向设计","工艺输入参数",  "弹体目标温度(50～90)", "烘箱环境温度(60～90)", "弹体初始温度","环境对流传热系数","壳体辐射吸收系数","环境发射率","工艺输出参数","弹体预热时间","弹体温度云图与温升曲线" };
 	for (int row = 0; row < labels.size(); ++row) {
 		QTableWidgetItem* labelItem = new QTableWidgetItem(labels[row]);
 		labelItem->setTextAlignment(Qt::AlignCenter); // 文本居中
@@ -237,8 +239,7 @@ void PreForwardDesignPropertyWidget::initWidget()
 
 	QTableWidgetItem* environmentalTemperatureValueItem = new QTableWidgetItem(m_environmentalTemperatureValue);
 	environmentalTemperatureValueItem->setTextAlignment(Qt::AlignCenter); // 文本居中
-	environmentalTemperatureValueItem->setFlags(environmentalTemperatureValueItem->flags() & ~Qt::ItemIsEditable); // 不可编辑
-	environmentalTemperatureValueItem->setBackground(QBrush(QColor(230, 230, 230)));
+	environmentalTemperatureValueItem->setBackground(QBrush(QColor(255, 254, 195)));
 
 	QTableWidgetItem* initialTemperatureValueItem = new QTableWidgetItem(m_initialTemperatureValue);
 	initialTemperatureValueItem->setTextAlignment(Qt::AlignCenter); // 文本居中
@@ -345,7 +346,7 @@ void PreForwardDesignPropertyWidget::initWidget()
 		}
 	}
 
-	connect(m_tableWidget, &QTableWidget::itemChanged, this, [this, targetTemperatureValueItem](QTableWidgetItem* item) {
+	connect(m_tableWidget, &QTableWidget::itemChanged, this, [this, targetTemperatureValueItem, environmentalTemperatureValueItem](QTableWidgetItem* item) {
 
 		if (item == targetTemperatureValueItem)
 		{
@@ -359,6 +360,22 @@ void PreForwardDesignPropertyWidget::initWidget()
 			{
 				m_tableWidget->blockSignals(true);
 				item->setText(m_targetTemperatureValue);
+				m_tableWidget->blockSignals(false);
+			}
+
+		}
+		else if(item == environmentalTemperatureValueItem)
+		{
+			auto text = item->text();
+			auto value = text.toDouble();
+			if (value >= 60 && value <= 90)
+			{
+				m_environmentalTemperatureValue = text;
+			}
+			else
+			{
+				m_tableWidget->blockSignals(true);
+				item->setText(m_environmentalTemperatureValue);
 				m_tableWidget->blockSignals(false);
 			}
 
@@ -398,10 +415,11 @@ void PreForwardDesignPropertyWidget::preForwardCalculate()
 	auto D = steelPropertyInfo.density; // 壳体密度 (kg m^-3)
 	auto E = steelPropertyInfo.specificHeatCapacity; // 壳体比热容 (J kg^-1 K^-1)
 	auto F = steelPropertyInfo.thermalConductivity; // 壳体导热系数 (W m^-1 K^-1)
+	auto G = m_environmentalTemperatureValue.toDouble(); //环境温度
 
 	//计算曲线图数据
 	double start = 50.0;  // 初始温度
-	double end = 90.0; // 弹体目标温度（℃）
+	double end = G; // 弹体目标温度（℃）
 	double step = (end - start) / 28;
 
 	QVector<double> x;
@@ -411,12 +429,12 @@ void PreForwardDesignPropertyWidget::preForwardCalculate()
 	for (double i = start; i <= end; i += step)
 	{
 		x.push_back(i);
-		double value = preForwardCalculateForm(calculationPropertyInfo.preForwardCalculateFormula, i, B, C, D, E, F);
+		double value = preForwardCalculateForm(calculationPropertyInfo.preForwardCalculateFormula, i, B, C, D, E, F, G);
 		QString result = QString::number(qRound(value));
 		y.push_back(result.toDouble());
 	}
 	x.push_back(end);
-	double value = preForwardCalculateForm(calculationPropertyInfo.preForwardCalculateFormula, end, B, C, D, E, F);
+	double value = preForwardCalculateForm(calculationPropertyInfo.preForwardCalculateFormula, end, B, C, D, E, F, G);
 	QString result = QString::number(qRound(value));
 	y.push_back(result.toDouble());
 
@@ -435,14 +453,14 @@ void PreForwardDesignPropertyWidget::preForwardCalculate()
 			QString timeStr = currentTime.toString("yyyy-MM-dd hh:mm:ss");
 			auto logWidget = gfParent->GetLogWidget();
 			auto textEdit = logWidget->GetTextEdit();
-			QString text = timeStr + "[信息]>开始预热工艺正向计算";
+			QString text = timeStr + "[信息]>开始热环境弹体预热工程分析正向计算";
 			textEdit->appendPlainText(text);
 			logWidget->update();
 
 			QApplication::processEvents();
 
 			// 创建进度对话框
-			ProgressDialog* progressDialog = new ProgressDialog("预热工艺正向计算", this);
+			ProgressDialog* progressDialog = new ProgressDialog("热环境弹体预热工程分析正向计算", this);
 			progressDialog->show();
 
 			// 创建工作线程和工作对象
@@ -540,7 +558,7 @@ void PreForwardDesignPropertyWidget::preForwardCalculate()
 						int maxFrame = msg.toInt();
 
 						// 设置最终结果到表格
-						double finalValue = preForwardCalculateForm(calculationPropertyInfo.preForwardCalculateFormula, A, B, C, D, E, F);
+						double finalValue = preForwardCalculateForm(calculationPropertyInfo.preForwardCalculateFormula, A, B, C, D, E, F, G);
 						QString result = QString::number(qRound(finalValue));
 						m_preheatingTimeValue = result;
 						QTableWidgetItem* resultItem = new QTableWidgetItem(m_preheatingTimeValue);
@@ -598,7 +616,7 @@ void PreForwardDesignPropertyWidget::preForwardCalculate()
 
 						//日志输出
 						QString newTimeStr = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss");
-						QString newText = newTimeStr + "[信息]>预热工艺正向设计计算完成";
+						QString newText = newTimeStr + "[信息]>热环境弹体预热工程分析正向设计计算完成";
 						textEdit->appendPlainText(newText);
 						logWidget->update();
 						QApplication::processEvents();

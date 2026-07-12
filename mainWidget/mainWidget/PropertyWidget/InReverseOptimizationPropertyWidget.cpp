@@ -286,7 +286,7 @@ void InReverseOptimizationPropertyWidget::initWidget()
 				auto text = item->text();
 				auto value = text.toDouble();
 
-				if (value >= 0.02 && value <= 0.08)
+				if (value >= 0.00 && value <= 0.08)
 				{
 					m_vacuumDegreeValue = text;
 				}
@@ -513,7 +513,7 @@ void InReverseOptimizationPropertyWidget::calculate()
 			QString timeStr = currentTime.toString("yyyy-MM-dd hh:mm:ss");
 			auto logWidget = gfParent->GetLogWidget();
 			auto textEdit = logWidget->GetTextEdit();
-			QString text = timeStr + "[信息]>开始注药工艺逆向寻优";
+			QString text = timeStr + "[信息]>开始真空环境注药速度温度耦合工程分析逆向寻优";
 			textEdit->appendPlainText(text);
 			logWidget->update();
 
@@ -523,7 +523,7 @@ void InReverseOptimizationPropertyWidget::calculate()
 
 
 			// 创建进度对话框
-			ProgressDialog* progressDialog = new ProgressDialog("注药工艺工程逆向寻优", this);
+			ProgressDialog* progressDialog = new ProgressDialog("真空环境注药速度温度耦合工程分析逆向寻优", this);
 			progressDialog->show();
 
 			// 创建工作线程和工作对象
@@ -1120,7 +1120,7 @@ void InReverseOptimizationPropertyWidget::calculate()
 					// 正向计算
 					forwardCalculate();
 
-					QString text = timeStr + "[信息]>注药工艺逆向寻优完成";
+					QString text = timeStr + "[信息]>真空环境注药速度温度耦合工程分析逆向寻优完成";
 					textEdit->appendPlainText(text);
 					logWidget->update();
 					QApplication::processEvents();

@@ -50,7 +50,7 @@ DatabaseWidget::DatabaseWidget(QWidget* parent)
 	treeWidget->clear();
 
 	QTreeWidgetItem* material = new QTreeWidgetItem(treeWidget);
-	material->setText(0, "物性数据库");
+	material->setText(0, "物性数据");
 	material->setIcon(0, QIcon(":/src/data_metals.svg"));
 
 	QTreeWidgetItem* shell = new QTreeWidgetItem();
@@ -70,13 +70,13 @@ DatabaseWidget::DatabaseWidget(QWidget* parent)
 	
 
 	QTreeWidgetItem* calculation = new QTreeWidgetItem(treeWidget);
-	calculation->setText(0, "计算模型数据库");
+	calculation->setText(0, "计算模型数据");
 	calculation->setIcon(0, QIcon(":/src/data_calculation.svg"));
 	QTreeWidgetItem* preheating = new QTreeWidgetItem();
-	preheating->setText(0, "预热工艺模型");
+	preheating->setText(0, "热环境弹体预热工程计算模型");
 	preheating->setIcon(0, QIcon(":/src/data_calculation.svg"));
 	QTreeWidgetItem* intravenousInjection = new QTreeWidgetItem();
-	intravenousInjection->setText(0, "注药工艺模型");
+	intravenousInjection->setText(0, "真空注药速度温度耦合工程计算模型");
 	intravenousInjection->setIcon(0, QIcon(":/src/data_calculation.svg"));
 
 	calculation->addChild(preheating);
@@ -274,7 +274,7 @@ DatabaseWidget::DatabaseWidget(QWidget* parent)
 		QString sheetName = nullptr;
 		QDir dir;
 
-		if (currentDataaseType == "物性数据库" || currentDataaseType == "壳体物性")
+		if (currentDataaseType == "物性数据" || currentDataaseType == "壳体物性")
 		{
 			filepath = dir.absoluteFilePath(m_privateDirPath + "/壳体物性材料.xlsx");
 			sheetName = "壳体物性材料";
@@ -290,12 +290,12 @@ DatabaseWidget::DatabaseWidget(QWidget* parent)
 			sheetName = "明胶物性材料";
 		}
 		
-		else if (currentDataaseType == "预热工艺模型" || currentDataaseType == "计算模型数据库")
+		else if (currentDataaseType == "热环境弹体预热工程计算模型" || currentDataaseType == "计算模型数据")
 		{
 			filepath = dir.absoluteFilePath(m_privateDirPath + "/计算模型-预热工艺模型.xlsx");
 			sheetName = "预热工艺模型";
 		}
-		else if (currentDataaseType == "注药工艺模型")
+		else if (currentDataaseType == "真空注药速度温度耦合工程计算模型")
 		{
 			filepath = dir.absoluteFilePath(m_privateDirPath + "/计算模型-注药工艺模型.xlsx");
 			sheetName = "注药工艺模型";
@@ -359,7 +359,7 @@ void DatabaseWidget::onTreeItemClicked(QTreeWidgetItem* item) {
 	QString filepath = nullptr;
 	QDir dir;
 	currentDataaseType = item->text(0);
-	if (currentDataaseType == "物性数据库" || currentDataaseType == "壳体物性")
+	if (currentDataaseType == "物性数据" || currentDataaseType == "壳体物性")
 	{
 		filepath = dir.absoluteFilePath("src/database/壳体物性材料.xlsx");
 		ui.queryTitle->setText("材料名称");
@@ -375,13 +375,13 @@ void DatabaseWidget::onTreeItemClicked(QTreeWidgetItem* item) {
 		ui.queryTitle->setText("明胶牌号");
 	}
 	
-	else if (currentDataaseType == "预热工艺模型" || currentDataaseType == "计算模型数据库")
+	else if (currentDataaseType == "热环境弹体预热工程计算模型" || currentDataaseType == "计算模型数据")
 	{
 		filepath = dir.absoluteFilePath("src/database/计算模型-预热工艺模型.xlsx");
 		ui.queryTitle->setText("材料牌号");
 	}
 
-	else if (currentDataaseType == "注药工艺模型")
+	else if (currentDataaseType == "真空注药速度温度耦合工程计算模型")
 	{
 		filepath = dir.absoluteFilePath("src/database/计算模型-注药工艺模型.xlsx");
 		ui.queryTitle->setText("材料牌号");
@@ -434,7 +434,7 @@ void DatabaseWidget::onTreeItemClicked(QTreeWidgetItem* item) {
 	}
 	QString privateFilePath = "";
 
-	if (currentDataaseType == "物性数据库" || currentDataaseType == "壳体物性")
+	if (currentDataaseType == "物性数据" || currentDataaseType == "壳体物性")
 	{
 		privateFilePath = dir.absoluteFilePath(m_privateDirPath + "/壳体物性材料.xlsx");
 	}
@@ -446,12 +446,12 @@ void DatabaseWidget::onTreeItemClicked(QTreeWidgetItem* item) {
 	{
 		privateFilePath = dir.absoluteFilePath(m_privateDirPath + "/明胶物性.xlsx");
 	}
-	else if (currentDataaseType == "预热工艺模型" || currentDataaseType == "计算模型数据库")
+	else if (currentDataaseType == "热环境弹体预热工程计算模型" || currentDataaseType == "计算模型数据")
 	{
 		privateFilePath = dir.absoluteFilePath(m_privateDirPath + "/计算模型-预热工艺模型.xlsx");
 	}
 	
-	else if (currentDataaseType == "注药工艺模型")
+	else if (currentDataaseType == "真空注药速度温度耦合工程计算模型")
 	{
 		privateFilePath = dir.absoluteFilePath(m_privateDirPath + "/计算模型-注药工艺模型.xlsx");
 	}
@@ -488,7 +488,7 @@ void DatabaseWidget::onTreeItemClicked(QTreeWidgetItem* item) {
 	for (int i = 0; i < colCount; ++i) {
 		tableWidge->setItemDelegateForColumn(i, nullptr);
 	}
-	if (currentDataaseType == "预热工艺模型" || currentDataaseType == "计算模型数据库" || currentDataaseType == "注药工艺模型")
+	if (currentDataaseType == "热环境弹体预热工程计算模型" || currentDataaseType == "计算模型数据" || currentDataaseType == "真空注药速度温度耦合工程计算模型")
 	{
 		TableWrapDelegate* wrapDelegate = new TableWrapDelegate(this);
 		int lastCol = colCount - 1;

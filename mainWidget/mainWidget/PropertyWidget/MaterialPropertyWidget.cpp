@@ -68,11 +68,11 @@ void MaterialPropertyWidget::initWidget()
 
 	
 	
-	QStringList labels = { "物性数据库", "壳体材料", "药液材料", "明胶材料" };
+	QStringList labels = { "物性数据", "壳体材料", "药液材料", "明胶材料" };
 	for (int row = 0; row < labels.size(); ++row) {
 		QTableWidgetItem* serialItem = new QTableWidgetItem(QString::number(row));
 		if (row == 0) {
-			serialItem = new QTableWidgetItem("材料数据库");
+			serialItem = new QTableWidgetItem("材料数据");
 		}
 		serialItem->setFlags(serialItem->flags() & ~Qt::ItemIsEditable); // 不可编辑
 		m_tableWidget->setItem(row, 0, serialItem);

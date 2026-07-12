@@ -120,14 +120,14 @@ void GFTreeModelWidget::init()
 
 	// 几何模型节点
 	QTreeWidgetItem* geometryNode = new QTreeWidgetItem(rootItem);
-	geometryNode->setText(0, "几何模型");
+	geometryNode->setText(0, "模型建立");
 	geometryNode->setData(0, Qt::UserRole, "Geometry");
 	geometryNode->setIcon(0, QIcon(":/tree/Tree/geometry.svg"));
 
 	// 数据库
 	QTreeWidgetItem* dataBase = new QTreeWidgetItem(rootItem);
 	{
-		dataBase->setText(0, "数据库");
+		dataBase->setText(0, "数据管理");
 		dataBase->setData(0, Qt::UserRole, "DataBase");
 		dataBase->setIcon(0, QIcon(":/tree/Tree/data_base.svg"));
 		dataBase->setExpanded(true);
@@ -135,12 +135,11 @@ void GFTreeModelWidget::init()
 
 	QTreeWidgetItem* phyProperty = new QTreeWidgetItem();
 	{
-		phyProperty->setText(0, "物性数据库");
+		phyProperty->setText(0, "物性数据");
 		phyProperty->setData(0, Qt::UserRole, "PhysicalProperty");
 		phyProperty->setIcon(0, QIcon(":/tree/Tree/physical.svg"));
 		phyProperty->setExpanded(true);
 	}
-	dataBase->addChild(phyProperty);
 
 	QTreeWidgetItem* steel = new QTreeWidgetItem();
 	{
@@ -166,17 +165,21 @@ void GFTreeModelWidget::init()
 	phyProperty->addChild(gelatin);	
 
 	//计算模型
-	QTreeWidgetItem* calculationItem = new QTreeWidgetItem(rootItem);
+	QTreeWidgetItem* calculationItem = new QTreeWidgetItem();
 	{
-		calculationItem->setText(0, "计算模型数据库");
+		calculationItem->setText(0, "计算模型数据");
 		calculationItem->setData(0, Qt::UserRole, "Calculation");
 		calculationItem->setIcon(0, QIcon(":/tree/Tree/calculation.svg"));
 	}
 
+
+	dataBase->addChild(phyProperty);
+	dataBase->addChild(calculationItem);
+	
 	//网格节点
 	QTreeWidgetItem* meshItem = new QTreeWidgetItem(rootItem);
 	{
-		meshItem->setText(0, "网格");
+		meshItem->setText(0, "网格划分");
 		meshItem->setData(0, Qt::UserRole, "Mesh");
 		meshItem->setIcon(0, QIcon(":/tree/Tree/mesh.svg"));
 	}
@@ -184,7 +187,7 @@ void GFTreeModelWidget::init()
 	// 预热工艺工程计算
 	QTreeWidgetItem* preheatingProcessCal = new QTreeWidgetItem(rootItem);
 	{
-		preheatingProcessCal->setText(0, "预热工艺工程计算");
+		preheatingProcessCal->setText(0, "热环境弹体预热工程分析");
 		preheatingProcessCal->setData(0, Qt::UserRole, "PreheatingProcessCal");
 		preheatingProcessCal->setIcon(0, QIcon(":/tree/Tree/preheating_process.svg"));
 		preheatingProcessCal->setExpanded(true);
@@ -208,7 +211,7 @@ void GFTreeModelWidget::init()
 	// 注药工艺工程计算
 	QTreeWidgetItem* injectionProcessCal = new QTreeWidgetItem(rootItem);
 	{
-		injectionProcessCal->setText(0, "注药工艺工程计算");
+		injectionProcessCal->setText(0, "真空环境注药速度温度耦合工程分析");
 		injectionProcessCal->setData(0, Qt::UserRole, "InjectionProcessCal");
 		injectionProcessCal->setIcon(0, QIcon(":/tree/Tree/injection_process.svg"));
 		injectionProcessCal->setExpanded(true);
@@ -535,7 +538,7 @@ void GFTreeModelWidget::contextMenuEvent(QContextMenuEvent *event)
 	//QString type = item->data(0, Qt::UserRole).toString();
 	QString text = item->text(0);
 	
-	if (text == "几何模型")
+	if (text == "模型建立")
 	{
 		m_ContextMenu = new QMenu(this); // 创建菜单对象
 		QAction *customAction = new QAction("导入", this); // 创建动作对象并添加到菜单中
@@ -572,7 +575,7 @@ void GFTreeModelWidget::contextMenuEvent(QContextMenuEvent *event)
 					QString timeStr = currentTime.toString("yyyy-MM-dd hh:mm:ss");
 					auto logWidget = gfParent->GetLogWidget();
 					auto textEdit = logWidget->GetTextEdit();
-					QString text = timeStr + "[信息]>开始导入几何模型";
+					QString text = timeStr + "[信息]>开始进行模型建立";
 					textEdit->appendPlainText(text);
 					logWidget->update();
 
@@ -581,7 +584,7 @@ void GFTreeModelWidget::contextMenuEvent(QContextMenuEvent *event)
 					
 
 					// 创建进度对话框
-					ProgressDialog* progressDialog = new ProgressDialog("固体发动机三维模型导入", gfParent);
+					ProgressDialog* progressDialog = new ProgressDialog("模型建立", gfParent);
 					progressDialog->show();
 
 					// 创建工作线程和工作对象
@@ -725,7 +728,7 @@ void GFTreeModelWidget::contextMenuEvent(QContextMenuEvent *event)
 		m_ContextMenu->addAction(customAction); // 将动作添加到菜单中
 		m_ContextMenu->exec(event->globalPos()); // 在鼠标位置显示菜单
 	}
-	else if (text == "网格")
+	else if (text == "网格划分")
 	{
 		m_ContextMenu = new QMenu(this);
 		QAction *meshAction = new QAction("网格划分", this);
