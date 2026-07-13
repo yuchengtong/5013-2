@@ -174,7 +174,7 @@ border-bottom: 2px solid white; /* 改成白色，看起来就没有线了 */
 	// 设置工具栏各组件
 	setupGeomWidget();
 	setupOperationWidget();
-	//setupViewWidget();
+	setupViewWidget();
 
 	// ========== 主内容TabWidget ==========
 	m_pMainTabWidget = new QTabWidget(this);
@@ -296,46 +296,46 @@ void mainWidget::setupGeomWidget()
 
 void mainWidget::setupOperationWidget()
 {
-	//m_moveBtn = new QPushButton();
-	//m_rotateBtn = new QPushButton();
+	m_moveBtn = new QPushButton();
+	m_rotateBtn = new QPushButton();
 	m_zoomBtn = new QPushButton();
 	m_fitAllBtn = new QPushButton();
-	//m_resetBtn = new QPushButton();
+	m_resetBtn = new QPushButton();
 
-	//m_moveBtn->setIcon(QIcon(":/src/Move.svg"));
-	//m_rotateBtn->setIcon(QIcon(":/src/Rotate.svg"));
+	m_moveBtn->setIcon(QIcon(":/src/Move.svg"));
+	m_rotateBtn->setIcon(QIcon(":/src/Rotate.svg"));
 	m_zoomBtn->setIcon(QIcon(":/src/Zoom.svg"));
 	m_fitAllBtn->setIcon(QIcon(":/src/FitAll.svg"));
-	//m_resetBtn->setIcon(QIcon(":/src/Reset.svg"));
+	m_resetBtn->setIcon(QIcon(":/src/Reset.svg"));
 
 	const int btnSize = 32;
 	QSize iconSize(btnSize, btnSize);
-	//m_moveBtn->setFixedSize(btnSize, btnSize);
-	//m_rotateBtn->setFixedSize(btnSize, btnSize);
+	m_moveBtn->setFixedSize(btnSize, btnSize);
+	m_rotateBtn->setFixedSize(btnSize, btnSize);
 	m_zoomBtn->setIconSize(iconSize);
 	m_fitAllBtn->setIconSize(iconSize);
-	//m_resetBtn->setFixedSize(btnSize, btnSize);
+	m_resetBtn->setFixedSize(btnSize, btnSize);
 
 	m_zoomBtn->setFlat(true);
 	m_fitAllBtn->setFlat(true);
 
-	//auto moveLabel = new QLabel(QString::fromLocal8Bit("移动"));
-	//auto rotateLabel = new QLabel(QString::fromLocal8Bit("旋转"));
+	auto moveLabel = new QLabel(QString::fromLocal8Bit("移动"));
+	auto rotateLabel = new QLabel(QString::fromLocal8Bit("旋转"));
 	auto zoomLabel = new QLabel(QString::fromLocal8Bit("缩放"));
 	auto fitAllLabel = new QLabel(QString::fromLocal8Bit("聚焦"));
-	//auto resetLabel = new QLabel(QString::fromLocal8Bit("重置"));
+	auto resetLabel = new QLabel(QString::fromLocal8Bit("重置"));
 
-	//auto moveVBox = new QVBoxLayout();
-	//moveVBox->addWidget(m_moveBtn, 0, Qt::AlignHCenter);
-	//moveVBox->addWidget(moveLabel, 0, Qt::AlignHCenter);
-	//moveVBox->setSpacing(2);
-	//moveVBox->setContentsMargins(4, 2, 4, 2);
+	auto moveVBox = new QVBoxLayout();
+	moveVBox->addWidget(m_moveBtn, 0, Qt::AlignHCenter);
+	moveVBox->addWidget(moveLabel, 0, Qt::AlignHCenter);
+	moveVBox->setSpacing(2);
+	moveVBox->setContentsMargins(4, 2, 4, 2);
 
-	//auto rotateVBox = new QVBoxLayout();
-	//rotateVBox->addWidget(m_rotateBtn, 0, Qt::AlignHCenter);
-	//rotateVBox->addWidget(rotateLabel, 0, Qt::AlignHCenter);
-	//rotateVBox->setSpacing(2);
-	//rotateVBox->setContentsMargins(4, 2, 4, 2);
+	auto rotateVBox = new QVBoxLayout();
+	rotateVBox->addWidget(m_rotateBtn, 0, Qt::AlignHCenter);
+	rotateVBox->addWidget(rotateLabel, 0, Qt::AlignHCenter);
+	rotateVBox->setSpacing(2);
+	rotateVBox->setContentsMargins(4, 2, 4, 2);
 
 	auto zoomVBox = new QVBoxLayout();
 	zoomVBox->addWidget(m_zoomBtn, 0, Qt::AlignHCenter);
@@ -349,18 +349,18 @@ void mainWidget::setupOperationWidget()
 	fitAllVBox->setSpacing(2);
 	fitAllVBox->setContentsMargins(4, 2, 4, 2);
 
-	//auto resetVBox = new QVBoxLayout();
-	//resetVBox->addWidget(m_resetBtn, 0, Qt::AlignHCenter);
-	//resetVBox->addWidget(resetLabel, 0, Qt::AlignHCenter);
-	//resetVBox->setSpacing(2);
-	//resetVBox->setContentsMargins(4, 2, 4, 2);
+	auto resetVBox = new QVBoxLayout();
+	resetVBox->addWidget(m_resetBtn, 0, Qt::AlignHCenter);
+	resetVBox->addWidget(resetLabel, 0, Qt::AlignHCenter);
+	resetVBox->setSpacing(2);
+	resetVBox->setContentsMargins(4, 2, 4, 2);
 
 	auto hLayout = new QHBoxLayout();
-	//hLayout->addLayout(moveVBox);
-	//hLayout->addLayout(rotateVBox);
+	hLayout->addLayout(moveVBox);
+	hLayout->addLayout(rotateVBox);
 	hLayout->addLayout(zoomVBox);
 	hLayout->addLayout(fitAllVBox);
-	//hLayout->addLayout(resetVBox);
+	hLayout->addLayout(resetVBox);
 	hLayout->addStretch();
 	hLayout->setSpacing(4);
 	hLayout->setContentsMargins(4, 2, 4, 2);
@@ -378,96 +378,96 @@ void mainWidget::setupOperationWidget()
 	m_mainToolBar->addSeparator();
 }
 
-//void mainWidget::setupViewWidget()
-//{
-//	m_xBtn = new QPushButton();
-//	m_yBtn = new QPushButton();
-//	m_zBtn = new QPushButton();
-//	m_xNegBtn = new QPushButton();
-//	m_yNegBtn = new QPushButton();
-//	m_zNegBtn = new QPushButton();
-//
-//	const int btnSize = 32;
-//	m_xBtn->setFixedSize(btnSize, btnSize);
-//	m_yBtn->setFixedSize(btnSize, btnSize);
-//	m_zBtn->setFixedSize(btnSize, btnSize);
-//	m_xNegBtn->setFixedSize(btnSize, btnSize);
-//	m_yNegBtn->setFixedSize(btnSize, btnSize);
-//	m_zNegBtn->setFixedSize(btnSize, btnSize);
-//
-//	m_xBtn->setIcon(QIcon(":/src/View all From +X.png"));
-//	m_yBtn->setIcon(QIcon(":/src/View all From +Y.png"));
-//	m_zBtn->setIcon(QIcon(":/src/View all From +Z.png"));
-//	m_xNegBtn->setIcon(QIcon(":/src/View all From -X.png"));
-//	m_yNegBtn->setIcon(QIcon(":/src/View all From -Y.png"));
-//	m_zNegBtn->setIcon(QIcon(":/src/View all From -Z.png"));
-//
-//	auto xLabel = new QLabel(QString::fromLocal8Bit("+X"));
-//	auto yLabel = new QLabel(QString::fromLocal8Bit("+Y"));
-//	auto zLabel = new QLabel(QString::fromLocal8Bit("+Z"));
-//	auto xNegLabel = new QLabel(QString::fromLocal8Bit("-X"));
-//	auto yNegLabel = new QLabel(QString::fromLocal8Bit("-Y"));
-//	auto zNegLabel = new QLabel(QString::fromLocal8Bit("-Z"));
-//
-//	auto xVBox = new QVBoxLayout();
-//	xVBox->addWidget(m_xBtn, 0, Qt::AlignHCenter);
-//	xVBox->addWidget(xLabel, 0, Qt::AlignHCenter);
-//	xVBox->setSpacing(2);
-//	xVBox->setContentsMargins(4, 2, 4, 2);
-//
-//	auto yVBox = new QVBoxLayout();
-//	yVBox->addWidget(m_yBtn, 0, Qt::AlignHCenter);
-//	yVBox->addWidget(yLabel, 0, Qt::AlignHCenter);
-//	yVBox->setSpacing(2);
-//	yVBox->setContentsMargins(4, 2, 4, 2);
-//
-//	auto zVBox = new QVBoxLayout();
-//	zVBox->addWidget(m_zBtn, 0, Qt::AlignHCenter);
-//	zVBox->addWidget(zLabel, 0, Qt::AlignHCenter);
-//	zVBox->setSpacing(2);
-//	zVBox->setContentsMargins(4, 2, 4, 2);
-//
-//	auto xNegVBox = new QVBoxLayout();
-//	xNegVBox->addWidget(m_xNegBtn, 0, Qt::AlignHCenter);
-//	xNegVBox->addWidget(xNegLabel, 0, Qt::AlignHCenter);
-//	xNegVBox->setSpacing(2);
-//	xNegVBox->setContentsMargins(4, 2, 4, 2);
-//
-//	auto yNegVBox = new QVBoxLayout();
-//	yNegVBox->addWidget(m_yNegBtn, 0, Qt::AlignHCenter);
-//	yNegVBox->addWidget(yNegLabel, 0, Qt::AlignHCenter);
-//	yNegVBox->setSpacing(2);
-//	yNegVBox->setContentsMargins(4, 2, 4, 2);
-//
-//	auto zNegVBox = new QVBoxLayout();
-//	zNegVBox->addWidget(m_zNegBtn, 0, Qt::AlignHCenter);
-//	zNegVBox->addWidget(zNegLabel, 0, Qt::AlignHCenter);
-//	zNegVBox->setSpacing(2);
-//	zNegVBox->setContentsMargins(4, 2, 4, 2);
-//
-//	auto hLayout1 = new QHBoxLayout();
-//	hLayout1->addLayout(xVBox);
-//	hLayout1->addLayout(yVBox);
-//	hLayout1->addLayout(zVBox);
-//	hLayout1->addLayout(xNegVBox);
-//	hLayout1->addLayout(yNegVBox);
-//	hLayout1->addLayout(zNegVBox);
-//	hLayout1->addStretch();
-//	hLayout1->setSpacing(4);
-//	hLayout1->setContentsMargins(4, 2, 4, 2);
-//
-//	auto vLayout = new QVBoxLayout();
-//	vLayout->addLayout(hLayout1);
-//	vLayout->setContentsMargins(0, 0, 0, 0);
-//	vLayout->setSpacing(2);
-//
-//	auto viewWidget = new QWidget();
-//	viewWidget->setFixedWidth(280);
-//	viewWidget->setLayout(vLayout);
-//
-//	m_mainToolBar->addWidget(viewWidget);
-//	m_mainToolBar->addSeparator();
-//}
+void mainWidget::setupViewWidget()
+{
+	m_xBtn = new QPushButton();
+	m_yBtn = new QPushButton();
+	m_zBtn = new QPushButton();
+	m_xNegBtn = new QPushButton();
+	m_yNegBtn = new QPushButton();
+	m_zNegBtn = new QPushButton();
+
+	const int btnSize = 32;
+	m_xBtn->setFixedSize(btnSize, btnSize);
+	m_yBtn->setFixedSize(btnSize, btnSize);
+	m_zBtn->setFixedSize(btnSize, btnSize);
+	m_xNegBtn->setFixedSize(btnSize, btnSize);
+	m_yNegBtn->setFixedSize(btnSize, btnSize);
+	m_zNegBtn->setFixedSize(btnSize, btnSize);
+
+	m_xBtn->setIcon(QIcon(":/src/View all From +X.png"));
+	m_yBtn->setIcon(QIcon(":/src/View all From +Y.png"));
+	m_zBtn->setIcon(QIcon(":/src/View all From +Z.png"));
+	m_xNegBtn->setIcon(QIcon(":/src/View all From -X.png"));
+	m_yNegBtn->setIcon(QIcon(":/src/View all From -Y.png"));
+	m_zNegBtn->setIcon(QIcon(":/src/View all From -Z.png"));
+
+	auto xLabel = new QLabel(QString::fromLocal8Bit("+X"));
+	auto yLabel = new QLabel(QString::fromLocal8Bit("+Y"));
+	auto zLabel = new QLabel(QString::fromLocal8Bit("+Z"));
+	auto xNegLabel = new QLabel(QString::fromLocal8Bit("-X"));
+	auto yNegLabel = new QLabel(QString::fromLocal8Bit("-Y"));
+	auto zNegLabel = new QLabel(QString::fromLocal8Bit("-Z"));
+
+	auto xVBox = new QVBoxLayout();
+	xVBox->addWidget(m_xBtn, 0, Qt::AlignHCenter);
+	xVBox->addWidget(xLabel, 0, Qt::AlignHCenter);
+	xVBox->setSpacing(2);
+	xVBox->setContentsMargins(4, 2, 4, 2);
+
+	auto yVBox = new QVBoxLayout();
+	yVBox->addWidget(m_yBtn, 0, Qt::AlignHCenter);
+	yVBox->addWidget(yLabel, 0, Qt::AlignHCenter);
+	yVBox->setSpacing(2);
+	yVBox->setContentsMargins(4, 2, 4, 2);
+
+	auto zVBox = new QVBoxLayout();
+	zVBox->addWidget(m_zBtn, 0, Qt::AlignHCenter);
+	zVBox->addWidget(zLabel, 0, Qt::AlignHCenter);
+	zVBox->setSpacing(2);
+	zVBox->setContentsMargins(4, 2, 4, 2);
+
+	auto xNegVBox = new QVBoxLayout();
+	xNegVBox->addWidget(m_xNegBtn, 0, Qt::AlignHCenter);
+	xNegVBox->addWidget(xNegLabel, 0, Qt::AlignHCenter);
+	xNegVBox->setSpacing(2);
+	xNegVBox->setContentsMargins(4, 2, 4, 2);
+
+	auto yNegVBox = new QVBoxLayout();
+	yNegVBox->addWidget(m_yNegBtn, 0, Qt::AlignHCenter);
+	yNegVBox->addWidget(yNegLabel, 0, Qt::AlignHCenter);
+	yNegVBox->setSpacing(2);
+	yNegVBox->setContentsMargins(4, 2, 4, 2);
+
+	auto zNegVBox = new QVBoxLayout();
+	zNegVBox->addWidget(m_zNegBtn, 0, Qt::AlignHCenter);
+	zNegVBox->addWidget(zNegLabel, 0, Qt::AlignHCenter);
+	zNegVBox->setSpacing(2);
+	zNegVBox->setContentsMargins(4, 2, 4, 2);
+
+	auto hLayout1 = new QHBoxLayout();
+	hLayout1->addLayout(xVBox);
+	hLayout1->addLayout(yVBox);
+	hLayout1->addLayout(zVBox);
+	hLayout1->addLayout(xNegVBox);
+	hLayout1->addLayout(yNegVBox);
+	hLayout1->addLayout(zNegVBox);
+	hLayout1->addStretch();
+	hLayout1->setSpacing(4);
+	hLayout1->setContentsMargins(4, 2, 4, 2);
+
+	auto vLayout = new QVBoxLayout();
+	vLayout->addLayout(hLayout1);
+	vLayout->setContentsMargins(0, 0, 0, 0);
+	vLayout->setSpacing(2);
+
+	auto viewWidget = new QWidget();
+	viewWidget->setFixedWidth(280);
+	viewWidget->setLayout(vLayout);
+
+	m_mainToolBar->addWidget(viewWidget);
+	m_mainToolBar->addSeparator();
+}
 
 void mainWidget::setViewDirection(ViewDirection dir)
 {
