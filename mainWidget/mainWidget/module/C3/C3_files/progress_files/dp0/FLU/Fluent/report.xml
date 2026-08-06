@@ -41,17 +41,17 @@ Material Properties
 
       Property               Units      Method     Value(s)   
       -----------------------------------------------------
-      Density                kg/m^3     constant   2700       
-      Cp (Specific Heat)     J/(kg K)   constant   920        
-      Thermal Conductivity   W/(m K)    constant   130        
+      Density                kg/m^3     constant   2700.11    
+      Cp (Specific Heat)     J/(kg K)   constant   920.11     
+      Thermal Conductivity   W/(m K)    constant   130.11     
 
    Material: yaoye (fluid)
 
       Property                  Units      Method       Value(s)                                                                                                                                                                           
       ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-      Density                   kg/m^3     constant     1790                                                                                                                                                                               
-      Cp (Specific Heat)        J/(kg K)   constant     1500                                                                                                                                                                               
-      Thermal Conductivity      W/(m K)    constant     0.6                                                                                                                                                                                
+      Density                   kg/m^3     constant     1790.11                                                                                                                                                                            
+      Cp (Specific Heat)        J/(kg K)   constant     1500.11                                                                                                                                                                            
+      Thermal Conductivity      W/(m K)    constant     0.611                                                                                                                                                                              
       Viscosity                 kg/(m s)   expression   1[kg/m/s]*(0.003286*StaticTemperature/1[K]*StaticTemperature/1[K]-0.878543*StaticTemperature/1[K]+58.312857)*(StrainRate*1[s])^(-3.973878*exp(-0.024135*StaticTemperature/1[K]))   
       Molecular Weight          kg/kmol    constant     28.966                                                                                                                                                                             
       Standard State Enthalpy   J/kgmol    constant     0                                                                                                                                                                                  
@@ -73,9 +73,9 @@ Material Properties
 
       Property               Units      Method     Value(s)   
       -----------------------------------------------------
-      Density                kg/m^3     constant   900        
-      Cp (Specific Heat)     J/(kg K)   constant   1800       
-      Thermal Conductivity   W/(m K)    constant   1.1        
+      Density                kg/m^3     constant   900.11     
+      Cp (Specific Heat)     J/(kg K)   constant   1800.11    
+      Thermal Conductivity   W/(m K)    constant   1.111      
 
 </MaterialProperties>
 
@@ -266,10 +266,10 @@ Boundary Conditions
 
       inlet (mixture)
 
-         Condition                   Value    
-         ----------------------------------
-         Gauge Total Pressure [Pa]   80000    
-         Total Temperature [K]       375.15   
+         Condition                   Value      
+         ------------------------------------
+         Gauge Total Pressure [Pa]   80000.11   
+         Total Temperature [K]       375.1511   
 
       inlet (air)
 
@@ -457,7 +457,7 @@ Boundary Conditions
          Condition         Value         
          -----------------------------
          Thermal BC Type   Temperature   
-         Temperature [K]   343.15        
+         Temperature [K]   343.1511      
 
       heat (air)
 
@@ -526,11 +526,11 @@ Solver Settings
 
    Unsteady Calculation Parameters
 
-                                               
-      --------------------------------------
-      Number of Time Steps       10000000000   
-      Time Step Size [s]         0.01          
-      Max Iterations/Time Step   20            
+                                        
+      -------------------------------
+      Number of Time Steps       11     
+      Time Step Size [s]         0.01   
+      Max Iterations/Time Step   20     
 
    Under-Relaxation Factors
 

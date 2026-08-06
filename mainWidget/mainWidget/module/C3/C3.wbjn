@@ -13,26 +13,34 @@ def fmt_float(val):
     except:
         return str(val)
 
-# 默认值取自原始 C3 脚本
+# 从环境变量读取参数
 ARCHIVE_PATH = os.environ.get("ARCHIVE_PATH")
 PROJECT_PATH = os.environ.get("PROJECT_PATH")
 
-LIQUID_DENSITY = fmt_float(os.environ.get("LIQUID_DENSITY", "1790.111"))
-LIQUID_SPECIFIC_HEAT = fmt_float(os.environ.get("LIQUID_SPECIFIC_HEAT", "1500.111"))
-LIQUID_THERMAL_CONDUCTIVITY = fmt_float(os.environ.get("LIQUID_THERMAL_CONDUCTIVITY", "0.61111"))
+GEOM_P1 = os.environ.get("GEOM_P1")
+GEOM_P2 = os.environ.get("GEOM_P2")
+GEOM_P3 = os.environ.get("GEOM_P3")
+GEOM_P5 = os.environ.get("GEOM_P5")
+GEOM_P6 = os.environ.get("GEOM_P6")
 
-BONDLINE_DENSITY = fmt_float(os.environ.get("BONDLINE_DENSITY", "900.1111"))
-BONDLINE_SPECIFIC_HEAT = fmt_float(os.environ.get("BONDLINE_SPECIFIC_HEAT", "1800.111"))
-BONDLINE_THERMAL_CONDUCTIVITY = fmt_float(os.environ.get("BONDLINE_THERMAL_CONDUCTIVITY", "1.1111"))
+LIQUID_DENSITY = fmt_float(os.environ.get("LIQUID_DENSITY"))
+LIQUID_SPECIFIC_HEAT = fmt_float(os.environ.get("LIQUID_SPECIFIC_HEAT"))
+LIQUID_THERMAL_CONDUCTIVITY = fmt_float(os.environ.get("LIQUID_THERMAL_CONDUCTIVITY"))
 
-SHELL_DENSITY = fmt_float(os.environ.get("SHELL_DENSITY", "2700.111"))
-SHELL_SPECIFIC_HEAT = fmt_float(os.environ.get("SHELL_SPECIFIC_HEAT", "920.1111"))
-SHELL_THERMAL_CONDUCTIVITY = fmt_float(os.environ.get("SHELL_THERMAL_CONDUCTIVITY", "130.1111"))
+BONDLINE_DENSITY = fmt_float(os.environ.get("BONDLINE_DENSITY"))
+BONDLINE_SPECIFIC_HEAT = fmt_float(os.environ.get("BONDLINE_SPECIFIC_HEAT"))
+BONDLINE_THERMAL_CONDUCTIVITY = fmt_float(os.environ.get("BONDLINE_THERMAL_CONDUCTIVITY"))
 
-INLET_TOTAL_PRESSURE = fmt_float(os.environ.get("INLET_TOTAL_PRESSURE", "80000.1111"))
-INLET_TOTAL_TEMPERATURE = fmt_float(os.environ.get("INLET_TOTAL_TEMPERATURE", "375.151111"))
-OUTLET_BACKFLOW_TEMPERATURE = fmt_float(os.environ.get("OUTLET_BACKFLOW_TEMPERATURE", "343.151111"))
-WALL_TEMPERATURE = fmt_float(os.environ.get("WALL_TEMPERATURE", "343.151111"))
+SHELL_DENSITY = fmt_float(os.environ.get("SHELL_DENSITY"))
+SHELL_SPECIFIC_HEAT = fmt_float(os.environ.get("SHELL_SPECIFIC_HEAT"))
+SHELL_THERMAL_CONDUCTIVITY = fmt_float(os.environ.get("SHELL_THERMAL_CONDUCTIVITY"))
+
+INLET_TOTAL_PRESSURE = fmt_float(os.environ.get("INLET_TOTAL_PRESSURE"))
+INLET_TOTAL_TEMPERATURE = fmt_float(os.environ.get("INLET_TOTAL_TEMPERATURE"))
+WALL_TEMPERATURE = fmt_float(os.environ.get("WALL_TEMPERATURE"))
+
+# 仿真步数（新增，默认11）
+NUMBER_OF_TIME_STEPS = os.environ.get("NUMBER_OF_TIME_STEPS", "11")
 
 SetScriptVersion(Version="22.2.192")
 Unarchive(
@@ -59,62 +67,111 @@ Extensions.UnloadExtension(
     Id="f3e3da52-fb02-4910-8cc9-980efd047bc6",
     Version="2022.2",
     Format="Binary")
-system1 = GetSystem(Name="FLU")
-solution1 = system1.GetContainer(ComponentName="Solution")
-solution1.Edit()
-setup1 = system1.GetContainer(ComponentName="Setup")
+
+# 设置几何参数
+designPoint1 = Parameters.GetDesignPoint(Name="0")
+parameter1 = Parameters.GetParameter(Name="P1")
+designPoint1.SetParameterExpression(
+    Parameter=parameter1,
+    Expression=fmt_float(GEOM_P1) + " [mm]")
+parameter2 = Parameters.GetParameter(Name="P2")
+designPoint1.SetParameterExpression(
+    Parameter=parameter2,
+    Expression=fmt_float(GEOM_P2) + " [mm]")
+parameter3 = Parameters.GetParameter(Name="P3")
+designPoint1.SetParameterExpression(
+    Parameter=parameter3,
+    Expression=fmt_float(GEOM_P3) + " [mm]")
+parameter4 = Parameters.GetParameter(Name="P5")
+designPoint1.SetParameterExpression(
+    Parameter=parameter4,
+    Expression=fmt_float(GEOM_P5) + " [mm]")
+parameter5 = Parameters.GetParameter(Name="P6")
+designPoint1.SetParameterExpression(
+    Parameter=parameter5,
+    Expression=fmt_float(GEOM_P6) + " [mm]")
+
+system1 = GetSystem(Name="Geom")
+geometryComponent1 = system1.GetComponent(Name="Geometry")
+geometryComponent1.Update(AllDependencies=True)
+system2 = GetSystem(Name="SYS")
+meshComponent1 = system2.GetComponent(Name="Mesh")
+meshComponent1.Update(AllDependencies=True)
+system3 = GetSystem(Name="FLU")
+setupComponent1 = system3.GetComponent(Name="Setup")
+setupComponent1.Refresh()
+setup1 = system3.GetContainer(ComponentName="Setup")
+fluentLauncherSettings1 = setup1.GetFluentLauncherSettings()
+fluentLauncherSettings1.SetEntityProperties(Properties=Set(EnvPath={}))
+setup1.Edit()
 setup1.SendCommand(Command='(cx-gui-do cx-activate-tab-index "NavigationPane*Frame1(TreeTab)" 0)(cx-gui-do cx-activate-tab-index "NavigationPane*Frame1(TreeTab)" 1)')
 setup1.SendCommand(Command='(%py-exec "preferences.fixState()")')
 setup1.SendCommand(Command="(%py-exec \"preferences.setState({r'Appearance': None,r'GPUApp': None,r'General': None,r'Graphics': None,r'MatProApp': None,r'MeshingWorkflow': None,r'Navigation': None,r'PrjApp': None,r'Simulation': None,r'TurboWorkflow': None,})\")")
-setup1.SendCommand(Command='/file/set-tui-version "22.2"(cx-gui-do cx-activate-item "Key Behavioral Changes*PanelButtons*PushButton1(OK)")')
-setup1.SendCommand(Command='(%py-exec "preferences.General.KeyBehavioralChangesMessage.setState(True)")')
-setup1.SendCommand(Command='(cx-gui-do cx-set-list-tree-selections "NavigationPane*Frame2*Table1*List_Tree2" (list "Setup|Materials|Fluid|yaoye"))')
+setup1.SendCommand(Command='/file/set-tui-version "22.2"(cx-gui-do cx-set-list-tree-selections "NavigationPane*Frame2*Table1*List_Tree2" (list "Setup|Materials|Fluid|yaoye"))')
 setup1.SendCommand(Command='(cx-gui-do cx-set-list-tree-selections "NavigationPane*Frame2*Table1*List_Tree2" (list "Setup|Materials|Fluid|yaoye"))(cx-gui-do cx-activate-item "NavigationPane*Frame2*Table1*List_Tree2")')
-# 药液材料属性（动态替换）
 cmd = "(cx-gui-do cx-set-list-tree-selections \"NavigationPane*Frame2*Table1*List_Tree2\" (list \"Setup|Materials|Fluid|yaoye\"))(cx-gui-do cx-set-real-entry-list \"Create/Edit Materials*RealEntry10\" '( %s ))(cx-gui-do cx-set-real-entry-list \"Create/Edit Materials*RealEntry12\" '( %s ))(cx-gui-do cx-set-real-entry-list \"Create/Edit Materials*RealEntry14\" '( %s ))" % (LIQUID_DENSITY, LIQUID_SPECIFIC_HEAT, LIQUID_THERMAL_CONDUCTIVITY)
-setup1.SendCommand(Command=cmd)
-setup1.SendCommand(Command='(cx-gui-do cx-activate-item "Create/Edit Materials*PanelButtons*PushButton3(Change/Create)")')
-cmd = "(cx-gui-do cx-set-real-entry-list \"Create/Edit Materials*RealEntry10\" '( %s ))(cx-gui-do cx-set-real-entry-list \"Create/Edit Materials*RealEntry12\" '( %s ))" % (LIQUID_DENSITY, LIQUID_SPECIFIC_HEAT)
 setup1.SendCommand(Command=cmd)
 setup1.SendCommand(Command='(cx-gui-do cx-activate-item "Create/Edit Materials*PanelButtons*PushButton3(Change/Create)")')
 setup1.SendCommand(Command='(cx-gui-do cx-activate-item "Create/Edit Materials*PanelButtons*PushButton1(Close)")')
 setup1.SendCommand(Command='(cx-gui-do cx-set-list-tree-selections "NavigationPane*Frame2*Table1*List_Tree2" (list "Setup|Materials|Solid|jiaoceng"))')
 setup1.SendCommand(Command='(cx-gui-do cx-set-list-tree-selections "NavigationPane*Frame2*Table1*List_Tree2" (list "Setup|Materials|Solid|jiaoceng"))(cx-gui-do cx-activate-item "NavigationPane*Frame2*Table1*List_Tree2")')
-# 胶层材料属性（动态替换）
 cmd = "(cx-gui-do cx-set-list-tree-selections \"NavigationPane*Frame2*Table1*List_Tree2\" (list \"Setup|Materials|Solid|jiaoceng\"))(cx-gui-do cx-set-real-entry-list \"Create/Edit Materials*RealEntry10\" '( %s ))(cx-gui-do cx-set-real-entry-list \"Create/Edit Materials*RealEntry12\" '( %s ))(cx-gui-do cx-set-real-entry-list \"Create/Edit Materials*RealEntry14\" '( %s ))" % (BONDLINE_DENSITY, BONDLINE_SPECIFIC_HEAT, BONDLINE_THERMAL_CONDUCTIVITY)
-setup1.SendCommand(Command=cmd)
-setup1.SendCommand(Command='(cx-gui-do cx-activate-item "Create/Edit Materials*PanelButtons*PushButton3(Change/Create)")')
-cmd = "(cx-gui-do cx-set-real-entry-list \"Create/Edit Materials*RealEntry12\" '( %s ))" % BONDLINE_SPECIFIC_HEAT
 setup1.SendCommand(Command=cmd)
 setup1.SendCommand(Command='(cx-gui-do cx-activate-item "Create/Edit Materials*PanelButtons*PushButton3(Change/Create)")')
 setup1.SendCommand(Command='(cx-gui-do cx-activate-item "Create/Edit Materials*PanelButtons*PushButton1(Close)")')
 setup1.SendCommand(Command='(cx-gui-do cx-set-list-tree-selections "NavigationPane*Frame2*Table1*List_Tree2" (list "Setup|Materials|Solid|keti"))')
 setup1.SendCommand(Command='(cx-gui-do cx-set-list-tree-selections "NavigationPane*Frame2*Table1*List_Tree2" (list "Setup|Materials|Solid|keti"))(cx-gui-do cx-activate-item "NavigationPane*Frame2*Table1*List_Tree2")')
-# 壳体材料属性（动态替换）
 cmd = "(cx-gui-do cx-set-list-tree-selections \"NavigationPane*Frame2*Table1*List_Tree2\" (list \"Setup|Materials|Solid|keti\"))(cx-gui-do cx-set-real-entry-list \"Create/Edit Materials*RealEntry10\" '( %s ))(cx-gui-do cx-set-real-entry-list \"Create/Edit Materials*RealEntry12\" '( %s ))(cx-gui-do cx-set-real-entry-list \"Create/Edit Materials*RealEntry14\" '( %s ))" % (SHELL_DENSITY, SHELL_SPECIFIC_HEAT, SHELL_THERMAL_CONDUCTIVITY)
 setup1.SendCommand(Command=cmd)
 setup1.SendCommand(Command='(cx-gui-do cx-activate-item "Create/Edit Materials*PanelButtons*PushButton3(Change/Create)")')
-cmd = "(cx-gui-do cx-set-real-entry-list \"Create/Edit Materials*RealEntry10\" '( %s ))" % SHELL_DENSITY
-setup1.SendCommand(Command=cmd)
-setup1.SendCommand(Command='(cx-gui-do cx-activate-item "Create/Edit Materials*PanelButtons*PushButton3(Change/Create)")')
 setup1.SendCommand(Command='(cx-gui-do cx-activate-item "Create/Edit Materials*PanelButtons*PushButton1(Close)")')
-setup1.SendCommand(Command='(cx-gui-do cx-set-list-tree-selections "NavigationPane*Frame2*Table1*List_Tree2" (list "Setup|Boundary Conditions|Inlet|inlet (pressure-inlet, id=19)"))')
-setup1.SendCommand(Command='(cx-gui-do cx-set-list-tree-selections "NavigationPane*Frame2*Table1*List_Tree2" (list "Setup|Boundary Conditions|Inlet|inlet (pressure-inlet, id=19)"))(cx-gui-do cx-activate-item "NavigationPane*Frame2*Table1*List_Tree2")')
-# 入口边界条件（动态替换）
-cmd = "(cx-gui-do cx-set-list-tree-selections \"NavigationPane*Frame2*Table1*List_Tree2\" (list \"Setup|Boundary Conditions|Inlet|inlet (pressure-inlet, id=19)\"))(cx-gui-do cx-activate-tab-index \"Pressure Inlet*Frame2*Frame2\" 0)(cx-gui-do cx-activate-tab-index \"Pressure Inlet*Frame2*Frame2\" 1)(cx-gui-do cx-activate-tab-index \"Pressure Inlet*Frame2*Frame2\" 0)(cx-gui-do cx-activate-tab-index \"Pressure Inlet*Frame2*Frame2\" 2)(cx-gui-do cx-activate-tab-index \"Pressure Inlet*Frame2*Frame2\" 0)(cx-gui-do cx-activate-tab-index \"Pressure Inlet*Frame2*Frame2\" 3)(cx-gui-do cx-activate-tab-index \"Pressure Inlet*Frame2*Frame2\" 0)(cx-gui-do cx-activate-tab-index \"Pressure Inlet*Frame2*Frame2\" 4)(cx-gui-do cx-activate-tab-index \"Pressure Inlet*Frame2*Frame2\" 0)(cx-gui-do cx-activate-tab-index \"Pressure Inlet*Frame2*Frame2\" 5)(cx-gui-do cx-activate-tab-index \"Pressure Inlet*Frame2*Frame2\" 0)(cx-gui-do cx-activate-tab-index \"Pressure Inlet*Frame2*Frame2\" 6)(cx-gui-do cx-activate-tab-index \"Pressure Inlet*Frame2*Frame2\" 0)(cx-gui-do cx-activate-tab-index \"Pressure Inlet*Frame2*Frame2\" 7)(cx-gui-do cx-activate-tab-index \"Pressure Inlet*Frame2*Frame2\" 0)(cx-gui-do cx-activate-tab-index \"Pressure Inlet*Frame2*Frame2\" 8)(cx-gui-do cx-activate-tab-index \"Pressure Inlet*Frame2*Frame2\" 0)(cx-gui-do cx-enable-apply-button \"Pressure Inlet\")(cx-gui-do cx-set-expression-entry \"Pressure Inlet*Frame2*Frame2*Frame1(Momentum)*Table1*Table6*ExpressionEntry1(Gauge Total Pressure)\" '(\"%s\" . 0))(cx-gui-do cx-activate-item \"Pressure Inlet*PanelButtons*PushButton1(OK)\")" % INLET_TOTAL_PRESSURE
-setup1.SendCommand(Command=cmd)
-cmd = "(cx-gui-do cx-activate-tab-index \"Pressure Inlet*Frame2*Frame2\" 1)(cx-gui-do cx-enable-apply-button \"Pressure Inlet\")(cx-gui-do cx-set-expression-entry \"Pressure Inlet*Frame2*Frame2*Frame2(Thermal)*Table1*Table1*ExpressionEntry1(Total Temperature)\" '(\"%s\" . 0))(cx-gui-do cx-activate-item \"Pressure Inlet*PanelButtons*PushButton1(OK)\")" % INLET_TOTAL_TEMPERATURE
-setup1.SendCommand(Command=cmd)
-setup1.SendCommand(Command='(cx-gui-do cx-activate-tab-index "Pressure Inlet*Frame2*Frame2" 0)(cx-gui-do cx-activate-item "Pressure Inlet*PanelButtons*PushButton2(Cancel)")')
-setup1.SendCommand(Command='(cx-gui-do cx-set-list-tree-selections "NavigationPane*Frame2*Table1*List_Tree2" (list "Setup|Boundary Conditions|Outlet|outlet (pressure-outlet, id=20)"))')
-setup1.SendCommand(Command='(cx-gui-do cx-set-list-tree-selections "NavigationPane*Frame2*Table1*List_Tree2" (list "Setup|Boundary Conditions|Outlet|outlet (pressure-outlet, id=20)"))(cx-gui-do cx-activate-item "NavigationPane*Frame2*Table1*List_Tree2")')
-# 出口边界条件（动态替换回温温度）
-cmd = "(cx-gui-do cx-set-list-tree-selections \"NavigationPane*Frame2*Table1*List_Tree2\" (list \"Setup|Boundary Conditions|Outlet|outlet (pressure-outlet, id=20)\"))(cx-gui-do cx-activate-tab-index \"Pressure Outlet*Frame2*Frame2\" 0)(cx-gui-do cx-activate-tab-index \"Pressure Outlet*Frame2*Frame2\" 1)(cx-gui-do cx-activate-tab-index \"Pressure Outlet*Frame2*Frame2\" 0)(cx-gui-do cx-activate-tab-index \"Pressure Outlet*Frame2*Frame2\" 2)(cx-gui-do cx-activate-tab-index \"Pressure Outlet*Frame2*Frame2\" 0)(cx-gui-do cx-activate-tab-index \"Pressure Outlet*Frame2*Frame2\" 3)(cx-gui-do cx-activate-tab-index \"Pressure Outlet*Frame2*Frame2\" 0)(cx-gui-do cx-activate-tab-index \"Pressure Outlet*Frame2*Frame2\" 4)(cx-gui-do cx-activate-tab-index \"Pressure Outlet*Frame2*Frame2\" 0)(cx-gui-do cx-activate-tab-index \"Pressure Outlet*Frame2*Frame2\" 5)(cx-gui-do cx-activate-tab-index \"Pressure Outlet*Frame2*Frame2\" 0)(cx-gui-do cx-activate-tab-index \"Pressure Outlet*Frame2*Frame2\" 6)(cx-gui-do cx-activate-tab-index \"Pressure Outlet*Frame2*Frame2\" 0)(cx-gui-do cx-activate-tab-index \"Pressure Outlet*Frame2*Frame2\" 7)(cx-gui-do cx-activate-tab-index \"Pressure Outlet*Frame2*Frame2\" 0)(cx-gui-do cx-activate-tab-index \"Pressure Outlet*Frame2*Frame2\" 8)(cx-gui-do cx-activate-tab-index \"Pressure Outlet*Frame2*Frame2\" 0)(cx-gui-do cx-activate-tab-index \"Pressure Outlet*Frame2*Frame2\" 1)(cx-gui-do cx-enable-apply-button \"Pressure Outlet\")(cx-gui-do cx-set-expression-entry \"Pressure Outlet*Frame2*Frame2*Frame2(Thermal)*Table1*Table1*ExpressionEntry1(Backflow Total Temperature)\" '(\"%s\" . 0))(cx-gui-do cx-activate-item \"Pressure Outlet*PanelButtons*PushButton1(OK)\")" % OUTLET_BACKFLOW_TEMPERATURE
-setup1.SendCommand(Command=cmd)
-setup1.SendCommand(Command='(cx-gui-do cx-activate-item "Pressure Outlet*PanelButtons*PushButton2(Cancel)")')
 setup1.SendCommand(Command='(cx-gui-do cx-set-list-tree-selections "NavigationPane*Frame2*Table1*List_Tree2" (list "Setup|Boundary Conditions|Wall|heat (wall, id=24)"))')
 setup1.SendCommand(Command='(cx-gui-do cx-set-list-tree-selections "NavigationPane*Frame2*Table1*List_Tree2" (list "Setup|Boundary Conditions|Wall|heat (wall, id=24)"))(cx-gui-do cx-activate-item "NavigationPane*Frame2*Table1*List_Tree2")')
-# 壁面边界条件（动态替换温度）
 cmd = "(cx-gui-do cx-set-list-tree-selections \"NavigationPane*Frame2*Table1*List_Tree2\" (list \"Setup|Boundary Conditions|Wall|heat (wall, id=24)\"))(cx-gui-do cx-activate-tab-index \"Wall*Frame4\" 0)(cx-gui-do cx-activate-tab-index \"Wall*Frame4\" 1)(cx-gui-do cx-activate-tab-index \"Wall*Frame4\" 0)(cx-gui-do cx-activate-tab-index \"Wall*Frame4\" 2)(cx-gui-do cx-activate-tab-index \"Wall*Frame4\" 0)(cx-gui-do cx-activate-tab-index \"Wall*Frame4\" 3)(cx-gui-do cx-activate-tab-index \"Wall*Frame4\" 0)(cx-gui-do cx-activate-tab-index \"Wall*Frame4\" 4)(cx-gui-do cx-activate-tab-index \"Wall*Frame4\" 0)(cx-gui-do cx-activate-tab-index \"Wall*Frame4\" 5)(cx-gui-do cx-activate-tab-index \"Wall*Frame4\" 0)(cx-gui-do cx-activate-tab-index \"Wall*Frame4\" 6)(cx-gui-do cx-activate-tab-index \"Wall*Frame4\" 0)(cx-gui-do cx-activate-tab-index \"Wall*Frame4\" 7)(cx-gui-do cx-activate-tab-index \"Wall*Frame4\" 0)(cx-gui-do cx-activate-tab-index \"Wall*Frame4\" 8)(cx-gui-do cx-activate-tab-index \"Wall*Frame4\" 0)(cx-gui-do cx-activate-tab-index \"Wall*Frame4\" 9)(cx-gui-do cx-activate-tab-index \"Wall*Frame4\" 0)(cx-gui-do cx-activate-tab-index \"Wall*Frame4\" 10)(cx-gui-do cx-activate-tab-index \"Wall*Frame4\" 0)(cx-gui-do cx-activate-tab-index \"Wall*Frame4*Frame8(Wall Film)*Frame1*Frame2\" 0)(cx-gui-do cx-activate-tab-index \"Wall*Frame4*Frame8(Wall Film)*Frame1*Frame2\" 1)(cx-gui-do cx-activate-tab-index \"Wall*Frame4*Frame8(Wall Film)*Frame1*Frame2\" 0)(cx-gui-do cx-activate-tab-index \"Wall*Frame4*Frame8(Wall Film)*Frame1*Frame2\" 2)(cx-gui-do cx-activate-tab-index \"Wall*Frame4*Frame8(Wall Film)*Frame1*Frame2\" 0)(cx-gui-do cx-activate-tab-index \"Wall*Frame4*Frame8(Wall Film)*Frame1*Frame2\" 3)(cx-gui-do cx-activate-tab-index \"Wall*Frame4*Frame8(Wall Film)*Frame1*Frame2\" 0)(cx-gui-do cx-activate-tab-index \"Wall*Frame4*Frame8(Wall Film)*Frame1*Frame2\" 4)(cx-gui-do cx-activate-tab-index \"Wall*Frame4*Frame8(Wall Film)*Frame1*Frame2\" 0)(cx-gui-do cx-activate-tab-index \"Wall*Frame4*Frame8(Wall Film)*Frame1*Frame2\" 5)(cx-gui-do cx-activate-tab-index \"Wall*Frame4*Frame8(Wall Film)*Frame1*Frame2\" 0)(cx-gui-do cx-activate-tab-index \"Wall*Frame4\" 1)(cx-gui-do cx-enable-apply-button \"Wall\")(cx-gui-do cx-set-expression-entry \"Wall*Frame4*Frame2(Thermal)*Frame1*Frame1(Thermal Conditions)*Table3*Table1*Table1*ExpressionEntry1(Temperature)\" '(\"%s\" . 0))(cx-gui-do cx-activate-item \"Wall*PanelButtons*PushButton1(OK)\")" % WALL_TEMPERATURE
 setup1.SendCommand(Command=cmd)
 setup1.SendCommand(Command='(cx-gui-do cx-activate-item "Wall*PanelButtons*PushButton2(Cancel)")')
+setup1.SendCommand(Command='(cx-gui-do cx-set-list-tree-selections "NavigationPane*Frame2*Table1*List_Tree2" (list "Setup|Boundary Conditions|Inlet|inlet (pressure-inlet, id=19)"))')
+setup1.SendCommand(Command='(cx-gui-do cx-set-list-tree-selections "NavigationPane*Frame2*Table1*List_Tree2" (list "Setup|Boundary Conditions|Inlet|inlet (pressure-inlet, id=19)"))(cx-gui-do cx-activate-item "NavigationPane*Frame2*Table1*List_Tree2")')
+cmd = "(cx-gui-do cx-set-list-tree-selections \"NavigationPane*Frame2*Table1*List_Tree2\" (list \"Setup|Boundary Conditions|Inlet|inlet (pressure-inlet, id=19)\"))(cx-gui-do cx-activate-tab-index \"Pressure Inlet*Frame2*Frame2\" 0)(cx-gui-do cx-activate-tab-index \"Pressure Inlet*Frame2*Frame2\" 1)(cx-gui-do cx-activate-tab-index \"Pressure Inlet*Frame2*Frame2\" 0)(cx-gui-do cx-activate-tab-index \"Pressure Inlet*Frame2*Frame2\" 2)(cx-gui-do cx-activate-tab-index \"Pressure Inlet*Frame2*Frame2\" 0)(cx-gui-do cx-activate-tab-index \"Pressure Inlet*Frame2*Frame2\" 3)(cx-gui-do cx-activate-tab-index \"Pressure Inlet*Frame2*Frame2\" 0)(cx-gui-do cx-activate-tab-index \"Pressure Inlet*Frame2*Frame2\" 4)(cx-gui-do cx-activate-tab-index \"Pressure Inlet*Frame2*Frame2\" 0)(cx-gui-do cx-activate-tab-index \"Pressure Inlet*Frame2*Frame2\" 5)(cx-gui-do cx-activate-tab-index \"Pressure Inlet*Frame2*Frame2\" 0)(cx-gui-do cx-activate-tab-index \"Pressure Inlet*Frame2*Frame2\" 6)(cx-gui-do cx-activate-tab-index \"Pressure Inlet*Frame2*Frame2\" 0)(cx-gui-do cx-activate-tab-index \"Pressure Inlet*Frame2*Frame2\" 7)(cx-gui-do cx-activate-tab-index \"Pressure Inlet*Frame2*Frame2\" 0)(cx-gui-do cx-activate-tab-index \"Pressure Inlet*Frame2*Frame2\" 8)(cx-gui-do cx-activate-tab-index \"Pressure Inlet*Frame2*Frame2\" 0)(cx-gui-do cx-enable-apply-button \"Pressure Inlet\")(cx-gui-do cx-set-expression-entry \"Pressure Inlet*Frame2*Frame2*Frame1(Momentum)*Table1*Table6*ExpressionEntry1(Gauge Total Pressure)\" '(\"%s\" . 0))(cx-gui-do cx-activate-tab-index \"Pressure Inlet*Frame2*Frame2\" 1)(cx-gui-do cx-set-expression-entry \"Pressure Inlet*Frame2*Frame2*Frame2(Thermal)*Table1*Table1*ExpressionEntry1(Total Temperature)\" '(\"%s\" . 0))(cx-gui-do cx-activate-item \"Pressure Inlet*PanelButtons*PushButton1(OK)\")" % (INLET_TOTAL_PRESSURE, INLET_TOTAL_TEMPERATURE)
+setup1.SendCommand(Command=cmd)
+setup1.SendCommand(Command='(cx-gui-do cx-activate-item "Pressure Inlet*PanelButtons*PushButton2(Cancel)")')
+setup1.SendCommand(Command='(cx-gui-do cx-set-list-tree-selections "NavigationPane*Frame2*Table1*List_Tree2" (list "Solution|Initialization"))')
+setup1.SendCommand(Command='(cx-gui-do cx-set-list-tree-selections "NavigationPane*Frame2*Table1*List_Tree2" (list "Solution|Initialization"))(cx-gui-do cx-activate-item "NavigationPane*Frame2*Table1*List_Tree2")')
+setup1.SendCommand(Command='(cx-gui-do cx-set-list-tree-selections "NavigationPane*Frame2*Table1*List_Tree2" (list "Solution|Initialization"))')
+setup1.SendCommand(Command='(cx-gui-do cx-activate-item "Solution Initialization*Table1*Frame9*PushButton1(Initialize)")(cx-gui-do cx-activate-item "Question*OK")')
+setup1.SendCommand(Command='(cx-gui-do cx-set-list-tree-selections "NavigationPane*Frame2*Table1*List_Tree2" (list "Results|Graphics|Contours|contour-1"))')
+setup1.SendCommand(Command='(cx-gui-do cx-set-list-tree-selections "NavigationPane*Frame2*Table1*List_Tree2" (list "Results|Graphics|Contours|contour-1"))(cx-gui-do cx-activate-item "NavigationPane*Frame2*Table1*List_Tree2")')
+setup1.SendCommand(Command='(cx-gui-do cx-set-list-tree-selections "NavigationPane*Frame2*Table1*List_Tree2" (list "Results|Graphics|Contours|contour-1"))')
+setup1.SendCommand(Command='(cx-gui-do cx-activate-item "Contours*PanelButtons*PushButton1(OK)")')
+setup1.SendCommand(Command='(cx-gui-do cx-activate-item "Contours*PanelButtons*PushButton2(Cancel)")')
+setup1.SendCommand(Command='(cx-gui-do cx-set-list-tree-selections "NavigationPane*Frame2*Table1*List_Tree2" (list "Solution|Calculation Activities|Solution Animations|animation-1"))(cx-gui-do cx-activate-item "NavigationPane*Frame2*Table1*List_Tree2")')
+setup1.SendCommand(Command='(cx-gui-do cx-set-list-tree-selections "NavigationPane*Frame2*Table1*List_Tree2" (list "Solution|Calculation Activities|Solution Animations|animation-1"))')
+setup1.SendCommand(Command='(cx-gui-do cx-activate-item "Animation Definition*Table2*PushButton12(Use Active)")')
+setup1.SendCommand(Command='(cx-gui-do cx-activate-item "Animation Definition*PanelButtons*PushButton1(OK)")')
+setup1.SendCommand(Command='(cx-gui-do cx-set-list-tree-selections "NavigationPane*Frame2*Table1*List_Tree2" (list "Results|Graphics|Contours|contour-1"))')
+setup1.SendCommand(Command='(cx-gui-do cx-set-list-tree-selections "NavigationPane*Frame2*Table1*List_Tree2" (list "Results|Graphics|Contours|contour-1"))(cx-gui-do cx-activate-item "NavigationPane*Frame2*Table1*List_Tree2")')
+setup1.SendCommand(Command='(cx-gui-do cx-set-list-tree-selections "NavigationPane*Frame2*Table1*List_Tree2" (list "Results|Graphics|Contours|contour-1"))')
+setup1.SendCommand(Command='(cx-gui-do cx-activate-item "Contours*Table1*Frame1*PushButton4(Colormap Options)")')
+setup1.SendCommand(Command="(cx-gui-do cx-set-list-selections \"Colormap*Table1*Frame4(Colormap)*DropDownList3(Colormap Alignment)\" '( 3))")
+setup1.SendCommand(Command='(cx-gui-do cx-activate-item "Colormap*Table1*Frame4(Colormap)*DropDownList3(Colormap Alignment)")')
+setup1.SendCommand(Command='(cx-gui-do cx-activate-item "Colormap*PanelButtons*PushButton1(OK)")')
+setup1.SendCommand(Command='(cx-gui-do cx-activate-item "Colormap*PanelButtons*PushButton2(Cancel)")')
+setup1.SendCommand(Command='(cx-gui-do cx-activate-item "Contours*PanelButtons*PushButton1(OK)")')
+setup1.SendCommand(Command='(cx-gui-do cx-activate-item "ToolBar*View*autoscale")')
+setup1.SendCommand(Command='(cx-gui-do cx-activate-item "Contours*PanelButtons*PushButton1(OK)")')
+setup1.SendCommand(Command='(cx-gui-do cx-activate-item "Contours*PanelButtons*PushButton2(Cancel)")')
+setup1.SendCommand(Command='(cx-gui-do cx-set-list-tree-selections "NavigationPane*Frame2*Table1*List_Tree2" (list "Solution|Calculation Activities|Solution Animations|animation-1"))')
+setup1.SendCommand(Command='(cx-gui-do cx-set-list-tree-selections "NavigationPane*Frame2*Table1*List_Tree2" (list "Solution|Calculation Activities|Solution Animations|animation-1"))(cx-gui-do cx-activate-item "NavigationPane*Frame2*Table1*List_Tree2")')
+setup1.SendCommand(Command='(cx-gui-do cx-set-list-tree-selections "NavigationPane*Frame2*Table1*List_Tree2" (list "Solution|Calculation Activities|Solution Animations|animation-1"))')
+setup1.SendCommand(Command='(cx-gui-do cx-activate-item "Animation Definition*Table2*PushButton12(Use Active)")')
+setup1.SendCommand(Command='(cx-gui-do cx-activate-item "Animation Definition*Table2*PushButton11(Preview)")')
+setup1.SendCommand(Command='(cx-gui-do cx-activate-item "Animation Definition*PanelButtons*PushButton1(OK)")')
+setup1.SendCommand(Command='(cx-gui-do cx-set-list-tree-selections "NavigationPane*Frame2*Table1*List_Tree2" (list "Solution|Run Calculation"))')
+setup1.SendCommand(Command='(cx-gui-do cx-set-list-tree-selections "NavigationPane*Frame2*Table1*List_Tree2" (list "Solution|Run Calculation"))(cx-gui-do cx-activate-item "NavigationPane*Frame2*Table1*List_Tree2")')
+# 时间步数改为从环境变量读取（修改点）
+cmd = '(cx-gui-do cx-set-list-tree-selections "NavigationPane*Frame2*Table1*List_Tree2" (list "Solution|Run Calculation"))(cx-gui-do cx-set-integer-entry "Run Calculation*Table1*Table7(Time Advancement)*Table3(Parameters)*Table1*Table1*IntegerEntry1(Number of Time Steps)" %s)(cx-gui-do cx-activate-item "Run Calculation*Table1*Table7(Time Advancement)*Table3(Parameters)*Table1*Table1*IntegerEntry1(Number of Time Steps)")' % NUMBER_OF_TIME_STEPS
+setup1.SendCommand(Command=cmd)
+setup1.SendCommand(Command='(cx-gui-do cx-activate-item "Run Calculation*Table1*Table9(Solution Advancement)*Table1*PushButton1(Calculate)")')
+setup1.SendCommand(Command='(cx-gui-do cx-activate-item "Information*OK")')
+setup1.SendCommand(Command='(cx-gui-do cx-activate-item "MenuBar*FileMenu*Close Fluent")')
+Save(Overwrite=True)

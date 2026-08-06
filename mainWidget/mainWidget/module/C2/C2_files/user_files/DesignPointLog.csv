@@ -1,0 +1,12 @@
+﻿# 
+# 此文件包含被ANSYS Workbench成功更新的设计点参数值。
+# 项目名称：product2
+# 创建日期：07/25/2026 22:42:48
+# 
+# 07/25/2026 22:42:48
+# 项目中定义的参数有：
+# ,P1 - gaodu [mm],P2 - neijing [mm],P3 - kaidu [mm],P5 - jiaocenghoudu [mm],P6 - ketihoudu [mm]
+# 
+# 下面的标题行通过引用参数定义列的名称。
+名称,P1,P2,P3,P5,P6
+DP 0,1075,370,39,5,30

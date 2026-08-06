@@ -1,0 +1,97 @@
+<Project type="object" class="PFolder">
+    <URL class="string" value=""/>
+    <Metadata type="object" class="ansys::Project::MetadataHoof">
+        <FormatVersion class="int" value="2"/>
+        <ReleaseID class="string" value="22.2"/>
+        <Subclass class="string" value="SimProject"/>
+        <CurrentSimulation class="string" value="LINK:Simulation/"/>
+        <ProjectStoragePolicy::FolderEnabled class="string" value="false"/>
+        <ProjectStoragePolicy::FolderName class="string" value=""/>
+        <ProjectStoragePolicy::FolderSuffix class="string" value=".cffdb"/>
+        <ProjectStoragePolicy::SimFolder class="string" value=""/>
+    </Metadata>
+    <Simulation type="object" class="PFolder">
+        <URL class="string" value=""/>
+        <Subclass class="string" value="Simulation"/>
+        <Metadata type="object" class="ansys::Project::MetadataHoof">
+            <SimulationType class="string" value="ANSYS_FLUENT"/>
+            <MainDataType class="string" value="fluent-dat"/>
+            <CurrentRun class="string" value="LINK:RunTransient/"/>
+        </Metadata>
+        <RunTransient type="object" class="PFolder">
+            <URL class="string" value=""/>
+            <Subclass class="string" value="Run"/>
+            <Metadata type="object" class="ansys::Project::MetadataHoof">
+                <Run::OutputType class="string" value="Transient"/>
+                <Run::Variables class="string" value="time,index,case-id,mesh-id,connectivity-id,solver-iteration,time-step"/>
+                <MainDataType class="string" value="fluent-dat"/>
+                <Run::OutputCounter class="int" value="2"/>
+                <Run::CurrentOutput class="string" value="LINK:o000002/"/>
+            </Metadata>
+            <o000001 type="object" class="PFolder">
+                <URL class="string" value=""/>
+                <Subclass class="string" value="Output"/>
+                <Metadata type="object" class="ansys::Project::MetadataHoof">
+                    <index class="int" value="1"/>
+                    <time class="double" value="0.1"/>
+                    <time-step class="int" value="10"/>
+                    <solver-iteration class="int" value="200"/>
+                    <mesh-id class="int" value="4"/>
+                    <case-id class="int" value="921"/>
+                    <connectivity-id class="int" value="4"/>
+                </Metadata>
+                <SYS.1-Setup-Output.cas.h5 type="object" class="PFile">
+                    <URL class="string" value="SYS.1-Setup-Output.cas.h5"/>
+                    <Subclass class="string" value="Result"/>
+                    <Metadata type="object" class="ansys::Project::MetadataHoof">
+                        <PItem::FileTime class="int" value="711319090"/>
+                        <DataType class="string" value="Result"/>
+                        <ResultType class="string" value="fluent-cas"/>
+                    </Metadata>
+                </SYS.1-Setup-Output.cas.h5>
+                <SYS.1-6-00010.dat.h5 type="object" class="PFile">
+                    <URL class="string" value="SYS.1-6-00010.dat.h5"/>
+                    <Subclass class="string" value="Result"/>
+                    <Metadata type="object" class="ansys::Project::MetadataHoof">
+                        <PItem::FileTime class="int" value="711319101"/>
+                        <DataType class="string" value="Result"/>
+                        <ResultType class="string" value="fluent-dat"/>
+                        <Case class="string" value="LINK:SYS.1-Setup-Output.cas.h5"/>
+                    </Metadata>
+                </SYS.1-6-00010.dat.h5>
+            </o000001>
+            <o000002 type="object" class="PFolder">
+                <URL class="string" value=""/>
+                <Subclass class="string" value="Output"/>
+                <Metadata type="object" class="ansys::Project::MetadataHoof">
+                    <index class="int" value="2"/>
+                    <time class="double" value="0.11"/>
+                    <time-step class="int" value="11"/>
+                    <solver-iteration class="int" value="220"/>
+                    <mesh-id class="int" value="4"/>
+                    <case-id class="int" value="971"/>
+                    <connectivity-id class="int" value="4"/>
+                </Metadata>
+                <SYS.1-6.cas.h5 type="object" class="PFile">
+                    <URL class="string" value="SYS.1-6.cas.h5"/>
+                    <Subclass class="string" value="Result"/>
+                    <Metadata type="object" class="ansys::Project::MetadataHoof">
+                        <PItem::FileTime class="int" value="0"/>
+                        <DataType class="string" value="Result"/>
+                        <ResultType class="string" value="fluent-cas"/>
+                    </Metadata>
+                </SYS.1-6.cas.h5>
+                <SYS.1-6-00011.dat.h5 type="object" class="PFile">
+                    <URL class="string" value="SYS.1-6-00011.dat.h5"/>
+                    <Subclass class="string" value="Result"/>
+                    <Metadata type="object" class="ansys::Project::MetadataHoof">
+                        <PItem::FileTime class="int" value="711319105"/>
+                        <DataType class="string" value="Result"/>
+                        <ResultType class="string" value="fluent-dat"/>
+                        <Case class="string" value="LINK:SYS.1-6.cas.h5"/>
+                    </Metadata>
+                </SYS.1-6-00011.dat.h5>
+            </o000002>
+        </RunTransient>
+    </Simulation>
+</Project>

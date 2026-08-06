@@ -21,6 +21,7 @@ public:
 		QString defaultValue;
 		bool required;
 		QPair<double, double> range;
+		void buildColumn5(QVBoxLayout* layout);
 	};
 
 	explicit InjectionParamWidget(QWidget* parent = nullptr);
@@ -39,6 +40,7 @@ private:
 	void buildColumn2(QVBoxLayout* layout);
 	void buildColumn3(QVBoxLayout* layout);
 	void buildColumn4(QVBoxLayout* layout);
+	void buildColumn5(QVBoxLayout* layout);
 
 	QString globalStyleSheet() const;
 	QString groupBoxStyleSheet() const;
@@ -46,7 +48,7 @@ private:
 
 	QString defaultButtonStyleSheet() const;
 
-	void setDefaultValues(); 
+	void setDefaultValues();
 
 private:
 	QLineEdit* m_pWorkbenchPathEdit = nullptr;
@@ -54,14 +56,23 @@ private:
 	QComboBox* m_pTypeComboBox = nullptr;
 	QMap<QString, QLineEdit*> m_paramEdits;
 	QPushButton* m_pStartBtn = nullptr;
-	QPushButton* m_pDefaultBtn = nullptr; 
+	QPushButton* m_pDefaultBtn = nullptr;
+
+	// 新增：仿真步数输入框
+	QLineEdit* m_pStepCountEdit = nullptr;
+	// 新增：启动模式选择
+	QComboBox* m_pLaunchModeComboBox = nullptr;
 
 	static const QList < ParamConfig > s_col1Params;
 	static const QList < ParamConfig > s_col2Params;
 	static const QList < ParamConfig > s_col3Params;
 	static const QList < ParamConfig > s_col4Params;
+	static const QList < ParamConfig > s_col5Params;
 	static const QMap<QString, QString> s_defaultParamValues1;
 	static const QMap<QString, QString> s_defaultParamValues2;
 	static const QMap<QString, QString> s_defaultParamValues3;
 	static const QMap<QString, QString> s_defaultParamValues4;
+
+	// 仿真步数默认值（所有工况通用）
+	QString InjectionParamWidget::s_defaultStepCount = "11";
 };

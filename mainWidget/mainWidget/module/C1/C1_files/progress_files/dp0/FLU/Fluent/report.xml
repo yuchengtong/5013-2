@@ -75,7 +75,7 @@ Material Properties
       -----------------------------------------------------
       Density                kg/m^3     constant   900        
       Cp (Specific Heat)     J/(kg K)   constant   1800       
-      Thermal Conductivity   W/(m K)    constant   1.1        
+      Thermal Conductivity   W/(m K)    constant   1          
 
 </MaterialProperties>
 
@@ -181,15 +181,15 @@ Boundary Conditions
 
       name                                        id   type              
       ----------------------------------------------------------------
+      inlet (mixture)                             19   pressure-inlet    
+      inlet (air)                                 19   pressure-inlet    
+      inlet (yaoye)                               19   pressure-inlet    
       part-surface_body.1-shadow (mixture)        26   wall              
       part-surface_body.1-shadow (air)            26   wall              
       part-surface_body.1-shadow (yaoye)          26   wall              
       part-surface_body.1 (mixture)               6    wall              
       part-surface_body.1 (air)                   6    wall              
       part-surface_body.1 (yaoye)                 6    wall              
-      inlet (mixture)                             19   pressure-inlet    
-      inlet (air)                                 19   pressure-inlet    
-      inlet (yaoye)                               19   pressure-inlet    
       wall-part-surface_body (mixture)            7    wall              
       wall-part-surface_body (air)                7    wall              
       wall-part-surface_body (yaoye)              7    wall              
@@ -232,6 +232,24 @@ Boundary Conditions
 
    Setup Conditions
 
+      inlet (mixture)
+
+         Condition                   Value   
+         ---------------------------------
+         Gauge Total Pressure [Pa]   80000   
+         Total Temperature [K]       375.1   
+
+      inlet (air)
+
+         Condition   Value   
+         -----------------
+
+      inlet (yaoye)
+
+         Condition         Value   
+         -----------------------
+         Volume Fraction   1       
+
       part-surface_body.1-shadow (mixture)
 
          Condition         Value     
@@ -263,24 +281,6 @@ Boundary Conditions
 
          Condition   Value   
          -----------------
-
-      inlet (mixture)
-
-         Condition                   Value    
-         ----------------------------------
-         Gauge Total Pressure [Pa]   80000    
-         Total Temperature [K]       375.15   
-
-      inlet (air)
-
-         Condition   Value   
-         -----------------
-
-      inlet (yaoye)
-
-         Condition         Value   
-         -----------------------
-         Volume Fraction   1       
 
       wall-part-surface_body (mixture)
 
@@ -457,7 +457,7 @@ Boundary Conditions
          Condition         Value         
          -----------------------------
          Thermal BC Type   Temperature   
-         Temperature [K]   343.15        
+         Temperature [K]   343.1         
 
       heat (air)
 
@@ -526,11 +526,11 @@ Solver Settings
 
    Unsteady Calculation Parameters
 
-                                               
-      --------------------------------------
-      Number of Time Steps       10000000000   
-      Time Step Size [s]         0.01          
-      Max Iterations/Time Step   20            
+                                        
+      -------------------------------
+      Number of Time Steps       12     
+      Time Step Size [s]         0.01   
+      Max Iterations/Time Step   20     
 
    Under-Relaxation Factors
 
