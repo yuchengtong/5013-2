@@ -21,24 +21,23 @@
 // ==================== 左列：材料参数（胶层 + 壳体）====================
 const QList < PreheatingParamWidget::ParamConfig > PreheatingParamWidget::s_leftParams = {
 	// 胶层
-	{"胶层密度 (kg/m³)", "密度", "BONDLINE_DENSITY", "", false, {0.0, 0.0}},
-	{"胶层比热容 (J/(kg·K))", "比热容", "BONDLINE_SPECIFIC_HEAT", "", false, {0.0, 0.0}},
-	{"胶层热导率 (W/(m·K))", "热导率", "BONDLINE_THERMAL_CONDUCTIVITY", "", false, {0.0, 0.0}},
-	{"胶层吸收系数 (m⁻¹)", "吸收系数", "BONDLINE_ABSORPTION_COEFFICIENT", "", false, {0.0, 0.0}},
+	{"胶层密度(kg/m³)", "密度", "BONDLINE_DENSITY", "", false, {0.00, 0.00}},
+	{"胶层比热容(J/(kg·K))", "比热容", "BONDLINE_SPECIFIC_HEAT", "", false, {0.00, 0.00}},
+	{"胶层热导率(W/(m·K))", "热导率", "BONDLINE_THERMAL_CONDUCTIVITY", "", false, {0.00, 0.00}},
+	{"胶层吸收系数(m⁻¹)", "吸收系数", "BONDLINE_ABSORPTION_COEFFICIENT", "", false, {0.00, 0.00}},
 	// 壳体
-	{"壳体密度 (kg/m³)", "密度", "SHELL_DENSITY", "", false, {0.0, 0.0}},
-	{"壳体比热容 (J/(kg·K))", "比热容", "SHELL_SPECIFIC_HEAT", "", false, {0.0, 0.0}},
-	{"壳体热导率 (W/(m·K))", "热导率", "SHELL_THERMAL_CONDUCTIVITY", "", false, {0.0, 0.0}},
-	{"壳体吸收系数 (m⁻¹)", "吸收系数", "SHELL_ABSORPTION_COEFFICIENT", "", false, {0.0, 0.0}},
+	{"壳体密度(kg/m³)", "密度", "SHELL_DENSITY", "", false, {0.00, 0.00}},
+	{"壳体比热容(J/(kg·K))", "比热容", "SHELL_SPECIFIC_HEAT", "", false, {0.00, 0.00}},
+	{"壳体热导率(W/(m·K))", "热导率", "SHELL_THERMAL_CONDUCTIVITY", "", false, {0.00, 0.00}},
+	{"壳体吸收系数(m⁻¹)", "吸收系数", "SHELL_ABSORPTION_COEFFICIENT", "", false, {0.00, 0.00}},
 };
 
 // ==================== 右列：边界条件 ====================
 const QList < PreheatingParamWidget::ParamConfig > PreheatingParamWidget::s_rightParams = {
-	{"传热系数 (W/(m²·K))", "传热系数", "HEAT_TRANSFER_COEFFICIENT", "", false, {0.0, 0.0}},
-	{"来流温度 (K)", "温度", "FREE_STREAM_TEMPERATURE", "", false, {0.0, 0.0}},
-	{"外部辐射系数", "辐射系数", "EXTERNAL_EMISSIVITY", "", false, {0.0, 1.0}},
-	{"外部辐射温度 (K)", "温度", "EXTERNAL_RADIATION_TEMPERATURE", "", false, {0.0, 0.0}},
-	{"内部辐射系数", "辐射系数", "INTERNAL_EMISSIVITY", "", false, {0.0, 1.0}},
+	{"对流换热系数(W/(m²·K))", "传热系数", "HEAT_TRANSFER_COEFFICIENT", "", false, {0.00, 0.00}},
+	{"烘箱温度(K)", "温度", "FREE_STREAM_TEMPERATURE", "", false, {0.00, 0.00}},
+	{"外部辐射系数", "辐射系数", "EXTERNAL_EMISSIVITY", "", false, {0.00, 1.00}},
+	{"内部辐射系数", "辐射系数", "INTERNAL_EMISSIVITY", "", false, {0.00, 1.00}},
 };
 
 // ==================== 构造 / 析构 ====================
@@ -52,21 +51,21 @@ PreheatingParamWidget::PreheatingParamWidget(QWidget* parent) : QWidget(parent)
 // ==================== 默认值 ====================
 const QMap<QString, QString> PreheatingParamWidget::s_defaultParamValues = {
 	// 胶层参数
-	{"BONDLINE_DENSITY", "900.1"},
-	{"BONDLINE_SPECIFIC_HEAT", "1800.1"},
-	{"BONDLINE_THERMAL_CONDUCTIVITY", "1.1"},
-	{"BONDLINE_ABSORPTION_COEFFICIENT", "0.5"},
+	{"BONDLINE_DENSITY", "900.00"},
+	{"BONDLINE_SPECIFIC_HEAT", "1800.00"},
+	{"BONDLINE_THERMAL_CONDUCTIVITY", "1.10"},
+	{"BONDLINE_ABSORPTION_COEFFICIENT", "0.50"},
 	// 壳体参数
-	{"SHELL_DENSITY", "2700.1"},
-	{"SHELL_SPECIFIC_HEAT", "920.1"},
-	{"SHELL_THERMAL_CONDUCTIVITY", "130.1"},
-	{"SHELL_ABSORPTION_COEFFICIENT", "0.51"},
+	{"SHELL_DENSITY", "2700.00"},
+	{"SHELL_SPECIFIC_HEAT", "920.00"},
+	{"SHELL_THERMAL_CONDUCTIVITY", "130.00"},
+	{"SHELL_ABSORPTION_COEFFICIENT", "0.50"},
 	// 边界条件
-	{"HEAT_TRANSFER_COEFFICIENT", "58.1"},
+	{"HEAT_TRANSFER_COEFFICIENT", "58.00"},
 	{"FREE_STREAM_TEMPERATURE", "363.15"},
-	{"EXTERNAL_EMISSIVITY", "0.5"},
+	{"EXTERNAL_EMISSIVITY", "0.50"},
 	{"EXTERNAL_RADIATION_TEMPERATURE", "363.15"},
-	{"INTERNAL_EMISSIVITY", "0.5"},
+	{"INTERNAL_EMISSIVITY", "0.50"},
 };
 
 PreheatingParamWidget::~PreheatingParamWidget() = default;
@@ -76,7 +75,7 @@ void PreheatingParamWidget::initUI()
 {
 	setWindowTitle("预热工艺仿真计算");
 	setWindowIcon(QIcon(":/selectWidget/src/selectWidget/PreheatingProcess.jpg"));
-	setFixedSize(900, 520);
+	setFixedSize(900, 650);
 
 	QVBoxLayout* mainLayout = new QVBoxLayout(this);
 	mainLayout->setContentsMargins(24, 20, 24, 20);
