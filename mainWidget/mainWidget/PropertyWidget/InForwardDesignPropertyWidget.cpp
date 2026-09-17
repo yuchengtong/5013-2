@@ -1427,7 +1427,7 @@ void InForwardDesignPropertyWidget::inForwardCalculate()
 					auto time = inForwardPropertyInfo2.timeQualityX.at(frameIndex);
 					auto mass= inForwardPropertyInfo2.timeQualityY.at(frameIndex);
 
-					QString titleStr = QString("时间: %1s\n当前已注药质量: %2 Kg\n体积分数 %")
+					QString titleStr = QString("弹体注药时间: %1s\n当前已注药质量: %2 Kg\n体积分数 %")
 						.arg(time, 0, 'f', 0)
 						.arg(mass, 0, 'f', 0);
 					TCollection_ExtendedString newTitle(titleStr.toUtf8().constData(), true);
@@ -1509,7 +1509,7 @@ void InForwardDesignPropertyWidget::inForwardCalculate()
 										auto time = inForwardPropertyInfo.timeQualityX.at(frameIndex);
 										auto mass = inForwardPropertyInfo.timeQualityY.at(frameIndex);
 
-										QString titleStr = QString("时间: %1s\n当前已注药质量: %2 Kg\n体积分数 %")
+										QString titleStr = QString("弹体注药时间: %1s\n当前已注药质量: %2 Kg\n体积分数 %")
 											.arg(time, 0, 'f', 0)
 											.arg(mass, 0, 'f', 0);
 										TCollection_ExtendedString newTitle(titleStr.toUtf8().constData(), true);

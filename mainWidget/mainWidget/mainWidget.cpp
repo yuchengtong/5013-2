@@ -585,7 +585,13 @@ void mainWidget::bindConnect()
 			connect(m_rotateBtn, &QPushButton::clicked, occView, &OccView::rotate);
 			connect(m_zoomBtn, &QPushButton::clicked, occView, &OccView::zoom);
 			connect(m_fitAllBtn, &QPushButton::clicked, occView, &OccView::fitAll);
-			connect(m_resetBtn, &QPushButton::clicked, occView, &OccView::reset);
+			connect(m_resetBtn, &QPushButton::clicked, [occView]() {
+				Handle(AIS_InteractiveContext) context = occView->getContext();
+				auto view = occView->getView();
+				view->SetProj(V3d_Zneg);
+				view->SetTwist(-M_PI / 2.0);
+				occView->fitAll();
+				});
 		}
 	}
 

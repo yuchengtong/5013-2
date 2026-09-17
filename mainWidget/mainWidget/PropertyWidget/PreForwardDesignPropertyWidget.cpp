@@ -519,17 +519,17 @@ void PreForwardDesignPropertyWidget::preForwardCalculate()
 					auto preForwardPropertyInfo2 = ins->GetPreForwardPropertyInfo();
 					double temperature = preForwardPropertyInfo2.x.at(frameIndex - 1);
 					double time = preForwardPropertyInfo2.y.at(frameIndex - 1);
-					QString titleStr = QString("时间: %1s\n温度: %2 ℃")
+					QString titleStr = QString("弹体预热时间: %1s\n弹体目标温度: %2 ℃")
 						.arg(time, 0, 'f', 0)
 						.arg(temperature, 0, 'f', 0);
 					TCollection_ExtendedString newTitle(titleStr.toUtf8().constData(), true);
 					
+					double min_value = 22;
+					double max_value = preForwardPropertyInfo2.environmentalTemperatureValue;
+
 					// 第一帧时创建色条，后续帧只更新标题
 					if (preForwardPropertyInfo2.m_ColorScale.IsNull())
-					{
-						double min_value = 22;
-						double max_value = 90;
-
+					{			
 						Handle(AIS_ColorScale) aColorScale = new AIS_ColorScale();
 						{
 							aColorScale->SetFormat(TCollection_AsciiString("%.2f"));
@@ -555,6 +555,7 @@ void PreForwardDesignPropertyWidget::preForwardCalculate()
 					else
 					{
 						preForwardPropertyInfo2.m_ColorScale->SetTitle(newTitle);
+						preForwardPropertyInfo2.m_ColorScale->SetRange(min_value, max_value);
 						context->Redisplay(preForwardPropertyInfo2.m_ColorScale, true);
 					}
 
@@ -612,7 +613,7 @@ void PreForwardDesignPropertyWidget::preForwardCalculate()
 									{
 										double temperature = preForwardPropertyInfo.x.at(frameIndex);
 										double time = preForwardPropertyInfo.y.at(frameIndex);
-										QString titleStr = QString("时间: %1s\n温度: %2 ℃")
+										QString titleStr = QString("弹体预热时间: %1s\n弹体目标温度: %2 ℃")
 											.arg(time, 0, 'f', 0)
 											.arg(temperature, 0, 'f', 0);
 										TCollection_ExtendedString newTitle(titleStr.toUtf8().constData(), true);

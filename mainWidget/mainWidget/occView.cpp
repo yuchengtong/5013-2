@@ -161,7 +161,7 @@ void OccView::init()
 
         myContext->SetDisplayMode(AIS_Shaded, Standard_True);
 
-        qDebug() << "OccView::init() completed successfully";
+        //qDebug() << "OccView::init() completed successfully";
 
         // 强制立即重绘
         myView->Redraw();
