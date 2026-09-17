@@ -10,12 +10,9 @@
         <file>src/Import.svg</file>
         <file>src/Save.svg</file>
         <file>src/Save_as.svg</file>
-        <file>src/Move.svg</file>
-        <file>src/Rotate.svg</file>
         <file>src/Setting.svg</file>
         <file>src/FitAll.png</file>
         <file>src/Zoom.png</file>
-        <file>src/Reset.svg</file>
         <file>src/engine.svg</file>
         <file>src/key_line.svg</file>
         <file>src/Error.svg</file>
@@ -52,6 +49,9 @@
         <file>src/database.svg</file>
         <file>src/help.svg</file>
         <file>src/Import_1.svg</file>
+        <file>src/Move.svg</file>
+        <file>src/Reset.svg</file>
+        <file>src/Rotate.svg</file>
     </qresource>
     <qresource prefix="/animation">
         <file alias="Animation/first_frame.svg">src/icon/Animation/first_frame.svg</file>

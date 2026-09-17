@@ -166,7 +166,7 @@ void OccView::init()
         // 强制立即重绘
         myView->Redraw();
 
-        SetCameraRotationState(false);
+        //SetCameraRotationState(false);
         myView->SetProj(V3d_Zneg);
         myView->SetTwist(-M_PI / 2.0);
 

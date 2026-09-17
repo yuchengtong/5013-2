@@ -9,7 +9,7 @@ InForwardMassTimeWid::InForwardMassTimeWid(QWidget* parent) : BaseCurvePlotWidge
 
 void InForwardMassTimeWid::init()
 {
-	SetTitleName("注药工艺正向设计注药质量时间");
+	SetTitleName("正向设计注药质量时间");
 	SetXName("时间（s）");
 	SetYName("注药质量（Kg）");
 }

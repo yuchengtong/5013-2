@@ -310,14 +310,17 @@ void mainWidget::setupOperationWidget()
 
 	const int btnSize = 32;
 	QSize iconSize(btnSize, btnSize);
-	m_moveBtn->setFixedSize(btnSize, btnSize);
-	m_rotateBtn->setFixedSize(btnSize, btnSize);
+	m_moveBtn->setIconSize(iconSize);
+	m_rotateBtn->setIconSize(iconSize);
 	m_zoomBtn->setIconSize(iconSize);
 	m_fitAllBtn->setIconSize(iconSize);
-	m_resetBtn->setFixedSize(btnSize, btnSize);
+	m_resetBtn->setIconSize(iconSize);
 
+	m_moveBtn->setFlat(true);
+	m_rotateBtn->setFlat(true);
 	m_zoomBtn->setFlat(true);
 	m_fitAllBtn->setFlat(true);
+	m_resetBtn->setFlat(true);
 
 	auto moveLabel = new QLabel(QString::fromLocal8Bit("ÒÆ¶¯"));
 	auto rotateLabel = new QLabel(QString::fromLocal8Bit("Ðý×ª"));
@@ -388,12 +391,20 @@ void mainWidget::setupViewWidget()
 	m_zNegBtn = new QPushButton();
 
 	const int btnSize = 32;
-	m_xBtn->setFixedSize(btnSize, btnSize);
-	m_yBtn->setFixedSize(btnSize, btnSize);
-	m_zBtn->setFixedSize(btnSize, btnSize);
-	m_xNegBtn->setFixedSize(btnSize, btnSize);
-	m_yNegBtn->setFixedSize(btnSize, btnSize);
-	m_zNegBtn->setFixedSize(btnSize, btnSize);
+	QSize iconSize(btnSize, btnSize);
+	m_xBtn->setIconSize(iconSize);
+	m_yBtn->setIconSize(iconSize);
+	m_zBtn->setIconSize(iconSize);
+	m_xNegBtn->setIconSize(iconSize);
+	m_yNegBtn->setIconSize(iconSize);
+	m_zNegBtn->setIconSize(iconSize);
+
+	m_xBtn->setFlat(true);
+	m_yBtn->setFlat(true);
+	m_zBtn->setFlat(true);
+	m_xNegBtn->setFlat(true);
+	m_yNegBtn->setFlat(true);
+	m_zNegBtn->setFlat(true);
 
 	m_xBtn->setIcon(QIcon(":/src/View all From +X.png"));
 	m_yBtn->setIcon(QIcon(":/src/View all From +Y.png"));
@@ -570,20 +581,20 @@ void mainWidget::bindConnect()
 	{
 		auto occView = m_importModelWid->GetOccView();
 		if (occView) {
-			//connect(m_moveBtn, &QPushButton::clicked, occView, &OccView::pan);
-			//connect(m_rotateBtn, &QPushButton::clicked, occView, &OccView::rotate);
+			connect(m_moveBtn, &QPushButton::clicked, occView, &OccView::pan);
+			connect(m_rotateBtn, &QPushButton::clicked, occView, &OccView::rotate);
 			connect(m_zoomBtn, &QPushButton::clicked, occView, &OccView::zoom);
 			connect(m_fitAllBtn, &QPushButton::clicked, occView, &OccView::fitAll);
-			//connect(m_resetBtn, &QPushButton::clicked, occView, &OccView::reset);
+			connect(m_resetBtn, &QPushButton::clicked, occView, &OccView::reset);
 		}
 	}
 
-	//connect(m_xBtn, &QPushButton::clicked, [this]() { setViewDirection(View_Xpos); });
-	//connect(m_yBtn, &QPushButton::clicked, [this]() { setViewDirection(View_Ypos); });
-	//connect(m_zBtn, &QPushButton::clicked, [this]() { setViewDirection(View_Zpos); });
-	//connect(m_xNegBtn, &QPushButton::clicked, [this]() { setViewDirection(View_Xneg); });
-	//connect(m_yNegBtn, &QPushButton::clicked, [this]() { setViewDirection(View_Yneg); });
-	//connect(m_zNegBtn, &QPushButton::clicked, [this]() { setViewDirection(View_Zneg); });
+	connect(m_xBtn, &QPushButton::clicked, [this]() { setViewDirection(View_Xpos); });
+	connect(m_yBtn, &QPushButton::clicked, [this]() { setViewDirection(View_Ypos); });
+	connect(m_zBtn, &QPushButton::clicked, [this]() { setViewDirection(View_Zpos); });
+	connect(m_xNegBtn, &QPushButton::clicked, [this]() { setViewDirection(View_Xneg); });
+	connect(m_yNegBtn, &QPushButton::clicked, [this]() { setViewDirection(View_Yneg); });
+	connect(m_zNegBtn, &QPushButton::clicked, [this]() { setViewDirection(View_Zneg); });
 }
 
 // ============================================================

@@ -354,6 +354,15 @@ void PreForwardDesignPropertyWidget::initWidget()
 			auto value = text.toDouble();
 			if (value >=50 && value <= 90)
 			{
+				// 弹体目标温度(50～90) <= 烘箱环境温度(60～90)
+				if (value > m_environmentalTemperatureValue.toDouble())
+				{
+					QMessageBox::warning(this, "提示", "弹体目标温度不得高于烘箱环境温度");
+					m_tableWidget->blockSignals(true);
+					item->setText(m_targetTemperatureValue);
+					m_tableWidget->blockSignals(false);
+					return;
+				}
 				m_targetTemperatureValue = text;
 			}
 			else
@@ -370,6 +379,15 @@ void PreForwardDesignPropertyWidget::initWidget()
 			auto value = text.toDouble();
 			if (value >= 60 && value <= 90)
 			{
+				// 弹体目标温度(50～90) <= 烘箱环境温度(60～90)
+				if (value < m_targetTemperatureValue.toDouble())
+				{
+					QMessageBox::warning(this, "提示", "弹体目标温度不得高于烘箱环境温度");
+					m_tableWidget->blockSignals(true);
+					item->setText(m_environmentalTemperatureValue);
+					m_tableWidget->blockSignals(false);
+					return;
+				}
 				m_environmentalTemperatureValue = text;
 			}
 			else

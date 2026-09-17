@@ -9,7 +9,7 @@ InForwardDensityTempWid::InForwardDensityTempWid(QWidget* parent) : BaseCurvePlo
 
 void InForwardDensityTempWid::init()
 {
-	SetTitleName("注药工艺正向设计密度温度");
+	SetTitleName("真空环境注药速度温度耦合工程分析正向设计密度温度");
 	SetXName("温度（℃）");
 	SetYName("密度（%）");
 }
