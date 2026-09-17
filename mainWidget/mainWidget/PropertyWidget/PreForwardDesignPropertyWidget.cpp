@@ -364,6 +364,11 @@ void PreForwardDesignPropertyWidget::initWidget()
 					return;
 				}
 				m_targetTemperatureValue = text;
+				auto ins = ModelDataManager::GetInstance();
+				auto preForwardPropertyInfo = ins->GetPreForwardPropertyInfo();
+				preForwardPropertyInfo.targetTemperatureValue = value;
+				ins->SetPreForwardPropertyInfo(preForwardPropertyInfo);
+
 			}
 			else
 			{
@@ -389,6 +394,10 @@ void PreForwardDesignPropertyWidget::initWidget()
 					return;
 				}
 				m_environmentalTemperatureValue = text;
+				auto ins = ModelDataManager::GetInstance();
+				auto preForwardPropertyInfo = ins->GetPreForwardPropertyInfo();
+				preForwardPropertyInfo.environmentalTemperatureValue = value;
+				ins->SetPreForwardPropertyInfo(preForwardPropertyInfo);
 			}
 			else
 			{
