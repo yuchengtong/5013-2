@@ -8,6 +8,8 @@ class PropellantPropertyWidget : public BasePropertyWidget
 public:
 	explicit PropellantPropertyWidget(QWidget* parent = nullptr);
 
+	void setMasterialData(QString model);
+
 private:
 	void initWidget() override;
 

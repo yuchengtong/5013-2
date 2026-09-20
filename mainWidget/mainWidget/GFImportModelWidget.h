@@ -49,6 +49,10 @@ public:
 	DatabasePropertyWidget* GetDatabasePropertyWidget() const { return m_databasePropertyWidget; }
 	CalculationPropertyWidget* GetCalculationPropertyWidget() const { return m_calculationPropertyWidget; }
 
+	ShellPropertyWidget* GetShellPropertyWidget() const { return m_shellPropertyWidget; }
+	PropellantPropertyWidget* GetPropellantPropertyWidget() const { return m_propellantPropertyWidget; }
+	GelatinPropertyWidget* GetGelatinPropertyWidget() const { return m_gelatinPropertyWidget; }
+
 	PreForwardDesignPropertyWidget* GetPreForwardDesignPropertyWidget() const { return m_preForwardDesignPropertyWidget; }
 	PreReverseOptimizationPropertyWidget* GetPreReverseOptimizationPropertyWidget() const { return m_preReverseOptimizationPropertyWidget; }
 	InForwardDesignPropertyWidget* GetInForwardDesignPropertyWidget() const { return m_inForwardDesignPropertyWidget; }

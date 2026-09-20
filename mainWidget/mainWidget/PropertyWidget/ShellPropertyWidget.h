@@ -8,6 +8,8 @@ class ShellPropertyWidget : public BasePropertyWidget
 public:
 	explicit ShellPropertyWidget(QWidget* parent = nullptr);
 
+	void setMasterialData(QString model);
+
 private:
 	void initWidget() override;
 

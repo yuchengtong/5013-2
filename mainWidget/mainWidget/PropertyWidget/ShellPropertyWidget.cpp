@@ -313,3 +313,113 @@ void ShellPropertyWidget::showTableDialog() {
 	dialog->setAttribute(Qt::WA_DeleteOnClose); // 关闭时自动删除
 	dialog->exec();
 }
+
+
+void ShellPropertyWidget::setMasterialData(QString model)
+{
+
+	auto ins = ModelDataManager::GetInstance();
+	SteelPropertyInfo info;
+	// 获取模型类型
+	if (model == "HQ-9B")
+	{
+		info.name = "40CrNiMoA";
+		info.type = "合金钢";
+		info.density = 7850.0;
+		info.specificHeatCapacity = 470.0;
+		info.thermalConductivity = 42.0;
+	}
+	else if (model == "YJ-20")
+	{
+		info.name = "TC4";
+		info.type = "钛合金";
+		info.density = 4430.0;
+		info.specificHeatCapacity = 520.0;
+		info.thermalConductivity = 6.7;
+	}
+	else if (model == "YJ-91A")
+	{
+		info.name = "ZL114A";
+		info.type = "铸铝";
+		info.density = 2700.0;
+		info.specificHeatCapacity = 963.0;
+		info.thermalConductivity = 170.0;
+	}
+	else if (model == "CJ-20A")
+	{
+		info.name = "40CrNiMoA";
+		info.type = "合金钢";
+		info.density = 7850.0;
+		info.specificHeatCapacity = 470.0;
+		info.thermalConductivity = 42.0;
+	}
+	info.isChecked = true;
+	ins->SetSteelPropertyInfo(info);
+
+	QTableWidgetItem* nameItem = new QTableWidgetItem(info.name);
+	nameItem->setTextAlignment(Qt::AlignLeft | Qt::AlignVCenter);
+	nameItem->setFlags(nameItem->flags() & ~Qt::ItemIsEditable); // 不可编辑
+	nameItem->setBackground(QBrush(QColor(230, 230, 230)));
+	m_tableWidget->setItem(1, 2, nameItem);
+
+	QTableWidgetItem* typeItem = new QTableWidgetItem(info.type);
+	typeItem->setTextAlignment(Qt::AlignLeft | Qt::AlignVCenter);
+	typeItem->setFlags(typeItem->flags() & ~Qt::ItemIsEditable); // 不可编辑
+	typeItem->setBackground(QBrush(QColor(230, 230, 230)));
+	m_tableWidget->setItem(2, 2, typeItem);
+
+	QTableWidgetItem* densityItem = new QTableWidgetItem(QString::number(info.density));
+	densityItem->setTextAlignment(Qt::AlignLeft | Qt::AlignVCenter);
+	densityItem->setFlags(densityItem->flags() & ~Qt::ItemIsEditable); // 不可编辑
+	densityItem->setBackground(QBrush(QColor(230, 230, 230)));
+	m_tableWidget->setItem(3, 2, densityItem);
+
+	QTableWidgetItem* specificHeatCapacityItem = new QTableWidgetItem(QString::number(info.specificHeatCapacity));
+	specificHeatCapacityItem->setTextAlignment(Qt::AlignLeft | Qt::AlignVCenter);
+	specificHeatCapacityItem->setFlags(specificHeatCapacityItem->flags() & ~Qt::ItemIsEditable); // 不可编辑
+	specificHeatCapacityItem->setBackground(QBrush(QColor(230, 230, 230)));
+	m_tableWidget->setItem(4, 2, specificHeatCapacityItem);
+
+	QTableWidgetItem* thermalConductivityItem = new QTableWidgetItem(QString::number(info.thermalConductivity));
+	thermalConductivityItem->setTextAlignment(Qt::AlignLeft | Qt::AlignVCenter);
+	thermalConductivityItem->setFlags(thermalConductivityItem->flags() & ~Qt::ItemIsEditable); // 不可编辑
+	thermalConductivityItem->setBackground(QBrush(QColor(230, 230, 230)));
+	m_tableWidget->setItem(5, 2, thermalConductivityItem);
+
+
+	// 更新icon
+	QWidget* parent = parentWidget();
+	while (parent) {
+		GFImportModelWidget* gfParent = dynamic_cast<GFImportModelWidget*>(parent);
+		if (gfParent)
+		{
+			gfParent->GetGFTreeModelWidget()->updataIcon();
+			// 写入日志
+			QDateTime currentTime = QDateTime::currentDateTime();
+			QString timeStr = currentTime.toString("yyyy-MM-dd hh:mm:ss");
+			auto logWidget = gfParent->GetLogWidget();
+			auto textEdit = logWidget->GetTextEdit();
+			QString text = timeStr + "[信息]>开始导入壳体物性材料数据";
+			textEdit->appendPlainText(text);
+			logWidget->update();
+
+			// 关键：强制刷新UI，确保日志立即显示
+			QApplication::processEvents();
+
+			// 写入数据库模块
+			MaterialPropertyWidget* m_materialPropertyWidget = gfParent->GetMaterialPropertyWidget();
+			QTableWidget* materialTableWid = m_materialPropertyWidget->GetQTableWidget();
+			QTableWidgetItem* valueItem = new QTableWidgetItem(info.name);
+			valueItem->setFlags(valueItem->flags() & ~Qt::ItemIsEditable); // 不可编辑
+			valueItem->setBackground(QBrush(QColor(230, 230, 230)));
+			materialTableWid->setItem(1, 2, valueItem);
+			break;
+		}
+		else
+		{
+			parent = parent->parentWidget();
+		}
+	}
+
+}
+

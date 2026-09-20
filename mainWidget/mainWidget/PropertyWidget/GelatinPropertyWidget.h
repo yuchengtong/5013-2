@@ -8,6 +8,8 @@ class GelatinPropertyWidget : public BasePropertyWidget
 public:
 	explicit GelatinPropertyWidget(QWidget* parent = nullptr);
 
+	void setMasterialData(QString model);
+
 private:
 	void initWidget() override;
 

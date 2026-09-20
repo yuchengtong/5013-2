@@ -692,6 +692,14 @@ void GFTreeModelWidget::contextMenuEvent(QContextMenuEvent *event)
 								auto geomProWid = gfParent->findChild<GeomPropertyWidget*>();
 								geomProWid->UpdataPropertyInfo();
 
+								// 默认数据库数据
+								auto shellPropertyWidget = gfParent->GetShellPropertyWidget();
+								auto propellantPropertyWidget = gfParent->GetPropellantPropertyWidget();
+								auto gelatinPropertyWidget = gfParent->GetGelatinPropertyWidget();
+								shellPropertyWidget->setMasterialData(model);
+								propellantPropertyWidget->setMasterialData(model);
+								gelatinPropertyWidget->setMasterialData(model);
+
 							}
 							else if (!success)
 							{
