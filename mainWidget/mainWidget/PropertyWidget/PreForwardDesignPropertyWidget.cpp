@@ -195,12 +195,12 @@ void PreForwardDesignPropertyWidget::initWidget()
 	}
 
 	QStringList labels = { "正向设计","工艺输入参数",  "弹体目标温度(50～90)", "烘箱环境温度(60～90)", "弹体初始温度","环境对流传热系数","壳体辐射吸收系数","环境发射率","工艺输出参数","弹体预热时间","弹体温度云图与温升曲线" };
-	for (int row = 0; row < labels.size(); ++row) {
+	for (int row = 0; row < labels.size(); ++row) 
+	{
 		QTableWidgetItem* labelItem = new QTableWidgetItem(labels[row]);
 		labelItem->setTextAlignment(Qt::AlignCenter); // 文本居中
 		labelItem->setFlags(labelItem->flags() & ~Qt::ItemIsEditable); // 不可编辑
 		m_tableWidget->setItem(row, 1, labelItem);
-
 	}
 
 	// 设置第一列宽度
@@ -289,14 +289,14 @@ void PreForwardDesignPropertyWidget::initWidget()
 
 	// 单位列
 	QStringList unitLabels = { " "," ","℃","℃","℃", "W/㎡·k", "1/m"," "," ","s","" };
-	for (int row = 0; row < unitLabels.size(); ++row) {
+	for (int row = 0; row < unitLabels.size(); ++row)
+	{
 		if (row != 0)
 		{
 			QTableWidgetItem* labelItem = new QTableWidgetItem(unitLabels[row]);
 			labelItem->setFlags(labelItem->flags() & ~Qt::ItemIsEditable); // 不可编辑
 			m_tableWidget->setItem(row, 3, labelItem);
 		}
-
 	}
 
 	QTableWidgetItem* unitColimnItem = m_tableWidget->item(5, 3);
@@ -305,7 +305,8 @@ void PreForwardDesignPropertyWidget::initWidget()
 
 	// 将第0行0列的单元格文本字体加粗
 	QTableWidgetItem* headerItem = m_tableWidget->item(0, 0);
-	if (headerItem) {
+	if (headerItem) 
+	{
 		QFont font = headerItem->font();
 		font.setBold(true);
 		headerItem->setFont(font);
@@ -313,8 +314,10 @@ void PreForwardDesignPropertyWidget::initWidget()
 
 
 	//文本左对齐
-	for (int row = 0; row < m_tableWidget->rowCount(); ++row) {
-		for (int col = 0; col < m_tableWidget->columnCount(); ++col) {
+	for (int row = 0; row < m_tableWidget->rowCount(); ++row)
+	{
+		for (int col = 0; col < m_tableWidget->columnCount(); ++col) 
+		{
 			QTableWidgetItem* item = m_tableWidget->item(row, col);
 			if (item)
 			{
@@ -346,8 +349,8 @@ void PreForwardDesignPropertyWidget::initWidget()
 		}
 	}
 
-	connect(m_tableWidget, &QTableWidget::itemChanged, this, [this, targetTemperatureValueItem, environmentalTemperatureValueItem](QTableWidgetItem* item) {
-
+	connect(m_tableWidget, &QTableWidget::itemChanged, this, 
+		[this, targetTemperatureValueItem, environmentalTemperatureValueItem](QTableWidgetItem* item) {
 		if (item == targetTemperatureValueItem)
 		{
 			auto text = item->text();
@@ -368,7 +371,6 @@ void PreForwardDesignPropertyWidget::initWidget()
 				auto preForwardPropertyInfo = ins->GetPreForwardPropertyInfo();
 				preForwardPropertyInfo.targetTemperatureValue = value;
 				ins->SetPreForwardPropertyInfo(preForwardPropertyInfo);
-
 			}
 			else
 			{
@@ -376,7 +378,6 @@ void PreForwardDesignPropertyWidget::initWidget()
 				item->setText(m_targetTemperatureValue);
 				m_tableWidget->blockSignals(false);
 			}
-
 		}
 		else if(item == environmentalTemperatureValueItem)
 		{
@@ -405,13 +406,27 @@ void PreForwardDesignPropertyWidget::initWidget()
 				item->setText(m_environmentalTemperatureValue);
 				m_tableWidget->blockSignals(false);
 			}
-
 		}
 	});
 }
 
 void PreForwardDesignPropertyWidget::preForwardCalculate()
 {
+	auto getImportWidget = [this]() -> GFImportModelWidget* {
+		QWidget* p = parentWidget();
+		while (p) {
+			if (auto* w = qobject_cast<GFImportModelWidget*>(p)) return w;
+			p = p->parentWidget();
+		}
+		return nullptr;
+	};
+
+	auto* importModelWidget = getImportWidget();
+	if (!importModelWidget)
+	{
+		return;
+	}
+
 	auto ins = ModelDataManager::GetInstance();
 	auto modelGeometryInfo = ins->GetModelGeometryInfo();
 	auto steelPropertyInfo = ins->GetSteelPropertyInfo();
@@ -419,19 +434,24 @@ void PreForwardDesignPropertyWidget::preForwardCalculate()
 	auto gelatinPropertyInfo = ins->GetGelatinPropertyInfo();
 	auto calculationPropertyInfo = ins->GetCalculationPropertyInfo();
 
-	if (!steelPropertyInfo.isChecked  )
+	auto logWidget = importModelWidget->GetLogWidget();
+
+	if (!steelPropertyInfo.isChecked)
 	{
 		QMessageBox::warning(this, "提示", "壳体物性材料未选择");
+		logWidget->PrintInfo("壳体物性材料未选择", false);
 		return;
 	}
 	if (!propellantPropertyInfo.isChecked)
 	{
 		QMessageBox::warning(this, "提示", "药液物性材料未选择");
+		logWidget->PrintInfo("药液物性材料未选择", false);
 		return;
 	}
 	if (!gelatinPropertyInfo.isChecked)
 	{
 		QMessageBox::warning(this, "提示", "明胶物性材料未选择");
+		logWidget->PrintInfo("明胶物性材料未选择", false);
 		return;
 	}
 
@@ -470,215 +490,203 @@ void PreForwardDesignPropertyWidget::preForwardCalculate()
 	preForwardPropertyInfo.y = y;
 	ins->SetPreForwardPropertyInfo(preForwardPropertyInfo);
 
+	logWidget->PrintInfo("开始热环境弹体预热工程分析正向计算", true);
 
-	QWidget* parent = parentWidget();
-	while (parent) {
-		GFImportModelWidget* gfParent = dynamic_cast<GFImportModelWidget*>(parent);
-		if (gfParent)
-		{
-			QDateTime currentTime = QDateTime::currentDateTime();
-			QString timeStr = currentTime.toString("yyyy-MM-dd hh:mm:ss");
-			auto logWidget = gfParent->GetLogWidget();
-			auto textEdit = logWidget->GetTextEdit();
-			QString text = timeStr + "[信息]>开始热环境弹体预热工程分析正向计算";
-			textEdit->appendPlainText(text);
-			logWidget->update();
+	QApplication::processEvents();
 
-			QApplication::processEvents();
+	// 创建进度对话框
+	ProgressDialog* progressDialog = new ProgressDialog("热环境弹体预热工程分析正向计算", this);
+	progressDialog->show();
 
-			// 创建进度对话框
-			ProgressDialog* progressDialog = new ProgressDialog("热环境弹体预热工程分析正向计算", this);
-			progressDialog->show();
+	// 创建工作线程和工作对象
+	ForwardDesignWorker* calculateWorker = new ForwardDesignWorker();
+	QThread* calculateThread = new QThread();
+	calculateWorker->moveToThread(calculateThread);
 
-			// 创建工作线程和工作对象
-			ForwardDesignWorker* calculateWorker = new ForwardDesignWorker();
-			QThread* calculateThread = new QThread();
-			calculateWorker->moveToThread(calculateThread);			
+	connect(calculateWorker, &ForwardDesignWorker::FrameCalculated, this,
+		[=](int frameIndex) {
+			auto toolsAnimationWidget = importModelWidget->GetToolsAnimationWidget();
 
-			connect(calculateWorker, &ForwardDesignWorker::FrameCalculated, this,
-				[=](int frameIndex) {
-					auto toolsAnimationWidget = gfParent->GetToolsAnimationWidget();
+			QStringList frameNames;
+			for (int i = 1; i <= frameIndex; ++i)
+			{
+				frameNames.append(QString::number(i));
+			}
+			toolsAnimationWidget->SetAnimationSteps(frameNames);
 
-					QStringList frameNames;
-					for (int i = 1; i <= frameIndex; ++i)
-					{
-						frameNames.append(QString::number(i));
-					}
-					toolsAnimationWidget->SetAnimationSteps(frameNames);
+			auto preForwardTimeTempWid = importModelWidget->GetPreForwardTimeTempWid();
+			QVector<double> x_value, y_value;
+			auto preForwardPropertyInfo = ins->GetPreForwardPropertyInfo();
+			for (int j = 0; j < preForwardPropertyInfo.x.size() && j < frameIndex; ++j)
+			{
+				x_value.push_back(preForwardPropertyInfo.x.at(j));
+				y_value.push_back(preForwardPropertyInfo.y.at(j));
+			}
+			preForwardTimeTempWid->AddDataPoint(x_value, y_value);
 
-					auto preForwardTimeTempWid = gfParent->GetPreForwardTimeTempWid();
-					QVector<double> x_value, y_value;
-					auto preForwardPropertyInfo = ins->GetPreForwardPropertyInfo();
-					for (int j = 0; j < preForwardPropertyInfo.x.size() && j < frameIndex; ++j)
-					{
-						x_value.push_back(preForwardPropertyInfo.x.at(j));
-						y_value.push_back(preForwardPropertyInfo.y.at(j));
-					}
-					preForwardTimeTempWid->AddDataPoint(x_value, y_value);
+			// 实时更新3D视图
+			auto occView = importModelWidget->GetOccView();
+			Handle(AIS_InteractiveContext) context = occView->getContext();
+			Handle(V3d_View) view = occView->getView();
 
-					// 实时更新3D视图
-					auto occView = gfParent->GetOccView();
-					Handle(AIS_InteractiveContext) context = occView->getContext();
-					Handle(V3d_View) view = occView->getView();
+			std::vector<double> nodeValues;
+			APISetNodeValue::SetPreForwardDesignResult(occView, nodeValues, frameIndex - 1);
 
-					std::vector<double> nodeValues;
-					APISetNodeValue::SetPreForwardDesignResult(occView, nodeValues, frameIndex - 1);
+			auto preForwardPropertyInfo2 = ins->GetPreForwardPropertyInfo();
+			//double temperature = preForwardPropertyInfo2.x.at(frameIndex - 1);
+			//double time = preForwardPropertyInfo2.y.at(frameIndex - 1);
+			auto temperature = preForwardPropertyInfo2.targetTemperatureValue;
+			auto time = preForwardPropertyInfo2.preheatingTimeValue;
+			QString titleStr = QString("弹体预热时间: %1s\n弹体目标温度: %2 ℃")
+				.arg(time, 0, 'f', 0)
+				.arg(temperature, 0, 'f', 0);
+			TCollection_ExtendedString newTitle(titleStr.toUtf8().constData(), true);
 
+			double min_value = 22;
+			double max_value = preForwardPropertyInfo2.environmentalTemperatureValue;
 
-					auto preForwardPropertyInfo2 = ins->GetPreForwardPropertyInfo();
-					double temperature = preForwardPropertyInfo2.x.at(frameIndex - 1);
-					double time = preForwardPropertyInfo2.y.at(frameIndex - 1);
-					QString titleStr = QString("弹体预热时间: %1s\n弹体目标温度: %2 ℃")
-						.arg(time, 0, 'f', 0)
-						.arg(temperature, 0, 'f', 0);
-					TCollection_ExtendedString newTitle(titleStr.toUtf8().constData(), true);
-					
-					double min_value = 22;
-					double max_value = preForwardPropertyInfo2.environmentalTemperatureValue;
+			// 第一帧时创建色条，后续帧只更新标题
+			if (preForwardPropertyInfo2.m_ColorScale.IsNull())
+			{
+				Handle(AIS_ColorScale) aColorScale = new AIS_ColorScale();
+				{
+					aColorScale->SetFormat(TCollection_AsciiString("%.2f"));
+					aColorScale->SetSize(200, 500);
+					aColorScale->SetRange(min_value, max_value);
+					aColorScale->SetNumberOfIntervals(9);
+					aColorScale->SetLabelPosition(Aspect_TOCSP_RIGHT);
+					aColorScale->SetTextHeight(30);
+					aColorScale->SetColor(Quantity_Color(Quantity_NOC_BLACK));
+					aColorScale->SetTitle(newTitle);
+					aColorScale->SetColorRange(Quantity_Color(Quantity_NOC_BLUE1), Quantity_Color(Quantity_NOC_RED));
+					aColorScale->SetLabelType(Aspect_TOCSD_AUTO);
+					aColorScale->SetZLayer(Graphic3d_ZLayerId_TopOSD);
+				}
+				preForwardPropertyInfo2.m_ColorScale = aColorScale;
+				ins->SetPreForwardPropertyInfo(preForwardPropertyInfo2);
 
-					// 第一帧时创建色条，后续帧只更新标题
-					if (preForwardPropertyInfo2.m_ColorScale.IsNull())
-					{			
-						Handle(AIS_ColorScale) aColorScale = new AIS_ColorScale();
+				Graphic3d_Vec2i anoffset(0, Standard_Integer(550));
+				context->SetTransformPersistence(preForwardPropertyInfo2.m_ColorScale, new Graphic3d_TransformPers(Graphic3d_TMF_2d, Aspect_TOTP_LEFT_UPPER, anoffset));
+				context->SetDisplayMode(preForwardPropertyInfo2.m_ColorScale, 1, Standard_False);
+				context->Display(preForwardPropertyInfo2.m_ColorScale, Standard_True);
+			}
+			else
+			{
+				preForwardPropertyInfo2.m_ColorScale->SetTitle(newTitle);
+				preForwardPropertyInfo2.m_ColorScale->SetRange(min_value, max_value);
+				context->Redisplay(preForwardPropertyInfo2.m_ColorScale, true);
+			}
+
+			view->Invalidate();
+			view->Redraw();
+		});
+
+	// 连接信号槽
+	connect(calculateThread, &QThread::started, calculateWorker, &ForwardDesignWorker::DoWork);
+	connect(calculateWorker, &ForwardDesignWorker::ProgressUpdated, progressDialog, &ProgressDialog::SetProgress);
+	connect(calculateWorker, &ForwardDesignWorker::StatusUpdated, progressDialog, &ProgressDialog::SetStatusText);
+	connect(progressDialog, &ProgressDialog::Canceled, calculateWorker, &ForwardDesignWorker::RequestInterruption, Qt::DirectConnection);
+
+	// 处理导入结果
+	connect(calculateWorker, &ForwardDesignWorker::WorkFinished, this,
+		[=](bool success, const QString& msg) {
+			if (success)
+			{
+				int maxFrame = msg.toInt();
+
+				// 设置最终结果到表格
+				double finalValue = preForwardCalculateForm(calculationPropertyInfo.preForwardCalculateFormula, A, B, C, D, E, F, G);
+				QString result = QString::number(qRound(finalValue));
+				m_preheatingTimeValue = result;
+				QTableWidgetItem* resultItem = new QTableWidgetItem(m_preheatingTimeValue);
+				resultItem->setBackground(QBrush(QColor(2, 253, 254)));
+				m_tableWidget->setItem(9, 2, resultItem);
+
+				// 设置计算完成标志
+				auto preForwardPropertyInfo = ins->GetPreForwardPropertyInfo();
+				preForwardPropertyInfo.isChecked = true;
+				ins->SetPreForwardPropertyInfo(preForwardPropertyInfo);
+
+				// 连接动画帧变化信号（使用UniqueConnection防止重复连接）
+				auto toolsAnimationWidget = importModelWidget->GetToolsAnimationWidget();
+				connect(toolsAnimationWidget, &ToolsAnimationWidget::animationFrameChanged, this,
+					[=](int frameIndex) {
+						auto treeModelWidget = importModelWidget->GetGFTreeModelWidget();
+						auto item = treeModelWidget->GetGFTreeWidget()->currentItem();
+						if (!item)
 						{
-							aColorScale->SetFormat(TCollection_AsciiString("%.2f"));
-							aColorScale->SetSize(200, 500);
-							aColorScale->SetRange(min_value, max_value);
-							aColorScale->SetNumberOfIntervals(9);
-							aColorScale->SetLabelPosition(Aspect_TOCSP_RIGHT);
-							aColorScale->SetTextHeight(30);
-							aColorScale->SetColor(Quantity_Color(Quantity_NOC_BLACK));
-							aColorScale->SetTitle(newTitle);
-							aColorScale->SetColorRange(Quantity_Color(Quantity_NOC_BLUE1), Quantity_Color(Quantity_NOC_RED));
-							aColorScale->SetLabelType(Aspect_TOCSD_AUTO);
-							aColorScale->SetZLayer(Graphic3d_ZLayerId_TopOSD);
+							return;
 						}
-						preForwardPropertyInfo2.m_ColorScale = aColorScale;
-						ins->SetPreForwardPropertyInfo(preForwardPropertyInfo2);
+						auto name = item->text(0);
+						bool isForwardDesign = (item->data(0, Qt::UserRole).toString() == "PreForwardDesign");
+						if (isForwardDesign)
+						{
+							auto occView = importModelWidget->GetOccView();
+							std::vector<double> nodeValues;
+							APISetNodeValue::SetPreForwardDesignResult(occView, nodeValues, frameIndex);
 
-						Graphic3d_Vec2i anoffset(0, Standard_Integer(550));
-						context->SetTransformPersistence(preForwardPropertyInfo2.m_ColorScale, new Graphic3d_TransformPers(Graphic3d_TMF_2d, Aspect_TOTP_LEFT_UPPER, anoffset));
-						context->SetDisplayMode(preForwardPropertyInfo2.m_ColorScale, 1, Standard_False);
-						context->Display(preForwardPropertyInfo2.m_ColorScale, Standard_True);
-					}
-					else
-					{
-						preForwardPropertyInfo2.m_ColorScale->SetTitle(newTitle);
-						preForwardPropertyInfo2.m_ColorScale->SetRange(min_value, max_value);
-						context->Redisplay(preForwardPropertyInfo2.m_ColorScale, true);
-					}
+							Handle(AIS_InteractiveContext) context = occView->getContext();
+							Handle(V3d_View) view = occView->getView();
 
-					view->Invalidate();
-					view->Redraw();
-				});
+							auto preForwardPropertyInfo = ins->GetPreForwardPropertyInfo();
 
-			// 连接信号槽
-			connect(calculateThread, &QThread::started, calculateWorker, &ForwardDesignWorker::DoWork);
-			connect(calculateWorker, &ForwardDesignWorker::ProgressUpdated, progressDialog, &ProgressDialog::SetProgress);
-			connect(calculateWorker, &ForwardDesignWorker::StatusUpdated, progressDialog, &ProgressDialog::SetStatusText);
-			connect(progressDialog, &ProgressDialog::Canceled, calculateWorker, &ForwardDesignWorker::RequestInterruption, Qt::DirectConnection);
+							if (!preForwardPropertyInfo.m_ColorScale.IsNull())
+							{
+								//double temperature = preForwardPropertyInfo.x.at(frameIndex);
+								//double time = preForwardPropertyInfo.y.at(frameIndex);
+								auto temperature = preForwardPropertyInfo.targetTemperatureValue;
+								auto time = preForwardPropertyInfo.preheatingTimeValue;
+								QString titleStr = QString("弹体预热时间: %1s\n弹体目标温度: %2 ℃")
+									.arg(time, 0, 'f', 0)
+									.arg(temperature, 0, 'f', 0);
+								TCollection_ExtendedString newTitle(titleStr.toUtf8().constData(), true);
+								preForwardPropertyInfo.m_ColorScale->SetTitle(newTitle);
 
-			// 处理导入结果
-			connect(calculateWorker, &ForwardDesignWorker::WorkFinished, this,
-				[=](bool success, const QString& msg) {
-					if (success)
-					{
-						int maxFrame = msg.toInt();
+								context->Redisplay(preForwardPropertyInfo.m_ColorScale, true);
+							}
 
-						// 设置最终结果到表格
-						double finalValue = preForwardCalculateForm(calculationPropertyInfo.preForwardCalculateFormula, A, B, C, D, E, F, G);
-						QString result = QString::number(qRound(finalValue));
-						m_preheatingTimeValue = result;
-						QTableWidgetItem* resultItem = new QTableWidgetItem(m_preheatingTimeValue);
-						resultItem->setBackground(QBrush(QColor(2, 253, 254)));
-						m_tableWidget->setItem(9, 2, resultItem);
+							Graphic3d_Vec2i anoffset(0, Standard_Integer(550));
+							context->SetTransformPersistence(preForwardPropertyInfo.m_ColorScale, new Graphic3d_TransformPers(Graphic3d_TMF_2d, Aspect_TOTP_LEFT_UPPER, anoffset));
+							context->SetDisplayMode(preForwardPropertyInfo.m_ColorScale, 1, Standard_False);
+							context->Display(preForwardPropertyInfo.m_ColorScale, Standard_True);
 
-						// 设置计算完成标志
-						auto preForwardPropertyInfo = ins->GetPreForwardPropertyInfo();
-						preForwardPropertyInfo.isChecked = true;
-						ins->SetPreForwardPropertyInfo(preForwardPropertyInfo);
+							// 强制刷新视图
+							view->Invalidate();
+							view->Redraw();
+						}
+					}, Qt::UniqueConnection);
 
-						// 连接动画帧变化信号（使用UniqueConnection防止重复连接）
-						auto toolsAnimationWidget = gfParent->GetToolsAnimationWidget();
-						connect(toolsAnimationWidget, &ToolsAnimationWidget::animationFrameChanged, this,
-							[=](int frameIndex) {
-								auto treeModelWidget = gfParent->GetGFTreeModelWidget();
-								auto item = treeModelWidget->GetGFTreeWidget()->currentItem();
-								if (!item) return;
-								auto name = item->text(0);
-								bool isForwardDesign = (item->data(0, Qt::UserRole).toString() == "PreForwardDesign");
-								if (isForwardDesign)
-								{
-									auto occView = gfParent->GetOccView();
-									std::vector<double> nodeValues;
-									APISetNodeValue::SetPreForwardDesignResult(occView, nodeValues, frameIndex);
+				//日志输出
+				logWidget->PrintInfo("热环境弹体预热工程分析正向设计计算完成", true);
 
-									Handle(AIS_InteractiveContext) context = occView->getContext();
-									Handle(V3d_View) view = occView->getView();
+				QApplication::processEvents();
+			}
+			else
+			{
+				// 失败或取消：清空数据
+				auto preForwardPropertyInfo = ins->GetPreForwardPropertyInfo();
+				preForwardPropertyInfo.x.clear();
+				preForwardPropertyInfo.y.clear();
+				preForwardPropertyInfo.m_ColorScale = nullptr;
 
-									auto preForwardPropertyInfo = ins->GetPreForwardPropertyInfo();
+				ins->SetPreForwardPropertyInfo(preForwardPropertyInfo);
 
-									if (!preForwardPropertyInfo.m_ColorScale.IsNull())
-									{
-										double temperature = preForwardPropertyInfo.x.at(frameIndex);
-										double time = preForwardPropertyInfo.y.at(frameIndex);
-										QString titleStr = QString("弹体预热时间: %1s\n弹体目标温度: %2 ℃")
-											.arg(time, 0, 'f', 0)
-											.arg(temperature, 0, 'f', 0);
-										TCollection_ExtendedString newTitle(titleStr.toUtf8().constData(), true);
-										preForwardPropertyInfo.m_ColorScale->SetTitle(newTitle);
+				auto occView = importModelWidget->GetOccView();
+				Handle(AIS_InteractiveContext) context = occView->getContext();
+				context->EraseAll(true);
 
-										context->Redisplay(preForwardPropertyInfo.m_ColorScale, true);
-									}
-
-									Graphic3d_Vec2i anoffset(0, Standard_Integer(550));
-									context->SetTransformPersistence(preForwardPropertyInfo.m_ColorScale, new Graphic3d_TransformPers(Graphic3d_TMF_2d, Aspect_TOTP_LEFT_UPPER, anoffset));
-									context->SetDisplayMode(preForwardPropertyInfo.m_ColorScale, 1, Standard_False);
-									context->Display(preForwardPropertyInfo.m_ColorScale, Standard_True);
-
-									// 强制刷新视图
-									view->Invalidate();
-									view->Redraw();
-								}
-							}, Qt::UniqueConnection);
-
-						//日志输出
-						QString newTimeStr = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss");
-						QString newText = newTimeStr + "[信息]>热环境弹体预热工程分析正向设计计算完成";
-						textEdit->appendPlainText(newText);
-						logWidget->update();
-						QApplication::processEvents();
-					}
-					else
-					{
-						// 失败或取消：清空数据
-						auto preForwardPropertyInfo = ins->GetPreForwardPropertyInfo();
-						preForwardPropertyInfo.x.clear();
-						preForwardPropertyInfo.y.clear();
-						ins->SetPreForwardPropertyInfo(preForwardPropertyInfo);
-
-						auto occView = gfParent->GetOccView();
-						Handle(AIS_InteractiveContext) context = occView->getContext();
-						context->EraseAll(true);
-					}
-					// 清理资源
-					progressDialog->close();
-					calculateThread->quit();
-					calculateThread->wait();
-					calculateWorker->deleteLater();
-					calculateThread->deleteLater();
-					progressDialog->deleteLater();
-				});
-			// 启动线程
-			calculateThread->start();
-
-			break;
-		}
-		else
-		{
-			parent = parent->parentWidget();
-		}
-	}
+				logWidget->PrintInfo("热环境弹体预热工程分析正向设计计算取消", true);
+			}
+			// 清理资源
+			progressDialog->close();
+			calculateThread->quit();
+			calculateThread->wait();
+			calculateWorker->deleteLater();
+			calculateThread->deleteLater();
+			progressDialog->deleteLater();
+		});
+	// 启动线程
+	calculateThread->start();
 }
 
 void PreForwardDesignPropertyWidget::reset()

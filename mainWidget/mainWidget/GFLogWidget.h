@@ -9,6 +9,8 @@ public:
 	GFLogWidget(QWidget*parent = nullptr);
 	~GFLogWidget();
 
+	void PrintInfo(QString info, bool valid);
+
 	QPlainTextEdit*GetTextEdit() { return m_TextEdit; }
 
 private:
