@@ -610,10 +610,9 @@ void mainWidget::handleModelImport()
 {
 	if (!m_importModelWid) return;
 
-	QString filePath = QFileDialog::getOpenFileName(this,
-		QString::fromLocal8Bit("打开文件"),
-		QDir::homePath(),
-		QString::fromLocal8Bit("STEP Files (*.stp *.step);;IGES Files (*.iges *.igs);;STL Files (*.stl);;All Files (*.*)"));
+	QDir privateDir("src/model");
+	QString filePath = QFileDialog::getOpenFileName(this, "Open File", privateDir.path(),
+		"STEP Files (*.stp *.step);;IGES Files (*.iges *.igs);;VTK Files (*.vtk);;X_T Files (*.x_t);;All Files (*.*)");
 
 	if (filePath.isEmpty()) return;
 

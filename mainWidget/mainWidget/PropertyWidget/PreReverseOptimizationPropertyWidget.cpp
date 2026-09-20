@@ -79,7 +79,7 @@ void PreReverseOptimizationPropertyWidget::initWidget()
 			m_tableWidget->setItem(row, 0, serialItem);
 		}
 
-		QStringList labels = { "逆向寻优","工艺设计参数",  "弹体目标温度", "烘箱环境温度", "弹体初始温度","环境对流传热系数","壳体辐射吸收系数","环境发射率","工艺目标参数","弹体预热时间","弹体温度云图与温升曲线" };
+		QStringList labels = { "逆向寻优","工艺设计参数",  "弹体目标温度(50～90)", "烘箱环境温度(60～90)", "弹体初始温度","环境对流传热系数","壳体辐射吸收系数","环境发射率","工艺目标参数","弹体预热时间","弹体温度云图与温升曲线" };
 		for (int row = 0; row < labels.size(); ++row) {
 			QTableWidgetItem* labelItem = new QTableWidgetItem(labels[row]);
 			labelItem->setTextAlignment(Qt::AlignCenter); // 文本居中
@@ -464,10 +464,29 @@ void PreReverseOptimizationPropertyWidget::calculate()
 					double value = 35 * v + 50;
 
 					if (value >= 0 && value <= 120) {
-
-						QTableWidgetItem* resultItem = new QTableWidgetItem(QString::number(qRound(value)));
+						if (value > 90)
+						{
+							value = 90;
+						}
+						if (value < 50)
+						{
+							value = 50;
+						}
+						auto limitBool = false;
+						if (value > m_environmentalTemperatureValue.toDouble())
+						{
+							value = m_environmentalTemperatureValue.toDouble();
+							limitBool = true;
+						}
+						QString targeTempe = QString::number(qRound(value));
+						QTableWidgetItem* resultItem = new QTableWidgetItem(targeTempe);
 						resultItem->setBackground(QBrush(QColor(2, 253, 254)));
 						m_tableWidget->setItem(2, 2, resultItem);
+						m_targetTemperatureValue = targeTempe;
+						/*if (limitBool)
+						{
+							QMessageBox::information(this, "成功", "弹体目标温度与烘箱环境温度一致");
+						}*/
 						//QMessageBox::information(this, "成功", "计算完成");
 						return;
 					}
@@ -479,9 +498,29 @@ void PreReverseOptimizationPropertyWidget::calculate()
 					double value = 30 * v + 60;
 					if (value >= 0 && value <= 120) {
 
-						QTableWidgetItem* resultItem = new QTableWidgetItem(QString::number(qRound(value)));
+						if (value > 90)
+						{
+							value = 90;
+						}
+						if (value < 60)
+						{
+							value = 60;
+						}
+						auto limitBool = false;
+						if (value < m_targetTemperatureValue.toDouble())
+						{
+							value = m_targetTemperatureValue.toDouble();
+							limitBool = true;
+						}
+						QString environmentalTemperature = QString::number(qRound(value));
+						QTableWidgetItem* resultItem = new QTableWidgetItem(environmentalTemperature);
 						resultItem->setBackground(QBrush(QColor(2, 253, 254)));
 						m_tableWidget->setItem(3, 2, resultItem);
+						m_environmentalTemperatureValue = environmentalTemperature;
+						/*if (limitBool)
+						{
+							QMessageBox::information(this, "成功", "弹体目标温度与烘箱环境温度一致");
+						}*/
 						//QMessageBox::information(this, "成功", "计算完成");
 						return;
 					}

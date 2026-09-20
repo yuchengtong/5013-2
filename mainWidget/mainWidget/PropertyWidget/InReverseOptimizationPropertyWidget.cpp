@@ -589,7 +589,7 @@ void InReverseOptimizationPropertyWidget::calculate()
 										// 对阀门开度寻优
 										double value = v;
 											value = 2.218704 * v + 12.509291;
-										if (value >= 0 && value <= 100) {
+										if (value >= 13 && value <= 39) {
 											m_valveOpeningValue = QString::number(value * 2.0, 'f', 2);
 											m_valveOpeningValueItem = new QTableWidgetItem(m_valveOpeningValue);
 											m_valveOpeningValueItem->setBackground(QBrush(QColor(2, 253, 254)));
@@ -604,7 +604,7 @@ void InReverseOptimizationPropertyWidget::calculate()
 										double value = v;
 										value = (10.504812 * v + 50.037481) / 1000;
 
-										if (value >= 0 && value <= 100) {
+										if (value >= 0.02 && value <= 0.08) {
 											m_vacuumDegreeValue = QString::number(value, 'f', 2);
 											m_vacuumDegreeValueItem = new QTableWidgetItem(m_vacuumDegreeValue);
 											m_vacuumDegreeValueItem->setBackground(QBrush(QColor(2, 253, 254)));
@@ -615,7 +615,7 @@ void InReverseOptimizationPropertyWidget::calculate()
 									}
 
 								}
-								QMessageBox::warning(this, "提示", "解超出范围");
+								QMessageBox::warning(this, "提示", "在当前参数范围内未找到匹配参数，建议调整其他工艺参数！");
 								});
 
 							if (valveOpeningBool)
@@ -657,7 +657,7 @@ void InReverseOptimizationPropertyWidget::calculate()
 										// 对阀门开度寻优
 										double value = v;
 										value = 2.177802 * v + 12.518519;
-										if (value >= 0 && value <= 100) {
+										if (value >= 13 && value <= 39) {
 											m_valveOpeningValue = QString::number(value * 2.0, 'f', 2);
 											m_valveOpeningValueItem = new QTableWidgetItem(m_valveOpeningValue);
 											m_valveOpeningValueItem->setBackground(QBrush(QColor(2, 253, 254)));
@@ -672,7 +672,7 @@ void InReverseOptimizationPropertyWidget::calculate()
 										double value = v;
 										value = (10.889012 * v + 50.000000) / 1000;
 
-										if (value >= 0 && value <= 100) {
+										if (value >= 0.02 && value <= 0.08) {
 											m_vacuumDegreeValue = QString::number(value, 'f', 2);
 											m_vacuumDegreeValueItem = new QTableWidgetItem(m_vacuumDegreeValue);
 											m_vacuumDegreeValueItem->setBackground(QBrush(QColor(2, 253, 254)));
@@ -683,7 +683,7 @@ void InReverseOptimizationPropertyWidget::calculate()
 									}
 
 								}
-								QMessageBox::warning(this, "提示", "解超出范围");
+								QMessageBox::warning(this, "提示", "在当前参数范围内未找到匹配参数，建议调整其他工艺参数！");
 								});
 
 							if (valveOpeningBool)
@@ -731,7 +731,7 @@ void InReverseOptimizationPropertyWidget::calculate()
 										// 对阀门开度寻优
 										double value = v;
 										value = 2.44883 * v + 13.000000;
-										if (value >= 0 && value <= 100) {
+										if (value >= 13 && value <= 39) {
 											m_valveOpeningValue = QString::number(value * 2.0, 'f', 2);
 											m_valveOpeningValueItem = new QTableWidgetItem(m_valveOpeningValue);
 											m_valveOpeningValueItem->setBackground(QBrush(QColor(2, 253, 254)));
@@ -746,7 +746,7 @@ void InReverseOptimizationPropertyWidget::calculate()
 										double value = v;
 										value = (11.302298 * v + 50.000000) / 1000;
 
-										if (value >= 0 && value <= 100) {
+										if (value >= 0.02 && value <= 0.08) {
 											m_vacuumDegreeValue = QString::number(value, 'f', 2);
 											m_vacuumDegreeValueItem = new QTableWidgetItem(m_vacuumDegreeValue);
 											m_vacuumDegreeValueItem->setBackground(QBrush(QColor(2, 253, 254)));
@@ -757,7 +757,7 @@ void InReverseOptimizationPropertyWidget::calculate()
 									}
 
 								}
-								QMessageBox::warning(this, "提示", "解超出范围");
+								QMessageBox::warning(this, "提示", "在当前参数范围内未找到匹配参数，建议调整其他工艺参数！");
 								});
 
 							if (valveOpeningBool)
@@ -794,7 +794,7 @@ void InReverseOptimizationPropertyWidget::calculate()
 										// 对阀门开度寻优
 										double value = v;
 										value = 2.44883 * v + 13.000000;
-										if (value >= 0 && value <= 100) {
+										if (value >= 13 && value <= 39) {
 											m_valveOpeningValue = QString::number(value * 2.0, 'f', 2);
 											m_valveOpeningValueItem = new QTableWidgetItem(m_valveOpeningValue);
 											m_valveOpeningValueItem->setBackground(QBrush(QColor(2, 253, 254)));
@@ -809,7 +809,7 @@ void InReverseOptimizationPropertyWidget::calculate()
 										double value = v;
 										value = (11.302298 * v + 50.000000) / 1000;
 
-										if (value >= 0 && value <= 100) {
+										if (value >= 0.02 && value <= 0.08) {
 											m_vacuumDegreeValue = QString::number(value, 'f', 2);
 											m_vacuumDegreeValueItem = new QTableWidgetItem(m_vacuumDegreeValue);
 											m_vacuumDegreeValueItem->setBackground(QBrush(QColor(2, 253, 254)));
@@ -820,7 +820,7 @@ void InReverseOptimizationPropertyWidget::calculate()
 									}
 
 								}
-								QMessageBox::warning(this, "提示", "解超出范围");
+								QMessageBox::warning(this, "提示", "在当前参数范围内未找到匹配参数，建议调整其他工艺参数！");
 								});
 
 							if (valveOpeningBool)
@@ -868,7 +868,7 @@ void InReverseOptimizationPropertyWidget::calculate()
 										// 对阀门开度寻优
 										double value = v;
 										value = 2.312785 * v + 12.638889;
-										if (value >= 0 && value <= 100) {
+										if (value >= 13 && value <= 39) {
 											m_valveOpeningValue = QString::number(value * 2.0, 'f', 2);
 											m_valveOpeningValueItem = new QTableWidgetItem(m_valveOpeningValue);
 											m_valveOpeningValueItem->setBackground(QBrush(QColor(2, 253, 254)));
@@ -883,7 +883,7 @@ void InReverseOptimizationPropertyWidget::calculate()
 										double value = v;
 										value = (11.302298 * v + 50.000000) / 1000;
 
-										if (value >= 0 && value <= 100) {
+										if (value >= 0.02 && value <= 0.08) {
 											m_vacuumDegreeValue = QString::number(value, 'f', 2);
 											m_vacuumDegreeValueItem = new QTableWidgetItem(m_vacuumDegreeValue);
 											m_vacuumDegreeValueItem->setBackground(QBrush(QColor(2, 253, 254)));
@@ -894,7 +894,7 @@ void InReverseOptimizationPropertyWidget::calculate()
 									}
 
 								}
-								QMessageBox::warning(this, "提示", "解超出范围");
+								QMessageBox::warning(this, "提示", "在当前参数范围内未找到匹配参数，建议调整其他工艺参数！");
 								});
 
 							if (valveOpeningBool)
@@ -931,7 +931,7 @@ void InReverseOptimizationPropertyWidget::calculate()
 										// 对阀门开度寻优
 										double value = v;
 										value = 2.312785 * v + 12.638889;
-										if (value >= 0 && value <= 100) {
+										if (value >= 13 && value <= 39) {
 											m_valveOpeningValue = QString::number(value * 2.0, 'f', 2);
 											m_valveOpeningValueItem = new QTableWidgetItem(m_valveOpeningValue);
 											m_valveOpeningValueItem->setBackground(QBrush(QColor(2, 253, 254)));
@@ -946,7 +946,7 @@ void InReverseOptimizationPropertyWidget::calculate()
 										double value = v;
 										value = (11.302298 * v + 50.000000) / 1000;
 
-										if (value >= 0 && value <= 100) {
+										if (value >= 0.02 && value <= 0.08) {
 											m_vacuumDegreeValue = QString::number(value, 'f', 2);
 											m_vacuumDegreeValueItem = new QTableWidgetItem(m_vacuumDegreeValue);
 											m_vacuumDegreeValueItem->setBackground(QBrush(QColor(2, 253, 254)));
@@ -957,7 +957,7 @@ void InReverseOptimizationPropertyWidget::calculate()
 									}
 
 								}
-								QMessageBox::warning(this, "提示", "解超出范围");
+								QMessageBox::warning(this, "提示", "在当前参数范围内未找到匹配参数，建议调整其他工艺参数！");
 								});
 
 							if (valveOpeningBool)
@@ -1006,7 +1006,7 @@ void InReverseOptimizationPropertyWidget::calculate()
 										// 对阀门开度寻优
 										double value = v;
 										value = 1.845344 * v + 13.398148;
-										if (value >= 0 && value <= 100) {
+										if (value >= 13 && value <= 39) {
 											m_valveOpeningValue = QString::number(value * 2.0, 'f', 2);
 											m_valveOpeningValueItem = new QTableWidgetItem(m_valveOpeningValue);
 											m_valveOpeningValueItem->setBackground(QBrush(QColor(2, 253, 254)));
@@ -1021,7 +1021,7 @@ void InReverseOptimizationPropertyWidget::calculate()
 										double value = v;
 										value = (11.302298 * v + 50.000000) / 1000;
 
-										if (value >= 0 && value <= 100) {
+										if (value >= 0.02 && value <= 0.08) {
 											m_vacuumDegreeValue = QString::number(value, 'f', 2);
 											m_vacuumDegreeValueItem = new QTableWidgetItem(m_vacuumDegreeValue);
 											m_vacuumDegreeValueItem->setBackground(QBrush(QColor(2, 253, 254)));
@@ -1032,7 +1032,7 @@ void InReverseOptimizationPropertyWidget::calculate()
 									}
 
 								}
-								QMessageBox::warning(this, "提示", "解超出范围");
+								QMessageBox::warning(this, "提示", "在当前参数范围内未找到匹配参数，建议调整其他工艺参数！");
 								});
 
 							if (valveOpeningBool)
@@ -1069,7 +1069,7 @@ void InReverseOptimizationPropertyWidget::calculate()
 										// 对阀门开度寻优
 										double value = v;
 										value = 1.845344 * v + 13.398148;
-										if (value >= 0 && value <= 100) {
+										if (value >= 13 && value <= 39) {
 											m_valveOpeningValue = QString::number(value * 2.0, 'f', 2);
 											m_valveOpeningValueItem = new QTableWidgetItem(m_valveOpeningValue);
 											m_valveOpeningValueItem->setBackground(QBrush(QColor(2, 253, 254)));
@@ -1084,7 +1084,7 @@ void InReverseOptimizationPropertyWidget::calculate()
 										double value = v;
 										value = (11.302298 * v + 50.000000) / 1000;
 
-										if (value >= 0 && value <= 100) {
+										if (value >= 0.02 && value <= 0.08) {
 											m_vacuumDegreeValue = QString::number(value, 'f', 2);
 											m_vacuumDegreeValueItem = new QTableWidgetItem(m_vacuumDegreeValue);
 											m_vacuumDegreeValueItem->setBackground(QBrush(QColor(2, 253, 254)));
@@ -1095,7 +1095,7 @@ void InReverseOptimizationPropertyWidget::calculate()
 									}
 
 								}
-								QMessageBox::warning(this, "提示", "解超出范围");
+								QMessageBox::warning(this, "提示", "在当前参数范围内未找到匹配参数，建议调整其他工艺参数！");
 								});
 
 							if (valveOpeningBool)

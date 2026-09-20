@@ -605,6 +605,7 @@ void PreForwardDesignPropertyWidget::preForwardCalculate()
 				// 设置计算完成标志
 				auto preForwardPropertyInfo = ins->GetPreForwardPropertyInfo();
 				preForwardPropertyInfo.isChecked = true;
+				preForwardPropertyInfo.preheatingTimeValue = m_preheatingTimeValue.toDouble();
 				ins->SetPreForwardPropertyInfo(preForwardPropertyInfo);
 
 				// 连接动画帧变化信号（使用UniqueConnection防止重复连接）
