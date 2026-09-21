@@ -83,7 +83,7 @@ mainWidget::~mainWidget()
 void mainWidget::init()
 {
 	setWindowIcon(QIcon(":/selectWidget/src/selectWidget/Custom.png"));
-	setWindowTitle(QString::fromLocal8Bit("TNT基/DNAN基熔铸炸药注装工艺参数匹配设计工具软件"));
+	setWindowTitle("TNT基/DNAN基熔铸炸药注装工艺参数匹配设计工具软件");
 
 	// ========== 创建顶部导航TabWidget（替代MenuBar）==========
 	m_navTabWidget = new QTabWidget(this);
@@ -125,9 +125,9 @@ border-bottom: 2px solid white; /* 改成白色，看起来就没有线了 */
 )");
 
 
-	m_navTabWidget->addTab(new QWidget(), QIcon(":/src/database.svg"), QString::fromLocal8Bit("数据管理"));
-	m_navTabWidget->addTab(new QWidget(), QIcon(":/src/craft.svg"), QString::fromLocal8Bit("基于产线环境注药工艺参数优化设计"));
-	m_navTabWidget->addTab(new QWidget(), QIcon(":/src/help.svg"), QString::fromLocal8Bit("帮助"));
+	m_navTabWidget->addTab(new QWidget(), QIcon(":/src/database.svg"), "数据管理");
+	m_navTabWidget->addTab(new QWidget(), QIcon(":/src/craft.svg"), "基于产线环境注药工艺参数优化设计");
+	m_navTabWidget->addTab(new QWidget(), QIcon(":/src/help.svg"), "帮助");
 	m_navTabWidget->setFixedHeight(48);
 	m_navTabWidget->setIconSize(QSize(32, 32));
 
@@ -174,7 +174,7 @@ border-bottom: 2px solid white; /* 改成白色，看起来就没有线了 */
 
 	// 状态栏
 	QStatusBar* statusbar = statusBar();
-	m_statusLabel = new QLabel(QString::fromLocal8Bit("内存使用：0%，CPU使用：0%"));
+	m_statusLabel = new QLabel("内存使用：0%，CPU使用：0%");
 	statusbar->addPermanentWidget(m_statusLabel);
 	refreshMemoryUsage(m_statusLabel);
 
@@ -254,10 +254,10 @@ void mainWidget::setupGeomWidget()
 	m_saveAsBtn->setFlat(true);
 	m_exportBtn->setFlat(true);
 
-	auto importLabel = new QLabel(QString::fromLocal8Bit("导入"));
-	auto saveLabel = new QLabel(QString::fromLocal8Bit("保存"));
-	auto saveAsLabel = new QLabel(QString::fromLocal8Bit("另存为..."));
-	auto exportLabel = new QLabel(QString::fromLocal8Bit("导出"));
+	auto importLabel = new QLabel("导入");
+	auto saveLabel = new QLabel("保存");
+	auto saveAsLabel = new QLabel("另存为...");
+	auto exportLabel = new QLabel("导出");
 
 	auto importVBox = new QVBoxLayout();
 	importVBox->addWidget(m_importBtn, 0, Qt::AlignHCenter);
@@ -333,11 +333,11 @@ void mainWidget::setupOperationWidget()
 	m_fitAllBtn->setFlat(true);
 	m_resetBtn->setFlat(true);
 
-	auto moveLabel = new QLabel(QString::fromLocal8Bit("移动"));
-	auto rotateLabel = new QLabel(QString::fromLocal8Bit("旋转"));
-	auto zoomLabel = new QLabel(QString::fromLocal8Bit("缩放"));
-	auto fitAllLabel = new QLabel(QString::fromLocal8Bit("聚焦"));
-	auto resetLabel = new QLabel(QString::fromLocal8Bit("重置"));
+	auto moveLabel = new QLabel("移动");
+	auto rotateLabel = new QLabel("旋转");
+	auto zoomLabel = new QLabel("缩放");
+	auto fitAllLabel = new QLabel("聚焦");
+	auto resetLabel = new QLabel("重置");
 
 	auto moveVBox = new QVBoxLayout();
 	moveVBox->addWidget(m_moveBtn, 0, Qt::AlignHCenter);
@@ -424,12 +424,12 @@ void mainWidget::setupViewWidget()
 	m_yNegBtn->setIcon(QIcon(":/src/View all From -Y.png"));
 	m_zNegBtn->setIcon(QIcon(":/src/View all From -Z.png"));
 
-	auto xLabel = new QLabel(QString::fromLocal8Bit("+X"));
-	auto yLabel = new QLabel(QString::fromLocal8Bit("+Y"));
-	auto zLabel = new QLabel(QString::fromLocal8Bit("+Z"));
-	auto xNegLabel = new QLabel(QString::fromLocal8Bit("-X"));
-	auto yNegLabel = new QLabel(QString::fromLocal8Bit("-Y"));
-	auto zNegLabel = new QLabel(QString::fromLocal8Bit("-Z"));
+	auto xLabel = new QLabel("+X");
+	auto yLabel = new QLabel("+Y");
+	auto zLabel = new QLabel("+Z");
+	auto xNegLabel = new QLabel("-X");
+	auto yNegLabel = new QLabel("-Y");
+	auto zNegLabel = new QLabel("-Z");
 
 	auto xVBox = new QVBoxLayout();
 	xVBox->addWidget(m_xBtn, 0, Qt::AlignHCenter);
@@ -543,7 +543,7 @@ void mainWidget::bindConnect()
 				int size = treeWidget->topLevelItemCount();
 				for (int i = 0; i < size; ++i) {
 					QTreeWidgetItem* child = treeWidget->topLevelItem(i);
-					if (child && child->text(0).contains(QString::fromLocal8Bit("用户数据库"))) {
+					if (child && child->text(0).contains("用户数据库")) {
 						child->setHidden(true);
 					}
 				}
@@ -557,7 +557,7 @@ void mainWidget::bindConnect()
 		}
 		else if (index == 2) {
 			// 帮助 - 只弹出对话框，不改变当前界面
-			QString aboutText = QString::fromLocal8Bit(
+			QString aboutText = 
 				"软件名称：TNT基/DNAN基熔铸炸药注装工艺参数匹配设计工具软件\n"
 				"软件版本：V1.0.0\n"
 				"版权所有：南京理工大学\n"
@@ -567,9 +567,9 @@ void mainWidget::bindConnect()
 				"版权声明：\n"
 				"    本软件受版权保护，未经明确授权不得以任何形式复制、分发、修改或用于商业目的。\n"
 				"    如有任何问题，请联系我们。"
-			);
+			;
 			QMessageBox::about(this,
-				QString::fromLocal8Bit("TNT基/DNAN基熔铸炸药注装工艺参数匹配设计工具软件"),
+				"TNT基/DNAN基熔铸炸药注装工艺参数匹配设计工具软件",
 				aboutText);
 
 			// 帮助弹窗后，切回之前有效的页面，不改变主内容
@@ -870,7 +870,7 @@ void mainWidget::handleExcelImport()
 {
 	QString filter = "Excel files (*.xlsx *.xls)";
 	QString filePath = QFileDialog::getOpenFileName(this,
-		QString::fromLocal8Bit("打开Excel"),
+		"打开Excel",
 		QDir::currentPath(), filter);
 
 	if (filePath.isEmpty()) return;
@@ -921,14 +921,14 @@ void mainWidget::getMemoryUsage(QLabel* statusLabel)
 	}
 	else {
 		qWarning() << "Failed to get memory info, error:" << GetLastError();
-		memoryText = QString::fromLocal8Bit("获取失败");
+		memoryText = "获取失败";
 	}
 
 	// CPU使用率
 	FILETIME currIdleTime, currKernelTime, currUserTime;
 	if (!GetSystemTimes(&currIdleTime, &currKernelTime, &currUserTime)) {
 		qWarning() << "Failed to get system times, error:" << GetLastError();
-		cpuText = QString::fromLocal8Bit("获取失败");
+		cpuText = "获取失败";
 	}
 	else {
 		if (m_isFirstSample) {
@@ -960,7 +960,7 @@ void mainWidget::getMemoryUsage(QLabel* statusLabel)
 		}
 	}
 
-	statusLabel->setText(QString::fromLocal8Bit("内存使用：%1%，CPU使用：%2%")
+	statusLabel->setText(QString("内存使用：%1%，CPU使用：%2%")
 		.arg(memoryText).arg(cpuText));
 }
 

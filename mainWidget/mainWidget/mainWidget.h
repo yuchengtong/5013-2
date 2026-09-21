@@ -91,5 +91,5 @@ private:
 	FILETIME m_prevUserTime = { 0 };
 	bool m_isFirstSample = true;
 
-	int m_prevValidIndex = 0;
+	int m_prevValidIndex = 1;
 };
