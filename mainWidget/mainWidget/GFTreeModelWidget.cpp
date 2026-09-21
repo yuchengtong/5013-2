@@ -137,7 +137,7 @@ void GFTreeModelWidget::init()
 	{
 		phyProperty->setText(0, "物性数据");
 		phyProperty->setData(0, Qt::UserRole, "PhysicalProperty");
-		phyProperty->setIcon(0, QIcon(":/tree/Tree/physical.svg"));
+		phyProperty->setIcon(0, QIcon(":/tree/Tree/physical.svg"));	
 		phyProperty->setExpanded(true);
 	}
 
@@ -159,10 +159,10 @@ void GFTreeModelWidget::init()
 		gelatin->setData(0, Qt::UserRole, "Gelatin");
 		gelatin->setIcon(0, QIcon(":/tree/Tree/gelatin.svg"));
 	}
-	phyProperty->setExpanded(true);
 	phyProperty->addChild(steel);
 	phyProperty->addChild(propellant);
 	phyProperty->addChild(gelatin);	
+
 
 	//计算模型
 	QTreeWidgetItem* calculationItem = new QTreeWidgetItem();
@@ -543,196 +543,192 @@ void GFTreeModelWidget::contextMenuEvent(QContextMenuEvent *event)
 		m_ContextMenu = new QMenu(this); // 创建菜单对象
 		QAction *customAction = new QAction("导入", this); // 创建动作对象并添加到菜单中
 		connect(customAction, &QAction::triggered, this, [item, this]() {
-			QWidget* parent = parentWidget();
-			while (parent) {
-				GFImportModelWidget* gfParent = dynamic_cast<GFImportModelWidget*>(parent);
-				if (gfParent)
-				{
-					QDir privateDir("src/model");
-					QString filePath = QFileDialog::getOpenFileName(this, "Open File", privateDir.path(),
-						"STEP Files (*.stp *.step);;IGES Files (*.iges *.igs);;VTK Files (*.vtk);;X_T Files (*.x_t);;All Files (*.*)");
-
-					if (filePath.isEmpty())
-					{
-						return;
-					}
-					QFileInfo fileInfo(filePath);
-					QString model = fileInfo.baseName();
-					if (model != "HQ-9B" && model != "YJ-20" && model != "YJ-91A" && model != "CJ-20A")
-					{
-						QMessageBox::warning(this, "导入失败", "导入文件错误！");
-						return;
-					}
-					auto* tableWid = gfParent->GetGeomPropertyWidget()->GetQTableWidget();
-					QTableWidgetItem* modelValueItem = new QTableWidgetItem(model);
-					modelValueItem->setTextAlignment(Qt::AlignCenter); // 文本居中
-					modelValueItem->setFlags(modelValueItem->flags() & ~Qt::ItemIsEditable); // 不可编辑
-					modelValueItem->setBackground(QBrush(QColor(230, 230, 230)));
-					tableWid->setItem(1, 2, modelValueItem);
-
-					
-					QDateTime currentTime = QDateTime::currentDateTime();
-					QString timeStr = currentTime.toString("yyyy-MM-dd hh:mm:ss");
-					auto logWidget = gfParent->GetLogWidget();
-					auto textEdit = logWidget->GetTextEdit();
-					QString text = timeStr + "[信息]>开始进行模型建立";
-					textEdit->appendPlainText(text);
-					logWidget->update();
-
-					// 关键：强制刷新UI，确保日志立即显示
-					QApplication::processEvents();
-					
-
-					// 创建进度对话框
-					ProgressDialog* progressDialog = new ProgressDialog("模型建立", gfParent);
-					progressDialog->show();
-
-					// 创建工作线程和工作对象
-					GeometryImportWorker* worker = new GeometryImportWorker(filePath);
-					QThread* workerThread = new QThread();
-					worker->moveToThread(workerThread);
-
-					// 连接信号槽
-					connect(workerThread, &QThread::started, worker, &GeometryImportWorker::DoWork);
-					connect(worker, &GeometryImportWorker::ProgressUpdated,
-						progressDialog, &ProgressDialog::SetProgress);
-					connect(worker, &GeometryImportWorker::StatusUpdated,
-						progressDialog, &ProgressDialog::SetStatusText);
-					connect(progressDialog, &ProgressDialog::Canceled,
-						worker, &GeometryImportWorker::RequestInterruption,
-						Qt::DirectConnection); 
-
-					// 处理导入结果
-					connect(worker, &GeometryImportWorker::WorkFinished, this,
-						[=](bool success, const QString& msg, ModelGeometryInfo info) {
-							// 更新日志
-							QDateTime finishTime = QDateTime::currentDateTime();
-							QString finishTimeStr = finishTime.toString("yyyy-MM-dd hh:mm:ss");
-							textEdit->appendPlainText(finishTimeStr + "[" + (success ? "信息" : "错误") + "]>" + msg);
-
-							if (success && !info.shape.IsNull())
-							{
-								double minX = DBL_MAX;
-								double minY = DBL_MAX;
-								double maxY = -DBL_MAX; // 新增：用于记录最大Y值，辅助判断底部边
-								double maxX = -DBL_MAX;
-								gp_Pnt bottomP1, bottomP2; // 修改：记录底部边线的两个端点
-								bool hasBottomEdge = false; // 修改：标记是否找到底部边
-
-								TopExp_Explorer exp(info.shape, TopAbs_EDGE);
-								for (; exp.More(); exp.Next())
-								{
-									TopoDS_Edge edge = TopoDS::Edge(exp.Current());
-									TopoDS_Vertex v1, v2;
-									TopExp::Vertices(edge, v1, v2);
-									gp_Pnt p1 = BRep_Tool::Pnt(v1);
-									gp_Pnt p2 = BRep_Tool::Pnt(v2);
-
-									bool vertical = (fabs(p1.X() - p2.X()) < 1e-3);
-									bool horizontal = (fabs(p1.Y() - p2.Y()) < 1e-3);
-
-									// 寻找最下侧的水平边（作为对称轴）
-									if (horizontal) {
-										double currentY = p1.Y();
-										if (currentY < minY) {
-											minY = currentY;
-											bottomP1 = p1; bottomP2 = p2; // 记录底部边的两个端点
-											hasBottomEdge = true;
-										}
-									}
-									// 顺便记录最大Y值，方便后续逻辑使用
-									maxY = std::max(maxY, std::max(p1.Y(), p2.Y()));
-
-									// 寻找最左侧的垂直边（如果后续还需要用到）
-									if (vertical) {
-										minX = std::min(minX, p1.X());
-									}
-									maxX = std::max(maxX, std::max(p1.X(), p2.X()));
-								}
-
-								// 沿底部水平边对称生成完整模型
-								if (hasBottomEdge)
-								{
-									// 构建对称轴（底部水平边）
-									gp_Ax1 mirrorAxis(bottomP1, gp_Dir(bottomP2.XYZ() - bottomP1.XYZ()));
-
-									// 设置镜像变换
-									gp_Trsf mirrorTrsf;
-									mirrorTrsf.SetMirror(mirrorAxis);
-
-									// 执行镜像
-									BRepBuilderAPI_Transform mirrorBRep(info.shape, mirrorTrsf, false);
-									TopoDS_Shape mirroredShape = mirrorBRep.Shape();
-
-									// 将原模型与镜像模型进行布尔并集（Fuse）融合
-									BRepAlgoAPI_Fuse fuseOp(info.shape, mirroredShape);
-									if (fuseOp.IsDone())
-									{
-										info.symmetricalShape = fuseOp.Shape();
-									}
-								}
-
-								info.model = model;
-								// 保存模型信息
-								ModelDataManager::GetInstance()->SetModelGeometryInfo(info);
-								updataIcon();
-
-								// 更新显示
-								auto occView = gfParent->GetOccView();
-								Handle(AIS_InteractiveContext) context = occView->getContext();
-								context->EraseAll(true);
-
-								Handle(AIS_Shape) modelPresentation = new AIS_Shape(info.shape);
-								context->SetDisplayMode(modelPresentation, AIS_Shaded, true);
-								context->SetColor(modelPresentation, Quantity_Color(0.0, 1.0, 1.0, Quantity_TOC_RGB), true);
-								context->Display(modelPresentation, false);
-								occView->fitAll();
-
-								// 更新属性窗口
-								auto geomProWid = gfParent->findChild<GeomPropertyWidget*>();
-								geomProWid->UpdataPropertyInfo();
-
-								// 默认数据库数据
-								auto shellPropertyWidget = gfParent->GetShellPropertyWidget();
-								auto propellantPropertyWidget = gfParent->GetPropellantPropertyWidget();
-								auto gelatinPropertyWidget = gfParent->GetGelatinPropertyWidget();
-								shellPropertyWidget->setMasterialData(model);
-								propellantPropertyWidget->setMasterialData(model);
-								gelatinPropertyWidget->setMasterialData(model);
-
-							}
-							else if (!success)
-							{
-								QMessageBox::warning(this, "导入失败", msg);
-							}
-
-							// 清理资源
-							progressDialog->close();
-							workerThread->quit();
-							if (!workerThread->wait(500)) 
-							{  
-								workerThread->terminate();
-							}
-							worker->deleteLater();
-							workerThread->deleteLater();
-							progressDialog->deleteLater();
-
-							// 截图计算模型
-							QString m_privateDirPath = "src/template/main.png";
-							QDir privateDir(m_privateDirPath);
-							m_WordExporter->captureWidgetToFile(gfParent->GetOccView(), m_privateDirPath);
-						});
-
-					// 启动线程
-					workerThread->start();
-					break;					
+			auto getImportWidget = [this]() -> GFImportModelWidget* {
+				QWidget* p = parentWidget();
+				while (p) {
+					if (auto* w = qobject_cast<GFImportModelWidget*>(p)) return w;
+					p = p->parentWidget();
 				}
-				else
-				{
-					parent = parent->parentWidget();
-				}
+				return nullptr;
+			};
+
+			auto* importModelWidget = getImportWidget();
+			if (!importModelWidget)
+			{
+				return;
 			}
-		});
+
+			QDir privateDir("src/model");
+			QString filePath = QFileDialog::getOpenFileName(this, "Open File", privateDir.path(),
+				"STEP Files (*.stp *.step);;IGES Files (*.iges *.igs);;VTK Files (*.vtk);;X_T Files (*.x_t);;All Files (*.*)");
+
+			if (filePath.isEmpty())
+			{
+				return;
+			}
+
+			QFileInfo fileInfo(filePath);
+			QString model = fileInfo.baseName();
+			if (model != "HQ-9B" && model != "YJ-20" && model != "YJ-91A" && model != "CJ-20A")
+			{
+				QMessageBox::warning(this, "导入失败", "导入文件错误！");
+				return;
+			}
+			auto* tableWid = importModelWidget->GetGeomPropertyWidget()->GetQTableWidget();
+			QTableWidgetItem* modelValueItem = new QTableWidgetItem(model);
+			modelValueItem->setTextAlignment(Qt::AlignCenter); // 文本居中
+			modelValueItem->setFlags(modelValueItem->flags() & ~Qt::ItemIsEditable); // 不可编辑
+			modelValueItem->setBackground(QBrush(QColor(230, 230, 230)));
+			tableWid->setItem(1, 2, modelValueItem);
+
+			auto logWidget = importModelWidget->GetLogWidget();
+			logWidget->PrintInfo("开始进行模型建立", true);
+
+			// 关键：强制刷新UI，确保日志立即显示
+			QApplication::processEvents();
+
+
+			// 创建进度对话框
+			ProgressDialog* progressDialog = new ProgressDialog("模型建立", importModelWidget);
+			progressDialog->show();
+
+			// 创建工作线程和工作对象
+			GeometryImportWorker* worker = new GeometryImportWorker(filePath);
+			QThread* workerThread = new QThread();
+			worker->moveToThread(workerThread);
+
+			// 连接信号槽
+			connect(workerThread, &QThread::started, worker, &GeometryImportWorker::DoWork);
+			connect(worker, &GeometryImportWorker::ProgressUpdated,
+				progressDialog, &ProgressDialog::SetProgress);
+			connect(worker, &GeometryImportWorker::StatusUpdated,
+				progressDialog, &ProgressDialog::SetStatusText);
+			connect(progressDialog, &ProgressDialog::Canceled,
+				worker, &GeometryImportWorker::RequestInterruption,
+				Qt::DirectConnection);
+
+			// 处理导入结果
+			connect(worker, &GeometryImportWorker::WorkFinished, this,
+				[=](bool success, const QString& msg, ModelGeometryInfo info) {
+					// 更新日志
+					logWidget->PrintInfo(msg, success);
+
+					if (success && !info.shape.IsNull())
+					{
+						double minX = DBL_MAX;
+						double minY = DBL_MAX;
+						double maxY = -DBL_MAX; // 新增：用于记录最大Y值，辅助判断底部边
+						double maxX = -DBL_MAX;
+						gp_Pnt bottomP1, bottomP2; // 修改：记录底部边线的两个端点
+						bool hasBottomEdge = false; // 修改：标记是否找到底部边
+
+						TopExp_Explorer exp(info.shape, TopAbs_EDGE);
+						for (; exp.More(); exp.Next())
+						{
+							TopoDS_Edge edge = TopoDS::Edge(exp.Current());
+							TopoDS_Vertex v1, v2;
+							TopExp::Vertices(edge, v1, v2);
+							gp_Pnt p1 = BRep_Tool::Pnt(v1);
+							gp_Pnt p2 = BRep_Tool::Pnt(v2);
+
+							bool vertical = (fabs(p1.X() - p2.X()) < 1e-3);
+							bool horizontal = (fabs(p1.Y() - p2.Y()) < 1e-3);
+
+							// 寻找最下侧的水平边（作为对称轴）
+							if (horizontal) {
+								double currentY = p1.Y();
+								if (currentY < minY) {
+									minY = currentY;
+									bottomP1 = p1; bottomP2 = p2; // 记录底部边的两个端点
+									hasBottomEdge = true;
+								}
+							}
+							// 顺便记录最大Y值，方便后续逻辑使用
+							maxY = std::max(maxY, std::max(p1.Y(), p2.Y()));
+
+							// 寻找最左侧的垂直边（如果后续还需要用到）
+							if (vertical) {
+								minX = std::min(minX, p1.X());
+							}
+							maxX = std::max(maxX, std::max(p1.X(), p2.X()));
+						}
+
+						// 沿底部水平边对称生成完整模型
+						if (hasBottomEdge)
+						{
+							// 构建对称轴（底部水平边）
+							gp_Ax1 mirrorAxis(bottomP1, gp_Dir(bottomP2.XYZ() - bottomP1.XYZ()));
+
+							// 设置镜像变换
+							gp_Trsf mirrorTrsf;
+							mirrorTrsf.SetMirror(mirrorAxis);
+
+							// 执行镜像
+							BRepBuilderAPI_Transform mirrorBRep(info.shape, mirrorTrsf, false);
+							TopoDS_Shape mirroredShape = mirrorBRep.Shape();
+
+							// 将原模型与镜像模型进行布尔并集（Fuse）融合
+							BRepAlgoAPI_Fuse fuseOp(info.shape, mirroredShape);
+							if (fuseOp.IsDone())
+							{
+								info.symmetricalShape = fuseOp.Shape();
+							}
+						}
+
+						info.model = model;
+						// 保存模型信息
+						ModelDataManager::GetInstance()->SetModelGeometryInfo(info);
+						updataIcon();
+
+						// 更新显示
+						auto occView = importModelWidget->GetOccView();
+						Handle(AIS_InteractiveContext) context = occView->getContext();
+						context->EraseAll(true);
+
+						Handle(AIS_Shape) modelPresentation = new AIS_Shape(info.shape);
+						context->SetDisplayMode(modelPresentation, AIS_Shaded, true);
+						context->SetColor(modelPresentation, Quantity_Color(0.0, 1.0, 1.0, Quantity_TOC_RGB), true);
+						context->Display(modelPresentation, false);
+						occView->fitAll();
+
+						// 更新属性窗口
+						auto geomProWid = importModelWidget->findChild<GeomPropertyWidget*>();
+						geomProWid->UpdataPropertyInfo();
+
+						// 默认数据库数据
+						auto shellPropertyWidget = importModelWidget->GetShellPropertyWidget();
+						auto propellantPropertyWidget = importModelWidget->GetPropellantPropertyWidget();
+						auto gelatinPropertyWidget = importModelWidget->GetGelatinPropertyWidget();
+						shellPropertyWidget->setMasterialData(model);
+						propellantPropertyWidget->setMasterialData(model);
+						gelatinPropertyWidget->setMasterialData(model);
+
+					}
+					else if (!success)
+					{
+						QMessageBox::warning(this, "导入失败", msg);
+					}
+
+					// 清理资源
+					progressDialog->close();
+					workerThread->quit();
+					if (!workerThread->wait(500))
+					{
+						workerThread->terminate();
+					}
+					worker->deleteLater();
+					workerThread->deleteLater();
+					progressDialog->deleteLater();
+
+					// 截图计算模型
+					QString m_privateDirPath = "src/template/main.png";
+					QDir privateDir(m_privateDirPath);
+					m_WordExporter->captureWidgetToFile(importModelWidget->GetOccView(), m_privateDirPath);
+				});
+
+			// 启动线程
+			workerThread->start();
+			});
 		m_ContextMenu->addAction(customAction); // 将动作添加到菜单中
 		m_ContextMenu->exec(event->globalPos()); // 在鼠标位置显示菜单
 	}

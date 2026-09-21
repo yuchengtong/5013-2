@@ -31,6 +31,8 @@ public:
 
 	GFTreeWidget* GetGFTreeWidget() {return m_TreeWidget;}
 
+	WordExporter* GetWordExporter() {return m_WordExporter;	}
+
 public:
 	void updataIcon();
 

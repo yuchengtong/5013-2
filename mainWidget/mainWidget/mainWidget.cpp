@@ -1,3 +1,4 @@
+#pragma execution_character_set("utf-8")
 #include "mainWidget.h"
 #include <QLabel>
 #include <QVBoxLayout>
@@ -43,6 +44,16 @@
 #include "OccView.h"
 #include "GFTreeModelWidget.h"
 #include "ModelDataManager.h"
+#include "ProgressDialog.h"
+#include "GeometryImportWorker.h"
+
+#include <TopoDS_Edge.hxx>
+#include <TopoDS_Vertex.hxx>
+#include <TopExp_Explorer.hxx>
+#include <BRepBuilderAPI_Transform.hxx>
+#include <BRepAlgoAPI_Fuse.hxx>
+#include <TopoDS.hxx>
+#include <BRep_Tool.hxx>
 
 mainWidget::mainWidget(QWidget* parent)
 	: QMainWindow(parent)
@@ -608,91 +619,181 @@ void mainWidget::bindConnect()
 // ============================================================
 void mainWidget::handleModelImport()
 {
-	if (!m_importModelWid) return;
+	if (!m_importModelWid)
+	{
+		return;
+	}
 
 	QDir privateDir("src/model");
 	QString filePath = QFileDialog::getOpenFileName(this, "Open File", privateDir.path(),
 		"STEP Files (*.stp *.step);;IGES Files (*.iges *.igs);;VTK Files (*.vtk);;X_T Files (*.x_t);;All Files (*.*)");
 
-	if (filePath.isEmpty()) return;
+	if (filePath.isEmpty())
+	{
+		return;
+	}
 
-	// 记录日志
+	QFileInfo fileInfo(filePath);
+	QString model = fileInfo.baseName();
+	if (model != "HQ-9B" && model != "YJ-20" && model != "YJ-91A" && model != "CJ-20A")
+	{
+		QMessageBox::warning(this, "导入失败", "导入文件错误！");
+		return;
+	}
+
+	auto* tableWid = m_importModelWid->GetGeomPropertyWidget()->GetQTableWidget();
+	QTableWidgetItem* modelValueItem = new QTableWidgetItem(model);
+	modelValueItem->setTextAlignment(Qt::AlignCenter); // 文本居中
+	modelValueItem->setFlags(modelValueItem->flags() & ~Qt::ItemIsEditable); // 不可编辑
+	modelValueItem->setBackground(QBrush(QColor(230, 230, 230)));
+	tableWid->setItem(1, 2, modelValueItem);
+
 	auto logWidget = m_importModelWid->GetLogWidget();
-	if (!logWidget) return;
+	logWidget->PrintInfo("开始进行模型建立", true);
 
-	auto textEdit = logWidget->GetTextEdit();
-	if (!textEdit) return;
+	// 关键：强制刷新UI，确保日志立即显示
+	QApplication::processEvents();
 
-	QDateTime currentTime = QDateTime::currentDateTime();
-	QString timeStr = currentTime.toString("yyyy-MM-dd hh:mm:ss");
-	textEdit->appendPlainText(timeStr + QString::fromLocal8Bit("[信息]>开始导入几何模型"));
-	logWidget->update();
+	// 创建进度对话框
+	ProgressDialog* progressDialog = new ProgressDialog("模型建立", m_importModelWid);
+	progressDialog->show();
 
-	TopoDS_Shape aShape;
-	bool loadSuccess = false;
-	ModelGeometryInfo info;
+	// 创建工作线程和工作对象
+	GeometryImportWorker* worker = new GeometryImportWorker(filePath);
+	QThread* workerThread = new QThread();
+	worker->moveToThread(workerThread);
 
-	try {
-		if (filePath.endsWith(".stp", Qt::CaseInsensitive) ||
-			filePath.endsWith(".step", Qt::CaseInsensitive)) {
-			loadSuccess = loadStepFile(filePath, aShape, info);
-		}
-		else if (filePath.endsWith(".stl", Qt::CaseInsensitive)) {
-			loadSuccess = loadStlFile(filePath, aShape, info);
-		}
-		else {
-			QMessageBox::warning(this, QString::fromLocal8Bit("错误"),
-				QString::fromLocal8Bit("不支持的文件格式"));
-			return;
-		}
-	}
-	catch (const Standard_Failure& e) {
-		QMessageBox::critical(this, QString::fromLocal8Bit("导入错误"),
-			QString::fromLocal8Bit("导入失败：") + QString(e.GetMessageString()));
-		return;
-	}
-	catch (...) {
-		QMessageBox::critical(this, QString::fromLocal8Bit("导入错误"),
-			QString::fromLocal8Bit("导入过程中发生未知错误"));
-		return;
-	}
+	// 连接信号槽
+	connect(workerThread, &QThread::started, worker, &GeometryImportWorker::DoWork);
+	connect(worker, &GeometryImportWorker::ProgressUpdated,
+		progressDialog, &ProgressDialog::SetProgress);
+	connect(worker, &GeometryImportWorker::StatusUpdated,
+		progressDialog, &ProgressDialog::SetStatusText);
+	connect(progressDialog, &ProgressDialog::Canceled,
+		worker, &GeometryImportWorker::RequestInterruption,
+		Qt::DirectConnection);
 
-	if (!loadSuccess || aShape.IsNull()) {
-		QMessageBox::warning(this, QString::fromLocal8Bit("错误"),
-			QString::fromLocal8Bit("加载模型失败"));
-		return;
-	}
+	// 处理导入结果
+	connect(worker, &GeometryImportWorker::WorkFinished, this,
+		[=](bool success, const QString& msg, ModelGeometryInfo info) {
+			// 更新日志
+			logWidget->PrintInfo(msg, success);
 
-	// 保存模型信息
-	auto manager = ModelDataManager::GetInstance();
-	if (manager) {
-		manager->SetModelGeometryInfo(info);
-	}
+			if (success && !info.shape.IsNull())
+			{
+				double minX = DBL_MAX;
+				double minY = DBL_MAX;
+				double maxY = -DBL_MAX; // 新增：用于记录最大Y值，辅助判断底部边
+				double maxX = -DBL_MAX;
+				gp_Pnt bottomP1, bottomP2; // 修改：记录底部边线的两个端点
+				bool hasBottomEdge = false; // 修改：标记是否找到底部边
 
-	auto treeWidget = m_importModelWid->GetGFTreeModelWidget();
-	if (treeWidget) {
-		treeWidget->updataIcon();
-	}
+				TopExp_Explorer exp(info.shape, TopAbs_EDGE);
+				for (; exp.More(); exp.Next())
+				{
+					TopoDS_Edge edge = TopoDS::Edge(exp.Current());
+					TopoDS_Vertex v1, v2;
+					TopExp::Vertices(edge, v1, v2);
+					gp_Pnt p1 = BRep_Tool::Pnt(v1);
+					gp_Pnt p2 = BRep_Tool::Pnt(v2);
 
-	// 显示到OCC视图
-	auto occView = m_importModelWid->GetOccView();
-	if (occView) {
-		Handle(AIS_InteractiveContext) context = occView->getContext();
-		if (!context.IsNull()) {
-			context->EraseAll(true);
-			Handle(AIS_Shape) modelPresentation = new AIS_Shape(aShape);
-			context->SetDisplayMode(modelPresentation, AIS_Shaded, true);
-			context->SetColor(modelPresentation, Quantity_Color(0.0, 1.0, 1.0, Quantity_TOC_RGB), true);
-			context->Display(modelPresentation, false);
-			occView->fitAll();
-		}
-	}
+					bool vertical = (fabs(p1.X() - p2.X()) < 1e-3);
+					bool horizontal = (fabs(p1.Y() - p2.Y()) < 1e-3);
 
-	// 记录成功日志
-	currentTime = QDateTime::currentDateTime();
-	timeStr = currentTime.toString("yyyy-MM-dd hh:mm:ss");
-	QString text = timeStr + QString::fromLocal8Bit("[信息]>导入几何模型,路径为：") + filePath;
-	textEdit->appendPlainText(text);
+					// 寻找最下侧的水平边（作为对称轴）
+					if (horizontal) {
+						double currentY = p1.Y();
+						if (currentY < minY) {
+							minY = currentY;
+							bottomP1 = p1; bottomP2 = p2; // 记录底部边的两个端点
+							hasBottomEdge = true;
+						}
+					}
+					// 顺便记录最大Y值，方便后续逻辑使用
+					maxY = std::max(maxY, std::max(p1.Y(), p2.Y()));
+
+					// 寻找最左侧的垂直边（如果后续还需要用到）
+					if (vertical) {
+						minX = std::min(minX, p1.X());
+					}
+					maxX = std::max(maxX, std::max(p1.X(), p2.X()));
+				}
+
+				// 沿底部水平边对称生成完整模型
+				if (hasBottomEdge)
+				{
+					// 构建对称轴（底部水平边）
+					gp_Ax1 mirrorAxis(bottomP1, gp_Dir(bottomP2.XYZ() - bottomP1.XYZ()));
+
+					// 设置镜像变换
+					gp_Trsf mirrorTrsf;
+					mirrorTrsf.SetMirror(mirrorAxis);
+
+					// 执行镜像
+					BRepBuilderAPI_Transform mirrorBRep(info.shape, mirrorTrsf, false);
+					TopoDS_Shape mirroredShape = mirrorBRep.Shape();
+
+					// 将原模型与镜像模型进行布尔并集（Fuse）融合
+					BRepAlgoAPI_Fuse fuseOp(info.shape, mirroredShape);
+					if (fuseOp.IsDone())
+					{
+						info.symmetricalShape = fuseOp.Shape();
+					}
+				}
+
+				info.model = model;
+				// 保存模型信息
+				ModelDataManager::GetInstance()->SetModelGeometryInfo(info);
+
+				// 更新显示
+				auto occView = m_importModelWid->GetOccView();
+				Handle(AIS_InteractiveContext) context = occView->getContext();
+				context->EraseAll(true);
+
+				Handle(AIS_Shape) modelPresentation = new AIS_Shape(info.shape);
+				context->SetDisplayMode(modelPresentation, AIS_Shaded, true);
+				context->SetColor(modelPresentation, Quantity_Color(0.0, 1.0, 1.0, Quantity_TOC_RGB), true);
+				context->Display(modelPresentation, false);
+				occView->fitAll();
+
+				// 更新属性窗口
+				auto geomProWid = m_importModelWid->findChild<GeomPropertyWidget*>();
+				geomProWid->UpdataPropertyInfo();
+
+				// 默认数据库数据
+				auto shellPropertyWidget = m_importModelWid->GetShellPropertyWidget();
+				auto propellantPropertyWidget = m_importModelWid->GetPropellantPropertyWidget();
+				auto gelatinPropertyWidget = m_importModelWid->GetGelatinPropertyWidget();
+				shellPropertyWidget->setMasterialData(model);
+				propellantPropertyWidget->setMasterialData(model);
+				gelatinPropertyWidget->setMasterialData(model);
+			}
+			else if (!success)
+			{
+				QMessageBox::warning(this, "导入失败", msg);
+			}
+
+			// 清理资源
+			progressDialog->close();
+			workerThread->quit();
+			if (!workerThread->wait(500))
+			{
+				workerThread->terminate();
+			}
+			worker->deleteLater();
+			workerThread->deleteLater();
+			progressDialog->deleteLater();
+
+			// 截图计算模型
+			QString m_privateDirPath = "src/template/main.png";
+			QDir privateDir(m_privateDirPath);
+			auto treeModelWidget=m_importModelWid->GetGFTreeModelWidget();
+			auto wordExporter=treeModelWidget->GetWordExporter();
+			wordExporter->captureWidgetToFile(m_importModelWid->GetOccView(), m_privateDirPath);
+		});
+
+	// 启动线程
+	workerThread->start();
 }
 
 // ============================================================
@@ -701,20 +802,23 @@ void mainWidget::handleModelImport()
 bool mainWidget::loadStepFile(const QString& filePath, TopoDS_Shape& outShape, ModelGeometryInfo& outInfo)
 {
 	STEPControl_Reader reader;
-	if (reader.ReadFile(filePath.toStdString().c_str()) != IFSelect_RetDone) {
+	/*if (reader.ReadFile(filePath.toStdString().c_str()) != IFSelect_RetDone) {
 		return false;
 	}
 
 	reader.PrintCheckLoad(Standard_False, IFSelect_ItemsByEntity);
 	Standard_Integer nbRoots = reader.NbRootsForTransfer();
-	if (nbRoots <= 0) return false;
+	if (nbRoots <= 0) 
+		return false;
 
 	reader.TransferRoots();
 	outShape = reader.OneShape();
 
-	if (outShape.IsNull()) return false;
+	if (outShape.IsNull()) 
+		return false;*/
 
 	return computeBBox(outShape, filePath, outInfo);
+
 }
 
 // ============================================================

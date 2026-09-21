@@ -591,8 +591,8 @@ void InForwardDesignPropertyWidget::inForwardCalculate()
 		double densityVacuumXStart = 20.0;  // 真空度(20～80)
 		double densityVacuumXEnd = 80.0; // 真空度(20～80)
 		double densityVacuumStep = (densityVacuumXEnd - densityVacuumXStart) / 30;
-		for (double i = densityVacuumXStart; i <= densityVacuumXEnd; i += densityVacuumStep) {
-
+		for (double i = densityVacuumXStart; i <= densityVacuumXEnd; i += densityVacuumStep) 
+		{
 			auto tempA = (A - 12.509291) / 2.218704;
 			auto tempB = (B - 3.01888) / 0.702157;
 			auto tempC = (C - 25.076659) / 1.740173;
@@ -635,16 +635,14 @@ void InForwardDesignPropertyWidget::inForwardCalculate()
 			}
 			timeTempX.push_back(i);
 			timeTempY.push_back(injectionTimeValue);
-
 		}
-
 
 		///阀门开度注药时间曲线
 		double timeValveXStart = 13.0;  // 阀门开度(13～39)
 		double timeValveXEnd = 39.0; // 阀门开度(13～39)
 		double timeValveStep = (timeValveXEnd - timeValveXStart) / 30;
-		for (double i = timeValveXStart; i <= timeValveXEnd; i += timeValveStep) {
-
+		for (double i = timeValveXStart; i <= timeValveXEnd; i += timeValveStep)
+		{
 			auto tempA = ((i / 2.0) - 12.518519) / 2.177802;
 			auto tempB = (B - 2.999897) / 0.725859;
 			auto tempC = (C - 25.001792) / 1.8102640;
@@ -658,15 +656,14 @@ void InForwardDesignPropertyWidget::inForwardCalculate()
 			}
 			timeValveX.push_back(i);
 			timeValveY.push_back(injectionTimeValue);
-
 		}
 
 		//真空度注药时间曲线
 		double timeVacuumXStart = 20.0;  // 真空度(20～80)
 		double timeVacuumXEnd = 80.0; // 真空度(20～80)
 		double timeVacuumStep = (timeVacuumXEnd - timeVacuumXStart) / 30;
-		for (double i = timeVacuumXStart; i <= timeVacuumXEnd; i += timeVacuumStep) {
-
+		for (double i = timeVacuumXStart; i <= timeVacuumXEnd; i += timeVacuumStep)
+		{
 			auto tempA = (A - 12.518519) / 2.177802;
 			auto tempB = (B - 2.999897) / 0.725859;
 			auto tempC = (C - 25.001792) / 1.8102640;
@@ -680,7 +677,6 @@ void InForwardDesignPropertyWidget::inForwardCalculate()
 			}
 			timeVacuumX.push_back(i / 1000.0);
 			timeVacuumY.push_back(injectionTimeValue);
-
 		}
 	}
 	else if (model == "YJ-20")
@@ -730,8 +726,8 @@ void InForwardDesignPropertyWidget::inForwardCalculate()
 		double densityTempXEnd = 70.0; // 弹体目标温度（℃）
 		double densityTempStep = (densityTempXEnd - densityTempXStart) / 30;
 
-		for (double i = densityTempXStart; i <= densityTempXEnd; i += densityTempStep) {
-
+		for (double i = densityTempXStart; i <= densityTempXEnd; i += densityTempStep) 
+		{
 			auto tempA = (A - 13.000000) / 2.44883;
 			auto tempB = (B - 3.000000) / 0.753487;
 			auto tempC = (C - 25.000000) / 1.883716;
@@ -752,8 +748,6 @@ void InForwardDesignPropertyWidget::inForwardCalculate()
 				densityTempX.push_back(i);
 				densityTempY.push_back(relativeDensity * 100.0);
 			}
-
-
 		}
 
 
@@ -761,8 +755,8 @@ void InForwardDesignPropertyWidget::inForwardCalculate()
 		double densityValveXStart = 13.0;  // 阀门开度(13～39)
 		double densityValveXEnd = 39.0; // 阀门开度(5～39)
 		double densityValveStep = (densityValveXEnd - densityValveXStart) / 30;
-		for (double i = densityValveXStart; i <= densityValveXEnd; i += densityValveStep) {
-
+		for (double i = densityValveXStart; i <= densityValveXEnd; i += densityValveStep) 
+		{
 			auto tempA = ((i / 2.0) - 13.000000) / 2.44883;
 			auto tempB = (B - 3.000000) / 0.753487;
 			auto tempC = (C - 25.000000) / 1.883716;
@@ -782,16 +776,14 @@ void InForwardDesignPropertyWidget::inForwardCalculate()
 				densityValveX.push_back(i);
 				densityValveY.push_back(relativeDensity * 100.0);
 			}
-
-
 		}
 
 		//真空度密度曲线
 		double densityVacuumXStart = 20.0;  // 真空度(20～80)
 		double densityVacuumXEnd = 80.0; // 真空度(20～80)
 		double densityVacuumStep = (densityVacuumXEnd - densityVacuumXStart) / 30;
-		for (double i = densityVacuumXStart; i <= densityVacuumXEnd; i += densityVacuumStep) {
-
+		for (double i = densityVacuumXStart; i <= densityVacuumXEnd; i += densityVacuumStep)
+		{
 			auto tempA = (A - 13.000000) / 2.44883;
 			auto tempB = (B - 3.000000) / 0.753487;
 			auto tempC = (C - 25.000000) / 1.883716;
@@ -819,8 +811,8 @@ void InForwardDesignPropertyWidget::inForwardCalculate()
 		double timeTempXEnd = 70.0; // 弹体目标温度（℃）
 		double timeTempStep = (timeTempXEnd - timeTempXStart) / 30;
 
-		for (double i = timeTempXStart; i <= timeTempXEnd; i += timeTempStep) {
-
+		for (double i = timeTempXStart; i <= timeTempXEnd; i += timeTempStep)
+		{
 			auto tempA = (A - 13.000000) / 2.44883;
 			auto tempB = (B - 3.000000) / 0.753487;
 			auto tempC = (C - 25.000000) / 1.883716;
@@ -834,7 +826,6 @@ void InForwardDesignPropertyWidget::inForwardCalculate()
 			}
 			timeTempX.push_back(i);
 			timeTempY.push_back(injectionTimeValue);
-
 		}
 
 
@@ -842,8 +833,8 @@ void InForwardDesignPropertyWidget::inForwardCalculate()
 		double timeValveXStart = 13.0;  // 阀门开度(13～39)
 		double timeValveXEnd = 39.0; // 阀门开度(5～39)
 		double timeValveStep = (timeValveXEnd - timeValveXStart) / 30;
-		for (double i = timeValveXStart; i <= timeValveXEnd; i += timeValveStep) {
-
+		for (double i = timeValveXStart; i <= timeValveXEnd; i += timeValveStep) 
+		{
 			auto tempA = ((i / 2.0) - 13.000000) / 2.44883;
 			auto tempB = (B - 3.000000) / 0.753487;
 			auto tempC = (C - 25.000000) / 1.883716;
@@ -857,15 +848,14 @@ void InForwardDesignPropertyWidget::inForwardCalculate()
 			}
 			timeValveX.push_back(i);
 			timeValveY.push_back(injectionTimeValue);
-
 		}
 
 		//真空度注药时间曲线
 		double timeVacuumXStart = 20.0;  // 真空度(20～80)
 		double timeVacuumXEnd = 80.0; // 真空度(20～80)
 		double timeVacuumStep = (timeVacuumXEnd - timeVacuumXStart) / 30;
-		for (double i = timeVacuumXStart; i <= timeVacuumXEnd; i += timeVacuumStep) {
-
+		for (double i = timeVacuumXStart; i <= timeVacuumXEnd; i += timeVacuumStep)
+		{
 			auto tempA = (A - 13.000000) / 2.44883;
 			auto tempB = (B - 3.000000) / 0.753487;
 			auto tempC = (C - 25.000000) / 1.883716;
@@ -879,7 +869,6 @@ void InForwardDesignPropertyWidget::inForwardCalculate()
 			}
 			timeVacuumX.push_back(i / 1000.0);
 			timeVacuumY.push_back(injectionTimeValue);
-
 		}
 	}
 	else if (model == "YJ-91A")

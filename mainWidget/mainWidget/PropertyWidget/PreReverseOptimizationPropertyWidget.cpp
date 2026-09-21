@@ -355,7 +355,6 @@ void PreReverseOptimizationPropertyWidget::calculate()
 
 	if (targeTempeBool)
 	{
-
 		if (m_targetTemperatureValue == "")
 		{
 			QMessageBox::information(this, "提示", "弹体目标温度不能为空！");
